@@ -42,6 +42,14 @@ The plan approved on 2026-10-18 (snapshot: [plans/2026-10-18-approved-plan.md](p
 | 10 Open questions | [PROGRESS.md](../PROGRESS.md) and the "Inputs" table of each phase |
 | Code structure | [architecture.md](architecture.md) |
 | Git and GitHub | [CONTRIBUTING.md](../CONTRIBUTING.md), [ADR 0006](decisions/0006-github-repo-and-phase-branches.md) |
+| Launch scope (team photos, audit flow, AI demo, budget) | [ADR 0007](decisions/0007-launch-scope-and-constraints.md) |
+
+**Where the living docs differ from the snapshot.** Each change is deliberate and refines the plan; none reverses it.
+- Suggestions grew from S1–S15 to S1–S16. The plan's local e-invoicing idea became S16.
+- ADR 0007 records the launch scope. Before it, those decisions had no ADR.
+- The free audit page's primary CTA is "Nastavite na odabir termina", because the flow starts with the form.
+- Lighthouse CI is added in phase 6.
+- The phase 6 guardrail check uses a regex that covers inflected forms ([compliance.md](compliance.md#copy-guardrails)).
 
 ## Conventions
 
@@ -54,6 +62,6 @@ The plan approved on 2026-10-18 (snapshot: [plans/2026-10-18-approved-plan.md](p
 
 **Where things go**
 - **A decision:** a new ADR in [decisions/](decisions/README.md), plus one line in `PROGRESS.md`. Accepted ADRs are never rewritten; a new ADR supersedes an old one.
-- **A fact from research:** `research/YYYY-MM-DD-topic.md`, with the source URL and a confidence rating.
+- **A fact from research:** `research/YYYY-MM-DD-topic.md`, with the source URL and a confidence rating. Notes are not edited later. A newer dated note supersedes an older one; add "Superseded by …" at the top of the old note.
 - **Progress within a phase:** the phase document's status and log, and `PROGRESS.md`.
 - **Nothing important lives only in chat.** If it matters, it goes into these files before the phase ends.

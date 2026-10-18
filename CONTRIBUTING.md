@@ -17,7 +17,7 @@ A phase ends with these steps, in order:
 
 | Branch | Purpose |
 |---|---|
-| `main` | Approved work only. Never push directly, except the initial phase 0 commits. |
+| `main` | Approved work only. Protected by a GitHub ruleset: a PR is required, and force pushes and deletion are blocked. Only the initial phase 0 commits were pushed directly. |
 | `phase/<n>-<name>` | One branch per phase, e.g. `phase/1-architecture` |
 | `feat/…`, `fix/…`, `docs/…`, `chore/…` | Small changes outside a phase, mostly in phase 8 |
 

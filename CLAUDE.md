@@ -36,19 +36,20 @@ Website for Codraft, a small team studio that plans, builds and looks after webs
 - **Also at launch:** Privatnost, Kolačići, Impresum, Izjava o pristupačnosti, and a localised 404.
 - **Phase 4:** AI asistenti (`/usluge/ai-asistenti`).
 - **Later:** Radovi, Blog.
-- The slugs become final once the client approves the Croatian terminology. Details: `docs/information-architecture.md`.
+- The slugs are confirmed when the client approves the Croatian terminology. After launch they never change (any change needs a 301). Details: `docs/information-architecture.md`.
 
 ## Brand
 
-The wordmark is a geometric sans in navy `#0F1B2D`, on an off-white `#F6F5F1` ground. The blue `#2F6BFF` accent has two parts:
-- an arc on the "c"
-- a drafting line that forms the "f"/"t" crossbars and ends in a CAD grip square
+The wordmark is a geometric sans in navy `#0F1B2D`, on an off-white `#F6F5F1` ground. The blue `#2F6BFF` accent has three parts:
+- an arc segment on the "c"
+- a drafting line that forms the "f"/"t" crossbars
+- the hollow CAD grip square at the end of that line
 
 **Blue is for graphics and large text only.** It measures 4.12:1 on off-white, which fails AA for body text. Primary buttons are navy. See `docs/brand.md`.
 
 ## Copy guardrails
 
-- **Drafting is not projektiranje.** Never describe Codraft's drafting as projektiranje, projektant or projektna dokumentacija; that work is regulated in Croatia. Say "crtamo prema vašim skicama i standardima" (`docs/compliance.md`).
+- **Drafting is not projektiranje.** Never describe Codraft's drafting as projektiranje or any related term, in any inflected form; that work is regulated in Croatia. Say "crtamo prema vašim skicama, oznakama i standardima". The full list and the check regex are in `docs/compliance.md`.
 - **No invented proof:** no invented clients, testimonials, logos or metrics (ADR 0004).
 - **The English copy changes only through suggestions the client approves** (`docs/content.md`).
 

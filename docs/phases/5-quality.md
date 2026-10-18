@@ -41,7 +41,7 @@ All pages and integrations from phases 3–4.
 
 **4. Performance.** `performance-optimizer` with `react-performance` on images, fonts and the bundle. Targets: LCP < 2.5 s, INP < 200 ms, CLS < 0.1, and the JavaScript budget from phase 1.
 
-**5. CI.** Add the Playwright suite to CI if it is fast enough; otherwise run it on the phase PR.
+**5. CI.** Add the Playwright suite to CI if it is fast enough; otherwise run it on the phase PR. Lighthouse CI follows in phase 6.
 
 ## Deliverables
 

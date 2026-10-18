@@ -41,6 +41,10 @@ Claude's recommendation is A, borrowing C's photographic warmth. **The client ch
 
 Take Playwright screenshots at 375, 768 and 1440 px, and let the client click through on localhost.
 
+If the hosting chosen in phase 1 offers private preview deployments, share the prototypes there as well, so other team members can review them. A deploy is an "ask first" item.
+
+The `/_design/*` routes and the style page are noindex, and they are excluded from production builds.
+
 **3. Tokens** as CSS custom properties:
 - **Colour:** brand plus the accessible text tokens from [brand.md](../brand.md#colour), with blue for graphics only.
 - **Type scale:** fluid.

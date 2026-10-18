@@ -30,6 +30,8 @@ Every phase ends the same way:
 
 Phase 0 is the exception: the repository was created in that phase, so its commits went straight to `main`.
 
+From the end of phase 0, `main` is protected by a GitHub ruleset: a PR is required, and force pushes and deletion are blocked. Changes requested in the phase 0 review therefore go through a small PR (e.g. `docs/phase-0-review`), merged on the user's word before the phase 1 branch is created.
+
 ## Authority
 
 ### Autonomous
@@ -70,7 +72,7 @@ Phase 0 is the exception: the repository was created in that phase, so its commi
 
 `docs/` is the project's durable memory. A new session must be able to continue from the repository alone.
 
-- **Decisions:** every decision becomes an ADR in `docs/decisions/` (template in its README), plus one line under "Odluke" in `PROGRESS.md`. Accepted ADRs are never rewritten; a new ADR supersedes an old one.
+- **Decisions:** every decision becomes an ADR in `docs/decisions/` (ADR 0001 defines what counts; the template is in the README there), plus one line under "Odluke" in `PROGRESS.md`. Accepted ADRs are never rewritten; a new ADR supersedes an old one.
 - **Research:** every fact gathered from research goes to `docs/research/YYYY-MM-DD-topic.md`, with its source URL and a confidence rating.
 - **Phase documents:** keep the current phase's document up to date while working (status, log).
 - **Site copy:** copy goes into `docs/content.md` before it goes into the site.
@@ -80,6 +82,7 @@ Phase 0 is the exception: the repository was created in that phase, so its commi
 
 `/architecture`, `/check`, `/fix`, `/test`, `/audit` and `/clean` live in `~/.claude/skills/<name>/SKILL.md` and are user-only, so the Skill tool cannot invoke them. When a phase calls for one, Read its SKILL.md and follow the procedure directly, with these project overrides:
 
+- `/architecture` in phase 1: the procedure ends with the user's choice and points to `/plan`. Write a short scaffold plan (plan mode or a Plan agent) and get the user's OK on it before scaffolding. Do the hosting research first, because the `architect` agent has no web access.
 - `/check` during phase work: fix CRITICAL and HIGH findings in this phase's code, list MEDIUM in the phase report.
 - `/audit` and `/clean`: ask before applying fixes or removals, as the skills say.
 
@@ -93,7 +96,15 @@ The skills and agents for each phase are listed below. The project-specific plan
 
 - `git init`, `.gitignore` (dependencies, build output, `.env*` except `.env.example`).
 - Save the user's service copy to `docs/content.md` as the source of truth for site text.
-- Draft the sitemap: Home, What we do (Plan / Build / Run & Grow), Engineering Drafting (separate page), Free audit / Contact, Privacy, Cookies, Legal notice.
+- Draft the sitemap (result: `docs/information-architecture.md`):
+  - Home
+  - Services (Plan / Build / Run & Grow)
+  - Engineering Drafting
+  - About
+  - Free audit
+  - Contact
+  - Privacy, Cookies, Legal notice, Accessibility statement
+  - 404
 - Inventory `Assets/` and list what is missing: SVG logo, favicon and app icons, OG image, photos.
 - Decisions for the user: site languages, target market, domain.
 - Document the full plan by phase in `docs/`.
@@ -138,7 +149,7 @@ Exit: every page in the sitemap built; no open CRITICAL or HIGH findings.
 
 - Free audit / contact form: `api-design`, `error-handling`; Zod validation on client and server, honeypot, rate limiting. `security-reviewer` and `silent-failure-hunter` always review it.
 - Booking, analytics and cookie consent: no analytics or third-party script loads before consent; scripts load async or deferred.
-- AI chatbot demo, only if the user wants one: load `claude-api` before writing any code.
+- AI chatbot demo (the user said yes, ADR 0007): load `claude-api` before writing any code.
 - Any database: `postgres-patterns`, `database-migrations`, `database-reviewer`.
 
 Exit: the form works end to end locally; analytics stay blocked until consent.

@@ -12,8 +12,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0004](0004-verifiable-proof-only.md) | Trust from verifiable proof only | Accepted | 2026-10-18 |
 | [0005](0005-design-review-with-coded-prototypes.md) | Design directions are reviewed as coded prototypes | Accepted | 2026-10-18 |
 | [0006](0006-github-repo-and-phase-branches.md) | Private GitHub repository, one branch and PR per phase | Accepted | 2026-10-18 |
+| [0007](0007-launch-scope-and-constraints.md) | Launch scope and constraints: team photos, audit flow, AI demo, budget | Accepted | 2026-10-18 |
 
-Next number: **0007**. Phase 1 will add the stack and hosting decisions.
+Next number: **0008**. Phase 1 will add the stack, hosting, email, analytics and booking decisions.
 
 ## How to add one
 

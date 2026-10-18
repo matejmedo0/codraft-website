@@ -13,9 +13,9 @@ Live status is in [PROGRESS.md](../../PROGRESS.md).
 
 | # | Phase (HR) | Goal | Key deliverables | Exit criteria | Status |
 |---|---|---|---|---|---|
-| 0 | [Foundation](0-foundation.md) (Temelji) | Agree what we build and set up the repository | Sitemap, copy source, docs, ADRs, GitHub repo | Sitemap, asset gaps and decisions recorded; repo on GitHub | Done 2026-10-18; waiting for go-ahead |
+| 0 | [Foundation](0-foundation.md) (Temelji) | Agree what we build and set up the repository | Sitemap, copy source, docs, ADRs, GitHub repo | Sitemap, asset gaps and decisions recorded; repo on GitHub | Done 2026-10-19; waiting for go-ahead |
 | 1 | [Architecture](1-architecture.md) (Arhitektura) | Choose and scaffold the stack and hosting | Research, architecture options, scaffold, CI, hooks | Build passes; dev server runs; empty page renders at 375/768/1440; CI green | Not started |
-| 2 | [Design](2-design.md) (Dizajn) | Choose a visual direction and build the design system | 3 coded prototypes, tokens, base components, style page | Client approves the direction; style page at three widths | Not started |
+| 2 | [Design](2-design.md) (Dizajn) | Choose a visual direction and build the design system | 2–3 coded prototypes, tokens, base components, style page | Client approves the direction; style page at three widths | Not started |
 | 3 | [Pages](3-pages.md) (Izrada stranica) | Build every launch page in HR and EN | 10 pages + 404, SEO, JSON-LD, OG images | All sitemap pages built; no open CRITICAL/HIGH findings | Not started |
 | 4 | [Integrations](4-integrations.md) (Integracije) | Forms, booking, consent, analytics, chatbot | Audit and contact forms, consent manager, AI page and demo | Form works end to end locally; analytics blocked until consent | Not started |
 | 5 | [Quality](5-quality.md) (Kvaliteta) | Prove it works | E2E and unit tests, a11y and performance passes | Tests pass; no open CRITICAL/HIGH findings | Not started |
@@ -38,7 +38,7 @@ Live status is in [PROGRESS.md](../../PROGRESS.md).
 
 | Risk | Impact | Mitigation | Owner |
 |---|---|---|---|
-| The name "Codraft" is also used by an AI developer tool (codraft.dev); .com, .eu, .studio and .io are taken | Brand confusion, trademark conflict | Trademark search (TMview, DZIV; classes 9/35/42); register codraft.hr now; consistent `sameAs` links | Client |
+| The name "Codraft" is also used by an AI developer tool (codraft.dev, verified). codraft.com is taken (verified); .eu, .studio and .io are reported taken (unverified). | Brand confusion, trademark conflict | Trademark search (TMview, DZIV; classes 9/35/42); register codraft.hr now; consistent `sameAs` links | Client |
 | Legal form and registration unknown | Blocks the impresum, the free .hr domain and the Google Business Profile | Asked in the phase 0 report | Client |
 | Drafting copy that reads like regulated projektiranje | Legal exposure | Copy guardrails ([compliance.md](../compliance.md)); grep in phase 6; check with HKA, HKIG or a lawyer | Claude, client |
 | Croatian copy approval becomes a bottleneck | Delays phase 3 | Approve page by page; phase 2 uses the existing copy | Client |
@@ -49,4 +49,4 @@ Live status is in [PROGRESS.md](../../PROGRESS.md).
 | Motion hurts speed or accessibility | Worse UX and rankings | Budgets, reduced-motion rules, LCP text visible at first paint | Claude |
 | Claude's legal drafts are not legal advice | Legal exposure | Lawyer review before launch | Client |
 | A new chat session loses context | Rework, contradictions | `docs/` as durable memory; documentation rule in the workflow; fresh-session test at phase 0 exit | Claude |
-| No branch protection on a free private repository | Accidental pushes to `main` | Workflow rule (merge only on the client's word); enable protection if the plan allows | Claude |
+| Accidental pushes or force pushes to `main` | Unreviewed or lost work | Mitigated. The ruleset "Protect main" (PR required, no force push, no deletion) is enforced; a probe test on 2026-10-19 confirmed enforcement. Merges happen only on the client's word. | Claude |

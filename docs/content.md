@@ -19,7 +19,7 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 
 | EN | HR (recommended) | Alternatives | Slug / anchor (HR · EN) |
 |---|---|---|---|
-| What we do | **Usluge** (nav); **Što radimo** (Home section heading) | Što radimo (nav) | `/usluge` · `/en/services` |
+| What we do | **Usluge** (nav, page title); **Što radimo** (`services.title`: section heading on Home and H1 on `/usluge`; the final H1 wording is checked with the `seo` skill in phase 3) | Što radimo (nav) | `/usluge` · `/en/services` |
 | Plan | **Planiranje** | Plan | `#planiranje` · `#plan` |
 | Build | **Izrada** | Razvoj | `#izrada` · `#build` |
 | Run & Grow | **Održavanje i rast** | Podrška i rast | `#odrzavanje-i-rast` · `#run-and-grow` |
@@ -54,8 +54,9 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 
 **Do not use** (both languages):
 - **As Codraft deliverables:** *projektiranje, projektiramo, projektant, projektna dokumentacija, snimka postojećeg stanja*. In English, nothing that presents Codraft as the designer of record.
-  - Use instead: *crtanje, crtačka podrška, crtamo prema vašim skicama i standardima*; in English, *drafting, drafting support*.
-  - Reason: projektiranje is regulated in Croatia (see [compliance.md](compliance.md)).
+  - The ban covers every inflected form (*projektiranja, projektanti, projektnu dokumentaciju…*). The plain word *projekt* (project) is fine.
+  - Use instead: *crtanje, crtačka podrška, crtamo prema vašim skicama, oznakama i standardima*; in English, *drafting, drafting support, we draft to your sketches, markups and standards*.
+  - Reason: projektiranje is regulated in Croatia. The guardrail regex used in phase 6 is in [compliance.md](compliance.md#copy-guardrails).
 - *inženjer* for a team member, unless the person holds that title.
 - *revizija* for the audit.
 - **Invented claims:** client counts, "trusted by" bars, unverified metrics, testimonials without written permission.
@@ -219,14 +220,14 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 | G8 | Services · FAQ | 6–8 questions: price, duration, ownership, "I already have a site", maintenance lock-in, VAT | Claude drafts | Phase 3 |
 | G9 | CAD drafting · services | Exactly what is delivered for each service | Client | Phase 3 |
 | G10 | CAD drafting · samples | 2–3 sample sheets drawn for the site (DWG + PDF, exportable per layer) | Client's team | Phase 3 |
-| G11 | CAD drafting · scope and responsibility | We draft to your markups and standards; responsibility, stamp and signature stay with your authorised architect or engineer | Claude drafts, client approves, legal check | Phase 3 |
+| G11 | CAD drafting · scope and responsibility | We draft to your sketches, markups and standards; responsibility, stamp and signature stay with your authorised architect or engineer | Claude drafts, client approves, legal check | Phase 3 |
 | G12 | CAD drafting · how we work | Files → quote → drafting → review rounds → delivery | Claude drafts from client input | Phase 3 |
 | G13 | CAD drafting · formats and standards | DWG version, DXF, PDF, layers, title blocks, CTB/STB, units | Client | Phase 3 |
 | G14 | CAD drafting · confidentiality | NDA on request; client work shown only with written permission | Client policy, Claude drafts | Phase 3 |
 | G15 | About · team | Per person: photo, name, role, 2–3 sentences, LinkedIn, written consent | Client | Phase 3 |
 | G16 | About · story | The Code + Draft story (from §5) | Claude drafts | Phase 3 |
 | G17 | About · where we are | City, area served, whether clients are met in person | Client | Phase 3 |
-| G18 | About · `#ova-stranica` | How this site was built, with measured, dated numbers | Claude | After phase 6 |
+| G18 | About · `#ova-stranica` | How this site was built, with measured, dated numbers | Claude | Phase 6 (after the audit measurements) |
 | G19 | Free audit · what you get | E.g. a call plus a written summary | Client | Phase 3 |
 | G20 | Free audit · steps and form | Step texts, form and confirmation microcopy | Claude drafts | Phases 3–4 |
 | G21 | Free audit · sample report | A labelled sample audit report | Client + Claude | Later (phase 8) |
@@ -236,7 +237,7 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 | G25 | Contact · form | Topic options (Web i softver / CAD crtanje / Ostalo) and the CAD fields | Claude drafts | Phases 3–4 |
 | G26 | Legal pages | Privacy, cookies, legal notice (impresum), accessibility statement | Claude drafts from company data; client and a lawyer review | Phase 3 |
 | G27 | Site-wide microcopy | 404 ("Ova stranica nije na nacrtu."), form errors and success, cookie banner | Claude drafts | Phases 3–4 |
-| G28 | All pages · metadata | Title and meta description per page and language | Claude drafts | Phase 3 |
+| G28 | All pages · metadata and alt text | Title and meta description per page and language; alt text for every meaningful image in both languages (decorative images get an empty `alt`) | Claude drafts | Phase 3 |
 | G29 | AI assistants page | Page copy and the chatbot's knowledge base | Claude drafts | Phase 4 |
 
 ## 5. Editorial notes (not site copy)
@@ -261,6 +262,9 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
   - HR draft of the existing copy added; all blocks `draft`.
   - Suggestions S1–S16 added; all `pending`.
   - Gaps G1–G29 listed.
+- **2026-10-19:** Fixes after the fresh-session test. No copy blocks changed.
+  - Glossary: banned-word forms and the approved phrasing aligned with compliance.md; the `/usluge` H1 clarified.
+  - G11, G18 and G28 clarified.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

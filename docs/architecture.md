@@ -1,6 +1,6 @@
 # Architecture
 
-> **Status (2026-10-18):** the repository foundation is in place (phase 0). The stack and hosting are chosen in [phase 1](phases/1-architecture.md); this file is completed then, with the real folder structure and links to the stack ADRs (0007 and later). The principles below apply whatever stack is chosen.
+> **Status (2026-10-18):** the repository foundation is in place (phase 0). The stack and hosting are chosen in [phase 1](phases/1-architecture.md); this file is completed then, with the real folder structure and links to the stack ADRs (0008 and later). The principles below apply whatever stack is chosen.
 
 ## Repository layout (now)
 

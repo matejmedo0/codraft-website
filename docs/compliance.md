@@ -26,11 +26,19 @@
 These apply to every page in both languages. Phase 6 checks them with grep.
 
 1. **Drafting is support, not design of record.**
-   - Never present *projektiranje, projektiramo, projektant, projektna dokumentacija* or *snimka postojećeg stanja* as Codraft deliverables (C9).
-   - Say "crtamo prema vašim skicama, oznakama i standardima" or "crtačka podrška vašem timu".
+   - Never present *projektiranje, projektiramo, projektant, projektna dokumentacija* or *snimka postojećeg stanja* as Codraft deliverables (C9). This includes every inflected form, e.g. *projektiranja, projektiramo, projektanti, projektnu dokumentaciju*.
+   - In English, never say Codraft is the designer or engineer of record, or that it designs buildings or structures.
+   - The approved phrasing is HR "crtamo prema vašim skicama, oznakama i standardima" or "crtačka podrška vašem timu"; EN "we draft to your sketches, markups and standards".
    - State that responsibility, stamp and signature remain with the client's authorised architect or engineer.
    - Don't call team members "inženjer" unless they hold that title.
    - Before launch, check with HKA, HKIG or a lawyer (about 15 minutes).
+   - **Guardrail check.** Run this case-insensitive regex over the site's source and locale files (not over `docs/`, which quotes the banned words on purpose). It must find nothing:
+
+     ```
+     projektir\w*|projektant\w*|projektn\w*\s+dokumentacij\w*|snimk\w*\s+postoje\w*\s+stanja|(designer|engineer|design)\s+of\s+record|we\s+design\s+(buildings|structures)
+     ```
+
+     The plain word *projekt* (project) is allowed.
 2. **No invented proof:** no fake testimonials, invented client counts, client logos without permission, or "trusted by" bars (C8; [ADR 0004](decisions/0004-verifiable-proof-only.md)).
 3. **Prices.** If shown, say whether VAT is included (C2). Show final prices to consumers. HR format: `1.200,00 €`.
 4. **"Help you meet", not "meet".** Technical setup supports compliance; it is not legal compliance by itself (suggestion S6).
@@ -50,7 +58,7 @@ These apply to every page in both languages. Phase 6 checks them with grep.
   - The impresum matches ZTD Art. 21 and ZET Art. 6.
   - The processors in the privacy policy match the actual network calls.
   - The cookie policy matches the actual cookies.
-  - A grep finds no "projektiranje" or "projektant".
+  - The guardrail regex (copy guardrail 1) finds nothing in the site's source and locale files, and a manual read of the EN drafting copy finds no design-of-record claims.
   - The accessibility statement is dated and reflects the audit.
 - **Phase 7:** a lawyer reviews the legal texts; GBP eligibility is confirmed (C13).
 

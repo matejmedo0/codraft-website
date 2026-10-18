@@ -20,7 +20,7 @@ The site builds trust only from things a visitor can verify. The full list is in
 - **Transparent process and terms.**
 - **A real team** with real photos.
 - **Company registration data** in the footer.
-- **Launch-partner case studies,** disclosed as such.
+- **Launch-partner case studies,** disclosed as such, if the client adopts the launch-partner proposal (an open question in `PROGRESS.md`).
 
 **Never:**
 - fake or unverified testimonials

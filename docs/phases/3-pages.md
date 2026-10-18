@@ -52,7 +52,7 @@ The AI asistenti page is built in phase 4.
 
 **JSON-LD**
 - `ProfessionalService` (Organization) on Home, with `areaServed`: Croatia. Include the address only if it is public, and `sameAs` links to the real profiles.
-- `Service` × 8 on Usluge and × 2 on CAD crtanje.
+- `Service` × 8 on Usluge (Plan, four Build, three Run & Grow) and × 2 on CAD crtanje.
 - `BreadcrumbList` on inner pages.
 
 **Metadata**
@@ -72,6 +72,7 @@ The AI asistenti page is built in phase 4.
 
 - **Drafting page:** apply the guardrails in [compliance.md](../compliance.md#copy-guardrails); no projektiranje wording. Show the sample sheets in the layer viewer once the client delivers them.
 - **Impresum:** every field from ZTD Art. 21 and ZET Art. 6 (compliance items C1–C2).
+- **Alt text** for every meaningful image, in both languages. Decorative images get an empty `alt` (gap G28).
 - **Legal pages:** Claude's drafts are reviewed by the client and, ideally, a lawyer.
 
 ## Deliverables

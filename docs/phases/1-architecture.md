@@ -16,13 +16,26 @@ Choose the stack and hosting with the client, scaffold the project with a profes
 | Budget and constraints | Agreed | [research/2026-10-18-hosting.md](../research/2026-10-18-hosting.md) |
 | Hosting facts | Partly verified; rest to research at phase start | Same file |
 | Domain | Recommended codraft.hr; the client buys it | [research/2026-10-18-domain-and-name.md](../research/2026-10-18-domain-and-name.md) |
+| Launch scope (team photos, audit flow, AI demo, budget) | Agreed | [ADR 0007](../decisions/0007-launch-scope-and-constraints.md) |
+| Will other team members run Claude on their own machines? | Open question in `PROGRESS.md` | The user-level skills and agents (`/architecture`, `architect`, …) exist only in `~/.claude` on this machine. If others will use Claude, copy the needed ones into `.claude/skills` and `.claude/agents` in the repo (ask first). |
 
 ## Steps
 
-**1. Research first.**
-- Re-verify and complete [research/2026-10-18-hosting.md](../research/2026-10-18-hosting.md): Cloudflare and Netlify commercial-use terms, a transactional email API (EU), mailboxes for @codraft.hr, analytics options, Cal.com and its EU status, uptime monitoring and backups, an EU static host.
-- Write the results, with dates and URLs, into a new `docs/research/YYYY-MM-DD-hosting-2.md`.
-- This research has to happen before the brief, because the `architect` agent has no web access.
+**1. Research first.** The `architect` agent has no web access, so research comes before the brief. Work through every "to verify" and "still to research" item in [research/2026-10-18-hosting.md](../research/2026-10-18-hosting.md):
+- Cloudflare and Netlify: commercial-use terms and limits
+- Hetzner: the IPv4 price and the mail-port policy
+- a transactional email API (free tier, EU region)
+- mailboxes for @codraft.hr
+- analytics options
+- Cal.com and its EU status. This one is time-sensitive.
+- uptime monitoring and backups
+- an EU static host
+- preview deployments
+- CSP support for each hosting model
+- current framework versions and hosting adapters
+- the Anthropic API's data handling, for phase 4 (load `claude-api` first)
+
+Write the results, with dates and URLs, into a new dated note `docs/research/YYYY-MM-DD-hosting.md`. Add a "Superseded by …" line at the top of the 2026-10-18 note, but don't edit its facts.
 
 **2. `/architecture` procedure.** Read `~/.claude/skills/architecture/SKILL.md` and launch the `architect` agent with a self-contained brief:
 - **Scope:** the sitemap (10 pages + 404 + the phase 4 AI page); case studies and blog come later.
@@ -63,10 +76,19 @@ Choose the stack and hosting with the client, scaffold the project with a profes
   - portability
   - what is deliberately left out (CMS, auth, newsletter, file uploads)
 
-**3. Present the options to the client in Croatian.** The client chooses (an "ask first" item). Record the choices as ADR 0007 and later: stack, hosting, email, analytics, booking.
+**3. Present the options to the client in Croatian.** The client chooses (an "ask first" item). Record the choices as ADR 0008 and later:
+- stack
+- hosting
+- transactional email
+- analytics
+- booking tool
+- recommended mailbox provider
 
-**4. Scaffold.**
-- Follow the principles in [architecture.md](../architecture.md): feature-based structure, strict TypeScript, ESLint, Prettier, test setup, env validation.
+Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
+
+**4. Plan the scaffold, then scaffold.**
+- The `/architecture` skill stops at the client's choice and points to `/plan`. So first write a short scaffold plan, in plan mode or with a Plan agent, covering folders, packages, scripts and config. The client approves it.
+- Then scaffold, following the principles in [architecture.md](../architecture.md): feature-based structure, strict TypeScript, ESLint, Prettier, test setup, env validation.
 - Load the stack skills: `nextjs-turbopack` for Next.js, `vite-patterns` for Vite-based stacks, and `react-patterns` whenever React is used.
 
 **5. Run `/init`** to add the stack, commands and structure to `CLAUDE.md`. Fill in [architecture.md](../architecture.md) with the real structure.

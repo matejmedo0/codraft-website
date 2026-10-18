@@ -12,11 +12,11 @@ The client asked for animation that is high quality and **not generic**. The con
 |---|---|---|
 | **Select (grips)** | Hover and keyboard focus on cards, buttons, nav items, form fields | Four hollow blue squares (from icon C) appear at the corners; scale 0.6 → 1 plus fade, 140 ms. A real focus outline always stays. Static under reduced motion. |
 | **Draw a line** | Hero wordmark (once); section dividers; audit-form progress (step nodes are grips, the line grows between them) | Reveal from the left, then the grip snaps in; 600–800 ms. Plays once and never again when scrolling back. In the wordmark the line completes the "f" and "t" crossbars. |
-| **Dimension** | Only next to real numbers: timeline in weeks, page weight, response time | Extension lines, ticks and a monospace label draw in over about 400 ms. |
+| **Dimension** | Only next to real numbers: timeline in weeks, page weight, response time | Extension lines, ticks and a monospace label draw in over 480 ms (`--motion-slow`). |
 | **Layers** | Layer viewer on the drafting page | Toggle buttons styled like a CAD layer manager (`aria-pressed`). On first view, layers reveal once in order: grid → outlines → hatches → dimensions → title block. |
 | **Snap** | Pressing buttons, toggles, consent switches | 80 ms scale to 0.98. |
 | **Plot stamp** | Form success | The confirmation appears as a stamped title block: "Zaprimljeno · 18. 10. 2026." |
-| **Page change** | Navigation between pages | Cross-document View Transitions where supported: 150–200 ms crossfade; the header stays still. |
+| **Page change** | Navigation between pages | Cross-document View Transitions where supported: 200 ms crossfade (`--motion-base`); the header stays still. |
 
 ## Principles
 
@@ -44,7 +44,7 @@ When `prefers-reduced-motion: reduce` is set:
 |---|---|---|
 | `--motion-instant` | 80 ms | Snap |
 | `--motion-fast` | 140 ms | Grips, small state changes |
-| `--motion-base` | 220 ms | Page-change crossfade, menus |
+| `--motion-base` | 200 ms | Page-change crossfade, menus |
 | `--motion-slow` | 480 ms | Dimension lines |
 | `--motion-draw` | 700 ms | Drafting line reveal |
 | `--ease-standard` | `cubic-bezier(.2, 0, 0, 1)` | Most UI transitions |

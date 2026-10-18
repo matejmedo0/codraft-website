@@ -26,7 +26,7 @@ Launch with these pages, each in HR and EN:
 URLs and section outlines are in [information-architecture.md](../information-architecture.md).
 
 **Rules**
-- **One Services page.** All 8 services live on `/usluge`, grouped by stage (Planiranje / Izrada / Održavanje i rast) with anchors. They do not get 8 pages at launch.
+- **One Services page.** All 8 services live on `/usluge`: Plan (the free audit and fixed-scope planning), four Build services and three Run & Grow services. They are grouped by stage (Planiranje / Izrada / Održavanje i rast) with anchors, and do not get 8 pages at launch.
 - **When a service gets its own page.** It moves to `/usluge/<slug>` once it has, in both languages:
   - a real case study or demo
   - about 400 words or more of specific content

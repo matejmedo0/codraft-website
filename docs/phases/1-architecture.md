@@ -1,6 +1,6 @@
 # Phase 1: Architecture (Arhitektura)
 
-- **Status:** Not started
+- **Status:** In progress (started 2026-10-19). Steps 1–2 done; waiting for the client's choice (step 3).
 - **Branch:** `phase/1-architecture`
 
 ## Goal
@@ -14,7 +14,7 @@ Choose the stack and hosting with the client, scaffold the project with a profes
 | Sitemap, i18n routing | Agreed | [information-architecture.md](../information-architecture.md), [ADR 0002](../decisions/0002-croatian-default-english-secondary.md), [ADR 0003](../decisions/0003-launch-sitemap.md) |
 | Integrations | Agreed in principle | Below and [phase 4](4-integrations.md) |
 | Budget and constraints | Agreed | [research/2026-10-18-hosting.md](../research/2026-10-18-hosting.md) |
-| Hosting facts | Partly verified; rest to research at phase start | Same file |
+| Hosting facts | Verified 2026-10-19 | [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md) (supersedes the 2026-10-18 note) |
 | Domain | Recommended codraft.hr; the client buys it | [research/2026-10-18-domain-and-name.md](../research/2026-10-18-domain-and-name.md) |
 | Launch scope (team photos, audit flow, AI demo, budget) | Agreed | [ADR 0007](../decisions/0007-launch-scope-and-constraints.md) |
 | Will other team members run Claude on their own machines? | Open question in `PROGRESS.md` | The user-level skills and agents (`/architecture`, `architect`, …) exist only in `~/.claude` on this machine. If others will use Claude, copy the needed ones into `.claude/skills` and `.claude/agents` in the repo (ask first). |
@@ -76,7 +76,7 @@ Write the results, with dates and URLs, into a new dated note `docs/research/YYY
   - portability
   - what is deliberately left out (CMS, auth, newsletter, file uploads)
 
-**3. Present the options to the client in Croatian.** The client chooses (an "ask first" item). Record the choices as ADR 0008 and later:
+**3. Present the options to the client in Croatian.** The options of 2026-10-19 are in [1-architecture-options.md](1-architecture-options.md). The client chooses (an "ask first" item). Record the choices as ADR 0008 and later:
 - stack
 - hosting
 - transactional email
@@ -128,4 +128,26 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
 
 ## Log
 
-_Not started._
+- **2026-10-19:**
+  - **Start.** The client approved phase 0 and started phase 1. Branch `phase/1-architecture` was created from `main`. There was no phase 0 PR to merge: phase 0 committed straight to `main`.
+  - **Research (step 1).**
+    - Five research agents worked in parallel: edge hosts; Hetzner and EU VPS; email, mailboxes and `.hr`; booking, analytics and operations; frameworks, CSP and CI.
+    - The main session loaded `claude-api` and researched the Anthropic API's data handling itself, then re-checked the decision-critical facts: Hetzner availability, OVH VPS-1 price, Cloudflare email sending, D1 jurisdiction, Scaleway TEM, `.hr` price.
+    - Result: [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md). The 2026-10-18 note is marked superseded; its facts are unchanged.
+  - **Findings that change the plan:**
+    - Hetzner's cheap cloud line (CX23, CAX11) can't be ordered today; new servers are restricted since 2026-06-26.
+    - cal.eu closes on 2026-11-01, and Cal.com has no Croatian booking UI.
+    - Cloudflare's own email sending needs Workers Paid.
+    - A strict CSP keeps pages static in Astro but forces dynamic rendering in Next.js.
+    - Analytics needs consent in Croatia even when cookieless.
+    - TypeScript must be pinned to 6.0.x for Astro's tooling.
+  - **Repository hygiene.** A research agent's Playwright MCP run wrote snapshot files into `.playwright-mcp/` in the repository root; they were removed, and `.playwright-mcp/` is now in `.gitignore`.
+  - **`/architecture` (step 2).**
+    - The `architect` agent was briefed with the research note and the phase inputs.
+    - It returned three options and recommended the first:
+      1. Astro + Node on an EU VPS (OVHcloud VPS-1, €5.61/month incl. VAT and IPv4)
+      2. the same build on Cloudflare Workers Free (€0)
+      3. Next.js on a VPS
+    - The main session checked the arithmetic and the facts, added review notes, and split the client's decisions into "now" and "when the phase needs them".
+    - Everything is in [1-architecture-options.md](1-architecture-options.md).
+  - **Step 3.** The options were presented to the client in Croatian. Waiting for the client's choice.

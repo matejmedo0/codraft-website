@@ -1,12 +1,12 @@
 # Codraft — napredak
 
-**Trenutna faza:** 0 — Temelji (završena 19. 10. 2026., čeka vašu potvrdu za fazu 1)
+**Trenutna faza:** 1 — Arhitektura (u tijeku od 19. 10. 2026., grana `phase/1-architecture`)
 
-**Sljedeći korak:** kad kažete „idemo dalje“, počinje faza 1 — Arhitektura. Redoslijed u fazi 1:
-1. istraživanje hostinga i servisa
-2. postupak `/architecture` i 2–3 opcije
-3. vaš izbor stacka i hostinga
-4. plan scaffolda
+**Sljedeći korak:** birate opciju i servise (vidi „Faza 1: za vašu odluku“ niže). Redoslijed u fazi 1:
+1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
+2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
+3. **vaš izbor stacka, hostinga i servisa** ← sada
+4. plan scaffolda (za vaše odobrenje)
 5. scaffold, CI, hookovi i dozvole
 
 Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je zelen.
@@ -17,10 +17,31 @@ Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je 
 - Indeks dokumentacije: `docs/README.md`
 - Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
 
+## Faza 1: za vašu odluku
+
+Detalji, rizici i cijeli izračun troškova: `docs/phases/1-architecture-options.md`. Iznosi su mjesečni.
+
+| | Opcija 1 (preporuka) | Opcija 2 | Opcija 3 |
+|---|---|---|---|
+| Što | Astro s React otocima i malim Node API-jem, na EU VPS-u (OVHcloud VPS-1) | Isti kod na Cloudflare Workers Free | Next.js na EU VPS-u |
+| Hosting s PDV-om (IPv4 i dnevni backup uključeni) | 5,61 € | 0 € | 5,61 € |
+| Gdje su podaci | EU | Američki pružatelj; upiti u bazi vezanoj uz EU | EU |
+| Booking na hrvatskom, podaci u EU | Da (Easy!Appointments) | Ne | Da |
+| Održavanje servera | oko 2–3 h | oko 0,5–1 h | oko 3–4 h |
+
+Trebamo sada (bilježi se kao ADR 0008 i dalje):
+1. **Opcija** (stack i hosting): 1, 2 ili 3. Preporuka: 1.
+2. **Servis za e-mail iz formi:** Scaleway (preporuka), AhaSend ili Mailjet. Sva tri su u EU i besplatna pri našem obujmu.
+3. **Analitika:** GoatCounter uz privolu, uz Search Console i Bing (preporuka). Druge mogućnosti: statistika iz server logova bez ikakve skripte (samo uz VPS) ili Plausible za 9 € bez PDV-a.
+4. **Booking:** uz opciju 1 Easy!Appointments (preporuka) ili NeetoCal; uz opciju 2 NeetoCal. Cal.com ne preporučujemo: nema hrvatsko sučelje, a podaci su u SAD-u.
+5. **Sandučići @codraft.hr:** Zoho Mail Lite za 0,90 € po korisniku bez PDV-a (preporuka), Zoho Mail Free ili Exchange Online Plan 1. Postavljaju se u fazi 7.
+
+Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototipova u fazi 2 i rok čuvanja upita iz formi.
+
 ## Faze
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
-- [ ] 1 — Arhitektura: istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
+- [ ] 1 — Arhitektura (u tijeku): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
 - [ ] 2 — Dizajn: 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
@@ -100,6 +121,8 @@ Pregled je u `docs/brand.md`.
 ## Domena
 
 - **Preporuka: codraft.hr**, jedna domena za oba jezika.
+- codraft.hr je 19. 10. 2026. bila slobodna (WHOIS).
+- Cijena: besplatna preko CARNET-a ako registrirani naziv tvrtke sadrži „Codraft“; inače oko 50–66 € godišnje bez PDV-a (npr. cyber_Folks 66,49 €, s PDV-om 83,11 €).
 - codraft.com je zauzeta (ističe 14. 12. 2026.).
 - **codraft.dev je aktivan AI alat „Codraft“**, pa prije tiska i oglašavanja treba provjeriti žig.
 
@@ -122,13 +145,17 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 7. Želite li GitHub organizaciju za tim? Repozitorij se može premjestiti, a stare adrese se same preusmjeravaju.
 
 **Kasnije:**
-- **Faza 1:** birate stack, hosting, servis za e-mail, analitiku i alat za booking (dobivate 2–3 opcije s troškovima).
-- **Faza 2:** animacija loga (README paketa zabranjuje efekte na znaku); C2PA metapodaci u web kopijama.
-- **Faza 3:** tim i fotografije, opseg analize, cijene, vlasništvo i NDA, CAD podaci i uzorci, kontakt podaci.
+- **Faza 1 (sada):** stack, hosting, servis za e-mail, analitika, alat za booking i preporučeni pružatelj sandučića. Opcije su gore.
+- **Faza 2:**
+  - animacija loga (README paketa zabranjuje efekte na znaku)
+  - C2PA metapodaci u web kopijama
+  - privatni pregled prototipova na poddomeni (uz opciju 1 traži kupljenu domenu i server već u fazi 2)
+- **Faza 3:** tim i fotografije, opseg analize, cijene, vlasništvo i NDA, CAD podaci i uzorci, kontakt podaci, rok čuvanja upita iz formi (prijedlog: 12 mjeseci).
 - **Faza 4:**
   - računi i ključevi (e-mail API, booking, Anthropic API)
   - limit potrošnje chatbota
   - potvrda da se datoteke ne učitavaju kroz formu
+- **Faza 6:** narudžba servera i uvjeti najma (uz opciju 1; treba za pregledni URL audita, ili ranije uz privatne preglede u fazi 2).
 - **Faza 7:**
   - kupnja domene, ako dotad nije kupljena
   - postavljanje e-mail sandučića
@@ -141,3 +168,4 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 - Tekst usluga zaprimljen je 18. 10. 2026. i spremljen doslovno u `docs/content.md` (Dodatak A).
 - Dokumentacija u `docs/` je na engleskom; ovaj dokument je na hrvatskom.
 - Odobreni plan od 18. 10. 2026. spremljen je doslovno u `docs/plans/2026-10-18-approved-plan.md`.
+- Istraživanje hostinga i servisa od 19. 10. 2026. (`docs/research/2026-10-19-hosting.md`) zamjenjuje ono od 18. 10.

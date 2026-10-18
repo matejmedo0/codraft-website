@@ -12,7 +12,7 @@ This folder is the project's durable memory. A new person or a new Claude sessio
 
 | File | What it holds |
 |---|---|
-| [phases/](phases/README.md) | Roadmap, risk register, and one document per phase (0–8): goal, inputs, steps, deliverables, exit criteria, log |
+| [phases/](phases/README.md) | Roadmap, risk register, and one document per phase (0–8): goal, inputs, steps, deliverables, exit criteria, log. Phase 1 also has its [architecture options](phases/1-architecture-options.md) with costs. |
 | [information-architecture.md](information-architecture.md) | Sitemap and URLs (HR/EN), navigation, i18n rules, section outline of every page, keyword map, trust strategy without a portfolio |
 | [content.md](content.md) | All site copy: rules, glossary, EN source (verbatim) and HR draft per block, suggestions, content gaps, editorial notes, changelog |
 | [brand.md](brand.md) | Brand marks and usage, colours and contrast, proposed text tokens, typography requirements, imagery rules, logo-animation and C2PA questions |
@@ -20,7 +20,7 @@ This folder is the project's durable memory. A new person or a new Claude sessio
 | [compliance.md](compliance.md) | Croatian and EU requirements with sources and confidence; copy guardrails; checks by phase |
 | [architecture.md](architecture.md) | Repository layout, principles for the application code, planned integrations; completed in phase 1 |
 | [decisions/](decisions/README.md) | Architecture Decision Records (ADRs), with index and template |
-| [research/](research/) | Dated research notes with sources: [hosting](research/2026-10-18-hosting.md), [domain and name](research/2026-10-18-domain-and-name.md) |
+| [research/](research/) | Dated research notes with sources: [hosting and services, 2026-10-19](research/2026-10-19-hosting.md) (supersedes [2026-10-18](research/2026-10-18-hosting.md)), [domain and name](research/2026-10-18-domain-and-name.md) |
 | [plans/](plans/) | Snapshots of approved plans, verbatim and never updated: [2026-10-18](plans/2026-10-18-approved-plan.md) (Croatian) |
 
 ## Plan coverage

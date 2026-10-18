@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output and framework caches (trimmed to the chosen stack in phase 1)
+dist/
+build/
+out/
+.next/
+.astro/
+.vercel/
+.netlify/
+.wrangler/
+.turbo/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# Environment files: never commit secrets; .env.example documents the variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code: personal settings stay local; project rules (.claude/rules/) are tracked
+.claude/settings.local.json
+
+# Raw media (e.g. original team photos); only optimised copies are committed
+Assets/**/originals/

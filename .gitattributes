@@ -1,0 +1,22 @@
+# Line endings: LF in the repository and in every working tree, on every OS.
+# (This machine has core.autocrlf=true; these rules override it.)
+* text=auto eol=lf
+
+# Binary files: never diff or convert.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.mp4   binary
+*.webm  binary
+
+# Brand masters are stored byte for byte: no line-ending conversion.
+Assets/** -text

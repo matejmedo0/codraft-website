@@ -1,0 +1,43 @@
+name: Change request
+description: A change to copy, design, a feature or a page.
+labels: ["change-request"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Copy (text)
+        - Design
+        - Feature
+        - New page
+        - SEO
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page(s)
+      description: Which page(s) and language(s) this affects.
+      placeholder: Početna / Home (HR + EN)
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change
+      description: For copy changes, give the exact new text and the block ID from docs/content.md if you know it.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: The goal behind the change.
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Before launch
+        - Soon
+        - Nice to have

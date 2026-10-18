@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Project documentation
+    url: https://github.com/matejmedo0/codraft-website/blob/main/docs/README.md
+    about: Plan by phase, decisions (ADRs), site copy and brand guidelines.

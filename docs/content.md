@@ -282,6 +282,42 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Closing call to action, button | Rezervirajte besplatnu analizu | `plan.cta` |
 | Closing call to action, second link | Pošaljite upit | Glossary (alternative for "Request a quote"); the Contact page CTA |
 
+### UI strings of the base components (phase 2)
+
+The header, footer and skip link of the design system (ADR 0015) read these strings from `src/locales/{hr,en}.json`. Both languages are drafts (`draft`); the Croatian lines come from the glossary and the prototype copy, and the English lines are new (gap G27). The navigation labels follow the glossary, so they change with it.
+
+| Key | HR `draft` | EN `draft` | Where |
+|---|---|---|---|
+| `skipLink` | Preskoči na sadržaj | Skip to content | Skip link, first on every page |
+| `header.home` | Codraft, početna stranica | Codraft, home page | Accessible name of the header's logo link |
+| `header.menu` | Izbornik | Menu | Menu button on narrow screens |
+| `header.navLabel` | Glavna navigacija | Main navigation | Accessible name of the main navigation |
+| `header.cta` | Besplatna analiza | Free audit | Header button |
+| `nav.services` | Usluge | Services | Navigation |
+| `nav.drafting` | CAD crtanje | Engineering Drafting | Navigation |
+| `nav.about` | O nama | About | Navigation |
+| `nav.contact` | Kontakt | Contact | Navigation |
+| `legal.privacy` | Privatnost | Privacy | Title block |
+| `legal.cookies` | Kolačići | Cookies | Title block |
+| `legal.legalNotice` | Impresum | Legal notice | Title block |
+| `legal.accessibility` | Izjava o pristupačnosti | Accessibility statement | Title block |
+| `language.name` | Hrvatski | English | Language switcher (each in its own language) |
+| `language.code` | HR | EN | Language switcher in the header |
+| `footer.mark` | Znak | Mark | Title block, hidden label of the wordmark cell |
+| `footer.companyName` | Naziv tvrtke | Company name | Title block |
+| `footer.oib` | OIB | OIB | Title block |
+| `footer.mbs` | MBS | MBS | Title block |
+| `footer.seat` | Sjedište | Registered office | Title block |
+| `footer.contact` | Kontakt | Contact | Title block |
+| `footer.legal` | Pravne informacije | Legal | Title block |
+| `footer.language` | Jezik | Language | Title block |
+| `footer.sheet` | List | Sheet | Title block: the page's sheet number |
+| `footer.sheetOf` | od | of | Title block: "1 od 10" / "1 of 10" |
+| `footer.updated` | Zadnja izmjena | Last updated | Title block: the build date |
+| `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet (PROGRESS.md, item A) |
+
+**The style page** (`/lab/style`, lab only, never shipped) describes the tokens and components in Croatian for the client. Its explanatory text is lab documentation, not site copy; its examples reuse the strings above and the prototype copy.
+
 ## 5. Editorial notes (not site copy)
 
 - **The name is Code + Draft.** The CAD line in the logo is not decoration: it is the other half of the name, and the About page should tell that story. Source: the earlier chat, quoted in Appendix A.
@@ -309,6 +345,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
   - G11, G18 and G28 clarified.
 - **2026-10-19 (phase 2):** "Prototype copy" added under §4: the lines the design-lab prototypes derive from the existing blocks. No copy block changed.
 - **2026-10-19 (phase 2, round 2):** Lines for the hybrids D and E added under "Prototype copy": stage 01's two items, the free audit's three steps, the CAD layer names, "Kako radimo", the team strip and the closing call to action. All are derived from existing blocks or are lab placeholders. No copy block changed.
+- **2026-10-19 (phase 2, design system):** "UI strings of the base components" added under §4: the header, navigation, language switcher, skip link and title block, in HR and EN, all `draft`. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

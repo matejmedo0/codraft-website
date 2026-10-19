@@ -1,0 +1,42 @@
+---
+/**
+ * The link to the same page in the other language, from the route map
+ * (ADR 0002). Pages outside the route map, such as the 404 pages, link to
+ * the other language's home page. The link text is in the target language
+ * and marked with its `lang`.
+ *
+ * "code" shows "EN" (the header); its accessible name, "EN (English)",
+ * starts with the visible text (WCAG 2.5.3). "name" shows "English".
+ */
+import type { Locale } from "../../config/site.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { otherLocale, pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+  page?: PageId | undefined;
+  display?: "code" | "name";
+  class?: string;
+}
+
+const { locale, page, display = "name", class: className } = Astro.props;
+const target = otherLocale(locale);
+const name = t(target, "language.name");
+---
+
+<a
+  class:list={["language-switcher", className]}
+  href={pathFor(page ?? "home", target)}
+  hreflang={target}
+  lang={target}
+>
+  {display === "code" ? (
+    <>
+      {t(target, "language.code")}
+      <span class="visually-hidden"> ({name})</span>
+    </>
+  ) : (
+    name
+  )}
+</a>

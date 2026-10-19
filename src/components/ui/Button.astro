@@ -1,0 +1,119 @@
+---
+/**
+ * A button, or a link that looks like one. Primary is navy on paper (and
+ * paper on navy): brand blue never carries text (docs/brand.md). Secondary
+ * is an outline. Hover changes the fill at once; pressing snaps to 98 %
+ * (docs/motion.md, "Snap"); focus shows the outline and the grips.
+ *
+ * With `href` it renders a link, otherwise a `<button type="button">`.
+ * A disabled button uses the native `disabled` attribute.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import Grips from "./Grips.astro";
+
+interface Options {
+  variant?: "primary" | "secondary";
+  /** "compact" is 44 px tall, for the header; the default is 48 px. */
+  size?: "default" | "compact";
+}
+
+type Props = Options &
+  (
+    | ({ href: string } & HTMLAttributes<"a">)
+    | ({ href?: undefined } & HTMLAttributes<"button">)
+  );
+
+const {
+  variant = "primary",
+  size = "default",
+  class: className,
+  ...attributes
+} = Astro.props;
+
+const classes = [
+  "button",
+  `button--${variant}`,
+  { "button--compact": size === "compact" },
+  "has-grips",
+  className,
+];
+---
+
+{attributes.href === undefined ? (
+  <button class:list={classes} type="button" {...attributes}>
+    <slot />
+    <Grips />
+  </button>
+) : (
+  <a class:list={classes} {...attributes}>
+    <slot />
+    <Grips />
+  </a>
+)}
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--control-height);
+    padding: var(--space-3) var(--space-5);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius);
+    font: inherit;
+    font-weight: var(--weight-strong);
+    line-height: var(--leading-title);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform var(--motion-instant) var(--ease-standard);
+  }
+
+  .button--compact {
+    min-height: var(--control-height-compact);
+    padding-block: var(--space-2);
+  }
+
+  .button:active {
+    transform: scale(0.98);
+  }
+
+  .button--primary {
+    background: var(--button-primary-bg);
+    color: var(--button-primary-fg);
+  }
+
+  .button--primary:hover {
+    background: var(--button-primary-bg-hover);
+  }
+
+  .button--secondary {
+    border-color: var(--button-secondary-border);
+    background: transparent;
+    color: var(--button-secondary-fg);
+  }
+
+  .button--secondary:hover {
+    background: var(--button-secondary-bg-hover);
+  }
+
+  .button:disabled {
+    border-color: var(--button-disabled-bg);
+    background: var(--button-disabled-bg);
+    color: var(--button-disabled-fg);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Nothing to select on a button that can't be used. */
+  .button:disabled > :global(.grips) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button:active {
+      transform: none;
+    }
+  }
+</style>

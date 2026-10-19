@@ -13,16 +13,12 @@ const LAB_PAGES = ["index", "a", "b", "c", "d", "e"] as const;
  * style page under /lab. They exist in `astro dev` and in builds made with
  * CODRAFT_LAB=1 (`npm run build:lab`), never in a normal production build.
  * They have no route-map entry, so BaseLayout marks them noindex.
- *
- * The lab also adds a `js` class to <html> before the first paint, so its
- * pages can style the no-script fallback. Astro hashes this head script for
- * the CSP.
  */
 function designLab(): AstroIntegration {
   return {
     name: "codraft:design-lab",
     hooks: {
-      "astro:config:setup": ({ command, injectRoute, injectScript }) => {
+      "astro:config:setup": ({ command, injectRoute }) => {
         if (command !== "dev" && process.env.CODRAFT_LAB !== "1") return;
         for (const page of LAB_PAGES) {
           injectRoute({
@@ -33,6 +29,22 @@ function designLab(): AstroIntegration {
             ),
           });
         }
+      },
+    },
+  };
+}
+
+/**
+ * Adds a `js` class to <html> before the first paint, so components can
+ * style their no-script fallback: without JavaScript the header's menu stays
+ * open and every drawing is complete. Astro hashes this head script for the
+ * CSP.
+ */
+function jsClass(): AstroIntegration {
+  return {
+    name: "codraft:js-class",
+    hooks: {
+      "astro:config:setup": ({ injectScript }) => {
         injectScript(
           "head-inline",
           'document.documentElement.classList.add("js");',
@@ -57,7 +69,7 @@ export default defineConfig({
   }),
 
   // React only for islands: forms, the CAD layer viewer, the chatbot.
-  integrations: [react(), designLab()],
+  integrations: [react(), jsClass(), designLab()],
 
   // URLs without a trailing slash: /usluge, /en/services. The directory
   // format keeps /en working on the Node server ('file' would write en.html

@@ -1,0 +1,126 @@
+---
+/**
+ * A dimension, as on a drawing: two extension lines, a dimension line with
+ * an arrowhead at each end, and the value in the middle (docs/motion.md,
+ * "Dimension"). It spans the width of its container, so place it beside the
+ * thing it measures.
+ *
+ * Only next to real numbers: a measured size, a timeline in weeks, a page
+ * weight. Never as decoration.
+ *
+ * Once, when it scrolls into view, the line draws from the first extension
+ * line to the second (--motion-slow) and the value appears. Reduced motion
+ * and no JavaScript show it complete.
+ */
+interface Props {
+  /** The value with its unit, e.g. "48 px". */
+  value: string;
+  /** For a value that already stands in the text nearby: hide the
+      dimension from assistive technology. */
+  decorative?: boolean;
+  class?: string;
+}
+
+const { value, decorative = false, class: className } = Astro.props;
+---
+
+<span
+  class:list={["dimension", className]}
+  data-draw
+  aria-hidden={decorative ? "true" : undefined}
+>
+  <span class="dimension__line" aria-hidden="true"></span>
+  <span class="dimension__value t-label">{value}</span>
+</span>
+
+<script>
+  import "./draw.ts";
+</script>
+
+<style>
+  .dimension {
+    --arrow: 7px;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.5rem;
+  }
+
+  /* The extension lines. */
+  .dimension::before,
+  .dimension::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--rule);
+    background: var(--accent);
+    content: "";
+  }
+
+  .dimension::before {
+    left: 0;
+  }
+
+  .dimension::after {
+    right: 0;
+  }
+
+  .dimension__line {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: var(--rule);
+    background: var(--accent);
+    transform-origin: 0 50%;
+  }
+
+  /* Filled arrowheads, pointing at the extension lines. */
+  .dimension__line::before,
+  .dimension__line::after {
+    position: absolute;
+    top: calc(var(--arrow) / -3);
+    width: var(--arrow);
+    height: calc(var(--arrow) * 2 / 3 + var(--rule));
+    background: var(--accent);
+    content: "";
+  }
+
+  .dimension__line::before {
+    left: 0;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  }
+
+  .dimension__line::after {
+    right: 0;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  .dimension__value {
+    position: relative;
+    padding: 0 var(--space-2);
+    background: var(--surface);
+    color: var(--accent-text);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .dimension.is-pending .dimension__line {
+    transform: scaleX(0);
+  }
+
+  .dimension.is-pending .dimension__value {
+    opacity: 0;
+  }
+
+  .dimension.is-drawing .dimension__line {
+    animation: motion-draw-x var(--motion-slow) var(--ease-pen) both;
+  }
+
+  .dimension.is-drawing .dimension__value {
+    animation: motion-fade-in var(--motion-base) var(--ease-standard)
+      var(--motion-slow) both;
+  }
+</style>

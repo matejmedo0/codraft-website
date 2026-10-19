@@ -1,0 +1,194 @@
+---
+/**
+ * A short sequence of steps, such as the free audit's form → time slot →
+ * confirmation (ADR 0007). Each step is a grip, and a drafting line grows
+ * from one grip to the next, once, when the list scrolls into view
+ * (docs/motion.md, "Draw a line"). Stacked on phones, in a row from 48rem.
+ * Reduced motion and no JavaScript show the finished line. The slot after
+ * the list can hold a replay button (`data-draw-replay`).
+ */
+interface Step {
+  title: string;
+  body: string;
+}
+
+interface Props {
+  steps: Step[];
+  /** The step titles' heading level, so they fit the page's outline. */
+  level?: 3 | 4;
+  class?: string;
+}
+
+const { steps, level = 3, class: className } = Astro.props;
+const Heading = `h${String(level)}` as "h3" | "h4";
+const last = steps.length - 1;
+---
+
+<div class:list={["steps", className]} data-draw="late">
+  <ol class="steps__list">
+    {steps.map((step, index) => (
+      <li class="step">
+        <span class="step__node" aria-hidden="true" />
+        {index < last && <span class="step__link" aria-hidden="true" />}
+        <Heading class="step__title">
+          <span class="step__number" aria-hidden="true">
+            {index + 1}
+          </span>
+          {step.title}
+        </Heading>
+        <p class="step__body">{step.body}</p>
+      </li>
+    ))}
+  </ol>
+  <slot />
+</div>
+
+<script>
+  import "./draw.ts";
+</script>
+
+<style>
+  .steps {
+    --node: 1rem;
+    --step-heading: clamp(1.25rem, 1.15rem + 0.45vw, 1.625rem);
+    /* The node sits on the centre of the title's first line. */
+    --node-top: calc((var(--step-heading) * 1.2 - var(--node)) / 2);
+    /* Grip, line, grip, line, grip: each line starts as its grip lands. */
+    --step-interval: 750ms;
+    --link-lag: 150ms;
+    --link-draw: 600ms;
+  }
+
+  .steps__list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--node) minmax(0, 1fr);
+    align-content: start;
+    column-gap: 1.125rem;
+    padding-bottom: var(--space-6);
+  }
+
+  .step:last-child {
+    padding-bottom: 0;
+  }
+
+  .step__node {
+    position: relative;
+    z-index: 1;
+    grid-row: 1 / span 2;
+    width: var(--node);
+    height: var(--node);
+    margin-top: var(--node-top);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+  }
+
+  .step__link {
+    position: absolute;
+    top: calc(var(--node-top) + var(--node));
+    bottom: calc(var(--node-top) * -1);
+    left: calc((var(--node) - var(--rail)) / 2);
+    width: var(--rail);
+    background: var(--accent);
+    transform-origin: 50% 0;
+  }
+
+  .step__title {
+    grid-column: 2;
+    font-size: var(--step-heading);
+    line-height: var(--leading-title);
+  }
+
+  .step__number {
+    margin-right: var(--space-2);
+    color: var(--ink-muted);
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step__body {
+    grid-column: 2;
+    margin-top: var(--space-1);
+    color: var(--ink-muted);
+  }
+
+  .step:nth-child(2) {
+    --step-at: var(--step-interval);
+  }
+
+  .step:nth-child(3) {
+    --step-at: calc(var(--step-interval) * 2);
+  }
+
+  .step:nth-child(4) {
+    --step-at: calc(var(--step-interval) * 3);
+  }
+
+  .steps.is-pending .step__node {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  .steps.is-pending .step__link {
+    transform: scaleY(0);
+  }
+
+  .steps.is-drawing .step__node {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      var(--step-at, 0ms) both;
+  }
+
+  .steps.is-drawing .step__link {
+    animation: motion-draw-y var(--link-draw) var(--ease-pen)
+      calc(var(--step-at, 0ms) + var(--link-lag)) both;
+  }
+
+  @media (min-width: 48rem) {
+    .steps__list {
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      column-gap: var(--space-5);
+    }
+
+    .step {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0;
+    }
+
+    .step__node {
+      grid-row: auto;
+      margin: 0 0 1.25rem;
+    }
+
+    .step__link {
+      top: calc((var(--node) - var(--rail)) / 2);
+      right: calc(var(--space-5) * -1);
+      bottom: auto;
+      left: var(--node);
+      width: auto;
+      height: var(--rail);
+      transform-origin: 0 50%;
+    }
+
+    .step__title,
+    .step__body {
+      grid-column: 1;
+    }
+
+    .steps.is-pending .step__link {
+      transform: scaleX(0);
+    }
+
+    .steps.is-drawing .step__link {
+      animation-name: motion-draw-x;
+    }
+  }
+</style>

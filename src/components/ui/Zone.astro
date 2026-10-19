@@ -1,0 +1,50 @@
+---
+/**
+ * A zone of the sheet: one section of a page, with its letter (A, B, C, …)
+ * in the left margin and a rule above it (ADR 0015). From the second zone
+ * on, the rule plays the section transition once (ZoneMark.astro).
+ *
+ * Layout inside the zone belongs to the view that uses it.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import ZoneMark from "./ZoneMark.astro";
+
+interface Props extends HTMLAttributes<"section"> {
+  /** The id of the zone's heading. */
+  labelledby: string;
+  /** Navy is used once on a page, for the closing call to action. */
+  surface?: "paper" | "navy";
+  /** The first zone has no rule above it, so it has no selection. */
+  select?: boolean;
+}
+
+const {
+  labelledby,
+  surface = "paper",
+  select = true,
+  class: className,
+  ...attributes
+} = Astro.props;
+---
+
+<section
+  class:list={["zone", { "surface-navy": surface === "navy" }, className]}
+  aria-labelledby={labelledby}
+  {...attributes}
+>
+  <ZoneMark select={select} />
+  <slot />
+</section>
+
+<style>
+  .zone {
+    position: relative;
+    padding: var(--zone-pad) var(--pad);
+    background: var(--surface);
+  }
+
+  .zone + .zone {
+    border-top: var(--rule) solid var(--frame);
+  }
+</style>

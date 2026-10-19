@@ -63,7 +63,7 @@ Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-co
 | `--accent` | `#2F6BFF` | Graphics only: grips, lines, focus ring |
 | `--accent-text-light` | `#2457D6` | 5.65:1 on off-white, 6.16:1 on white. Same hue as the brand blue; for links on light backgrounds |
 | `--accent-text-dark` | `#77A0FF` | 6.80:1 on navy; for links on dark backgrounds |
-| `--muted-light` | `#5E6878` | 5.16:1 on off-white. Avoid the common `#6B7280`, which is only about 4.4:1 |
+| `--muted-light` | `#4A5362` | 7.11:1 on off-white (AAA), 6.51:1 on the sunk paper. Darker since review batch 10 (2026-10-20), at the client's request; it was `#5E6878` (5.16:1). Avoid the common `#6B7280`, which is only about 4.4:1 |
 | `--muted-dark` | `#A7B0BD` | 7.89:1 on navy |
 
 **Implications**

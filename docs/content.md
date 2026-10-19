@@ -223,7 +223,7 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 | ID | Page · section | What is needed | Owner | Needed by |
 |---|---|---|---|---|
 | G1 | Home · hero | H1 and lead; the prototype's two-line H1 and its lead are under "Prototype copy" | Claude drafts | Phase 3 |
-| G2 | Home · how we work | Who owns the domain and the code | Client decides | Phase 3 |
+| G2 | Home · how we work | Who owns the domain and the code. **Answered 2026-10-20:** the code, drawings, domain and access are the customer's ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)); Home says so in the client's words | Client decides | Phase 3 |
 | G3 | Home · team strip | Photos, names, roles (same source as G15) | Client | Phase 3 |
 | G4 | Services · plan; Free audit · what we check | Scope of the free audit: speed, mobile, Google and Google Business Profile, accessibility, AI search… | Client defines, Claude writes | Phase 3 |
 | G5 | Services · build (×4) | 3–4 "what you get" bullets per service | Claude drafts from client input | Phase 3 |
@@ -290,6 +290,14 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, layer list | Slojevi: Osi, Zidovi, Otvori, Kote, Zaglavlje ("Oznake" and the room names removed at the client's request, batch 6) | Glossary (*sloj*, *zaglavlje*); drafting terms |
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
+
+**"Kako radimo" on Home** (review batch 10, 2026-10-20). The client's three commitments, verbatim and in this order; they replace the three lines of round 2 ("Cijena poznata unaprijed", "Jasno objašnjeno", "Ne nestajemo nakon objave", in the table further down). The client proofreads every text before the public launch.
+
+| Item | HR (Home) | Source |
+|---|---|---|
+| 1 | **Razgovarate s onima koji rade:** Bez posrednika: pitanje ide ravno osobi koja radi na vašem projektu. | The client |
+| 2 | **Kažemo i kad nešto ne treba:** Ako vam nešto ne donosi korist, reći ćemo vam prije nego što to platite. | The client |
+| 3 | **Sve ostaje vaše:** Kod, crteži, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje. | The client; answers G2 ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)) |
 
 **Tehničko crtanje on Home, batch 9** (review batch 9, 2026-10-20). The client's new text for the zone, verbatim; it replaces batch 8 below on Home. The drafting page keeps the full sentences of §2 and its own call to action, "Zatražite ponudu".
 
@@ -430,6 +438,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 6):** New blocks `drafting.3d.title` and `drafting.3d.body`, HR drafts, at the client's request ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)); the EN follows at the end of the review. The floor plan loses its room names. "Tehničko crtanje on Home" added under "Prototype copy".
 - **2026-10-19 (phase 2, review refinements, batch 8):** "Tehničko crtanje on Home, option C" added under "Prototype copy": the client's heading, lead and three service lines, verbatim, plus Claude's wording of the third line at the client's request. `drafting.tagline` is no longer on Home. No copy block changed; the EN follows at the end of the review.
 - **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
+- **2026-10-20 (phase 2, review refinements, batch 10):** "'Kako radimo' on Home" added under "Prototype copy": the client's three commitments, verbatim, in place of the round 2 lines. G2 answered ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)). Files come by email, not through the site ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)). No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

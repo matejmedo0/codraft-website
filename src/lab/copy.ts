@@ -380,20 +380,22 @@ export const PLAN: PlanCopy = {
   },
 };
 
+// The client's three commitments (review batch 10), verbatim and in order;
+// the third answers G2 (ADR 0021).
 export const PRINCIPLES: { title: string; items: TextItem[] } = {
   title: "Kako radimo",
   items: [
     {
-      title: "Cijena poznata unaprijed", // plan.body
-      body: "Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu.",
+      title: "Razgovarate s onima koji rade",
+      body: "Bez posrednika: pitanje ide ravno osobi koja radi na vašem projektu.",
     },
     {
-      title: "Jasno objašnjeno", // services.intro
-      body: "Objašnjavamo što radimo i zašto, jednostavnim jezikom i bez nepotrebnih tehničkih izraza.",
+      title: "Kažemo i kad nešto ne treba",
+      body: "Ako vam nešto ne donosi korist, reći ćemo vam prije nego što to platite.",
     },
     {
-      title: "Ne nestajemo nakon objave", // run.tagline, run.hosting.body
-      body: "Hosting, ažuriranja, sigurnosne kopije i zakrpe brinemo mi, za fiksnu mjesečnu naknadu.",
+      title: "Sve ostaje vaše",
+      body: "Kod, crteži, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje.",
     },
   ],
 };

@@ -256,6 +256,33 @@ The client's message, verbatim:
 | 29 | Point 5, the button (quoted above) | The button follows the list at 2.5rem, the gap between the lead and the button in "Besplatna analiza"; no `margin-top: auto`. Its text on Home is "Pošaljite skicu"; it still leads to `/tehnicko-crtanje`, and "Zatražite ponudu" stays the drafting page's own call to action. | `DraftingLegend.astro`, `src/lab/copy.ts`, `docs/content.md`, `docs/information-architecture.md` | None | Done; in review |
 | 30 | Points 6 and 7, vertical position and phones (quoted above) | The text block is centred on the drawing's frame, in the drawing's row; the layer list keeps its own row below. Where the text is taller than the drawing, the frame still grows with it (#22), so the block stays centred. Below 900 px: one column, text, drawing, layer list (unchanged). | `DraftingLegend.astro` | None | Done; in review |
 
+**Batch 10 (2026-10-20): "Kako radimo"**
+
+The client answered batch 9 first: "Ma dobro nećemo direktno preko stranice to raditi to preko mail forme neko nam može putem maila poslati za ovo "pošaljite skicu" možemo to i maknuti no dobro tako i tako smo u prototipu i prije release-a javnog ću ja detaljno pročitati svaki tekst koji si napisao ručno te ispraviti te ako treba još šta stilski i vizualno i gramatički." So sketches and drawings come by email, not through the site ([ADR 0020](../decisions/0020-drawings-arrive-by-email.md)); "Pošaljite skicu" stays in the prototype and may go; and before the public launch the client reads and corrects every text by hand. "Nastaviti" in #28 stays as written until then.
+
+Then the batch, verbatim:
+
+> Uredi samo sekciju "Kako radimo". Raspored, razmaci i stil ostaju isti.
+>
+> 1. Zamijeni postojeće tri stavke ovima, doslovno i ovim redoslijedom:
+>
+> Razgovarate s onima koji rade
+> Bez posrednika: pitanje ide ravno osobi koja radi na vašem projektu.
+>
+> Kažemo i kad nešto ne treba
+> Ako vam nešto ne donosi korist, reći ćemo vam prije nego što to platite.
+>
+> Sve ostaje vaše
+> Kod, crteži, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje.
+>
+> 2. Potamni sivu boju opisa tako da ima kontrast najmanje 4.5:1 prema pozadini sekcije. Ako tu boju koriste i drugi sivi opisi na stranici, primijeni istu promjenu i na njih.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 31 | The answer above (sketches by email; the client proofreads every text before launch) | No code change. The site takes no file uploads; the contact form stays text only, and drawings and sketches come by email. | [ADR 0020](../decisions/0020-drawings-arrive-by-email.md); `PROGRESS.md` | New ADR 0020 | Recorded |
+| 32 | Point 1 (quoted above) | The three commitments of "Kako radimo" are the client's, verbatim and in this order; the layout, spacing and style are unchanged. The third settles gap G2: the code, drawings, domain and access belong to the client's customer ([ADR 0021](../decisions/0021-the-customer-owns-the-work.md)). | `src/lab/copy.ts`, `docs/content.md`, `docs/information-architecture.md` | New ADR 0021 | Done; in review |
+| 33 | Point 2 (quoted above) | The grey was already 5.16:1 on paper, above 4.5:1. As the client asked for it darker, the paper grey `--color-grey-on-paper` goes from `#5E6878` to `#4A5362`, the same blue-grey: **7.11:1** on paper (WCAG AAA) and 6.51:1 on the sunk paper of panels and disabled buttons. It is one token, so every grey text on paper follows: the lines in "Kako radimo" and "Tehničko crtanje", the taglines of "Što radimo", the team's note and roles, the audit's note, labels, the sheet's numbers and zone letters, and the disabled button. Text on navy keeps its own grey. Lab A–E keep the old grey as the round 1 and 2 record. | `src/styles/tokens.css`, `docs/brand.md`; the Figma variable follows with the Figma sync | None (a token value; [ADR 0015](../decisions/0015-design-direction-model-i-list.md) stands) | Done; in review |
+
 ## After the refinements
 
 1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.

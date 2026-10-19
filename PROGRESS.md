@@ -173,6 +173,8 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Poziv na besplatnu analizu najviše jednom na stranici, ondje gdje je objašnjena; zaglavlje bez gumba; hero vodi na usluge; završni poziv je „Pošaljite upit“ | [ADR 0017](docs/decisions/0017-one-audit-call-to-action-per-page.md) |
 | 2026-10-19 | „Tehničko crtanje“ umjesto „CAD crtanje“ (`/tehnicko-crtanje`), samo za arhitekturu i građevinarstvo | [ADR 0018](docs/decisions/0018-drafting-for-architecture-and-construction.md) |
 | 2026-10-19 | Tehničko crtanje nudi i 3D modele, uz 2D crteže i tehničku dokumentaciju | [ADR 0019](docs/decisions/0019-drafting-adds-3d-models.md) |
+| 2026-10-20 | Skice i crteži stižu e-mailom; stranica ne prima datoteke, a forma ostaje samo tekstualna | [ADR 0020](docs/decisions/0020-drawings-arrive-by-email.md) |
+| 2026-10-20 | Kod, crteži, domena i pristupi pripadaju klijentu, i kad ode drugdje („Sve ostaje vaše“) | [ADR 0021](docs/decisions/0021-the-customer-owns-the-work.md) |
 
 ## Sitemap
 
@@ -215,7 +217,7 @@ Pregled je u `docs/brand.md`.
 | B | **Kontakt:**<br>- e-mail i telefon<br>- je li adresa javna<br>- radno vrijeme<br>- grad i područje rada<br>- primate li klijente uživo<br>- rok u kojem odgovarate na upit<br>- profili na društvenim mrežama | 3 |
 | C | **Tim:**<br>- ime, uloga, kratka biografija i LinkedIn za svaku osobu<br>- pisana privola za objavu<br>- fotografije prema specifikaciji u `docs/brand.md` | 3 |
 | D | **CAD:**<br>- smijemo li prikazati pojedine projekte<br>- softver i verzija<br>- formati i standardi<br>- rokovi isporuke<br>- 2–3 uzorka izrađena posebno za stranicu | 3 |
-| E | **Poslovno:**<br>- opseg besplatne analize i što klijent dobiva<br>- prikazujemo li cijene<br>- mjesečna naknada za održavanje<br>- vlasništvo domene i koda<br>- NDA | 3 |
+| E | **Poslovno:**<br>- opseg besplatne analize i što klijent dobiva<br>- prikazujemo li cijene<br>- mjesečna naknada za održavanje<br>- ✓ vlasništvo domene i koda: sve pripada klijentu (ADR 0021)<br>- NDA | 3 |
 | F | **Odobrenja:**<br>- HR nacrt postojećeg teksta<br>- prijedlozi S1–S16<br>- terminologija i obraćanje (vi/ti), u `docs/content.md` | prije faze 3 |
 | G | **Domena:** kupnja codraft.hr i provjera žiga „CODRAFT“ | što prije; najkasnije u fazi 7 |
 
@@ -265,7 +267,7 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 - **Faza 4:**
   - računi i ključevi (e-mail API, booking, Anthropic API)
   - limit potrošnje chatbota
-  - potvrda da se datoteke ne učitavaju kroz formu
+  - ✓ datoteke se ne učitavaju kroz formu; skice i crteži stižu e-mailom (ADR 0020)
 - **Faza 6:** narudžba servera i uvjeti najma (uz opciju 1; treba za pregledni URL audita).
 - **Faza 7:**
   - kupnja domene, ako dotad nije kupljena

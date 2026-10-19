@@ -114,7 +114,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 3. **Free audit teaser:** what we check (N, G4) and the 3-step flow (I), with the page's one "Rezervirajte besplatnu analizu" button (P: `plan.cta`).
 4. **AI assistant teaser:** links to the live demo. Added in phase 4, when the demo exists (N, G29).
 5. **Drafting strip:** its own path for architecture and construction: the floor plan drawn as a timelapse, the heading "Tehničko crtanje", a lead, the three services with one line each, and the button "Pošaljite skicu" to the drafting page (I; the client's text from review batch 9, [content.md](content.md) "Prototype copy"). `drafting.tagline` and `drafting.audience` are for the drafting page.
-6. **How we work** (I): fixed price before work starts, plain language, we stay after launch. Ownership of domain and code (N, G2, client decides).
+6. **How we work:** three commitments in the client's words (review batch 10): you talk to the people who do the work, we say so when something isn't needed, and everything stays yours (code, drawings, domain and access; G2 answered, [ADR 0021](decisions/0021-the-customer-owns-the-work.md)).
 7. **Team strip:** photos, names, roles (N, G3).
 8. **Closing CTA:** `plan.tagline` and one button, "Pošaljite upit" (I, ADR 0017).
 

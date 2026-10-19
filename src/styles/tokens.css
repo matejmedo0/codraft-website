@@ -22,7 +22,8 @@
     --color-blue: #2f6bff;
     --color-blue-on-paper: #2457d6;
     --color-blue-on-navy: #77a0ff;
-    --color-grey-on-paper: #5e6878;
+    /* 7.11:1 on paper; darker at the client's request (review batch 10). */
+    --color-grey-on-paper: #4a5362;
     --color-grey-on-navy: #a7b0bd;
     --color-paper-hover: #dde3ec;
 

@@ -2,10 +2,15 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova i čeka vaš pregled** (19. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: vaš pregled faze 2.** Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
+**Sljedeći korak: vaše dorade u novoj sesiji, prije faze 3.** Rezultat vam se sviđa („Dobro sviđa mi se“), a prije faze 3 želite riješiti nekoliko dorada. Sažetak za tu sesiju je `docs/phases/2-design-review.md`:
+1. Najprije zapisujem vaše dorade.
+2. Zatim ih radim na grani `phase/2-design`, provjeravam i usklađujem Figma knjižnicu.
+3. Na kraju ažuriram PR #2 i javljam vam se.
+
+Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 
 **Što pregledati:**
-- **Stranica sa stilovima:** pokrenite `npm run dev` i otvorite http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj.
+- **Stranica sa stilovima:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta.
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
 - **Animacije:** na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa ih Chrome ne prikazuje. Uključite ih ovdje: Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti. Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
@@ -60,7 +65,8 @@ Redoslijed u fazi 2:
 4. ✓ runda 2: hibridi D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
 5. ✓ vaš izbor smjera i ostale konačne odluke (ADR 0015 i 0016)
 6. ✓ tokeni, font, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima, Figma knjižnica
-7. ✓ izlazne provjere i PR #2 kao izvještaj faze ← čeka vaš pregled
+7. ✓ izlazne provjere i PR #2 kao izvještaj faze
+8. vaše dorade prije faze 3 ← sljedeća sesija (`docs/phases/2-design-review.md`)
 
 Prototipovi obiju rundi ostaju na `/lab` kao zapis; snimke su u `docs/phases/screenshots/phase-2/` (runda 1), `.../round-2/` i `.../system/`.
 

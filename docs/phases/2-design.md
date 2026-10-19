@@ -1,6 +1,6 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** Done, waiting for the client's review at the phase gate (2026-10-19). PR #2 is the phase report.
+- **Status:** Done and in review at the phase gate (2026-10-19). PR #2 is the phase report. The client likes the result and asked for a few refinements before phase 3, in a new session: [2-design-review.md](2-design-review.md) is the brief.
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
   - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md).
   - **The client chose** D with a paper header and hero ([ADR 0015](../decisions/0015-design-direction-model-i-list.md)) and Figma for quick iterations ([ADR 0016](../decisions/0016-figma-for-design-iterations.md)); the answers are in [2-design-system.md](2-design-system.md).
@@ -264,3 +264,5 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - `npm run verify` passes (138 unit tests, 1.0 KB of JavaScript per page), and `npm run test:e2e` passes (51 tests).
     - The first CI run failed in lint: the `?raw` import had no type before `astro sync`. `src/env.d.ts` fixed it.
   - **Screenshots** for the report are in [screenshots/phase-2/system/](screenshots/phase-2/system/), with frames of motion in progress for the client, who can't see it on their machine.
+  - **The client's first reaction:** "Dobro sviđa mi se". The client asked what phase 3 holds (summarised in Croatian), then asked for a handover: "imam par dorada koje bih htio rješiti prije finalne faze 3". [2-design-review.md](2-design-review.md) is the brief for the refinements session. `PROGRESS.md` and PR #2 point to it, and the client has a prompt for the new session.
+  - **The dev server** was restarted on port 4321 so the client could open `/lab/style`. The next session checks the port before E2E.

@@ -32,10 +32,11 @@ Code + Draft: drawing the line literally finishes the word. This is the basis of
 
 **For animation (phase 2).** The web copy splits the accent into three paths with identical geometry. The shapes are filled outlines, not strokes, so the "draw" effect is a clip or scale reveal, not a stroke-dash animation. The animation always ends on the exact mark.
 
-### Decisions pending (phase 2)
+### Decisions (phase 2)
 
-- **Logo entrance animation.** The README forbids effects on the marks. Proposal: a one-time entrance (line draws, grip snaps in) that always ends on the exact, unmodified mark. **The client approves or rejects this.**
-- **C2PA metadata.** Every SVG master embeds a C2PA content-credentials block, about 6–8 KB of each 9–11 KB file. The masters stay untouched. Whether the optimised web copies strip it is **the client's call**.
+Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-copies-and-local-review.md)):
+- **Logo entrance animation: approved, on the home hero only.** It plays once per page load: the line draws, then the grip snaps in, ending on the exact, unmodified mark. The header logo and every other placement stay static. This is the only exception to the README's "no effects" rule.
+- **C2PA metadata: stripped from every web copy** (SVG and PNG). Every master embeds a C2PA content-credentials block, about 6–8 KB of each 9–11 KB SVG. The masters stay untouched and keep it.
 
 ## Colour
 

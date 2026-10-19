@@ -19,8 +19,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0011](0011-analytics-goatcounter-after-consent.md) | Analytics: self-hosted GoatCounter after consent, plus Search Console and Bing | Accepted | 2026-10-19 |
 | [0012](0012-booking-easy-appointments.md) | Booking: self-hosted Easy!Appointments | Accepted | 2026-10-19 |
 | [0013](0013-mailboxes-zoho-mail-lite.md) | Mailboxes: Zoho Mail Lite (recommended provider) | Accepted | 2026-10-19 |
+| [0014](0014-logo-animation-web-copies-and-local-review.md) | Logo animation, web copies of the marks, and local design review | Accepted | 2026-10-19 |
 
-Next number: **0014**.
+Next number: **0015**.
 
 ## How to add one
 

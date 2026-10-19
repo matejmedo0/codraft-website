@@ -1,6 +1,6 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** Not started
+- **Status:** In progress (started 2026-10-19). Steps 1–2: the prototypes.
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -15,9 +15,9 @@ Find a distinctive, professional visual direction built from the brand, and turn
 | Motion concept | Agreed | [motion.md](../motion.md) |
 | Review method | Agreed: coded prototypes | [ADR 0005](../decisions/0005-design-review-with-coded-prototypes.md) |
 | Croatian copy for the prototypes | HR draft of the existing copy (approval pending) | [content.md](../content.md) |
-| **Logo entrance animation** | Client decision needed | [brand.md](../brand.md#decisions-pending-phase-2) |
-| **C2PA metadata in web copies** | Client decision needed | Same |
-| **Private preview of the prototypes** | Client decision needed. With the VPS, it needs the domain and the server, both ordered only with the client's OK. | [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md), `PROGRESS.md` |
+| **Logo entrance animation** | Decided 2026-10-19: approved, home hero only, once per page load | [ADR 0014](../decisions/0014-logo-animation-web-copies-and-local-review.md) |
+| **C2PA metadata in web copies** | Decided 2026-10-19: stripped from every web copy; the masters keep it | Same |
+| **Private preview of the prototypes** | Decided 2026-10-19: not needed; review on localhost and screenshots | Same |
 | Working stack | Decided and scaffolded: Astro 7 with React islands | [architecture.md](../architecture.md), [ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) |
 | Phase 1 findings that shape this phase | The CSP blocks inline `style` attributes; Astro ignores routes that start with `_`; the favicon is a placeholder | [research/2026-10-19-scaffold-verification.md](../research/2026-10-19-scaffold-verification.md) |
 
@@ -105,4 +105,11 @@ Load `frontend-a11y` for the menu, focus states and skip link.
 
 ## Log
 
-_Not started._
+- **2026-10-19:**
+  - **Start.** Phase 1 was approved and merged into `main` (PR #1). Work continues on `phase/2-design`, created from `main` after the merge.
+  - **Skills loaded:** `frontend-design:frontend-design`, `motion-foundations`, `frontend-a11y`, `vite-patterns`, `react-patterns`.
+  - **The client's three answers**, recorded as [ADR 0014](../decisions/0014-logo-animation-web-copies-and-local-review.md):
+    - The logo entrance is approved, on the home hero only.
+    - C2PA metadata is stripped from every web copy. Inspecting it showed that the manifest is signed by Anthropic and binds to the exact file bytes, so an optimised copy could not keep a valid signature anyway.
+    - No private online preview: the client builds the site with one colleague, so review stays on localhost and the screenshots. Nothing is ordered.
+  - **Font tooling.** fonttools and brotli run from a throwaway virtual environment outside the repository. They subset the web fonts and check their Croatian coverage; nothing is added to the project's dependencies.

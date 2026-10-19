@@ -1,6 +1,6 @@
 # Motion
 
-> **Status (2026-10-18):** this is the agreed motion concept, input for phase 2. Durations and easings become motion tokens in phase 2 (`motion-foundations` skill). The client approves the logo entrance animation in phase 2 (see [brand.md](brand.md#decisions-pending-phase-2)).
+> **Status (2026-10-18):** this is the agreed motion concept, input for phase 2. Durations and easings become motion tokens in phase 2 (`motion-foundations` skill). The client approved the logo entrance animation on 2026-10-19, for the home hero only ([ADR 0014](decisions/0014-logo-animation-web-copies-and-local-review.md)).
 
 ## Idea
 

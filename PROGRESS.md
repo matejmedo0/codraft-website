@@ -1,10 +1,18 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, kreće u novoj sesiji na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
+**Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak:** nova sesija pokreće fazu 2 prema `docs/phases/2-design.md`.
-- Prvo pita samo ono što faza 2 treba: animaciju loga, C2PA metapodatke i privatni pregled prototipova (uz VPS to traži domenu i server).
-- Zatim izrađuje 2–3 smjera kao žive prototipove, a smjer birate vi.
+**Sljedeći korak:** izrada tri smjera kao živih prototipova na `/lab/*` (koraci 1 i 2 u `docs/phases/2-design.md`), sa snimkama na 375, 768 i 1440 px. Zatim vi birate smjer. Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
+
+Redoslijed u fazi 2:
+1. ✓ vaše tri odluke s početka faze (ADR 0014):
+   - animacija loga: da, jednom na početnoj
+   - C2PA metapodaci: uklanjaju se iz svih web kopija, a originali ih zadržavaju
+   - privatni pregled na internetu: ne treba, pregled ide na localhostu i kroz snimke
+2. tri smjera kao živi prototipovi, sa snimkama
+3. vaš izbor smjera (ADR)
+4. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
+5. izlazne provjere i PR faze 2
 
 Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
@@ -47,7 +55,7 @@ Odlučeno (svaka stavka ima ADR):
 
 Računi i ključevi otvaraju se u fazi 4, a sandučići u fazi 7.
 
-Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototipova u fazi 2 i rok čuvanja upita iz formi.
+Za kasnije, kad ih faza zatraži: uvjeti najma servera i rok čuvanja upita iz formi. Privatni pregled prototipova u fazi 2 nije potreban (ADR 0014).
 
 ## Faza 1: rezultat (19. 10. 2026.)
 
@@ -64,7 +72,7 @@ Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototi
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
 - [x] 1 — Arhitektura (gotova i odobrena 19. 10. 2026., PR #1): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
-- [ ] 2 — Dizajn (sljedeća, u novoj sesiji): 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
+- [ ] 2 — Dizajn (u tijeku od 19. 10. 2026.): 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
 - [ ] 5 — Kvaliteta: E2E i unit testovi, pristupačnost, performanse → `docs/phases/5-quality.md`
@@ -91,6 +99,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Analitika: GoatCounter na našem serveru, tek nakon privole; plus Search Console i Bing | [ADR 0011](docs/decisions/0011-analytics-goatcounter-after-consent.md) |
 | 2026-10-19 | Booking: Easy!Appointments na našem serveru (hrvatsko sučelje, podaci u EU) | [ADR 0012](docs/decisions/0012-booking-easy-appointments.md) |
 | 2026-10-19 | Sandučići: Zoho Mail Lite (EU), postavljaju se u fazi 7 | [ADR 0013](docs/decisions/0013-mailboxes-zoho-mail-lite.md) |
+| 2026-10-19 | Animacija loga samo na početnoj (jednom pri učitavanju); web kopije znakova bez C2PA metapodataka; prototipove pregledavate na localhostu, bez pregleda na internetu | [ADR 0014](docs/decisions/0014-logo-animation-web-copies-and-local-review.md) |
 
 ## Sitemap
 
@@ -174,16 +183,13 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 
 **Kasnije:**
 - **Faza 1:** ✓ stack, hosting i servisi su odlučeni (ADR 0008–0013).
-- **Faza 2:**
-  - animacija loga (README paketa zabranjuje efekte na znaku)
-  - C2PA metapodaci u web kopijama
-  - privatni pregled prototipova na poddomeni (uz opciju 1 traži kupljenu domenu i server već u fazi 2)
+- **Faza 2:** ✓ animacija loga, C2PA metapodaci i privatni pregled su odlučeni (ADR 0014).
 - **Faza 3:** tim i fotografije, opseg analize, cijene, vlasništvo i NDA, CAD podaci i uzorci, kontakt podaci, rok čuvanja upita iz formi (prijedlog: 12 mjeseci).
 - **Faza 4:**
   - računi i ključevi (e-mail API, booking, Anthropic API)
   - limit potrošnje chatbota
   - potvrda da se datoteke ne učitavaju kroz formu
-- **Faza 6:** narudžba servera i uvjeti najma (uz opciju 1; treba za pregledni URL audita, ili ranije uz privatne preglede u fazi 2).
+- **Faza 6:** narudžba servera i uvjeti najma (uz opciju 1; treba za pregledni URL audita).
 - **Faza 7:**
   - kupnja domene, ako dotad nije kupljena
   - postavljanje e-mail sandučića

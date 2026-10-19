@@ -29,6 +29,8 @@ Detalji, rizici i cijeli izračun troškova: `docs/phases/1-architecture-options
 | Booking na hrvatskom, podaci u EU | Da (Easy!Appointments) | Ne | Da |
 | Održavanje servera | oko 2–3 h | oko 0,5–1 h | oko 3–4 h |
 
+**Budžet:** do 10 € mjesečno (vaša odluka, 19. 10. 2026.). Preporuka ostaje opcija 1. S chatbotom i Zoho Mail Lite za tri osobe to je oko 9,96 € s PDV-om. Domena je zaseban godišnji trošak.
+
 Trebamo sada (bilježi se kao ADR 0008 i dalje):
 1. **Opcija** (stack i hosting): 1, 2 ili 3. Preporuka: 1.
 2. **Servis za e-mail iz formi:** Scaleway (preporuka), AhaSend ili Mailjet. Sva tri su u EU i besplatna pri našem obujmu.

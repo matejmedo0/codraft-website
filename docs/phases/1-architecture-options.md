@@ -266,6 +266,25 @@ IPv6-only is not viable: about 6 % of users in Croatia have IPv6, and GitHub has
 | **Zoho Mail Lite 5 GB** (IMAP, EU data centre, billed yearly) | 0.90 | 1.13 | 10.80 | 13.50 |
 | Exchange Online Plan 1 (billed yearly; shared `info@` mailbox is free) | 3.50 | 4.38 | 42.00 | 52.50 |
 
+## Budget ceiling: €10 a month (client, 2026-10-19)
+
+After seeing the options, the client set a ceiling of €10 a month and asked whether it changes the recommendation. It doesn't. The €5.61 difference between Options 1 and 2 now fits the budget, so cost no longer separates them; Option 1's EU hosting and its Croatian booking with EU data decide it.
+
+Assumptions: amounts include 25 % VAT (the stricter case), and the domain is a separate yearly cost, the same for every option.
+
+| Item, per month incl. VAT | Option 1 (EUR) |
+|---|---|
+| OVHcloud VPS-1, no commitment (IPv4 and daily backup included) | 5.61 |
+| Email, analytics, monitoring, off-site backup, booking | 0.00 (email above 300 a month costs cents) |
+| Chatbot from phase 4 (≈ 1,000 messages a month, capped) | 0.97 |
+| Zoho Mail Lite, per user | 1.13 |
+| **Total with 2 / 3 mailbox users** | **8.83 / 9.96** |
+
+- Paying OVH 12 months upfront after launch (€4.76 a month) lowers the total by €0.85.
+- Exchange Online Plan 1 (€4.38 per user) fits only with one user, so Zoho Mail Lite is the mailbox recommendation under this ceiling.
+- Not worth the headroom: a bigger server (VPS-1 has ample room), Plausible Cloud (€11.25 on its own), or Cloudflare Workers Paid for Option 2 (it doesn't add Croatian booking with EU data).
+- Optional: a Hetzner Storage Box (€4.00) for backups held by an EU company only, at the cost of the mailbox headroom.
+
 ## Lead retention (proposal; the client decides)
 
 **Proposal: 12 months.**

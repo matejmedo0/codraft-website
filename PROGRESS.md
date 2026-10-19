@@ -2,10 +2,21 @@
 
 **Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak: vi birate smjer, D, E ili njihov spoj** (npr. hero iz D sa stupcima iz E).
-- **Pregled:** pokrenite `npm run dev` i otvorite http://localhost:4321/lab/d i http://localhost:4321/lab/e.
-- **Snimke:** `docs/phases/screenshots/phase-2/round-2/`.
-- **Opis:** `docs/phases/2-design-round-2.md`.
+**Sljedeći korak: nova sesija, u kojoj donosite konačne odluke.** Sažetak za tu sesiju je `docs/phases/2-design-system.md`: odluke koje trebam od vas, plan, ograničenja i radne bilješke.
+1. Vi birate smjer: D, E ili njihov spoj (npr. hero iz D sa stupcima iz E). Uz to:
+   - animacije
+   - broj osoba u traci tima
+   - font
+   - zaobljenost kutova
+
+   Moja preporuka je D. Odabrani smjer postaje ADR 0015.
+2. Zatim gradim sustav dizajna: tokene, fontove, animaciju, brand assete u kodu, osnovne komponente i stranicu sa stilovima.
+3. Na kraju zatvaram fazu 2: izlazne provjere, PR #2 kao izvještaj faze i zeleni CI. Merge i faza 3 idu tek na vašu riječ.
+
+Za pregled prije odluke:
+- pokrenite `npm run dev` i otvorite http://localhost:4321/lab/d i http://localhost:4321/lab/e
+- snimke su u `docs/phases/screenshots/phase-2/round-2/`
+- opis je u `docs/phases/2-design-round-2.md`
 
 **Runda 2 (19. 10. 2026.).** Na osam pitanja prihvatili ste sve preporuke, a za „Što radimo“ tražili ste obje izvedbe. Odgovori su zapisani u `docs/phases/2-design-round-2.md`. Nijedan odgovor ne mijenja prihvaćeni ADR:
 - ulaz loga ostaje u heroju početne (ADR 0014)
@@ -74,7 +85,7 @@ Redoslijed u fazi 2:
    - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
 3. ✓ vaš pregled runde 1 (19. 10. 2026.): nijedan smjer nije za uzeti kakav jest; želite hibrid i više animacije
 4. ✓ runda 2 (19. 10. 2026.): rasprava o vašim povratnim informacijama i dva hibridna prototipa, D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
-5. vaš izbor smjera (ADR) ← sljedeće
+5. vaš izbor smjera i ostale konačne odluke (ADR 0015) ← sljedeća sesija (`docs/phases/2-design-system.md`)
 6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
 7. izlazne provjere i PR faze 2 (draft PR #2 je već otvoren: https://github.com/matejmedo0/codraft-website/pull/2)
 

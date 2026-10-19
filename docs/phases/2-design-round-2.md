@@ -3,6 +3,7 @@
 > **Status (2026-10-19): the hybrid prototypes D and E are built and checked, and wait for the client's choice.** This brief was written at the end of the session that built round 1, because that session's context was full.
 > - The client answered the eight questions on 2026-10-19: see [The client's answers](#the-clients-answers-2026-10-19). No answer changes an accepted ADR.
 > - The two hybrids follow the [plan as agreed](#round-2-as-agreed); [The hybrids as built](#the-hybrids-as-built-2026-10-19) describes them, with screenshots and checks.
+> - The next session starts from [2-design-system.md](2-design-system.md): the client's final decisions, then the design system.
 >
 > Nothing here is decided unless it is marked as decided.
 

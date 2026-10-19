@@ -3,6 +3,7 @@
 - **Status:** In progress (started 2026-10-19).
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
   - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md). They wait for the client's choice.
+  - **Next, in a new session:** the client's final decisions, then steps 3–7 and the phase gate. [2-design-system.md](2-design-system.md) is the brief.
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -203,3 +204,12 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - The lab pages load 0.9 KB of gzip JavaScript.
   - **Screenshots** for the report are in [screenshots/phase-2/round-2/](screenshots/phase-2/round-2/).
   - **Presented** to the client in Croatian. The choice between D and E (or a mix) is the client's.
+  - **Handover.** The client asked for documentation only, because the session's context was full: "Dobro pripremi dokumentaciju zbog punog konteksta u ovoj sesiji, nastavljamo u novom chatu s finalnim odlukama. I daj mi prompt za novi session".
+    - [2-design-system.md](2-design-system.md) is the brief for the next session. It covers:
+      - where things stand
+      - the decisions for the client, with Claude's recommendations
+      - the plan for steps 3–7 and the phase gate
+      - the constraints and the working notes
+    - `PROGRESS.md` and the PR #2 description are updated.
+    - The Playwright MCP browser is closed, so the next session can open its own.
+    - The client has a prompt for the new session.

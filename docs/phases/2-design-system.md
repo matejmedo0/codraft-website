@@ -1,10 +1,8 @@
 # Phase 2, last part: the direction and the design system (brief)
 
-> **Status (2026-10-19): not started; the next session starts here.** Round 2 is done, and the hybrids D and E are built, checked and pushed. This brief was written at the end of the round 2 session, because its context was full. The client brings the final decisions to the next session.
-> - **First**, put the decisions below to the client, in Croatian, and record the answers here. If the client already gives them in the opening message, record them and ask only what is missing. The direction becomes ADR 0015.
-> - **Then** build steps 3–7 of [2-design.md](2-design.md) from the chosen direction, and close phase 2 at the phase gate.
->
-> Nothing here is decided unless it is marked as decided.
+> **Status (2026-10-19): the client's final decisions are recorded; the design system is being built.** Round 2 is done, and the hybrids D and E are built, checked and pushed. This brief was written at the end of the round 2 session, because its context was full.
+> - **The decisions:** taken on 2026-10-19 and recorded in [The client's answers](#the-clients-answers-2026-10-19). The direction is [ADR 0015](../decisions/0015-design-direction-model-i-list.md), and the use of Figma is [ADR 0016](../decisions/0016-figma-for-design-iterations.md).
+> - **Next:** build steps 3–7 of [2-design.md](2-design.md) from the chosen direction, then step 8 (Figma), then close phase 2 at the phase gate.
 
 ## Where things stand
 
@@ -63,6 +61,20 @@
 5. **Corner radius.** 0 (sharp, as built), or up to 2 px ([motion.md](../motion.md) says 0–2 px, to be confirmed with the direction)? Recommendation: 0, like the drawing sheet.
 6. **The lab after the choice.** The default is to keep A–E as the record ([2-design-directions.md](2-design-directions.md), "After the choice"). Removing any of them needs the client's OK.
 7. **Figma** (step 8 of [2-design.md](2-design.md)): only if the client asks. The default is no.
+
+## The client's answers (2026-10-19)
+
+Discussed in Croatian at the start of the session. The client's opening message left the decisions as a template, so each one was asked.
+
+| # | Decision | Answer | What follows |
+|---|---|---|---|
+| 1 | Direction | **D „Model i list“, with a paper header and hero.** The client's words: "Radimo model i list ali bijela boja ipak ostaje umjesto plavog". Asked which navy surfaces turn to paper, the client chose: header and hero on paper, the closing call to action stays navy. | D's sheet: chapters on a process line in "Što radimo", the free audit on paper, the CAD section on graph paper. The hero holds the headline and the mark on graph paper (as in E). Navy appears once, as the closing call to action. No stage 01 panel from E. [ADR 0015](../decisions/0015-design-direction-model-i-list.md). |
+| 2 | Motion | **All four, as built.** The client added: "mada ja ni jednu ne vidim kroz ova testiranja prototipa kasnije razrješimo". | Checked on the client's machine: Windows "Animation effects" is off, so Chrome reports `prefers-reduced-motion: reduce` and the lab shows every final state at once, as designed. The client was told how to switch it on or emulate it in DevTools. Reviewing the motion itself is deferred, at the client's word. |
+| 3 | Team strip | **Two people.** | The strip has two places. The photos, names and roles arrive in phase 3 (G3). |
+| 4 | Fonts | **Archivo as the only family** (the recommendation). | One self-hosted variable WOFF2, widths 75–100 %, weights 400–700. |
+| 5 | Corner radius | **2 px.** | `--radius: 2px` on controls and panels: buttons, fields, the menu button, panels and cards. The drawing vocabulary stays square: the sheet frame, zone rules, the title block, grips and drawing boxes. |
+| 6 | The lab | **Keep A–E as the record** (the recommendation). | Nothing is removed. The style page joins them. |
+| 7 | Figma | **Yes, for quick and cheap prototypes and refinements.** The client's words: "Možemo implementirati figmu za brze i jeftine prototipe i dorade onog što mi se ne sviđa, koristimo je". | Step 8 runs: the coded system is mirrored as a Figma library, and the client iterates there. Code stays the source of truth (ADR 0005). [ADR 0016](../decisions/0016-figma-for-design-iterations.md). |
 
 ## Plan for the next session
 

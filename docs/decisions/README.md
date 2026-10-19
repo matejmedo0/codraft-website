@@ -20,8 +20,10 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0012](0012-booking-easy-appointments.md) | Booking: self-hosted Easy!Appointments | Accepted | 2026-10-19 |
 | [0013](0013-mailboxes-zoho-mail-lite.md) | Mailboxes: Zoho Mail Lite (recommended provider) | Accepted | 2026-10-19 |
 | [0014](0014-logo-animation-web-copies-and-local-review.md) | Logo animation, web copies of the marks, and local design review | Accepted | 2026-10-19 |
+| [0015](0015-design-direction-model-i-list.md) | Design direction: „Model i list“ with a paper hero | Accepted | 2026-10-19 |
+| [0016](0016-figma-for-design-iterations.md) | Figma for quick design iterations | Accepted | 2026-10-19 |
 
-Next number: **0015**.
+Next number: **0017**.
 
 ## How to add one
 

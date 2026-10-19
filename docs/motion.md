@@ -28,7 +28,7 @@ The client asked for animation that is high quality and **not generic**. The con
    - Animate `transform` and `opacity`; use `clip-path` only for the line reveal.
    - Never animate layout properties (`width`, `height`, `top`, `left`, `margin`, `padding`).
 6. **One-shot reveals use IntersectionObserver.** CSS scroll-driven animations are progressive enhancement only.
-7. **Shape echoes the grips:** corner radius 0–2 px (to be confirmed with the design direction).
+7. **Shape echoes the grips:** corner radius 2 px on controls and panels; the drawing vocabulary (sheet frame, zone rules, title block, grips) stays square ([ADR 0015](decisions/0015-design-direction-model-i-list.md)).
 
 ## Reduced motion
 

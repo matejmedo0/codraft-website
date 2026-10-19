@@ -2,16 +2,16 @@
 
 **Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak: nova sesija, u kojoj donosite konačne odluke.** Sažetak za tu sesiju je `docs/phases/2-design-system.md`: odluke koje trebam od vas, plan, ograničenja i radne bilješke.
-1. Vi birate smjer: D, E ili njihov spoj (npr. hero iz D sa stupcima iz E). Uz to:
-   - animacije
-   - broj osoba u traci tima
-   - font
-   - zaobljenost kutova
+**Sljedeći korak: gradim sustav dizajna prema vašim konačnim odlukama** (19. 10. 2026., zapisane u `docs/phases/2-design-system.md`, ADR 0015 i 0016):
+- **Smjer:** D „Model i list“ sa svijetlim (papirnatim) zaglavljem i herojem. U heroju je znak na milimetarskom papiru, a tamnoplava ostaje samo u završnom pozivu.
+- **Animacije:** sve četiri, kako su izrađene. Na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa Chrome javlja smanjeno kretanje i lab sve prikazuje odmah gotovo. Pregled animacija ostaje za kasnije, kako ste rekli.
+- **Traka tima:** dvije osobe.
+- **Font:** samo Archivo.
+- **Kutovi:** 2 px na gumbima, poljima i pločama; crtački elementi (okvir lista, crte zona, zaglavlje, gripovi) ostaju oštri.
+- **Lab:** A–E ostaju kao zapis.
+- **Figma:** da, za brze i jeftine prototipe i dorade; kod ostaje izvor istine.
 
-   Moja preporuka je D. Odabrani smjer postaje ADR 0015.
-2. Zatim gradim sustav dizajna: tokene, fontove, animaciju, brand assete u kodu, osnovne komponente i stranicu sa stilovima.
-3. Na kraju zatvaram fazu 2: izlazne provjere, PR #2 kao izvještaj faze i zeleni CI. Merge i faza 3 idu tek na vašu riječ.
+Redom slijede tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima, zatim Figma knjižnica. Na kraju zatvaram fazu 2: izlazne provjere, PR #2 kao izvještaj faze i zeleni CI. Merge i faza 3 idu tek na vašu riječ.
 
 Za pregled prije odluke:
 - pokrenite `npm run dev` i otvorite http://localhost:4321/lab/d i http://localhost:4321/lab/e
@@ -85,8 +85,8 @@ Redoslijed u fazi 2:
    - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
 3. ✓ vaš pregled runde 1 (19. 10. 2026.): nijedan smjer nije za uzeti kakav jest; želite hibrid i više animacije
 4. ✓ runda 2 (19. 10. 2026.): rasprava o vašim povratnim informacijama i dva hibridna prototipa, D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
-5. vaš izbor smjera i ostale konačne odluke (ADR 0015) ← sljedeća sesija (`docs/phases/2-design-system.md`)
-6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
+5. ✓ vaš izbor smjera i ostale konačne odluke (19. 10. 2026., ADR 0015 i 0016)
+6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima, Figma knjižnica ← u tijeku
 7. izlazne provjere i PR faze 2 (draft PR #2 je već otvoren: https://github.com/matejmedo0/codraft-website/pull/2)
 
 Redoslijed u fazi 1:
@@ -175,6 +175,8 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Booking: Easy!Appointments na našem serveru (hrvatsko sučelje, podaci u EU) | [ADR 0012](docs/decisions/0012-booking-easy-appointments.md) |
 | 2026-10-19 | Sandučići: Zoho Mail Lite (EU), postavljaju se u fazi 7 | [ADR 0013](docs/decisions/0013-mailboxes-zoho-mail-lite.md) |
 | 2026-10-19 | Animacija loga samo na početnoj (jednom pri učitavanju); web kopije znakova bez C2PA metapodataka; prototipove pregledavate na localhostu, bez pregleda na internetu | [ADR 0014](docs/decisions/0014-logo-animation-web-copies-and-local-review.md) |
+| 2026-10-19 | Smjer dizajna: D „Model i list“ sa svijetlim zaglavljem i herojem, tamnoplava samo u završnom pozivu; sve četiri animacije; dvije osobe u traci tima; samo Archivo; kutovi 2 px; lab A–E ostaje kao zapis | [ADR 0015](docs/decisions/0015-design-direction-model-i-list.md) |
+| 2026-10-19 | Figma za brze prototipe i dorade: sustav iz koda zrcali se u Figma knjižnicu, a kod ostaje izvor istine | [ADR 0016](docs/decisions/0016-figma-for-design-iterations.md) |
 
 ## Sitemap
 
@@ -261,8 +263,8 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 - **Faza 2:**
   - ✓ animacija loga, C2PA metapodaci i privatni pregled su odlučeni (ADR 0014)
   - ✓ pitanja runde 2 su odgovorena (19. 10. 2026.)
-  - otvoren je samo vaš izbor smjera: D, E ili spoj
-  - broj osoba u traci tima: prototip prikazuje tri mjesta
+  - ✓ smjer i konačne odluke (ADR 0015, 0016)
+  - pregled animacija na računalu s uključenim animacijskim efektima (ostavljeno za kasnije, na vašu riječ)
 - **Faza 3:** tim i fotografije, opseg analize, cijene, vlasništvo i NDA, CAD podaci i uzorci, kontakt podaci, rok čuvanja upita iz formi (prijedlog: 12 mjeseci).
 - **Faza 4:**
   - računi i ključevi (e-mail API, booking, Anthropic API)

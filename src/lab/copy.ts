@@ -318,6 +318,63 @@ export const CAD: CadCopy = {
   },
 };
 
+/*
+ * The floor plan on Home (review batch 5, ADR 0018): it replaces the
+ * machined plate on /lab/pocetna; lab D and E keep the plate.
+ */
+
+export type PlanLayerId =
+  "osi" | "zidovi" | "otvori" | "kote" | "oznake" | "zaglavlje";
+
+export interface PlanRoom {
+  name: string;
+  /** In square metres, from the drawing's own dimensions. */
+  area: string;
+}
+
+export interface PlanCopy {
+  layersLabel: string;
+  /** In drawing order (docs/motion.md, "Layers"). */
+  layers: { id: PlanLayerId; label: string }[];
+  replay: string;
+  drawingLabel: string;
+  rooms: {
+    living: PlanRoom;
+    bedroom: PlanRoom;
+    entrance: PlanRoom;
+    bathroom: PlanRoom;
+  };
+  titleBlock: { title: string; units: string; studio: string; note: string };
+}
+
+export const PLAN: PlanCopy = {
+  layersLabel: "Slojevi",
+  layers: [
+    { id: "osi", label: "Osi" },
+    { id: "zidovi", label: "Zidovi" },
+    { id: "otvori", label: "Otvori" },
+    { id: "kote", label: "Kote" },
+    { id: "oznake", label: "Oznake" },
+    { id: "zaglavlje", label: "Zaglavlje" },
+  ],
+  replay: "Iscrtaj ponovno",
+  drawingLabel:
+    "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima, kotama u centimetrima i nazivima prostorija.",
+  rooms: {
+    living: { name: "Dnevni boravak", area: "36,10 m²" },
+    bedroom: { name: "Spavaća soba", area: "13,25 m²" },
+    entrance: { name: "Ulaz", area: "4,96 m²" },
+    bathroom: { name: "Kupaonica", area: "4,33 m²" },
+  },
+  // The illustration says what it is (ADR 0004).
+  titleBlock: {
+    title: "Tlocrt stana",
+    units: "Mjere u cm",
+    studio: "Codraft",
+    note: "Ilustracija",
+  },
+};
+
 export const PRINCIPLES: { title: string; items: TextItem[] } = {
   title: "Kako radimo",
   items: [

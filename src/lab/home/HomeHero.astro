@@ -1,8 +1,13 @@
 ---
 /**
- * Zone A of Home in the chosen direction (ADR 0015): the headline beside a
- * drawing on graph paper that holds the mark, which plays its entrance once
- * per load (ADR 0014). On paper, like the header above it.
+ * Zone A of Home in the chosen direction (ADR 0015): the headline, then the
+ * lead beside a drawing on graph paper that holds the mark, which plays its
+ * entrance once per load (ADR 0014). On paper, like the header above it.
+ *
+ * The H1 reads in two lines, as the client asked (review batches 2 and 5):
+ * "Planiramo, izrađujemo i održavamo" / "web stranice, softver i AI alate."
+ * From 64rem it spans the whole sheet, so both lines keep their full size
+ * on laptops too; narrower screens wrap it as one sentence.
  *
  * The hero orients and doesn't sell (ADR 0017): its one button leads to the
  * services, and the drafting clients get their own path below it
@@ -18,11 +23,11 @@ const locale = "hr";
 ---
 
 <Zone labelledby="naslov" select={false} class="home-hero">
+  <h1 class="home-hero__title" id="naslov">
+    <span class="home-hero__line">{HERO.titleLines[0]}</span>{" "}
+    <span class="home-hero__line">{HERO.titleLines[1]}</span>
+  </h1>
   <div class="home-hero__text">
-    <h1 id="naslov">
-      <span class="home-hero__line">{HERO.titleLines[0]}</span>{" "}
-      <span class="home-hero__line">{HERO.titleLines[1]}</span>
-    </h1>
     <p class="home-hero__lead">{HERO.lead}</p>
     <div class="home-hero__actions">
       <Button href={pathFor("services", locale)}>{HERO.secondary}</Button>
@@ -39,32 +44,12 @@ const locale = "hr";
 <style>
   .home-hero {
     display: grid;
-    gap: var(--space-7);
+    gap: var(--space-5);
     padding-block: var(--space-7) var(--space-8);
-  }
-
-  /* The H1's two lines, as in direction A (the client's review, batch 2).
-     The first line is about 14 em long. From a 54rem column (a screen of
-     about 1660 px) each half is a line of its own, and the size eases just
-     enough for the first to fit; a narrower column wraps the sentence
-     evenly at full size. */
-  .home-hero__text {
-    container-type: inline-size;
-  }
-
-  @container (min-width: 54rem) {
-    .home-hero h1 {
-      font-size: min(var(--step-display), 100cqi / 14.2);
-    }
-
-    .home-hero__line {
-      display: block;
-    }
   }
 
   .home-hero__lead {
     max-width: var(--measure-lead);
-    margin-top: var(--space-5);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
   }
@@ -91,6 +76,7 @@ const locale = "hr";
     display: grid;
     place-items: center;
     aspect-ratio: 21 / 9;
+    margin-top: var(--space-3);
     padding: 6% 25%;
     color: var(--ink);
   }
@@ -98,19 +84,30 @@ const locale = "hr";
   @media (min-width: 64rem) {
     .home-hero {
       grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: var(--gap);
-      align-items: center;
+      gap: var(--space-7) var(--gap);
+      align-items: start;
       padding-block: 4.5rem var(--space-10);
     }
 
+    /* The first line is about 14 em long and fits the sheet from 64rem at
+       the full display size. */
+    .home-hero__title {
+      grid-column: 1 / -1;
+    }
+
+    .home-hero__line {
+      display: block;
+    }
+
     .home-hero__text {
-      grid-column: 1 / span 7;
+      grid-column: 1 / span 6;
     }
 
     .home-hero__drawing {
       grid-column: 8 / -1;
-      aspect-ratio: 4 / 3;
-      padding: 14%;
+      aspect-ratio: 16 / 10;
+      margin-top: 0;
+      padding: 10% 16%;
     }
   }
 </style>

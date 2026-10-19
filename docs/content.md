@@ -275,6 +275,16 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | CAD section, replay button | Iscrtaj ponovno | UI string |
 | CAD drawing, title block | Ploča s utorom · mm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | CAD drawing, accessible name | Ilustracija: crtež ploče s četiri provrta i utorom, s presjekom A–A i kotama u milimetrima. | Describes the illustration (a first draft for G28) |
+
+**The floor plan on Home** (review batch 5, 2026-10-19). The client asked to replace the machined plate with an architectural floor plan drawn as a timelapse (ADR 0018: architecture and construction only). `/lab/pocetna` uses these lines; lab D and E keep the plate as the round 2 record.
+
+| Where | HR (prototype) | Derived from |
+|---|---|---|
+| Floor plan, layer list | Slojevi: Osi, Zidovi, Otvori, Kote, Oznake, Zaglavlje | Glossary (*sloj*, *zaglavlje*); drafting terms |
+| Floor plan, room labels | Dnevni boravak 36,10 m² · Spavaća soba 13,25 m² · Ulaz 4,96 m² · Kupaonica 4,33 m² | The drawing's own dimensions |
+| Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
+| Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima, kotama u centimetrima i nazivima prostorija. | Describes the illustration (a first draft for G28) |
+| Floor plan, replay button | Iscrtaj ponovno | UI string (as before) |
 | "Kako radimo", heading | Kako radimo | [information-architecture.md](information-architecture.md), Home §6 |
 | "Kako radimo", first item | **Cijena poznata unaprijed:** Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu. | `plan.body` |
 | "Kako radimo", second item | **Jasno objašnjeno:** Objašnjavamo što radimo i zašto, jednostavnim jezikom i bez nepotrebnih tehničkih izraza. (Replaces "Bez žargona", 2026-10-19.) | `services.intro` |
@@ -378,6 +388,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
   - No "žargon" in the Croatian copy, at the client's request: a new hero lead, the end of `services.intro`, and "Jasno objašnjeno" in "Kako radimo". Suggestion S18 asks about the EN.
   - "Tehničko crtanje" replaces "CAD crtanje", for architecture and construction only ([ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)): the glossary, `drafting.title`, `drafting.audience`, `nav.drafting`, the hero link and G25. Suggestion S19 asks about the EN.
 - **2026-10-19 (phase 2, review refinements, batch 4):** "One line per service on Home" added under "Prototype copy": each service's sentence shortened for Home, drafts. No copy block changed.
+- **2026-10-19 (phase 2, review refinements, batch 5):** "The floor plan on Home" added under "Prototype copy": its layers, room labels, title block and accessible name. The client will align the English at the end of all the changes. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

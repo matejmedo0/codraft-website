@@ -109,6 +109,25 @@ The wordmark is a custom geometric face drawn as outlines, so the site needs web
 - **Format:** one SVG per icon, `viewBox="0 0 48 48"`, drawn on a 48 px grid with 2 px of clear space. Strokes stay strokes (`stroke`, not outlined to fills), 1.5 px wide, with `stroke-linecap="square"` and `stroke-linejoin="miter"`, and `currentColor` for the ink, so the site can colour them and draw them stroke by stroke. Paths are listed in drawing order. No `style` attributes (the CSP blocks them), no embedded images, no metadata.
 - **Source and rights:** the editable source (Figma or Illustrator) and confirmation that Codraft owns the icons.
 - **On the site:** about 40–48 px, decorative (the service's title carries the meaning), drawn once and static with reduced motion.
+- **If the icons are generated** (the client's plan, review batch 5): any SVG or transparent PNG of at least 1024 px will do. Claude redraws each one as a stroke SVG on the 48 px grid, so the set stays consistent and can be drawn on screen. Check that the tool's licence allows commercial use.
+
+The prompt sent to the client: the style part, the same for every icon, followed by one subject.
+
+```text
+A single minimalist technical line icon, drawn like a symbol on an architectural CAD drawing. Flat orthographic 2D, no perspective, no 3D, no shading. Thin uniform navy blue strokes (#0F1B2D), every line the same weight, square line ends and sharp mitred corners, built from straight lines, right angles, circles and arcs on a precise square grid. No fills, no gradients, no shadows, no textures, no text or letters. Exactly one small accent in bright blue (#2F6BFF): a short straight drafting line that ends in a small hollow square, like a CAD selection grip. Centred, with generous empty space around it, on a transparent background, square 1:1 format. Precise, calm and professional; not cartoonish, not playful, not glossy, not a generic stock icon. Subject: [SUBJECT]
+```
+
+| File | Service | Subject |
+|---|---|---|
+| `besplatna-analiza` | Besplatna analiza | a magnifying glass over a simple website window |
+| `fiksni-opseg` | Fiksni opseg, rok i cijena | a sheet of paper with a dimension line measuring its width, with extension lines and small arrowheads |
+| `web-stranice` | Web stranice i web trgovine | a desktop browser window with a smartphone standing in front of its lower right corner |
+| `web-aplikacije` | Web aplikacije i interni alati | an application window with a sidebar and a grid of panels, one panel holding a small bar chart |
+| `integracije` | Integracije i online rezervacije | three small square nodes joined by right-angled connector lines, one node drawn as a tiny calendar |
+| `ai-asistenti` | AI asistenti i automatizacija | a speech bubble with a small network of three connected dots inside |
+| `hosting` | Hosting i održavanje | a server of three stacked rectangles with small indicator dots, and a circular arrow beside it |
+| `seo` | SEO i lokalna vidljivost | a map location pin above a rising line chart |
+| `analitika` | Analitika i usklađenost | a simple bar chart inside a frame, with a small check mark in one corner |
 
 **What we don't use**
 - stock photography

@@ -1,0 +1,483 @@
+---
+/**
+ * The floor plan in Home's drafting zone (the client's review, batch 5;
+ * ADR 0018: architecture and construction only). A small flat, drawn like a
+ * timelapse of drafting: once half of it is in view (draw.ts), its elements
+ * appear one by one, each wiped in along its own direction, layer after
+ * layer: axes, walls, openings, dimensions, labels, title block. The layer
+ * list switches on in step and "Iscrtaj ponovno" replays it.
+ * plan-timelapse.ts times the steps. Without JavaScript, or with reduced
+ * motion, the plan is complete.
+ *
+ * It is an illustration, not client work, and its title block says so
+ * (ADR 0004). Units: 1 = 10 cm; the flat is 1000 × 700 cm. Colours come
+ * from the surface's drawing tokens; thin lines don't scale.
+ */
+import Button from "../../components/ui/Button.astro";
+import { PLAN } from "../copy.ts";
+
+type Wipe = "x" | "y";
+
+/** Exterior walls are 30 cm thick, interior walls 12 cm. */
+const WALLS: [x: number, y: number, width: number, height: number][] = [
+  // Exterior, clockwise from the top left, with the openings left out.
+  [0, 0, 10, 3],
+  [24, 0, 10, 3],
+  [48, 0, 22, 3],
+  [86, 0, 14, 3],
+  [97, 3, 3, 47],
+  [97, 56, 3, 11],
+  [73, 67, 27, 3],
+  [38, 67, 26, 3],
+  [0, 67, 18, 3],
+  [0, 44, 3, 23],
+  [0, 3, 3, 21],
+  // Interior: living room | the rest, bedroom | entrance, entrance | bath.
+  [59.4, 3, 1.2, 49],
+  [59.4, 61, 1.2, 6],
+  [60.6, 39.4, 5.4, 1.2],
+  [74, 39.4, 23, 1.2],
+  [79.4, 40.6, 1.2, 3.4],
+  [79.4, 51, 1.2, 16],
+];
+
+/** Windows: the wall's two faces and the glass between them. */
+const WINDOWS: { d: string; wipe: Wipe }[] = [
+  { d: "M10 0H24M10 1.5H24M10 3H24M10 0V3M24 0V3", wipe: "x" },
+  { d: "M34 0H48M34 1.5H48M34 3H48M34 0V3M48 0V3", wipe: "x" },
+  { d: "M70 0H86M70 1.5H86M70 3H86M70 0V3M86 0V3", wipe: "x" },
+  { d: "M97 50V56M98.5 50V56M100 50V56M97 50H100M97 56H100", wipe: "y" },
+  { d: "M18 67H38M18 68.5H38M18 70H38M18 67V70M38 67V70", wipe: "x" },
+  { d: "M0 24V44M1.5 24V44M3 24V44M0 24H3M0 44H3", wipe: "y" },
+];
+
+/** Doors: the open leaf and its swing. */
+const DOORS: { leaf: string; swing: string }[] = [
+  { leaf: "M64 67V58", swing: "M73 67A9 9 0 0 0 64 58" },
+  { leaf: "M59.4 61H50.4", swing: "M59.4 52A9 9 0 0 0 50.4 61" },
+  { leaf: "M66 39.4V31.4", swing: "M74 39.4A8 8 0 0 0 66 31.4" },
+  { leaf: "M80.6 44H87.6", swing: "M80.6 51A7 7 0 0 0 87.6 44" },
+];
+
+/** Grid axes on the walls' centre lines, with their bubbles. */
+const COLUMNS = [
+  { at: 1.5, label: "1" },
+  { at: 60, label: "2" },
+  { at: 98.5, label: "3" },
+];
+const ROWS = [
+  { at: 1.5, label: "A" },
+  { at: 40, label: "B" },
+  { at: 68.5, label: "C" },
+];
+
+const { rooms } = PLAN;
+const ROOMS = [
+  { ...rooms.living, x: 31, y: 33 },
+  { ...rooms.bedroom, x: 78.8, y: 19 },
+  { ...rooms.entrance, x: 70, y: 48.5 },
+  { ...rooms.bathroom, x: 88.8, y: 58 },
+];
+
+const { titleBlock } = PLAN;
+---
+
+<div class="plan" data-draw="half" data-plan>
+  <div class="plan__sheet graph-paper">
+    <svg
+      class="plan__drawing"
+      viewBox="-21 -21 125 110"
+      role="img"
+      aria-labelledby="plan-crtez"
+      focusable="false"
+    >
+      <title id="plan-crtez">{PLAN.drawingLabel}</title>
+
+      <g data-layer="osi">
+        {COLUMNS.map(({ at, label }) => (
+          <g data-wipe="y">
+            <path class="plan-axis" d={`M${String(at)} -14V73`} />
+            <circle class="plan-bubble" cx={at} cy="-17" r="3" />
+            <text class="plan-bubble__label" x={at} y="-17">
+              {label}
+            </text>
+          </g>
+        ))}
+        {ROWS.map(({ at, label }) => (
+          <g data-wipe="x">
+            <path class="plan-axis" d={`M-14 ${String(at)}H103`} />
+            <circle class="plan-bubble" cx="-17" cy={at} r="3" />
+            <text class="plan-bubble__label" x="-17" y={at}>
+              {label}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      <g data-layer="zidovi">
+        {WALLS.map(([x, y, width, height]) => (
+          <rect
+            class="plan-wall"
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            data-wipe={width >= height ? "x" : "y"}
+          />
+        ))}
+      </g>
+
+      <g data-layer="otvori">
+        {WINDOWS.map(({ d, wipe }) => (
+          <path class="plan-window" d={d} data-wipe={wipe} />
+        ))}
+        {DOORS.map(({ leaf, swing }) => (
+          <g data-wipe="fade">
+            <path class="plan-door" d={leaf} />
+            <path class="plan-swing" d={swing} />
+          </g>
+        ))}
+      </g>
+
+      <g data-layer="kote">
+        <g data-wipe="x">
+          <path class="plan-dim" d="M0 -1V-11M60 -1V-11M100 -1V-11M0 -5H100" />
+          <path class="plan-dim" d="M-1 -4L1 -6M59 -4L61 -6M99 -4L101 -6" />
+          <text class="plan-dim__text" x="30" y="-6">
+            600
+          </text>
+          <text class="plan-dim__text" x="80" y="-6">
+            400
+          </text>
+        </g>
+        <g data-wipe="x">
+          <path class="plan-dim" d="M0 -10H100M-1 -9L1 -11M99 -9L101 -11" />
+          <text class="plan-dim__text" x="50" y="-11">
+            1000
+          </text>
+        </g>
+        <g data-wipe="y">
+          <path class="plan-dim" d="M-1 0H-11M-1 40H-11M-1 70H-11M-5 0V70" />
+          <path class="plan-dim" d="M-6 1L-4 -1M-6 41L-4 39M-6 71L-4 69" />
+          <text
+            class="plan-dim__text"
+            x="-6"
+            y="20"
+            transform="rotate(-90 -6 20)"
+          >
+            400
+          </text>
+          <text
+            class="plan-dim__text"
+            x="-6"
+            y="55"
+            transform="rotate(-90 -6 55)"
+          >
+            300
+          </text>
+        </g>
+        <g data-wipe="y">
+          <path class="plan-dim" d="M-10 0V70M-11 1L-9 -1M-11 71L-9 69" />
+          <text
+            class="plan-dim__text"
+            x="-11"
+            y="35"
+            transform="rotate(-90 -11 35)"
+          >
+            700
+          </text>
+        </g>
+      </g>
+
+      <g data-layer="oznake">
+        {ROOMS.map(({ name, area, x, y }) => (
+          <g data-wipe="fade">
+            <text class="plan-room" x={x} y={y}>
+              {name}
+            </text>
+            <text class="plan-room__area" x={x} y={y + 3.6}>
+              {area}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      <g data-layer="zaglavlje">
+        <g data-wipe="fade">
+          <path class="plan-frame" d="M54 75H100V87H54ZM54 81H100M84 75V87" />
+          <text class="plan-cell plan-cell--strong" x="55.5" y="79.2">
+            {titleBlock.title}
+          </text>
+          <text class="plan-cell" x="85.5" y="79.2">
+            {titleBlock.units}
+          </text>
+          <text class="plan-cell plan-cell--strong" x="55.5" y="85.2">
+            {titleBlock.studio}
+          </text>
+          <text class="plan-cell" x="85.5" y="85.2">
+            {titleBlock.note}
+          </text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="plan__toolbar">
+    <p class="plan__layers-label t-label" id="plan-slojevi">
+      {PLAN.layersLabel}
+    </p>
+    <ol class="plan__layers" aria-labelledby="plan-slojevi">
+      {PLAN.layers.map(({ id, label }) => (
+        <li class="plan__layer" data-lamp={id}>
+          <span class="plan__lamp" aria-hidden="true" />
+          {label}
+        </li>
+      ))}
+    </ol>
+    <Button
+      variant="secondary"
+      size="compact"
+      class="plan__replay"
+      data-draw-replay
+    >
+      {PLAN.replay}
+    </Button>
+  </div>
+
+  <script>
+    import "../../components/ui/draw.ts";
+    import "./plan-timelapse.ts";
+  </script>
+</div>
+
+<style>
+  .plan__sheet {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .plan__drawing {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Line work: thin lines keep their weight at every size. */
+  .plan__drawing :is(path, circle) {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .plan__drawing .plan-axis {
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
+    stroke-dasharray: 6 2 1 2;
+  }
+
+  .plan__drawing .plan-bubble {
+    fill: var(--drawing-fill);
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+  }
+
+  .plan-wall {
+    fill: var(--drawing-ink);
+  }
+
+  .plan__drawing :is(.plan-window, .plan-frame) {
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+  }
+
+  .plan__drawing .plan-door {
+    stroke: var(--drawing-ink);
+    stroke-width: 1.5px;
+  }
+
+  .plan__drawing .plan-swing {
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
+  }
+
+  .plan__drawing .plan-dim {
+    stroke: var(--accent);
+    stroke-width: 1px;
+  }
+
+  /* Lettering, in the drawing's units: 1 = 10 cm. */
+  .plan__drawing text {
+    font-stretch: var(--width-label);
+  }
+
+  .plan-bubble__label {
+    fill: var(--drawing-ink);
+    font-size: 2.6px;
+    font-weight: var(--weight-strong);
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .plan-dim__text {
+    fill: var(--accent-text);
+    font-size: 2.4px;
+    font-weight: var(--weight-medium);
+    text-anchor: middle;
+  }
+
+  .plan-room {
+    fill: var(--drawing-ink);
+    font-size: 2.8px;
+    font-weight: var(--weight-strong);
+    text-anchor: middle;
+  }
+
+  .plan-room__area {
+    fill: var(--drawing-ink);
+    font-size: 2.4px;
+    text-anchor: middle;
+  }
+
+  .plan-cell {
+    fill: var(--drawing-ink);
+    font-size: 2.3px;
+  }
+
+  .plan-cell--strong {
+    font-weight: var(--weight-strong);
+  }
+
+  /* The layer list, like a CAD layer manager: a lamp per layer. */
+  .plan__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) 1.25rem;
+    align-items: center;
+    margin-top: var(--space-4);
+  }
+
+  .plan__layers-label {
+    color: var(--ink-muted);
+  }
+
+  .plan__layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem var(--space-4);
+    margin: 0;
+    padding: 0;
+    font-size: var(--step-small);
+    list-style: none;
+  }
+
+  .plan__layer {
+    display: inline-flex;
+    gap: 0.4375rem;
+    align-items: center;
+  }
+
+  .plan__lamp {
+    position: relative;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1.5px solid var(--accent);
+  }
+
+  .plan__lamp::after {
+    position: absolute;
+    inset: 2px;
+    background: var(--accent);
+    content: "";
+  }
+
+  /* Replaying needs the script and motion. */
+  .plan__toolbar .plan__replay {
+    display: none;
+    margin-left: auto;
+  }
+
+  :global(.js) .plan__toolbar .plan__replay {
+    display: inline-flex;
+  }
+
+  /* The timelapse. Before it starts every step and lamp is off; each step
+     wipes in along its own direction, or fades in. */
+  .plan.is-pending [data-wipe="x"] {
+    clip-path: inset(-3px 100% -3px -3px);
+  }
+
+  .plan.is-pending [data-wipe="y"] {
+    clip-path: inset(-3px -3px 100% -3px);
+  }
+
+  .plan.is-pending [data-wipe="fade"] {
+    opacity: 0;
+  }
+
+  .plan.is-pending .plan__lamp::after {
+    opacity: 0;
+    scale: 0;
+  }
+
+  .plan.is-drawing [data-wipe="x"] {
+    animation: plan-wipe-x var(--for, 300ms) var(--ease-pen) var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing [data-wipe="y"] {
+    animation: plan-wipe-y var(--for, 300ms) var(--ease-pen) var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing [data-wipe="fade"] {
+    animation: motion-fade-in var(--for, 300ms) var(--ease-standard)
+      var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing .plan__lamp::after {
+    animation: plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      both;
+  }
+
+  @keyframes plan-wipe-x {
+    from {
+      clip-path: inset(-3px 100% -3px -3px);
+    }
+
+    to {
+      clip-path: inset(-3px);
+    }
+  }
+
+  @keyframes plan-wipe-y {
+    from {
+      clip-path: inset(-3px -3px 100% -3px);
+    }
+
+    to {
+      clip-path: inset(-3px);
+    }
+  }
+
+  @keyframes plan-lamp {
+    from {
+      opacity: 0;
+      scale: 0;
+    }
+
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .plan__sheet {
+      padding: var(--space-7) var(--space-6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .plan__toolbar .plan__replay {
+      display: none;
+    }
+  }
+</style>

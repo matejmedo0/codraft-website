@@ -1,6 +1,9 @@
 # Phase 1: Architecture (Arhitektura)
 
-- **Status:** In progress (started 2026-10-19). Steps 1–3 done (ADR 0008–0013). Step 4: the scaffold plan is waiting for the client's approval.
+- **Status:** In progress (started 2026-10-19).
+  - Steps 1–3 are done (ADR 0008–0013).
+  - The scaffold plan for step 4 is approved: [plans/2026-10-19-scaffold-plan.md](../plans/2026-10-19-scaffold-plan.md).
+  - **Next:** a new session executes the plan from its point 0 (steps 4–8).
 - **Branch:** `phase/1-architecture`
 
 ## Goal
@@ -86,7 +89,7 @@ Write the results, with dates and URLs, into a new dated note `docs/research/YYY
 
 Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
 
-**4. Plan the scaffold, then scaffold.**
+**4. Plan the scaffold, then scaffold.** The approved plan is [plans/2026-10-19-scaffold-plan.md](../plans/2026-10-19-scaffold-plan.md) (Croatian, verbatim). Its verified versions and settings are in [research/2026-10-19-scaffold-toolchain.md](../research/2026-10-19-scaffold-toolchain.md).
 - The `/architecture` skill stops at the client's choice and points to `/plan`. So first write a short scaffold plan, in plan mode or with a Plan agent, covering folders, packages, scripts and config. The client approves it.
 - Then scaffold, following the principles in [architecture.md](../architecture.md): feature-based structure, strict TypeScript, ESLint, Prettier, test setup, env validation.
 - Load the stack skills: `nextjs-turbopack` for Next.js, `vite-patterns` for Vite-based stacks, and `react-patterns` whenever React is used.
@@ -156,3 +159,15 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
   - **Decision: Option 1.** The client confirmed Option 1 once Hostinger had been ruled out. Recorded as [ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) (stack) and [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md) (hosting). Waiting for the service choices: email API, analytics, booking tool, mailbox provider.
   - **Services.** The client confirmed the recommended services: [ADR 0010](../decisions/0010-transactional-email-scaleway.md) Scaleway, [ADR 0011](../decisions/0011-analytics-goatcounter-after-consent.md) self-hosted GoatCounter after consent plus Search Console and Bing, [ADR 0012](../decisions/0012-booking-easy-appointments.md) self-hosted Easy!Appointments, [ADR 0013](../decisions/0013-mailboxes-zoho-mail-lite.md) Zoho Mail Lite. Step 3 is complete.
   - **Correction.** ADR 0009 first said phase 1 adds the server provisioning script; it is written when the server is first set up. The ADR was corrected before the phase PR, and this entry records the change.
+  - **Scaffold plan (step 4).**
+    - Written in plan mode and checked by a Plan agent against the npm registry, the Astro docs and source, the Claude Code docs and GitHub.
+    - The check changed four things in the plan:
+      - ESLint 10 with the `eslint-plugin-jsx-a11y-x` fork, because the original plugin doesn't support ESLint 10 yet
+      - Node must be upgraded from 24.11.0 to 24.22.0, because `eslint-plugin-astro` needs ≥ 24.16
+      - `build.format: 'directory'`, because `'file'` breaks `/en` on the Node adapter
+      - the Node adapter serves the HR 404 for `/en/*`
+    - The client approved the plan.
+    - Snapshot: [plans/2026-10-19-scaffold-plan.md](../plans/2026-10-19-scaffold-plan.md). Facts with sources: [research/2026-10-19-scaffold-toolchain.md](../research/2026-10-19-scaffold-toolchain.md).
+  - **Handover.** This session's context was full, so the client asked for the plan to be documented and for a prompt to continue in a new session.
+    - The new session starts at point 0 of the plan.
+    - Point 0 is the Node upgrade, approved as part of the plan; the client confirms the UAC prompt.

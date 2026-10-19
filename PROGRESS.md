@@ -2,12 +2,12 @@
 
 **Trenutna faza:** 1 — Arhitektura (u tijeku od 19. 10. 2026., grana `phase/1-architecture`)
 
-**Sljedeći korak:** odobrite plan scaffolda. Redoslijed u fazi 1:
+**Sljedeći korak:** nova sesija izvršava odobreni plan scaffolda (`docs/plans/2026-10-19-scaffold-plan.md`) od točke 0. Točka 0 je nadogradnja Nodea na 24.22.0, a vi potvrđujete UAC prozor. Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
 2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
 3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
-4. **plan scaffolda (za vaše odobrenje) ← sada**
-5. scaffold, CI, hookovi i dozvole
+4. ✓ plan scaffolda, odobren 19. 10. 2026. → `docs/plans/2026-10-19-scaffold-plan.md` (provjerene verzije i postavke: `docs/research/2026-10-19-scaffold-toolchain.md`)
+5. **scaffold, CI, hookovi i dozvole, `/init`, provjere i PR ← sljedeće, u novoj sesiji**
 
 Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je zelen.
 

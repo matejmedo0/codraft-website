@@ -20,8 +20,8 @@ This folder is the project's durable memory. A new person or a new Claude sessio
 | [compliance.md](compliance.md) | Croatian and EU requirements with sources and confidence; copy guardrails; checks by phase |
 | [architecture.md](architecture.md) | Repository layout, principles for the application code, planned integrations; completed in phase 1 |
 | [decisions/](decisions/README.md) | Architecture Decision Records (ADRs), with index and template |
-| [research/](research/) | Dated research notes with sources: [hosting and services, 2026-10-19](research/2026-10-19-hosting.md) (supersedes [2026-10-18](research/2026-10-18-hosting.md)), [domain and name](research/2026-10-18-domain-and-name.md) |
-| [plans/](plans/) | Snapshots of approved plans, verbatim and never updated: [2026-10-18](plans/2026-10-18-approved-plan.md) (Croatian) |
+| [research/](research/) | Dated research notes with sources: [hosting and services, 2026-10-19](research/2026-10-19-hosting.md) (supersedes [2026-10-18](research/2026-10-18-hosting.md)), [scaffold toolchain, 2026-10-19](research/2026-10-19-scaffold-toolchain.md), [domain and name](research/2026-10-18-domain-and-name.md) |
+| [plans/](plans/) | Snapshots of approved plans, verbatim and never updated (Croatian): [2026-10-18](plans/2026-10-18-approved-plan.md) (phase 0 and the roadmap), [2026-10-19 scaffold plan](plans/2026-10-19-scaffold-plan.md) (phase 1, steps 4–8) |
 
 ## Plan coverage
 

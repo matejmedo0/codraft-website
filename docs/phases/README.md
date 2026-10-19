@@ -14,7 +14,7 @@ Live status is in [PROGRESS.md](../../PROGRESS.md).
 | # | Phase (HR) | Goal | Key deliverables | Exit criteria | Status |
 |---|---|---|---|---|---|
 | 0 | [Foundation](0-foundation.md) (Temelji) | Agree what we build and set up the repository | Sitemap, copy source, docs, ADRs, GitHub repo | Sitemap, asset gaps and decisions recorded; repo on GitHub | Done 2026-10-19; approved |
-| 1 | [Architecture](1-architecture.md) (Arhitektura) | Choose and scaffold the stack and hosting | Research, architecture options, scaffold, CI, hooks | Build passes; dev server runs; empty page renders at 375/768/1440; CI green | In progress (2026-10-19) |
+| 1 | [Architecture](1-architecture.md) (Arhitektura) | Choose and scaffold the stack and hosting | Research, architecture options, scaffold, CI, hooks | Build passes; dev server runs; empty page renders at 375/768/1440; CI green | Done 2026-10-19; waiting for approval ([PR #1](https://github.com/matejmedo0/codraft-website/pull/1)) |
 | 2 | [Design](2-design.md) (Dizajn) | Choose a visual direction and build the design system | 2–3 coded prototypes, tokens, base components, style page | Client approves the direction; style page at three widths | Not started |
 | 3 | [Pages](3-pages.md) (Izrada stranica) | Build every launch page in HR and EN | 10 pages + 404, SEO, JSON-LD, OG images | All sitemap pages built; no open CRITICAL/HIGH findings | Not started |
 | 4 | [Integrations](4-integrations.md) (Integracije) | Forms, booking, consent, analytics, chatbot | Audit and contact forms, consent manager, AI page and demo | Form works end to end locally; analytics blocked until consent | Not started |

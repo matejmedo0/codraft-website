@@ -1,18 +1,19 @@
 # Codraft — napredak
 
-**Trenutna faza:** 1 — Arhitektura (u tijeku od 19. 10. 2026., grana `phase/1-architecture`)
+**Trenutna faza:** 1 — Arhitektura, gotova 19. 10. 2026. Čeka vaš pregled PR-a #1 (grana `phase/1-architecture`).
 
-**Sljedeći korak:** nova sesija izvršava odobreni plan scaffolda (`docs/plans/2026-10-19-scaffold-plan.md`) od točke 0. Točka 0 je nadogradnja Nodea na 24.22.0, a vi potvrđujete UAC prozor. Redoslijed u fazi 1:
+**Sljedeći korak:** pregledajte PR #1: https://github.com/matejmedo0/codraft-website/pull/1. Na vašu riječ („idemo dalje“) spajam ga u `main` i krećem u fazu 2 (dizajn). Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
 2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
 3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
 4. ✓ plan scaffolda, odobren 19. 10. 2026. → `docs/plans/2026-10-19-scaffold-plan.md` (provjerene verzije i postavke: `docs/research/2026-10-19-scaffold-toolchain.md`)
-5. **scaffold, CI, hookovi i dozvole, `/init`, provjere i PR ← sljedeće, u novoj sesiji**
+5. ✓ scaffold, CI, hookovi i dozvole, `/init`, provjere i PR → dnevnik u `docs/phases/1-architecture.md`, nalazi u `docs/research/2026-10-19-scaffold-verification.md`
 
-Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je zelen.
+Izlazni kriteriji faze 1 su ispunjeni: build prolazi, dev server radi, prazna stranica prikazuje se na 375, 768 i 1440 px bez grešaka u konzoli, a CI je zelen.
 
 **Gdje je što:**
 - Pravila rada i ovlasti: `.claude/rules/codraft-workflow.md`
+- Pokretanje projekta i naredbe: `README.md`
 - Plan po fazama: `docs/phases/`
 - Indeks dokumentacije: `docs/README.md`
 - Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
@@ -44,10 +45,21 @@ Računi i ključevi otvaraju se u fazi 4, a sandučići u fazi 7.
 
 Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototipova u fazi 2 i rok čuvanja upita iz formi.
 
+## Faza 1: rezultat (19. 10. 2026.)
+
+- **Projekt:** Astro 7.4 s React otocima i malim Node API-jem. Prazna početna na `/` i `/en` te lokalizirane 404 stranice.
+- **Provjere:**
+  - lint, format, tipovi, 83 unit testa, build, budžet JavaScripta i zabranjeni izrazi
+  - 18 E2E testova na tri širine
+  - CI na Nodeu 24 i 26, zelen
+- **Claude Code:** hookovi i dozvole u `.claude/settings.json`. Izmjene `.env` datoteka su blokirane, a svaka izmjena koda prolazi kroz Prettier i ESLint.
+- **Na ovom računalu:** Node 24.22.0. Playwright MCP sada ima limit od 10 minuta umjesto 30.
+- **Prijedlog za vas:** CI kao obavezna provjera u pravilu „Protect main“, tako da se PR ne može spojiti dok CI nije zelen. To je administracija repozitorija, pa treba vaše odobrenje.
+
 ## Faze
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
-- [ ] 1 — Arhitektura (u tijeku): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
+- [x] 1 — Arhitektura (gotova 19. 10. 2026., čeka vaše odobrenje): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
 - [ ] 2 — Dizajn: 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`

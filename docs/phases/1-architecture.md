@@ -1,10 +1,9 @@
 # Phase 1: Architecture (Arhitektura)
 
-- **Status:** In progress (started 2026-10-19).
-  - Steps 1–3 are done (ADR 0008–0013).
-  - The scaffold plan for step 4 is approved: [plans/2026-10-19-scaffold-plan.md](../plans/2026-10-19-scaffold-plan.md).
-  - **Next:** a new session executes the plan from its point 0 (steps 4–8).
-- **Branch:** `phase/1-architecture`
+- **Status:** Done (2026-10-19). Waiting for the client's review of the phase PR.
+  - Steps 1–3: research and decisions (ADR 0008–0013).
+  - Steps 4–8: the approved [scaffold plan](../plans/2026-10-19-scaffold-plan.md), executed; findings in [research/2026-10-19-scaffold-verification.md](../research/2026-10-19-scaffold-verification.md).
+- **Branch:** `phase/1-architecture` · **PR:** [#1](https://github.com/matejmedo0/codraft-website/pull/1)
 
 ## Goal
 
@@ -123,11 +122,11 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
 
 ## Exit criteria
 
-- [ ] The build passes and the dev server runs.
-- [ ] An empty page renders in Playwright at 375, 768 and 1440 px with no console errors.
-- [ ] CI is green on the phase PR.
-- [ ] The stack and hosting choices are recorded as ADRs; `architecture.md` describes the real structure.
-- [ ] Phase PR opened with the report; `PROGRESS.md` updated.
+- [x] The build passes and the dev server runs.
+- [x] An empty page renders in Playwright at 375, 768 and 1440 px with no console errors ([screenshots](screenshots/phase-1/)).
+- [x] CI is green on the phase PR.
+- [x] The stack and hosting choices are recorded as ADRs; `architecture.md` describes the real structure.
+- [x] Phase PR opened with the report; `PROGRESS.md` updated.
 
 ## Log
 
@@ -171,3 +170,37 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
   - **Handover.** This session's context was full, so the client asked for the plan to be documented and for a prompt to continue in a new session.
     - The new session starts at point 0 of the plan.
     - Point 0 is the Node upgrade, approved as part of the plan; the client confirms the UAC prompt.
+  - **Scaffold (steps 4–8), in a new session.**
+    - **Point 0, Node.** winget's `OpenJS.NodeJS.LTS` offered only 24.20.0, so the plan's alternative was used: the official 24.22.0 MSI from nodejs.org, checked against `SHASUMS256.txt` and its signature. The client confirmed the UAC prompt. Now Node 24.22.0 and npm 11.19.1.
+    - **Commits** (Conventional Commits, messages from files, pushed to `origin`): the seven commits of plan point 9, plus `fix: add an empty favicon placeholder until phase 2`.
+    - **Confirmed from the toolchain note** (details in [research/2026-10-19-scaffold-verification.md](../research/2026-10-19-scaffold-verification.md)):
+      - `/en` breaks with `build.format: 'file'`.
+      - The Node adapter serves the Croatian 404 for unknown `/en/*` paths. This is a known limitation; Caddy fixes it in phase 7.
+      - `eslint-plugin-jsx-a11y` fails with ERESOLVE next to ESLint 10.
+      - Vitest 5 works with Astro's `getViteConfig`, so the fallback to 4.1 wasn't needed.
+    - **Adjustments within the plan.** None changes an ADR.
+      - Type-aware linting covers `.ts` and `.tsx` only. astro-eslint-parser can't give typescript-eslint the types of `.astro` imports, and `astro check` type-checks `.astro` files. The view registry therefore lives inside `getStaticPaths` in `[...slug].astro`, so no `.ts` file imports an `.astro` file.
+      - Files the plan implied without listing them: `src/features/i18n/ui.ts` (UI-string lookup), `src/views/NotFoundView.astro` (shared by both 404 pages), and unit tests for `urls.ts` and the locale files.
+      - `markdown.syntaxHighlight: false`, because Astro warned that Shiki's inline styles conflict with the CSP.
+      - Permissions: the plan's allowlist, plus `ask` rules for the destructive variants of allowed commands (force push, branch deletion, `git switch` that discards changes, `gh pr merge`), as the workflow requires. `npm install` runs without a prompt only without arguments, so adding a package still asks.
+      - The `.env` guard fails closed: unreadable input blocks, and so does a hook that can't start (`onFailure: "block"`).
+      - CI turns Astro telemetry off.
+      - The PR was opened as a draft right after the CI commit, so CI could run while the checks and docs were finished.
+      - Favicon: the Playwright MCP check found Chrome's `/favicon.ico` 404 at every width; the headless E2E browser never requests a favicon. An empty icon (`data:,`) stops the request until phase 2 adds the favicon set.
+      - The screenshots of the MCP check are kept in [screenshots/phase-1/](screenshots/phase-1/).
+    - **Checks:**
+      - `npm run verify` passes, with 83 unit tests. `npm run test:e2e` passes: 18 tests, 6 at each width. `npm run dev` serves `/` and `/en`.
+      - Both build checks were probed with deliberate violations. A page with one small React island measured 69.5 KB and failed the 15 KB budget; a file with banned terms failed the guardrail check.
+      - Hooks: tested with piped input and live in the session. A write to `.env.hooktest` was blocked, and a badly formatted `.ts` file was reformatted, with the ESLint findings reported.
+      - Playwright MCP on the production build: `/`, `/en`, the Croatian 404 and `/en/404`, at 375, 768 and 1440 px. There were no console errors, CSP violations or failed requests. The only console entry is Chrome's note that the unknown path itself answered 404, which is the intended status.
+      - CI on PR #1: verify on Node 24 (38 s) and Node 26 (45 s), and E2E (1 min 3 s), all green.
+    - **Noted along the way** (the plan's last section):
+      - `node:sqlite` is at stability 1.2 (release candidate) in the Node 24 and 26 docs, and runs without warnings on 24.22.0 and 26.12.0.
+      - Astro 7.4 runs on Node 26 (the CI verify job).
+      - The CSP in the build has the four configured directives, plus `script-src` with 7 hashes (Astro's island scripts) and `style-src` with 2. It blocks inline `style` attributes, so phase 2 checks React islands and `motion/react` against it. That ADR 0008 open point moves to phase 2, when `motion` is installed.
+      - Phase 2 design-lab routes: Astro ignores `_`-prefixed route files, so use a normal folder name (e.g. `lab/`) and keep the lab out of production builds.
+    - **Playwright MCP stalled for 30 minutes.** The Node MSI upgrade had stopped the running MCP server (Windows Restart Manager), leaving a dead wrapper that Claude Code waited on until its timeout. The client reconnected the server and asked for its tool timeout in the user-level Claude config to be lowered from 30 to 10 minutes, which was done. After a Node upgrade, reconnect the MCP servers.
+    - **`/init`:** `CLAUDE.md` now has the stack, the commands (including how to run a single test) and the architecture notes. The existing rules are unchanged.
+    - **Docs updated:** `architecture.md`, `README.md`, `CONTRIBUTING.md`, this log, `PROGRESS.md`, and the indexes in `docs/README.md` and `docs/phases/README.md`.
+    - **Phase gate.** PR #1 holds the phase report. Waiting for the client's review; the merge and phase 2 start only on the client's word.
+    - **Proposal** (repository administration, so it needs the client's OK): make the CI checks required in the "Protect main" ruleset.

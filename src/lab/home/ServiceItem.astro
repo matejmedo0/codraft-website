@@ -6,6 +6,10 @@
  * anchor on /usluge and shows the grips on hover and keyboard focus; the
  * outline goes around the item. Each option of the section places the
  * items its own way.
+ *
+ * With `number` the item is numbered in a circle drawn like the floor
+ * plan's grid bubbles ("Tehničko crtanje", review batch 8); the number
+ * stays readable to assistive technology.
  */
 import type { HTMLAttributes } from "astro/types";
 
@@ -15,16 +19,36 @@ interface Props extends HTMLAttributes<"li"> {
   title: string;
   body: string;
   href?: string | undefined;
+  number?: string | undefined;
+  /** The title's level under the zone's headings. */
+  level?: "h3" | "h4";
 }
 
-const { title, body, href, class: className, ...attributes } = Astro.props;
+const {
+  title,
+  body,
+  href,
+  number,
+  level = "h4",
+  class: className,
+  ...attributes
+} = Astro.props;
+const Heading = level;
 ---
 
 <li
-  class:list={["service", { "has-grips": href !== undefined }, className]}
+  class:list={[
+    "service",
+    {
+      "has-grips": href !== undefined,
+      "service--numbered": number !== undefined,
+    },
+    className,
+  ]}
   {...attributes}
 >
-  <h4 class="service__title">
+  {number !== undefined && <span class="service__number">{number}</span>}
+  <Heading class="service__title">
     {href === undefined ? (
       title
     ) : (
@@ -32,7 +56,7 @@ const { title, body, href, class: className, ...attributes } = Astro.props;
         {title}
       </a>
     )}
-  </h4>
+  </Heading>
   <p class="service__body">{body}</p>
   {href !== undefined && <Grips />}
 </li>
@@ -65,6 +89,42 @@ const { title, body, href, class: className, ...attributes } = Astro.props;
     margin-top: var(--space-2);
     font-size: var(--step-service);
     line-height: 1.5;
+  }
+
+  /* Numbered: the circle beside the title and its line. */
+  .service--numbered {
+    --number-size: 2rem;
+
+    display: grid;
+    grid-template-columns: var(--number-size) minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-items: start;
+  }
+
+  .service--numbered :is(.service__title, .service__body) {
+    grid-column: 2;
+  }
+
+  /* Like the plan's grid bubbles: a thin ink circle on paper, the number
+     in the condensed width, centred on the title's first line. */
+  .service__number {
+    display: grid;
+    grid-row: 1 / span 2;
+    place-items: center;
+    width: var(--number-size);
+    height: var(--number-size);
+    margin-top: calc(
+      (var(--step-title) * var(--leading-title) - var(--number-size)) / 2
+    );
+    border: var(--rule) solid var(--drawing-ink);
+    border-radius: 50%;
+    background: var(--drawing-fill);
+    color: var(--drawing-ink);
+    font-size: 0.875rem;
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-strong);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
 
   /* The outline goes around the whole item, not just the title. */

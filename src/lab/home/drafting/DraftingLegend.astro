@@ -1,12 +1,20 @@
 ---
 /**
  * Zone D, "Tehničko crtanje", option C "Legenda" (the client's review,
- * batch 6): the drawing leads. On wide screens the floor plan is large on
- * the left, and on the right, like a drawing's legend, the tagline, the
- * audience and the three services (ADR 0019) in a ruled table whose cells
- * share their rules, as in the title block; then the button. The services
- * use the type of "Što radimo". The plan draws like a timelapse
- * (PlanDrawing.astro).
+ * batch 6), the client's choice in batch 8, refined as the client set out.
+ * The drawing leads: the floor plan starts at the top of the zone, on the
+ * left, and draws like a timelapse (PlanDrawing.astro, unchanged in
+ * function). The right column runs from the top edge of the drawing's frame
+ * to its bottom edge: the section's name, the heading, the lead, the three
+ * services (ADR 0019) numbered like the plan's grid bubbles, and the button
+ * at the bottom. The layer list and the replay button have their own row
+ * under the drawing, so the column ends with the frame.
+ *
+ * The grid's areas are "drawing text" / "legend .". The plan spans the
+ * drawing and legend rows as a subgrid, so its frame takes the first row and
+ * its layer list the second. Where the text is taller than the drawing, the
+ * frame grows with the row and the plan stays centred in it. Below 900 px
+ * (the client's breakpoint): one column, text, drawing, layer list.
  */
 import "../services.css";
 
@@ -27,10 +35,11 @@ interface Props {
 
 const { headingId = "cad", label } = Astro.props;
 const labelId = `${headingId}-opcija`;
+const nameId = `${headingId}-naziv`;
 ---
 
 <Zone
-  labelledby={label === undefined ? headingId : `${labelId} ${headingId}`}
+  labelledby={label === undefined ? nameId : `${labelId} ${nameId}`}
   class="svc"
 >
   {label !== undefined && (
@@ -38,73 +47,123 @@ const labelId = `${headingId}-opcija`;
       {label}
     </p>
   )}
-  <h2 id={headingId}>{DRAFTING.title}</h2>
   <div class="legend">
-    <div class="legend__figure">
-      <PlanDrawing idPrefix={headingId} />
-    </div>
     <div class="legend__text">
-      <p class="svc-tagline">{DRAFTING.tagline}</p>
-      <p class="legend__audience">{DRAFTING.audience}</p>
-      <ul class="svc-items legend__cells">
-        {DRAFTING_SERVICES.map((item) => (
+      <p class="legend__name t-label" id={nameId}>
+        {DRAFTING.title}
+      </p>
+      <h2 class="legend__heading" id={headingId}>
+        {DRAFTING.home.heading}
+      </h2>
+      <p class="legend__lead">{DRAFTING.home.lead}</p>
+      <ol class="svc-items legend__items">
+        {DRAFTING_SERVICES.map((item, index) => (
           <ServiceItem
             title={item.title}
             body={item.body}
             href={item.href}
-            class="legend__cell"
+            number={String(index + 1)}
+            level="h3"
+            class="legend__item"
           />
         ))}
-      </ul>
-      <Button href={pathFor("drafting", "hr")}>{DRAFTING.cta}</Button>
+      </ol>
+      <Button href={pathFor("drafting", "hr")} class="legend__cta">
+        {DRAFTING.cta}
+      </Button>
     </div>
+    <PlanDrawing idPrefix={headingId} class="legend__plan" />
   </div>
 </Zone>
 
 <style>
+  /* Symmetric inside the zone's padding, and no wider than 100rem. */
   .legend {
     display: grid;
     gap: var(--space-7);
+    max-width: 100rem;
+    margin-inline: auto;
   }
 
-  .legend__audience {
-    max-width: var(--measure-lead);
+  /* The section's name, its first line trimmed to the cap height, so the
+     column starts on the frame's top edge. */
+  .legend__name {
+    font-size: var(--step-small);
+    font-weight: var(--weight-strong);
+    text-box: trim-start cap alphabetic;
+  }
+
+  .legend__heading {
     margin-top: var(--space-3);
-    font-size: var(--step-service);
-    line-height: 1.5;
   }
 
-  /* The ruled table: the cells share their rules. */
-  .legend__cells {
-    gap: var(--rule);
-    margin: var(--space-5) 0 var(--space-6);
-    border: var(--rule) solid var(--line);
-    background: var(--line);
+  /* Full ink: 15.84:1 on paper (the client asked for at least 4.5:1). */
+  .legend__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
   }
 
-  .legend__cell {
-    padding: var(--space-4) var(--space-5) var(--space-5);
-    background: var(--surface);
+  .legend__items {
+    margin: var(--space-6) 0;
   }
 
-  /* A selected cell's grips and outline lie over its neighbours. */
-  .legend__cell:is(:hover, :focus-within) {
-    z-index: 1;
+  .legend__item {
+    padding-block: var(--space-4);
   }
 
-  @media (min-width: 64rem) {
+  /* Between two services, a thin dashed line in the plan's line colour. */
+  .legend__item + .legend__item {
+    background: repeating-linear-gradient(
+        90deg,
+        var(--drawing-muted) 0 6px,
+        transparent 6px 10px
+      )
+      top left / 100% var(--rule) no-repeat;
+  }
+
+  .legend__cta {
+    align-self: flex-start;
+  }
+
+  @media (min-width: 56.25rem) {
     .legend {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: var(--gap);
-      align-items: start;
-    }
-
-    .legend__figure {
-      grid-column: 1 / span 7;
+      grid-template-areas:
+        "drawing text"
+        "legend .";
+      grid-template-columns: minmax(0, 57fr) minmax(0, 43fr);
+      gap: 0 var(--space-7);
     }
 
     .legend__text {
-      grid-column: 8 / -1;
+      display: flex;
+      grid-area: text;
+      flex-direction: column;
+    }
+
+    /* The button sits on the frame's bottom edge. */
+    .legend__cta {
+      margin-top: auto;
+    }
+
+    /* The frame takes the drawing row, the layer list the legend row. */
+    .legend__plan {
+      display: grid;
+      grid-row: drawing-start / legend-end;
+      grid-column: drawing;
+      grid-template-rows: subgrid;
+    }
+
+    .legend__plan :global(.plan__sheet) {
+      display: grid;
+      align-content: center;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .legend {
+      column-gap: var(--space-9);
     }
   }
 </style>

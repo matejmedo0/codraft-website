@@ -24,7 +24,7 @@ The client asked for a handover at the end of batch 7: "updateaj dokumentaciju z
 - **The dev server** still runs on port 4321 (`node` PID 29544 at the handover). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
 
 **Open items, in order**
-1. **Tehničko crtanje:** confirm the option with the client ("Opcija C vjerovatno"). On their word, put `DraftingLegend` on `/lab/pocetna` instead of `DraftingSide`, and record it under batch 7.
+1. ✓ **Tehničko crtanje:** the client confirmed option C with a layout and text of their own (batch 8, #21–25); it is on `/lab/pocetna`.
 2. **The service icons:** the client is generating nine icons with the prompt in [brand.md](../brand.md#imagery). When they arrive (SVG or transparent PNG): redraw each as a stroke SVG on the 48 px grid (`currentColor`, 1.5 px, square caps), put them on the services in "Što radimo", and draw each stage's icons as the process line reaches the stage (`process-line.ts` knows when). Static with reduced motion. Then write the ADR that adopts them.
 3. **Proposed, not yet answered:** after the floor plan's timelapse, raise it into a 3D view (walls extruded), to show the 3D service. Do it only if the client says yes.
 4. **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Two lines on a laptop would need smaller letters (about 54 px instead of 70). The client rejected the other way (the H1 across the sheet). Don't change it unasked; if the client raises it, show both at 1440 px side by side first.
@@ -179,7 +179,46 @@ The client answered the open questions of batches 2–4 here.
 | # | The client's request | Change | Where | Decision | Status |
 |---|---|---|---|---|---|
 | 19 | "Počeo si raditi gluposti rekao sam što se tiče hero sekcije da vratiš kao prije što je bilo poslao sam ti screesnhot." (with a screenshot of the hero) | No code change. The hero on `/lab/pocetna` already matched the client's screenshot, checked at 1920 px: the H1 in two lines at 72 px, the lead, "Pogledajte usluge", the drafting link, and the graph-paper drawing of 741 × 555 px. The screenshot is kept as the reference. **Lesson:** batch 5 changed the hero's composition when the client had asked only about line breaks. Change only what is asked; when a request needs more, show the options first and let the client choose. | `screenshots/phase-2/review/hero-reference-client.png` | None | Matches the reference |
-| 20 | "Opcija C vjerovatno no updateaj dokumentaciju za nastavak u drugoj sesiji i daj prompt za drugu sesiju" | The client leans to option C „Legenda“ for "Tehničko crtanje", not yet final. Confirm in the next session, then put it on `/lab/pocetna`. The handover is above. | — | The client chooses | To confirm |
+| 20 | "Opcija C vjerovatno no updateaj dokumentaciju za nastavak u drugoj sesiji i daj prompt za drugu sesiju" | The client leans to option C „Legenda“ for "Tehničko crtanje", not yet final. Confirm in the next session, then put it on `/lab/pocetna`. The handover is above. | — | The client chooses | Confirmed in batch 8 (#21) |
+
+**Batch 8 (2026-10-19, second refinements session): "Tehničko crtanje", option C**
+
+The client's message, verbatim:
+
+> Uredi sekciju "Tehničko crtanje" (varijanta C, s legendom slojeva) to potvrđujem. Interaktivni crtež, ostaje funkcionalno isti. Mijenjaš samo raspored i tekst desnog stupca.
+>
+> RASPORED
+> 1. Naslov "Tehničko crtanje" makni iz reda iznad crteža i premjesti ga na vrh desnog stupca. Crtež počinje od vrha sekcije.
+> 2. Desni stupac poravnaj s okvirom crteža: vrh naslova u ravnini s gornjim rubom okvira crteža, CTA u ravnini s donjim rubom okvira crteža. Bez vertikalnog centriranja i bez praznog prostora ispod CTA-a.
+> 3. Red s legendom slojeva i gumbom "Iscrtaj ponovno" stavi u zaseban grid red ispod crteža, da se desni stupac ne rasteže do dna legende. Primjer: grid-template-areas: "drawing text" "legend .". U tekstnom stupcu daj CTA-u margin-top: auto.
+> 4. Omjer stupaca ostaje približno 57/43. Crtež smijete smanjiti najviše 5 % ako treba.
+> 5. Popravi overflow: okvir s uslugama trenutno ide do desnog ruba ekrana i border mu je odrezan. Kontejner neka ima simetričan horizontalni padding i max-width.
+> 6. Ukloni okvir oko tri usluge. Umjesto njega numeriraj stavke krugovima u istom stilu kao oznake osi na crtežu (1, 2, 3) i odvoji ih tankom isprekidanom linijom u stilu crteža.
+> 7. Lead rečenicu potamni tako da ima kontrast najmanje 4.5:1 prema pozadini.
+> 8. Ispod 900 px: jedan stupac, tekst ide prvi, pa crtež, pa legenda.
+>
+> TEKST (zamijeni postojeći doslovno, ništa ne dodaj)
+> Eyebrow: Tehničko crtanje
+> Naslov: Kad crteža ima više nego ruku.
+> Lead: Crtamo za arhitektonske urede i građevinske tvrtke, u vašim slojevima i s vašim zaglavljem.
+>
+> 1  2D crteži
+>    Tlocrti, presjeci i detalji koje možete odmah koristiti.
+> 2  3D modeli
+>    Zgrade i detalji iz vaših nacrta i skica.
+> 3  Tehnička dokumentacija
+>    Komplet složen za predaju. ( ili tako nešto da ne zvuči robotski i generički sam smisli )
+>
+> Rečenicu "Precizni crteži, isporučeni u roku." obriši u potpunosti. Ne dodaj nikakve brojke, rokove ni obećanja koja nisu u tekstu iznad.
+> Ako se slažeš nastavi pa stani i javi da pogledam
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 21 | "Uredi sekciju "Tehničko crtanje" (varijanta C, s legendom slojeva) to potvrđujem. Interaktivni crtež, ostaje funkcionalno isti. Mijenjaš samo raspored i tekst desnog stupca." | Option C „Legenda“ is on `/lab/pocetna` instead of A. The floor plan works as before: the same timelapse, layer list and replay. `/lab/crtanje` stays as the record and says which option was chosen; its option C shows the refined version. | `src/lab/pages/pocetna.astro`, `src/lab/pages/crtanje.astro`, `src/lab/home/drafting/DraftingLegend.astro` | The client chose option C (closes #20) | Done; in review |
+| 22 | Layout, points 1–4 and 8 (quoted above) | The section's name moves to the top of the right column and the drawing starts at the top of the zone. The zone is a grid with the areas "drawing text" / "legend .": the floor plan is a subgrid across both rows, so its layer list and replay button sit in their own row under the drawing and the right column ends with the drawing's frame. The column runs from the frame's top edge (the section's name is trimmed to its cap height) to the frame's bottom edge, where the button sits (`margin-top: auto`); no vertical centring. Columns 57/43; the drawing is not reduced. From about 1440 px up the drawing is the taller one and the frame keeps the plan's own height (1440, 1707 and 1920 px measured). Below that the text is taller, so the frame grows with the column and the plan stays centred in it, and both edges still line up: by about 18 % at 1280 px, 46 % at 1024 px and 76 % at 900 px. Below 900 px: one column, text, drawing, layer list. The section's name is 15 px, in full ink. | `src/lab/home/drafting/DraftingLegend.astro`; `PlanDrawing.astro` takes a class (no functional change) | None | Done; in review |
+| 23 | Point 5: "Popravi overflow: okvir s uslugama trenutno ide do desnog ruba ekrana i border mu je odrezan. Kontejner neka ima simetričan horizontalni padding i max-width." | The zone keeps its symmetric padding, and its content gets a maximum width of 100rem (1600 px), centred (at 1920 px it sits about 100 px in from each side). The box around the services is gone (#24). **The cause of the overflow is the sheet, on every page; not changed yet:** from a viewport of 120rem (1920 px), `Sheet.astro` switches to `margin-inline: auto`, but with a scrollbar the sheet (max 1920 px) no longer fits, so its side margins drop to zero, back to 24 px only at about 1983 px. Its frame then touches the screen's edges (the client's hero screenshot shows it), the zone letters fall off the left edge, and, with motion on, the grip at the right end of every zone rule sticks out 4 px, so the page scrolls sideways. The fix keeps the 24 px margin (`max-width: min(120rem, 100% - 3rem)`); at 1920 px it moves the hero 24 px in from each side and its H1 from 72 to 71.3 px, still two lines. Shown to the client before any change, because the hero must stay as in the reference: [now](screenshots/phase-2/review/batch8-sheet-now-1920.png), [with the fix](screenshots/phase-2/review/batch8-sheet-fix-1920.png). | `src/lab/home/drafting/DraftingLegend.astro` | None | Container done; the sheet's margin waits for the client |
+| 24 | Points 6 and 7 (quoted above) | No box around the services. Each is numbered with a circle drawn like the plan's grid bubbles (a 1 px ink outline on paper, the number in the condensed width), and a thin dashed line, in the drawing's muted line colour, separates them. The services are an ordered list; their titles are now `h3` under the zone's `h2`. The lead is in full ink (15.84:1, was the muted grey, 5.16:1). | `src/lab/home/ServiceItem.astro` (optional number and heading level), `DraftingLegend.astro` | None | Done; in review |
+| 25 | Text (quoted above) | Replaced verbatim: the section's name "Tehničko crtanje" above the heading, the heading "Kad crteža ima više nego ruku.", the lead, and the three services. The third line, which the client left to Claude, is "Crteži i specifikacije složeni u komplet spreman za predaju." (every word from `drafting.docs.body`; no new claim). "Precizni crteži, isporučeni u roku." and the audience line are no longer in the zone. The services' new lines apply wherever the lab shows them (options A and B too). | `docs/content.md`, `src/lab/copy.ts`, `src/lab/home/drafting/drafting.ts` | None | Done; in review |
 
 ## After the refinements
 

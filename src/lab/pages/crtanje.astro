@@ -35,7 +35,7 @@ const OPTIONS = [
     id: "crtanje-c",
     name: "Opcija C: legenda",
     summary:
-      "Tlocrt velik lijevo, a desno, kao legenda nacrta, usluge u ćelijama tablice.",
+      "Tlocrt velik lijevo, a desno, od gornjeg do donjeg ruba okvira crteža, naziv, naslov, uvod i numerirane usluge. Ovo je vaš izbor, s doradama iz skupine 8.",
   },
 ] as const;
 
@@ -56,8 +56,9 @@ const [first, second, third] = OPTIONS;
         <p class="options__lead">
           Tri načina da odjeljak bude u skladu s „Što radimo“: isti naslovi,
           ista veličina teksta i jedan kratki redak po usluzi, sada s 3D
-          modelima. Tlocrt se u svakoj opciji iscrtava kao timelapse. Na
-          početnoj je zasad opcija A; odabranu stavljam tamo.
+          modelima. Tlocrt se u svakoj opciji iscrtava kao timelapse. Odabrali
+          ste opciju C (19. 10. 2026.); ona je sada na početnoj, s vašim
+          rasporedom i tekstom. Ova stranica ostaje kao zapis usporedbe.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (

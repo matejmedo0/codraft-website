@@ -13,7 +13,12 @@
  * It is an illustration, not client work, and its title block says so
  * (ADR 0004). Units: 1 = 10 cm; the flat is 1000 × 700 cm. Colours come
  * from the surface's drawing tokens; thin lines don't scale.
+ *
+ * A class passed in gets the parent's scoped styles, so a zone can place
+ * the drawing and its layer list in its own grid (option C, batch 8).
  */
+import type { HTMLAttributes } from "astro/types";
+
 import Button from "../../components/ui/Button.astro";
 import { PLAN } from "../copy.ts";
 
@@ -72,19 +77,24 @@ const ROWS = [
   { at: 68.5, label: "C" },
 ];
 
-interface Props {
+interface Props extends HTMLAttributes<"div"> {
   /** Prefixes the drawing's ids, so a page can show it more than once. */
   idPrefix?: string;
 }
 
-const { idPrefix = "plan" } = Astro.props;
+const { idPrefix = "plan", class: className, ...attributes } = Astro.props;
 const drawingId = `${idPrefix}-crtez`;
 const layersId = `${idPrefix}-slojevi`;
 
 const { titleBlock } = PLAN;
 ---
 
-<div class="plan" data-draw="half" data-plan>
+<div
+  class:list={["plan", className]}
+  data-draw="half"
+  data-plan
+  {...attributes}
+>
   <div class="plan__sheet graph-paper">
     <svg
       class="plan__drawing"

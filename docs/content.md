@@ -166,6 +166,7 @@ Each EN line is identical to the client's text. Where the original puts a title 
 - **`drafting.tagline`**
   - EN: Precise drawings, delivered on deadline.
   - HR `draft`: Precizni crteži, isporučeni u roku.
+  - Not on Home: the client removed it from Home's drafting zone (review batch 8, 2026-10-19: "obriši u potpunosti"). Whether the drafting page keeps it is the client's call in phase 3.
 - **`drafting.audience`**
   - EN: For architects, engineering firms and manufacturers who need extra drafting capacity.
   - HR `draft`: Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.
@@ -290,7 +291,20 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
 
-**Tehničko crtanje on Home** (review batch 6, 2026-10-19). One line per service, as in "Što radimo"; the drafting page keeps the full sentences. Drafts.
+**Tehničko crtanje on Home, option C** (review batch 8, 2026-10-19). The client confirmed option C „Legenda“ and gave the right column's text verbatim ("zamijeni postojeći doslovno, ništa ne dodaj"). It replaces the batch 6 lines below on Home; the drafting page keeps the full sentences of §2. No numbers, deadlines or promises beyond this text.
+
+| Where | HR (Home) | Source |
+|---|---|---|
+| Section name, above the heading | Tehničko crtanje | `drafting.title`; the client |
+| Heading | Kad crteža ima više nego ruku. | The client |
+| Lead | Crtamo za arhitektonske urede i građevinske tvrtke, u vašim slojevima i s vašim zaglavljem. | The client (replaces the tagline and `drafting.audience` on Home) |
+| Service 1 | **2D crteži:** Tlocrti, presjeci i detalji koje možete odmah koristiti. | The client (on Home the title drops "CAD"; `drafting.cad.title` stays "2D CAD crteži" on the drafting page) |
+| Service 2 | **3D modeli:** Zgrade i detalji iz vaših nacrta i skica. | The client (replaces the Home line in ADR 0019) |
+| Service 3 | **Tehnička dokumentacija:** Crteži i specifikacije složeni u komplet spreman za predaju. | The client asked for "Komplet složen za predaju." or something less robotic; Claude's wording, every word from `drafting.docs.body` |
+| Button | Zatražite ponudu | Glossary (unchanged) |
+| Removed | "Precizni crteži, isporučeni u roku." and the audience line | The client: "obriši u potpunosti" |
+
+**Tehničko crtanje on Home** (review batch 6, 2026-10-19; **replaced on Home by batch 8 above**, kept as the record). One line per service, as in "Što radimo"; the drafting page keeps the full sentences. Drafts.
 
 | Service | HR (Home, one line) | Shortened from |
 |---|---|---|
@@ -403,6 +417,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 4):** "One line per service on Home" added under "Prototype copy": each service's sentence shortened for Home, drafts. No copy block changed.
 - **2026-10-19 (phase 2, review refinements, batch 5):** "The floor plan on Home" added under "Prototype copy": its layers, room labels, title block and accessible name. The client will align the English at the end of all the changes. No copy block changed.
 - **2026-10-19 (phase 2, review refinements, batch 6):** New blocks `drafting.3d.title` and `drafting.3d.body`, HR drafts, at the client's request ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)); the EN follows at the end of the review. The floor plan loses its room names. "Tehničko crtanje on Home" added under "Prototype copy".
+- **2026-10-19 (phase 2, review refinements, batch 8):** "Tehničko crtanje on Home, option C" added under "Prototype copy": the client's heading, lead and three service lines, verbatim, plus Claude's wording of the third line at the client's request. `drafting.tagline` is no longer on Home. No copy block changed; the EN follows at the end of the review.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

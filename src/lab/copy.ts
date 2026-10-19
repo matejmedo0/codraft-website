@@ -50,12 +50,19 @@ export interface ServicesCopy {
   stages: ServiceStage[];
 }
 
+/** A drafting service; Home may give it a shorter title (review batch 8). */
+export interface DraftingService extends StageService {
+  shortTitle?: string;
+}
+
 export interface DraftingCopy {
   title: string;
   tagline: string;
   audience: string;
-  /** Each with its one line for Home (review batch 6). */
-  items: StageService[];
+  /** Home's drafting zone, under the section's name (review batch 8). */
+  home: { heading: string; lead: string };
+  /** Each with its one line for Home (review batches 6 and 8). */
+  items: DraftingService[];
   cta: string;
 }
 
@@ -194,25 +201,32 @@ export const DRAFTING: DraftingCopy = {
   // drafting.audience
   audience:
     "Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.",
+  // The client's text for Home (review batch 8), verbatim.
+  home: {
+    heading: "Kad crteža ima više nego ruku.",
+    lead: "Crtamo za arhitektonske urede i građevinske tvrtke, u vašim slojevima i s vašim zaglavljem.",
+  },
+  // The short lines are the client's (batch 8), except the third, which the
+  // client left to Claude, worded from drafting.docs.body.
   items: [
     {
       anchor: "2d-crtezi",
       title: "2D CAD crteži", // drafting.cad.*
+      shortTitle: "2D crteži",
       body: "Točni 2D crteži u AutoCAD-u, izrađeni prema vašim standardima slojeva i zaglavlja, na temelju skica, skenova ili označenih nacrta.",
-      short:
-        "Točni crteži u AutoCAD-u, prema vašim standardima slojeva i zaglavlja.",
+      short: "Tlocrti, presjeci i detalji koje možete odmah koristiti.",
     },
     {
       anchor: "3d-modeli",
       title: "3D modeli", // drafting.3d.* (ADR 0019)
       body: "Trodimenzionalni modeli zgrada i detalja, izrađeni prema vašim nacrtima i skicama, za provjeru i prezentaciju.",
-      short: "Modeli zgrada i detalja prema vašim nacrtima i skicama.",
+      short: "Zgrade i detalji iz vaših nacrta i skica.",
     },
     {
       anchor: "dokumentacija",
       title: "Tehnička dokumentacija", // drafting.docs.*
       body: "Jasne specifikacije i kompleti crteža, ujednačenog formata i spremni za predaju.",
-      short: "Kompleti crteža ujednačenog formata, spremni za predaju.",
+      short: "Crteži i specifikacije složeni u komplet spreman za predaju.",
     },
   ],
   cta: "Zatražite ponudu", // Glossary: "Request a quote".

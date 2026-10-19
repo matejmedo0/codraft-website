@@ -3,7 +3,8 @@
  * Zone A of the style page, set like the home hero of the chosen direction
  * (ADR 0015): the headline beside a drawing on graph paper that holds the
  * mark, which plays its entrance once per load (ADR 0014). On paper, like
- * the header above it.
+ * the header above it. Its one button leads to the services: the free audit
+ * is asked for once on a page, where the page explains it (ADR 0017).
  */
 import Button from "../../components/ui/Button.astro";
 import Wordmark from "../../components/ui/Wordmark.astro";
@@ -25,10 +26,7 @@ import { HERO } from "../copy.ts";
       milimetarskom papiru, u kojem se znak iscrtava jednom pri učitavanju.
     </p>
     <div class="style-hero__actions">
-      <Button href={pathFor("audit", "hr")}>{HERO.primary}</Button>
-      <Button href={pathFor("services", "hr")} variant="secondary">
-        {HERO.secondary}
-      </Button>
+      <Button href={pathFor("services", "hr")}>{HERO.secondary}</Button>
     </div>
   </div>
   <div class="style-hero__drawing graph-paper">

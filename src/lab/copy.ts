@@ -83,7 +83,7 @@ export const HERO = {
   // Prototype draft for gap G1, derived from services.intro.
   title: "Planiramo, izrađujemo i održavamo web stranice, softver i AI alate.",
   // Derived from services.intro.
-  lead: "Codraft je mali studio za tvrtke kojima su važni rezultati, a ne žargon.",
+  lead: "Codraft je studio za tvrtke kojima su važni rezultati, a ne žargon.",
   // Glossary: "Book a free audit".
   primary: "Rezervirajte besplatnu analizu",
   // docs/information-architecture.md, Home hero.
@@ -96,7 +96,7 @@ export const SERVICES: ServicesCopy = {
   title: "Što radimo", // services.title
   // services.intro
   intro:
-    "Codraft je mali studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.",
+    "Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.",
   plan: {
     number: "01",
     anchor: "planiranje",

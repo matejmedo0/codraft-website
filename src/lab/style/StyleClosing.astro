@@ -1,8 +1,8 @@
 ---
 /**
  * The navy surface, as the closing call to action uses it: once on a page,
- * at the end (ADR 0015). The same buttons as on paper, with the surface's
- * own tokens.
+ * at the end (ADR 0015). The same button as on paper, with the surface's own
+ * tokens. It invites a conversation and doesn't repeat the audit (ADR 0017).
  */
 import Button from "../../components/ui/Button.astro";
 import Zone from "../../components/ui/Zone.astro";
@@ -18,10 +18,7 @@ import { CLOSING } from "../copy.ts";
     </h2>
   </div>
   <div class="closing__actions">
-    <Button href={pathFor("audit", "hr")}>{CLOSING.primary}</Button>
-    <Button href={pathFor("contact", "hr")} variant="secondary">
-      {CLOSING.secondary}
-    </Button>
+    <Button href={pathFor("contact", "hr")}>{CLOSING.secondary}</Button>
   </div>
 </Zone>
 

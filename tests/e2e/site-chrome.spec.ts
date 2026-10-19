@@ -24,7 +24,7 @@ test("the skip link comes first and leads to the main content", async ({
   await expect(page.locator("main#main")).toHaveCount(1);
 });
 
-test("the header links every main page and the free audit", async ({
+test("the header links every main page and asks for nothing", async ({
   page,
 }) => {
   await page.goto("/");
@@ -38,9 +38,10 @@ test("the header links every main page and the free audit", async ({
       nav.locator(`a[href="${pathFor(target, "hr")}"]`),
     ).toBeVisible();
   }
+  // The free audit is asked for once, where a page explains it (ADR 0017).
   await expect(
-    nav.getByRole("link", { name: "Besplatna analiza" }),
-  ).toHaveAttribute("href", pathFor("audit", "hr"));
+    page.locator(`header a[href="${pathFor("audit", "hr")}"]`),
+  ).toHaveCount(0);
   await expect(
     page.getByRole("link", { name: "Codraft, početna stranica" }),
   ).toHaveAttribute("aria-current", "page");

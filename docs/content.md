@@ -80,7 +80,8 @@ Each EN line is identical to the client's text. Where the original puts a title 
   - HR `draft`: Što radimo
 - **`services.intro`**
   - EN: Codraft is a small studio that plans, builds and looks after websites, software and AI tools for businesses that want results, not jargon.
-  - HR `draft`: Codraft je mali studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.
+  - HR `draft`: Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.
+  - Without "mali" at the client's request (2026-10-19). The EN keeps "small" until the client decides on S17.
 
 ### 01 — Plan
 
@@ -203,6 +204,7 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 | S14 | all | — | Typographic apostrophes and quotes everywhere on the site; Croatian uses „…“ | No | pending |
 | S15 | page metadata only | — | Add "Croatia" to English page titles and meta descriptions, not to body copy | No | pending |
 | S16 | `build.integrations.body` | — | Local angle: mention e-invoicing (eRačun) and fiscalisation integrations for Croatian businesses | **Yes** (new claim) | pending |
+| S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | pending |
 
 ## 4. Content gaps
 
@@ -247,10 +249,10 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Where | HR (prototype) | Derived from |
 |---|---|---|
 | Home hero, H1 (G1 draft) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate. | `services.intro` |
-| Home hero, lead | Codraft je mali studio za tvrtke kojima su važni rezultati, a ne žargon. | `services.intro` |
-| Home hero, secondary CTA | Pogledajte usluge | [information-architecture.md](information-architecture.md), Home hero |
+| Home hero, lead | Codraft je studio za tvrtke kojima su važni rezultati, a ne žargon. ("mali" removed at the client's request, 2026-10-19) | `services.intro` |
+| Home hero, secondary CTA | Pogledajte usluge (the primary button on `/lab/pocetna`, ADR 0017) | [information-architecture.md](information-architecture.md), Home hero |
 | Home hero, drafting path | CAD crtanje za arhitekte, inženjerske urede i proizvođače | `drafting.title`, `drafting.audience` |
-| Header CTA | Besplatna analiza | Glossary |
+| Header CTA | Besplatna analiza (lab A–E only; the production header has no button, ADR 0017) | Glossary |
 | Menu button | Izbornik | UI string |
 | Skip link | Preskoči na sadržaj | UI string |
 | Footer, placeholder note | Podaci o tvrtki stižu prije objave. | Stands in for the company data until the client sends it (lab only) |
@@ -282,6 +284,13 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Closing call to action, button | Rezervirajte besplatnu analizu | `plan.cta` |
 | Closing call to action, second link | Pošaljite upit | Glossary (alternative for "Request a quote"); the Contact page CTA |
 
+**Review refinements** (`/lab/pocetna`, 2026-10-19). Home in the chosen direction uses the lines above, arranged by [ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md); no new line:
+- **Header:** the four navigation links and the language, no button.
+- **Hero:** "Pogledajte usluge" is the primary button; the drafting path link stays below it.
+- **"Što radimo", stage 01:** its two items, without the link to the audit.
+- **Free audit zone:** the only "Rezervirajte besplatnu analizu" on the page.
+- **Closing call to action:** "Prvo jasnoća." with one button, "Pošaljite upit".
+
 ### UI strings of the base components (phase 2)
 
 The header, footer and skip link of the design system (ADR 0015) read these strings from `src/locales/{hr,en}.json`. Both languages are drafts (`draft`); the Croatian lines come from the glossary and the prototype copy, and the English lines are new (gap G27). The navigation labels follow the glossary, so they change with it.
@@ -292,7 +301,6 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `header.home` | Codraft, početna stranica | Codraft, home page | Accessible name of the header's logo link |
 | `header.menu` | Izbornik | Menu | Menu button on narrow screens |
 | `header.navLabel` | Glavna navigacija | Main navigation | Accessible name of the main navigation |
-| `header.cta` | Besplatna analiza | Free audit | Header button |
 | `nav.services` | Usluge | Services | Navigation |
 | `nav.drafting` | CAD crtanje | Engineering Drafting | Navigation |
 | `nav.about` | O nama | About | Navigation |
@@ -346,6 +354,9 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2):** "Prototype copy" added under §4: the lines the design-lab prototypes derive from the existing blocks. No copy block changed.
 - **2026-10-19 (phase 2, round 2):** Lines for the hybrids D and E added under "Prototype copy": stage 01's two items, the free audit's three steps, the CAD layer names, "Kako radimo", the team strip and the closing call to action. All are derived from existing blocks or are lab placeholders. No copy block changed.
 - **2026-10-19 (phase 2, design system):** "UI strings of the base components" added under §4: the header, navigation, language switcher, skip link and title block, in HR and EN, all `draft`. No copy block changed.
+- **2026-10-19 (phase 2, review refinements, batch 1):**
+  - The client removed "mali" from the Croatian `services.intro` and the hero lead. Suggestion S17 asks whether the EN drops "small" too.
+  - The free-audit call to action now appears once per page ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)). The header button and its string `header.cta` are gone, and "Review refinements" under "Prototype copy" lists the new arrangement. No new line.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

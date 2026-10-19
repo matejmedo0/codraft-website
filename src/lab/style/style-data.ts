@@ -149,7 +149,7 @@ export const TYPE_STEPS: TypeStep[] = [
     name: "Uvod",
     use: "Uvodni odlomak ispod naslova",
     sample:
-      "Codraft je mali studio za tvrtke kojima su važni rezultati, a ne žargon.",
+      "Codraft je studio za tvrtke kojima su važni rezultati, a ne žargon.",
   },
   {
     token: "step-body",

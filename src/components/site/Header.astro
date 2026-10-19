@@ -1,9 +1,10 @@
 ---
 /**
  * The site header, on paper at the top of the sheet (ADR 0015): the static
- * wordmark (only the home hero's mark moves, ADR 0014), the main
- * navigation, the free audit button and the language switcher. The current
- * page is marked with `aria-current`.
+ * wordmark (only the home hero's mark moves, ADR 0014), the main navigation
+ * and the language switcher. It has no button: the free audit is asked for
+ * once on a page, where the page explains it (ADR 0017). The current page is
+ * marked with `aria-current`.
  *
  * Below 64rem the navigation folds behind the menu button (menu.ts); without
  * JavaScript it stays open.
@@ -13,7 +14,6 @@ import { MAIN_NAV } from "../../features/i18n/navigation.ts";
 import type { PageId } from "../../features/i18n/route-map.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
-import Button from "../ui/Button.astro";
 import Wordmark from "../ui/Wordmark.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
@@ -63,13 +63,6 @@ function current(target: PageId): "page" | undefined {
         </li>
       ))}
     </ul>
-    <Button
-      href={pathFor("audit", locale)}
-      size="compact"
-      aria-current={current("audit")}
-    >
-      {t(locale, "header.cta")}
-    </Button>
     <LanguageSwitcher
       locale={locale}
       page={page}

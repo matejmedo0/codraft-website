@@ -5,6 +5,7 @@
 ## Principles
 
 - **Small and focused.** Every page has one job and one primary call to action.
+- **Ask once.** The free-audit button appears at most once on a page, in the section that explains the audit. The header has no button, and the closing call to action invites a conversation ("Pošaljite upit") ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - **Croatian first.** Croatian lives at the root and English under `/en` ([ADR 0002](decisions/0002-croatian-default-english-secondary.md)).
 - **Two audiences, two paths.**
   - Small and medium businesses want a website, software or AI tools. Their path ends at the free audit.
@@ -15,10 +16,10 @@
 
 | # | Page | HR (default) | EN | Purpose | Primary CTA | Phase |
 |---|---|---|---|---|---|---|
-| 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu | 3 |
-| 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu | 3 |
+| 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu (once, in the free audit teaser) | 3 |
+| 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu (once, in `#planiranje`) | 3 |
 | 3 | CAD crtanje / Engineering Drafting | `/cad-crtanje` | `/en/engineering-drafting` | B2B drafting offer for architects, engineering firms, manufacturers | Zatražite ponudu | 3 |
-| 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Rezervirajte besplatnu analizu | 3 |
+| 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Pošaljite upit | 3 |
 | 5 | Besplatna analiza / Free audit | `/besplatna-analiza` | `/en/free-audit` | What we check and what you get; form, then time slot | Nastavite na odabir termina (form submit, leads to booking) | 3 (form: 4) |
 | 6 | Kontakt / Contact | `/kontakt` | `/en/contact` | General enquiries and drafting quote requests | Pošaljite upit | 3 (form: 4) |
 | 7 | Privatnost / Privacy | `/privatnost` | `/en/privacy` | GDPR privacy notice | — | 3 |
@@ -58,8 +59,9 @@ Planned order:
 ### Navigation and footer
 
 **Header**
-- HR: Usluge · CAD crtanje · O nama · Kontakt · **[Besplatna analiza]** · EN
-- EN: Services · Engineering Drafting · About · Contact · **[Free audit]** · HR
+- HR: Usluge · CAD crtanje · O nama · Kontakt · EN
+- EN: Services · Engineering Drafting · About · Contact · HR
+- No button: the header serves both audiences, so it offers no sales action ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - The language switcher links to the *same page* in the other language; it does not go to the home page.
 - No "Radovi" item until real case studies exist.
 
@@ -106,15 +108,15 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 1. **Hero**
    - H1 (N, G1).
    - Subline: `services.intro` (P).
-   - CTAs: audit and "Pogledajte usluge" (I).
+   - CTA: "Pogledajte usluge" (I), and the link to CAD crtanje. No audit button here (ADR 0017).
    - The wordmark's blue drafting line draws once, if the client approves the logo animation in phase 2 (see [motion.md](motion.md)).
 2. **Što radimo:** 01 Planiranje / 02 Izrada / 03 Održavanje i rast, with the services listed inside each stage. Each service gets one line and links to `/usluge#…` (P: `plan.*`, `build.*`, `run.*`).
-3. **Free audit teaser:** what we check (N, G4) and the 3-step flow (I).
+3. **Free audit teaser:** what we check (N, G4) and the 3-step flow (I), with the page's one "Rezervirajte besplatnu analizu" button (P: `plan.cta`).
 4. **AI assistant teaser:** links to the live demo. Added in phase 4, when the demo exists (N, G29).
 5. **Drafting strip:** its own path for architects, engineers and manufacturers (P: `drafting.tagline`, `drafting.audience`).
 6. **How we work** (I): fixed price before work starts, plain language, we stay after launch. Ownership of domain and code (N, G2, client decides).
 7. **Team strip:** photos, names, roles (N, G3).
-8. **Closing CTA** (P: `plan.cta`).
+8. **Closing CTA:** `plan.tagline` and one button, "Pošaljite upit" (I, ADR 0017).
 
 ### Usluge / Services (`/usluge`)
 
@@ -130,7 +132,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
    - an indication of the monthly fee (N, G7)
 5. **Tijek suradnje** (I): analiza → ponuda → izrada → objava → održavanje.
 6. **FAQ, 6–8 questions** (N, G8).
-7. **CTA** (P: `plan.cta`).
+7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
 ### CAD crtanje / Engineering Drafting (`/cad-crtanje`)
 
@@ -160,7 +162,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
    - page weight
    - WCAG target
    - no third-party requests before consent
-7. **CTA** (P: `plan.cta`).
+7. **Closing CTA:** "Pošaljite upit" (I, ADR 0017).
 
 ### Besplatna analiza / Free audit (`/besplatna-analiza`)
 

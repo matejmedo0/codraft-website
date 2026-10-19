@@ -7,7 +7,10 @@ export interface NavLink {
   label: UiKey;
 }
 
-/** The header's navigation; the free audit has its own button beside it. */
+/**
+ * The header's navigation. It has no button: the free audit is asked for
+ * once on a page, where the page explains it (ADR 0017).
+ */
 export const MAIN_NAV: readonly NavLink[] = [
   { page: "services", label: "nav.services" },
   { page: "drafting", label: "nav.drafting" },

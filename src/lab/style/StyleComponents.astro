@@ -9,7 +9,7 @@ import Button from "../../components/ui/Button.astro";
 import Item from "../../components/ui/Item.astro";
 import Zone from "../../components/ui/Zone.astro";
 import { pathFor } from "../../features/i18n/urls.ts";
-import { HERO, PLAN_ITEMS, SERVICES } from "../copy.ts";
+import { CAD, CLOSING, HERO, PLAN_ITEMS, SERVICES } from "../copy.ts";
 
 const services = pathFor("services", "hr");
 const build = SERVICES.stages[0]?.items.slice(0, 2) ?? [];
@@ -44,13 +44,13 @@ const fixedScope = PLAN_ITEMS[1];
           <span class="specimens__caption t-label">Sekundarni</span>
         </li>
         <li>
-          <Button href={pathFor("audit", "hr")} size="compact">
-            Besplatna analiza
+          <Button variant="secondary" size="compact">
+            {CAD.replay}
           </Button>
           <span class="specimens__caption t-label">Kompaktni, 44 px</span>
         </li>
         <li>
-          <Button disabled>Besplatna analiza</Button>
+          <Button disabled>{CLOSING.secondary}</Button>
           <span class="specimens__caption t-label">Onemogućen</span>
         </li>
       </ul>

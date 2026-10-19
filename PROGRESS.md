@@ -158,6 +158,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Animacija loga samo na početnoj (jednom pri učitavanju); web kopije znakova bez C2PA metapodataka; prototipove pregledavate na localhostu, bez pregleda na internetu | [ADR 0014](docs/decisions/0014-logo-animation-web-copies-and-local-review.md) |
 | 2026-10-19 | Smjer dizajna: D „Model i list“ sa svijetlim zaglavljem i herojem, tamnoplava samo u završnom pozivu; sve četiri animacije; dvije osobe u traci tima; samo Archivo; kutovi 2 px; lab A–E ostaje kao zapis | [ADR 0015](docs/decisions/0015-design-direction-model-i-list.md) |
 | 2026-10-19 | Figma za brze prototipe i dorade: sustav iz koda zrcali se u Figma knjižnicu, a kod ostaje izvor istine | [ADR 0016](docs/decisions/0016-figma-for-design-iterations.md) |
+| 2026-10-19 | Poziv na besplatnu analizu najviše jednom na stranici, ondje gdje je objašnjena; zaglavlje bez gumba; hero vodi na usluge; završni poziv je „Pošaljite upit“ (prijedlog, čeka vaš pregled) | [ADR 0017](docs/decisions/0017-one-audit-call-to-action-per-page.md) |
 
 ## Sitemap
 
@@ -168,7 +169,7 @@ Struktura je odobrena s planom (ADR 0003). Sekcije po stranicama su u `docs/info
 | Početna | `/` | `/en` | Rezervirajte besplatnu analizu | 3 |
 | Usluge | `/usluge` | `/en/services` | Rezervirajte besplatnu analizu | 3 |
 | CAD crtanje | `/cad-crtanje` | `/en/engineering-drafting` | Zatražite ponudu | 3 |
-| O nama | `/o-nama` | `/en/about` | Rezervirajte besplatnu analizu | 3 |
+| O nama | `/o-nama` | `/en/about` | Pošaljite upit (ADR 0017) | 3 |
 | Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` | Nastavite na odabir termina | 3 (forma: 4) |
 | Kontakt | `/kontakt` | `/en/contact` | Pošaljite upit | 3 (forma: 4) |
 | Privatnost | `/privatnost` | `/en/privacy` | — | 3 |

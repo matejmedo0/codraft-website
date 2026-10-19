@@ -4,8 +4,11 @@
  * with `data-draw`; its own CSS animates it while it has `.is-drawing`, and
  * hides it while it has `.is-pending`.
  *
- * Only parts below the fold wait. Without JavaScript, or with reduced
- * motion, nothing is ever pending, so every part shows its final state.
+ * Only parts below the fold wait, unless a part has `data-draw-wait`: it
+ * waits for its trigger even when it starts in view, and its CSS hides it
+ * from the first paint (under the `js` class and without reduced motion),
+ * so it never flashes complete. Without JavaScript, or with reduced motion,
+ * nothing is ever pending, so every part shows its final state.
  *
  * Imported by the components' scripts; a module runs once per page however
  * many components import it.
@@ -66,7 +69,7 @@ function startDrawing(element: Element): void {
 
 function initDraws(): void {
   for (const part of document.querySelectorAll<HTMLElement>("[data-draw]")) {
-    if (!isBelowFold(part)) continue;
+    if (!isBelowFold(part) && part.dataset.drawWait === undefined) continue;
     part.classList.add("is-pending");
     const trigger = DRAW_TRIGGERS[part.dataset.draw ?? ""] ?? DEFAULT_TRIGGER;
     onFirstView(

@@ -18,6 +18,8 @@ The client asked for animation that is high quality and **not generic**. The con
 | **Plot stamp** | Form success | The confirmation appears as a stamped title block: "Zaprimljeno · 18. 10. 2026." |
 | **Page change** | Navigation between pages | Cross-document View Transitions where supported: 200 ms crossfade (`--motion-base`); the header stays still. |
 
+**The process line through "Što radimo"** (the client's review, batch 3) is one stroke. It isn't there until the section reaches its trigger, then it runs from bubble 01 to bubble 03 at a constant speed, like a plotter's pen: about 1.3 s on a desktop, at most 2.4 s on a phone. A part like this, which must wait even when it starts in view, takes `data-draw-wait` (`draw.ts`) and is hidden from the first paint.
+
 ## Principles
 
 1. **Every motion must earn its place.** It guides attention, communicates state, or keeps spatial continuity. If it does none of these, cut it.

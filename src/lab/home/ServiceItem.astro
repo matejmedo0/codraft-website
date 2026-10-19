@@ -1,0 +1,79 @@
+---
+/**
+ * One service in "Što radimo" (the client's review, batch 3): its title and
+ * its sentence. The sentence is larger than body text and in full ink, so
+ * it reads as clearly as the title. With `href` the whole item links to its
+ * anchor on /usluge and shows the grips on hover and keyboard focus; the
+ * outline goes around the item. Each option of the section places the
+ * items its own way.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import Grips from "../../components/ui/Grips.astro";
+
+interface Props extends HTMLAttributes<"li"> {
+  title: string;
+  body: string;
+  href?: string | undefined;
+}
+
+const { title, body, href, class: className, ...attributes } = Astro.props;
+---
+
+<li
+  class:list={["service", { "has-grips": href !== undefined }, className]}
+  {...attributes}
+>
+  <h4 class="service__title">
+    {href === undefined ? (
+      title
+    ) : (
+      <a class="service__link stretched-link" href={href}>
+        {title}
+      </a>
+    )}
+  </h4>
+  <p class="service__body">{body}</p>
+  {href !== undefined && <Grips />}
+</li>
+
+<style>
+  .service {
+    position: relative;
+  }
+
+  .service__title {
+    font-size: var(--step-title);
+    font-stretch: var(--width-text);
+    font-weight: var(--weight-strong);
+    line-height: var(--leading-title);
+    letter-spacing: -0.005em;
+  }
+
+  .service__link {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .service__link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  .service__body {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+    line-height: 1.5;
+  }
+
+  /* The outline goes around the whole item, not just the title. */
+  .service:has(.service__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .service__link:focus-visible {
+    outline: none;
+  }
+</style>

@@ -2,17 +2,9 @@
 node_modules/
 .pnpm-store/
 
-# Build output and framework caches (trimmed to the chosen stack in phase 1)
+# Build output and caches (Astro, TypeScript, ESLint)
 dist/
-build/
-out/
-.next/
 .astro/
-.vercel/
-.netlify/
-.wrangler/
-.turbo/
-.cache/
 *.tsbuildinfo
 .eslintcache
 

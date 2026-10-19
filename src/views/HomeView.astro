@@ -1,0 +1,13 @@
+---
+// The empty home page of phase 1: only the H1, no design or copy yet.
+import { type Locale, SITE_NAME } from "../config/site.ts";
+
+// Every view receives its locale, even before it has localised copy.
+interface Props {
+  locale: Locale;
+}
+---
+
+<main>
+  <h1>{SITE_NAME}</h1>
+</main>

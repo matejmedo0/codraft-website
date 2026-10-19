@@ -1,0 +1,23 @@
+---
+// Every route-map page in both languages: `/`, `/en`, `/usluge`,
+// `/en/services`, ... The static routes (404 pages, /api/*) take priority.
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+import { SITE_NAME } from "../config/site.ts";
+import { staticPathsFor } from "../features/i18n/urls.ts";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeView from "../views/HomeView.astro";
+
+export const getStaticPaths = (() =>
+  // The view registry: a page is generated once it has a view. Until phase 3
+  // only the home page has one; the others exist only in the route map.
+  staticPathsFor({ home: HomeView })) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page, locale, view: View } = Astro.props;
+---
+
+<BaseLayout locale={locale} page={page} title={SITE_NAME}>
+  <View locale={locale} />
+</BaseLayout>

@@ -1,0 +1,18 @@
+---
+// Placeholder copy; the real 404 copy (gap G27) arrives with the pages in
+// phase 3, through docs/content.md.
+import type { Locale } from "../config/site.ts";
+import { t } from "../features/i18n/ui.ts";
+import { pathFor } from "../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<main>
+  <h1>{t(locale, "notFound.title")}</h1>
+  <p><a href={pathFor("home", locale)}>{t(locale, "notFound.homeLink")}</a></p>
+</main>

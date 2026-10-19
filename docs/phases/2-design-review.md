@@ -220,6 +220,42 @@ The client's message, verbatim:
 | 24 | Points 6 and 7 (quoted above) | No box around the services. Each is numbered with a circle drawn like the plan's grid bubbles (a 1 px ink outline on paper, the number in the condensed width), and a thin dashed line, in the drawing's muted line colour, separates them. The services are an ordered list; their titles are now `h3` under the zone's `h2`. The lead is in full ink (15.84:1, was the muted grey, 5.16:1). | `src/lab/home/ServiceItem.astro` (optional number and heading level), `DraftingLegend.astro` | None | Done; in review |
 | 25 | Text (quoted above) | Replaced verbatim: the section's name "Tehničko crtanje" above the heading, the heading "Kad crteža ima više nego ruku.", the lead, and the three services. The third line, which the client left to Claude, is "Crteži i specifikacije složeni u komplet spreman za predaju." (every word from `drafting.docs.body`; no new claim). "Precizni crteži, isporučeni u roku." and the audience line are no longer in the zone. The services' new lines apply wherever the lab shows them (options A and B too). | `docs/content.md`, `src/lab/copy.ts`, `src/lab/home/drafting/drafting.ts` | None | Done; in review |
 
+The client reviewed batch 8 and sent batch 9 next; the sheet's margin at 1920 px (#23) is still unanswered.
+
+**Batch 9 (2026-10-20): "Tehničko crtanje" again**
+
+Before it, the client asked for the export settings of the icons they have made (transparent PNG and an SVG set). The answer follows [brand.md](../brand.md#imagery): nine files named by the service's anchor, SVG on `viewBox="0 0 48 48"` with real 1.5 px strokes in `currentColor` and the blue accent in `<g id="accent">`, PNG at 1024 px with alpha, into `Assets/icons/originals/{png,svg}/` (outside git), plus the tool, its licence and the editable source.
+
+The client's message, verbatim:
+
+> Doradi sekciju "Tehničko crtanje" na početnoj stranici. Crtež, toggle slojeva i gumb "Iscrtaj ponovno" ne diraj.
+>
+> 1. ŠIRINA: Sekcija je uža od ostatka stranice. Koristi isti container i horizontalni padding kao ostale sekcije. Lijevi rub okvira crteža mora biti poravnat s lijevim rubom naslova "Što radimo", "Kako radimo" i "Tim". Desni stupac završava na istom desnom rubu kao linije u sekciji "Kako radimo".
+>
+> 2. NASLOV: Ukloni mali eyebrow iznad naslova. H2 sekcije je "Tehničko crtanje", istog stila i veličine kao H2 u sekcijama "Što radimo", "Kako radimo" i "Tim".
+>
+> 3. LEAD ispod naslova, u istom stilu kao lead u sekciji "Besplatna analiza":
+> "Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem."
+>
+> 4. USLUGE: Ukloni numerirane krugove i isprekidane linije. Napravi listu bez brojeva i ikona po uzoru na sekciju "Kako radimo": naziv podebljano lijevo, kratak opis sivim tekstom desno, redovi odvojeni tankom punom linijom iste boje, debljine i razmaka kao u "Kako radimo". Ako je stupac uži od 520 px, opis ide ispod naziva.
+> - 2D crteži: Tlocrti, presjeci i detalji koje možete odmah nastaviti.
+> - 3D modeli: Zgrade i detalji iz vaših nacrta i skica.
+> - Tehnička dokumentacija: Kompleti listova složeni za predaju.
+>
+> 5. CTA: Gumb ide odmah ispod liste, s razmakom kao između leada i gumba u "Besplatna analiza". Ukloni margin-top: auto. Tekst gumba: "Pošaljite skicu".
+>
+> 6. VERTIKALNO: Cijeli tekstni blok (naslov, lead, lista, gumb) vertikalno centriraj u odnosu na okvir crteža, ne na red s legendom. Legenda slojeva ostaje u zasebnom grid redu ispod crteža.
+>
+> 7. MOBITEL (ispod 900 px): jedan stupac, tekst prvi, zatim crtež, zatim legenda.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 26 | Point 1, width (quoted above) | The zone's content has no maximum width any more (it was 100rem, #23): the frame's left edge lines up with the headings of "Što radimo", "Kako radimo" and "Tim", and the right column ends on the right edge of the rules in "Kako radimo", the zone's padding on both sides. The sheet's own margin at 1920 px (#23) is unchanged. | `src/lab/home/drafting/DraftingLegend.astro` | None | Done; in review |
+| 27 | Points 2 and 3, heading and lead (quoted above) | No section name above the heading. The `h2` is "Tehničko crtanje", in the style of every zone's `h2`; under it the lead, in the style of the free audit's lead (lead size, full ink, at most 36ch), with the client's new sentence. | `DraftingLegend.astro`, `src/lab/copy.ts`, `docs/content.md` | None | Done; in review |
+| 28 | Point 4, services (quoted above) | No numbers and no dashed lines. The three services are rows as in "Kako radimo": the title (an `h3`, as there) on the left and the line in muted grey on the right, 3 : 5, with the same full 1 px rule between rows and the same spacing. When the text column is narrower than 520 px (a container query), the line goes under the title, with the spacing "Kako radimo" uses on narrow screens. The titles still link to their anchors on `/tehnicko-crtanje`, with the grips on hover and focus. The client's lines, verbatim ("…koje možete odmah nastaviti", "Kompleti listova složeni za predaju."). | `DraftingLegend.astro`, `src/lab/home/ServiceItem.astro` (the numbering of batch 8 removed), `src/lab/copy.ts`, `docs/content.md` | None | Done; in review |
+| 29 | Point 5, the button (quoted above) | The button follows the list at 2.5rem, the gap between the lead and the button in "Besplatna analiza"; no `margin-top: auto`. Its text on Home is "Pošaljite skicu"; it still leads to `/tehnicko-crtanje`, and "Zatražite ponudu" stays the drafting page's own call to action. | `DraftingLegend.astro`, `src/lab/copy.ts`, `docs/content.md`, `docs/information-architecture.md` | None | Done; in review |
+| 30 | Points 6 and 7, vertical position and phones (quoted above) | The text block is centred on the drawing's frame, in the drawing's row; the layer list keeps its own row below. Where the text is taller than the drawing, the frame still grows with it (#22), so the block stays centred. Below 900 px: one column, text, drawing, layer list (unchanged). | `DraftingLegend.astro` | None | Done; in review |
+
 ## After the refinements
 
 1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.

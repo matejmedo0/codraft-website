@@ -291,7 +291,18 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
 
-**Tehničko crtanje on Home, option C** (review batch 8, 2026-10-19). The client confirmed option C „Legenda“ and gave the right column's text verbatim ("zamijeni postojeći doslovno, ništa ne dodaj"). It replaces the batch 6 lines below on Home; the drafting page keeps the full sentences of §2. No numbers, deadlines or promises beyond this text.
+**Tehničko crtanje on Home, batch 9** (review batch 9, 2026-10-20). The client's new text for the zone, verbatim; it replaces batch 8 below on Home. The drafting page keeps the full sentences of §2 and its own call to action, "Zatražite ponudu".
+
+| Where | HR (Home) | Source |
+|---|---|---|
+| Heading (`h2`) | Tehničko crtanje | `drafting.title`; no section name above it any more |
+| Lead | Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem. | The client (joins the batch 8 heading and lead into one lead) |
+| Service 1 | **2D crteži:** Tlocrti, presjeci i detalji koje možete odmah nastaviti. | The client (batch 8 had "…odmah koristiti") |
+| Service 2 | **3D modeli:** Zgrade i detalji iz vaših nacrta i skica. | The client (as in batch 8) |
+| Service 3 | **Tehnička dokumentacija:** Kompleti listova složeni za predaju. | The client (replaces Claude's batch 8 wording) |
+| Button | Pošaljite skicu | The client (on Home only; it leads to `/tehnicko-crtanje`, as before) |
+
+**Tehničko crtanje on Home, option C** (review batch 8, 2026-10-19; **replaced on Home by batch 9 above**, kept as the record). The client confirmed option C „Legenda“ and gave the right column's text verbatim ("zamijeni postojeći doslovno, ništa ne dodaj"). It replaces the batch 6 lines below on Home; the drafting page keeps the full sentences of §2. No numbers, deadlines or promises beyond this text.
 
 | Where | HR (Home) | Source |
 |---|---|---|
@@ -418,6 +429,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 5):** "The floor plan on Home" added under "Prototype copy": its layers, room labels, title block and accessible name. The client will align the English at the end of all the changes. No copy block changed.
 - **2026-10-19 (phase 2, review refinements, batch 6):** New blocks `drafting.3d.title` and `drafting.3d.body`, HR drafts, at the client's request ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)); the EN follows at the end of the review. The floor plan loses its room names. "Tehničko crtanje on Home" added under "Prototype copy".
 - **2026-10-19 (phase 2, review refinements, batch 8):** "Tehničko crtanje on Home, option C" added under "Prototype copy": the client's heading, lead and three service lines, verbatim, plus Claude's wording of the third line at the client's request. `drafting.tagline` is no longer on Home. No copy block changed; the EN follows at the end of the review.
+- **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

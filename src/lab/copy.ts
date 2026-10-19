@@ -59,9 +59,9 @@ export interface DraftingCopy {
   title: string;
   tagline: string;
   audience: string;
-  /** Home's drafting zone, under the section's name (review batch 8). */
-  home: { heading: string; lead: string };
-  /** Each with its one line for Home (review batches 6 and 8). */
+  /** Home's drafting zone: its lead and button (review batch 9). */
+  home: { lead: string; cta: string };
+  /** Each with its one line for Home (review batches 6, 8 and 9). */
   items: DraftingService[];
   cta: string;
 }
@@ -201,20 +201,20 @@ export const DRAFTING: DraftingCopy = {
   // drafting.audience
   audience:
     "Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.",
-  // The client's text for Home (review batch 8), verbatim.
+  // The client's text for Home (review batch 9), verbatim. The drafting
+  // page keeps "Zatražite ponudu" (cta below).
   home: {
-    heading: "Kad crteža ima više nego ruku.",
-    lead: "Crtamo za arhitektonske urede i građevinske tvrtke, u vašim slojevima i s vašim zaglavljem.",
+    lead: "Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem.",
+    cta: "Pošaljite skicu",
   },
-  // The short lines are the client's (batch 8), except the third, which the
-  // client left to Claude, worded from drafting.docs.body.
+  // The short lines are the client's (batch 9), verbatim.
   items: [
     {
       anchor: "2d-crtezi",
       title: "2D CAD crteži", // drafting.cad.*
       shortTitle: "2D crteži",
       body: "Točni 2D crteži u AutoCAD-u, izrađeni prema vašim standardima slojeva i zaglavlja, na temelju skica, skenova ili označenih nacrta.",
-      short: "Tlocrti, presjeci i detalji koje možete odmah koristiti.",
+      short: "Tlocrti, presjeci i detalji koje možete odmah nastaviti.",
     },
     {
       anchor: "3d-modeli",
@@ -226,7 +226,7 @@ export const DRAFTING: DraftingCopy = {
       anchor: "dokumentacija",
       title: "Tehnička dokumentacija", // drafting.docs.*
       body: "Jasne specifikacije i kompleti crteža, ujednačenog formata i spremni za predaju.",
-      short: "Crteži i specifikacije složeni u komplet spreman za predaju.",
+      short: "Kompleti listova složeni za predaju.",
     },
   ],
   cta: "Zatražite ponudu", // Glossary: "Request a quote".

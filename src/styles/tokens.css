@@ -1,0 +1,198 @@
+/*
+ * Design tokens (ADR 0015, docs/brand.md): colour, type, space and shape.
+ * Motion tokens are in motion.css. Components use the role tokens (--ink,
+ * --surface, --line, …), never the palette directly, so the same component
+ * works on paper and on navy.
+ *
+ * Breakpoints (custom properties can't be used in media queries):
+ * 40rem (640 px), 48rem (768 px), 64rem (1024 px), 80rem (1280 px).
+ *
+ * The contrast of every text pair is checked in tokens.test.ts.
+ */
+
+@layer tokens {
+  :root {
+    /* The palette. Blue is for graphics only: lines, grips, dimensions, the
+       focus ring. Its text tints are the two --color-blue-on-* values. */
+    --color-paper: #f6f5f1;
+    --color-paper-sunk: #edebe5;
+    --color-navy: #0f1b2d;
+    --color-navy-raised: #18273e;
+    --color-navy-hover: #27364f;
+    --color-blue: #2f6bff;
+    --color-blue-on-paper: #2457d6;
+    --color-blue-on-navy: #77a0ff;
+    --color-grey-on-paper: #5e6878;
+    --color-grey-on-navy: #a7b0bd;
+    --color-paper-hover: #dde3ec;
+
+    /* The sheet's frame, zone rules and title block: navy ink on every
+       surface, like the border of a drawing. */
+    --frame: var(--color-navy);
+
+    /* Roles on the current surface: paper here, navy inside .surface-navy. */
+    --surface: var(--color-paper);
+    --surface-sunk: var(--color-paper-sunk);
+    --ink: var(--color-navy);
+    --ink-muted: var(--color-grey-on-paper);
+    --line: color-mix(in srgb, var(--color-navy) 16%, var(--color-paper));
+    --line-strong: var(--color-navy);
+    --link: var(--color-blue-on-paper);
+    --accent: var(--color-blue);
+    --accent-text: var(--color-blue-on-paper);
+    --focus: var(--color-blue);
+    --grip-fill: var(--surface);
+
+    --button-primary-bg: var(--color-navy);
+    --button-primary-bg-hover: var(--color-navy-hover);
+    --button-primary-fg: var(--color-paper);
+    --button-secondary-border: var(--color-navy);
+    --button-secondary-fg: var(--color-navy);
+    --button-secondary-bg-hover: var(--color-paper-sunk);
+    --button-disabled-bg: var(--color-paper-sunk);
+    --button-disabled-fg: var(--color-grey-on-paper);
+
+    /* Graph paper: a major line every 40 px, a minor one every 8 px. */
+    --grid-major: color-mix(in srgb, var(--color-navy) 11%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-navy) 5%, transparent);
+    --grid-major-size: 40px;
+    --grid-minor-size: 8px;
+
+    /* Drawings: outlines, centre lines and hatching, dimensions. */
+    --drawing-ink: var(--color-navy);
+    --drawing-muted: color-mix(
+      in srgb,
+      var(--color-navy) 45%,
+      var(--color-paper)
+    );
+    --drawing-fill: var(--color-paper);
+
+    /* Type: Archivo only (fonts.css). Headings use the semi-condensed width,
+       labels the condensed one. */
+    --font-text: "Archivo", "Archivo Fallback", system-ui, sans-serif;
+    --font-heading:
+      "Archivo", "Archivo Heading Fallback", "Archivo Fallback", system-ui,
+      sans-serif;
+    --width-text: 100%;
+    --width-heading: 87.5%;
+    --width-label: 75%;
+
+    --weight-text: 400;
+    --weight-medium: 500;
+    --weight-strong: 600;
+    --weight-heading: 620;
+    --weight-chapter: 640;
+    --weight-display: 680;
+
+    /* A fluid scale from 375 to 1440 px. The display size reaches about
+       70 px, so the home H1 runs to three lines beside its drawing. */
+    --step-display: clamp(2.5rem, 1.85rem + 2.8vw, 4.5rem);
+    --step-section: clamp(1.875rem, 1.45rem + 1.8vw, 3rem);
+    --step-chapter: clamp(1.625rem, 1.35rem + 1.15vw, 2.25rem);
+    --step-title: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem);
+    --step-lead: clamp(1.125rem, 1.06rem + 0.3vw, 1.375rem);
+    --step-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+    --step-small: 0.9375rem;
+    --step-label: 0.8125rem;
+
+    --leading-display: 0.98;
+    --leading-heading: 1.05;
+    --leading-title: 1.2;
+    --leading-lead: 1.45;
+    --leading-body: 1.55;
+
+    --tracking-display: -0.026em;
+    --tracking-section: -0.02em;
+    --tracking-heading: -0.012em;
+    --tracking-label: 0.02em;
+
+    /* Line lengths. */
+    --measure: 44ch;
+    --measure-lead: 36ch;
+
+    /* Space: a 4 px base, doubling in the larger steps. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 2.5rem;
+    --space-8: 3rem;
+    --space-9: 4rem;
+    --space-10: 5rem;
+
+    /* The sheet: the margin outside its frame, the padding inside each
+       zone, and the gap between grid columns. */
+    --sheet-margin: var(--space-2);
+    --sheet-max: 120rem;
+    --pad: var(--space-4);
+    --zone-pad: var(--space-8);
+    --gap: var(--space-6);
+
+    /* Shape. Controls and panels have a 2 px radius; the drawing vocabulary
+       (frame, rules, title block, grips) stays square (ADR 0015). */
+    --radius: 2px;
+    --rule: 1px;
+    --rail: 2px;
+    --control-height: 3rem;
+    --control-height-compact: 2.75rem;
+
+    /* Grips echo the corner squares of icon C; they sit on the corners of
+       the focus outline. */
+    --grip-size: 9px;
+    --grip-stroke: 2px;
+    --focus-width: 2px;
+    --focus-offset: 3px;
+    --grip-offset: calc(var(--focus-offset) + var(--focus-width) / 2);
+  }
+
+  @media (min-width: 48rem) {
+    :root {
+      --sheet-margin: var(--space-5);
+      --pad: var(--space-6);
+      --zone-pad: var(--space-9);
+    }
+  }
+
+  @media (min-width: 80rem) {
+    :root {
+      --pad: var(--space-8);
+      --zone-pad: var(--space-10);
+    }
+  }
+
+  /* The navy surface: used once on a page, for the closing call to action. */
+  .surface-navy {
+    --surface: var(--color-navy);
+    --surface-sunk: var(--color-navy-raised);
+    --ink: var(--color-paper);
+    --ink-muted: var(--color-grey-on-navy);
+    --line: color-mix(in srgb, var(--color-paper) 16%, var(--color-navy));
+    --line-strong: var(--color-paper);
+    --link: var(--color-blue-on-navy);
+    --accent-text: var(--color-blue-on-navy);
+    --grip-fill: var(--color-navy);
+
+    --button-primary-bg: var(--color-paper);
+    --button-primary-bg-hover: var(--color-paper-hover);
+    --button-primary-fg: var(--color-navy);
+    --button-secondary-border: var(--color-paper);
+    --button-secondary-fg: var(--color-paper);
+    --button-secondary-bg-hover: var(--color-navy-raised);
+
+    --grid-major: color-mix(in srgb, var(--color-paper) 10%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-paper) 4%, transparent);
+
+    --drawing-ink: var(--color-paper);
+    --drawing-muted: color-mix(
+      in srgb,
+      var(--color-paper) 45%,
+      var(--color-navy)
+    );
+    --drawing-fill: var(--color-navy);
+
+    background: var(--surface);
+    color: var(--ink);
+  }
+}

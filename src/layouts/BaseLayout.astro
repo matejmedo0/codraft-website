@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 
+import archivoCore from "../assets/fonts/archivo-core.woff2?url";
 import type { Locale } from "../config/site.ts";
 import type { PageId } from "../features/i18n/route-map.ts";
 import { alternatesFor, urlFor } from "../features/i18n/urls.ts";
@@ -12,10 +13,15 @@ interface Props {
    * The route-map page, for the canonical and hreflang links. The 404 pages
    * have none and are marked noindex.
    */
-  page?: PageId;
+  page?: PageId | undefined;
+  /**
+   * Preload the core Archivo file (src/styles/fonts.css). Off only for lab
+   * prototypes that use other fonts.
+   */
+  preloadFont?: boolean;
 }
 
-const { locale, title, page } = Astro.props;
+const { locale, title, page, preloadFont = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,10 +29,23 @@ const { locale, title, page } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {/* An empty icon until the favicon set arrives in phase 2; without it,
-         browsers request /favicon.ico and log a 404. */}
-    <link rel="icon" href="data:," />
     <title>{title}</title>
+    {preloadFont && (
+      <link
+        rel="preload"
+        href={archivoCore}
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    )}
+    {/* The brand package's head snippet (Assets/codraft-brand/web/), with
+         the web copies in public/ (ADR 0014). */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0F1B2D" />
     {page ? (
       <>
         <link rel="canonical" href={urlFor(page, locale)} />

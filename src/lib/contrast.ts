@@ -1,6 +1,7 @@
 /**
- * WCAG 2.x contrast ratio between two sRGB colours, for the specimen's
- * colour table. https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio
+ * WCAG 2.x contrast ratio between two sRGB colours, for the token tests
+ * and the colour tables of the style page and the lab specimens.
+ * https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio
  */
 
 const HEX_COLOUR = /^#([0-9a-f]{6})$/i;

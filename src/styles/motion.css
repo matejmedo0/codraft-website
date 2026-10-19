@@ -1,0 +1,129 @@
+/*
+ * Motion tokens (docs/motion.md, ADR 0015). Every motion is a CAD action:
+ * select (grips), draw a line, dimension, layers, snap. The same values are
+ * in motion.ts for React islands; motion.test.ts keeps the two in step.
+ *
+ * Reduced motion: each component shows its final state at once (no
+ * transforms; at most a fade of 200 ms or less).
+ */
+
+@layer tokens {
+  :root {
+    --motion-instant: 80ms; /* snap: a pressed button */
+    --motion-fast: 140ms; /* grips, small state changes */
+    --motion-base: 200ms; /* page crossfade, menus */
+    --motion-snap: 320ms; /* a grip snapping in, after a line */
+    --motion-slow: 480ms; /* dimension lines, a selection's release */
+    --motion-draw: 700ms; /* a drafting line */
+
+    /* The logo entrance waits a moment after load; a section's selection
+       holds before it releases. */
+    --motion-entrance-delay: 250ms;
+    --motion-hold: 1700ms;
+
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    /* A pen stroke: a slow start, a long glide, a gentle stop. */
+    --ease-pen: cubic-bezier(0.5, 0, 0.2, 1);
+
+    /* Springs from motion-foundations (motion.ts), sampled into linear():
+       "snappy" (stiffness 300, damping 30) for UI state, and "snap"
+       (400/24, about 9 % overshoot) for a grip snapping in. */
+    --ease-spring: linear(
+      0,
+      0.109 6.3%,
+      0.319 12.5%,
+      0.529 18.8%,
+      0.699 25%,
+      0.822 31.3%,
+      0.903 37.5%,
+      0.953 43.8%,
+      0.981 50%,
+      0.996 56.3%,
+      1.002 62.5%,
+      1.004 68.8%,
+      1.004 75%,
+      1.003 81.3%,
+      1.002 87.5%,
+      1
+    );
+    --ease-snap: linear(
+      0,
+      0.075 4.2%,
+      0.248 8.3%,
+      0.457 12.5%,
+      0.657 16.7%,
+      0.825 20.8%,
+      0.951 25%,
+      1.033 29.2%,
+      1.078 33.3%,
+      1.094 37.5%,
+      1.091 41.7%,
+      1.076 45.8%,
+      1.057 50%,
+      1.038 54.2%,
+      1.021 58.3%,
+      1.008 62.5%,
+      0.999 66.7%,
+      0.993 70.8%,
+      0.991 75%,
+      0.992 83.3%,
+      0.996 91.7%,
+      1
+    );
+  }
+}
+
+/* A line drawn from its start; scale is the reveal of a solid line. */
+@keyframes motion-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes motion-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* A grip snapping in. */
+@keyframes motion-snap-in {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes motion-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* A selection releasing: the line and its grip fade, the rule stays. */
+@keyframes motion-release {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

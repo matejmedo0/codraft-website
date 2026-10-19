@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+  <rect x="3" y="19" width="10" height="10"/>
+  <rect x="35" y="4" width="10" height="10"/>
+  <rect x="35" y="34" width="10" height="10"/>
+  <path d="M35 9H22V39H35"/>
+  <line x1="13" y1="24" x2="22" y2="24"/>
+  <line x1="3" y1="22" x2="13" y2="22"/>
+  <line x1="6" y1="16.5" x2="6" y2="18.5"/>
+  <line x1="10" y1="16.5" x2="10" y2="18.5"/>
+  <g id="accent" stroke="#2F6BFF">
+    <line x1="23.5" y1="24" x2="28" y2="24"/>
+    <rect x="28" y="22" width="4" height="4"/>
+  </g>
+</svg>

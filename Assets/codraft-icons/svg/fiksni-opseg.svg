@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+  <path d="M12.5 3H29.5L35.5 9V35.5H12.5Z"/>
+  <path d="M29.5 3V9H35.5"/>
+  <line x1="16.5" y1="21" x2="31.5" y2="21"/>
+  <line x1="16.5" y1="25" x2="31.5" y2="25"/>
+  <line x1="16.5" y1="29" x2="25" y2="29"/>
+  <line x1="12.5" y1="39" x2="12.5" y2="45"/>
+  <line x1="35.5" y1="39" x2="35.5" y2="45"/>
+  <line x1="12.5" y1="42.5" x2="35.5" y2="42.5"/>
+  <polyline points="17.5 40.5 14 42.5 17.5 44.5"/>
+  <polyline points="30.5 40.5 34 42.5 30.5 44.5"/>
+  <g id="accent" stroke="#2F6BFF">
+    <line x1="16.5" y1="15.5" x2="21.5" y2="15.5"/>
+    <rect x="21.5" y="13.5" width="4" height="4"/>
+  </g>
+</svg>

@@ -45,7 +45,10 @@ export interface Alternate {
  */
 export function alternatesFor(page: PageId): Alternate[] {
   return [
-    ...LOCALES.map((locale) => ({ hreflang: locale, href: urlFor(page, locale) })),
+    ...LOCALES.map((locale) => ({
+      hreflang: locale,
+      href: urlFor(page, locale),
+    })),
     { hreflang: "x-default", href: urlFor(page, X_DEFAULT_LOCALE) },
   ];
 }

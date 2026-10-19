@@ -24,18 +24,16 @@ const { locale, title, page } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    {
-      page ? (
-        <>
-          <link rel="canonical" href={urlFor(page, locale)} />
-          {alternatesFor(page).map(({ hreflang, href }) => (
-            <link rel="alternate" hreflang={hreflang} href={href} />
-          ))}
-        </>
-      ) : (
-        <meta name="robots" content="noindex" />
-      )
-    }
+    {page ? (
+      <>
+        <link rel="canonical" href={urlFor(page, locale)} />
+        {alternatesFor(page).map(({ hreflang, href }) => (
+          <link rel="alternate" hreflang={hreflang} href={href} />
+        ))}
+      </>
+    ) : (
+      <meta name="robots" content="noindex" />
+    )}
   </head>
   <body>
     <slot />

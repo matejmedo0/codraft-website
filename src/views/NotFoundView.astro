@@ -14,5 +14,7 @@ const { locale } = Astro.props;
 
 <main>
   <h1>{t(locale, "notFound.title")}</h1>
-  <p><a href={pathFor("home", locale)}>{t(locale, "notFound.homeLink")}</a></p>
+  <p>
+    <a href={pathFor("home", locale)}>{t(locale, "notFound.homeLink")}</a>
+  </p>
 </main>

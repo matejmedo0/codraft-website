@@ -9,8 +9,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeView from "../views/HomeView.astro";
 
 export const getStaticPaths = (() =>
-  // The view registry: a page is generated once it has a view. Until phase 3
-  // only the home page has one; the others exist only in the route map.
+  // The view registry: a page is generated once it has a view, which gets
+  // the page's locale as a prop. Until phase 3 only the home page has one;
+  // the others exist only in the route map.
   staticPathsFor({ home: HomeView })) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;

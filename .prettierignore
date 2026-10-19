@@ -1,0 +1,9 @@
+# Prettier also skips everything in .gitignore (build and test output).
+
+# Documentation, plan snapshots and the brand masters are never reformatted.
+docs/
+Assets/
+/*.md
+
+# Written by npm.
+package-lock.json

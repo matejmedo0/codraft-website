@@ -3,7 +3,7 @@
  * The navy surface, as the closing call to action uses it: once on a page,
  * at the end (ADR 0015). The same button as on paper, with the surface's own
  * tokens. It invites a conversation and doesn't repeat the audit (ADR 0017).
- * Laid out as on Home (HomeClosing.astro, review batch 11).
+ * Laid out as on Home (HomeClosing.astro, review batches 11 and 12).
  */
 import Button from "../../components/ui/Button.astro";
 import Zone from "../../components/ui/Zone.astro";
@@ -12,8 +12,8 @@ import { CLOSING } from "../copy.ts";
 ---
 
 <Zone labelledby="zavrsni-poziv" surface="navy" class="closing">
+  <p class="closing__label t-label">Tamnoplava površina: završni poziv</p>
   <div class="closing__text">
-    <p class="closing__label t-label">Tamnoplava površina: završni poziv</p>
     <h2 id="zavrsni-poziv">{CLOSING.title}</h2>
     <p class="closing__lead">{CLOSING.lead}</p>
   </div>
@@ -24,15 +24,10 @@ import { CLOSING } from "../copy.ts";
 
 <style>
   .closing {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-    align-items: flex-start;
+    display: grid;
+    justify-items: center;
     padding-block: calc(var(--zone-pad) * 2 / 3);
-  }
-
-  .closing__text {
-    max-width: 40rem;
+    text-align: center;
   }
 
   .closing__label {
@@ -40,23 +35,20 @@ import { CLOSING } from "../copy.ts";
     color: var(--ink-muted);
   }
 
+  .closing__text {
+    max-width: 100%;
+  }
+
   .closing__lead {
-    max-width: var(--measure-lead);
+    width: 0;
+    min-width: 100%;
     margin-top: var(--space-4);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
+    text-wrap: balance;
   }
 
-  @media (min-width: 56.25rem) {
-    .closing {
-      flex-direction: row;
-      gap: var(--gap);
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .closing__cta {
-      flex: none;
-    }
+  .closing__cta {
+    margin-top: var(--space-5);
   }
 </style>

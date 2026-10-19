@@ -310,6 +310,24 @@ The client answered batch 10 first: "Ikone se smiju koristiti i dovršene su. Do
 
 The style page's navy sample (`StyleClosing.astro`) shows the same band, so it follows.
 
+**Batch 12 (2026-10-20): the closing call to action, centred**
+
+The client's message, verbatim:
+
+> Uredi samo raspored tamnoplave završne trake. Tekst, boje i veličine fonta ostaju isti.
+>
+> 1. Sve centriraj horizontalno: naslov, ispod njega rečenica, ispod nje gumb.
+> 2. Na desktopu naslov stoji u jednom redu. Rečenica ima max-width najviše jednak širini naslova, s text-wrap: balance.
+> 3. Razmak između rečenice i gumba neka bude otprilike 1.5 puta veći od razmaka između naslova i rečenice.
+> 4. Gornji i donji padding trake su jednaki.
+> 5. Na mobitelu sve ostaje centrirano, a naslov se smije lomiti uz text-wrap: balance.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 39 | Points 1 and 2 (quoted above) | Heading, lead and button centred, one under the other; this replaces the left block and right button of #37 and the 40rem cap. From 900 px the heading has room for one line (it fits from about 900 px at its size there), and nothing forces it, so zoomed text can still wrap. The lead takes no width of its own: it is exactly as wide as the heading's block, so never wider than the heading, and balanced (`text-wrap: balance`). | `src/lab/home/HomeClosing.astro`, `src/lab/style/StyleClosing.astro` | None | Done; in review |
+| 40 | Points 3 and 4 (quoted above) | Heading to lead 1rem, lead to button 1.5rem (1.5 times). The top and bottom padding stay equal (two thirds of a zone's, #37), and the heading's first line is trimmed to its cap height, so the space above the letters matches the space below the button. | `HomeClosing.astro` | None | Done; in review |
+| 41 | Point 5 (quoted above) | On phones everything stays centred and the heading wraps balanced. | `HomeClosing.astro` | None | Done; in review |
+
 ## After the refinements
 
 1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.

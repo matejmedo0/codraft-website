@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript stays on 6.0.x for Astro's tooling and typescript-eslint
+      # (ADR 0008).
+      - dependency-name: typescript
+        versions: [">=6.1.0"]
+      # @types/node follows the Node major in .nvmrc.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]

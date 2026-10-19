@@ -1,6 +1,6 @@
 # Phase 1: Architecture (Arhitektura)
 
-- **Status:** Done (2026-10-19). Waiting for the client's review of the phase PR.
+- **Status:** Done and approved (2026-10-19). Merged into `main` through the phase PR; phase 2 starts in a new session.
   - Steps 1–3: research and decisions (ADR 0008–0013).
   - Steps 4–8: the approved [scaffold plan](../plans/2026-10-19-scaffold-plan.md), executed; findings in [research/2026-10-19-scaffold-verification.md](../research/2026-10-19-scaffold-verification.md).
 - **Branch:** `phase/1-architecture` · **PR:** [#1](https://github.com/matejmedo0/codraft-website/pull/1)
@@ -204,3 +204,12 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
     - **Docs updated:** `architecture.md`, `README.md`, `CONTRIBUTING.md`, this log, `PROGRESS.md`, and the indexes in `docs/README.md` and `docs/phases/README.md`.
     - **Phase gate.** PR #1 holds the phase report. Waiting for the client's review; the merge and phase 2 start only on the client's word.
     - **Proposal** (repository administration, so it needs the client's OK): make the CI checks required in the "Protect main" ruleset.
+  - **Approval.** The client approved the phase and asked for the merge (a merge commit of PR #1). Phase 2 starts in a new session, on the branch `phase/2-design` created from `main` after the merge.
+    - Before the merge, [2-design.md](2-design.md) was brought up to date with ADR 0008 and the phase 1 findings:
+      - prototype routes without a leading `_`
+      - Astro components for the always-present UI
+      - the CSP and inline styles
+      - the favicon placeholder
+      - private previews on the VPS
+      - where Playwright MCP saves screenshots
+    - The CI proposal is still open.

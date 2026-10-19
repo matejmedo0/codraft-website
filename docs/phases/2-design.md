@@ -17,7 +17,18 @@ Find a distinctive, professional visual direction built from the brand, and turn
 | Croatian copy for the prototypes | HR draft of the existing copy (approval pending) | [content.md](../content.md) |
 | **Logo entrance animation** | Client decision needed | [brand.md](../brand.md#decisions-pending-phase-2) |
 | **C2PA metadata in web copies** | Client decision needed | Same |
-| Working stack | From phase 1 | [architecture.md](../architecture.md) |
+| **Private preview of the prototypes** | Client decision needed. With the VPS, it needs the domain and the server, both ordered only with the client's OK. | [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md), `PROGRESS.md` |
+| Working stack | Decided and scaffolded: Astro 7 with React islands | [architecture.md](../architecture.md), [ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) |
+| Phase 1 findings that shape this phase | The CSP blocks inline `style` attributes; Astro ignores routes that start with `_`; the favicon is a placeholder | [research/2026-10-19-scaffold-verification.md](../research/2026-10-19-scaffold-verification.md) |
+
+## Stack notes from phase 1
+
+- **Skills:** besides the ones in each step, load `vite-patterns` (Astro runs on Vite) and `react-patterns` for islands.
+- **No React for the always-present UI** ([ADR 0008](../decisions/0008-stack-astro-with-react-islands.md)). The header, mobile menu and language switcher (and later the consent banner) are Astro components with small scripts. React and `motion/react` appear only inside islands; simpler motion is CSS.
+- **No `<ClientRouter />`.** It is incompatible with the hash CSP, so page transitions use CSS cross-document view transitions.
+- **The CSP blocks inline `style` attributes.** Check every library that renders them, such as `motion/react`'s initial styles in an island, on a production build: the CSP is off in `astro dev`. Astro can allow style attributes alone (`styleDirective.resources: [{ resource: "'unsafe-inline'", kind: 'attribute' }]`); doing so is a decision that needs an ADR.
+- **Tests:** the first React island brings Testing Library and jsdom (approved in the scaffold plan). The non-React UI is tested with `@testing-library/dom` and Playwright (ADR 0008).
+- **Budget:** content pages may load at most 15 KB of gzip JavaScript (`npm run check:budget`); one minimal React island alone is about 70 KB.
 
 ## Steps
 
@@ -31,7 +42,7 @@ Find a distinctive, professional visual direction built from the brand, and turn
 
 Claude's recommendation is A, borrowing C's photographic warmth. **The client chooses.**
 
-**2. Build each direction as a live prototype** on a local, noindex route (e.g. `/_design/a`, `/b`, `/c`). Each prototype has:
+**2. Build each direction as a live prototype** on a local, noindex route. Astro ignores route files that start with `_`, so use a normal folder such as `src/pages/lab/` (`/lab/a`, `/lab/b`, `/lab/c`). Each prototype has:
 - real Croatian copy, real fonts, real motion
 - the hero
 - one services section
@@ -40,10 +51,12 @@ Claude's recommendation is A, borrowing C's photographic warmth. **The client ch
 - one signature motion
 
 Take Playwright screenshots at 375, 768 and 1440 px, and let the client click through on localhost.
+- Playwright MCP writes files only inside the project. Save to `.playwright-mcp/` (gitignored), then copy the screenshots for the report to `docs/phases/screenshots/phase-2/`.
+- If an MCP call goes quiet, check that its server process is alive, and ask the client to reconnect it with `/mcp`. A Node upgrade stops it.
 
-If the hosting chosen in phase 1 offers private preview deployments, share the prototypes there as well, so other team members can review them. A deploy is an "ask first" item.
+With the VPS chosen in phase 1 ([ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md)), a private preview for other team members needs the domain and the server. Ordering them and deploying are "ask first" items; without them, the client reviews on localhost and the screenshots.
 
-The `/_design/*` routes and the style page are noindex, and they are excluded from production builds.
+The `/lab/*` routes and the style page are noindex and stay out of production builds. For example, they are generated only when a build flag is set. Check them on a build with the flag, because the CSP is only active in builds.
 
 **3. Tokens** as CSS custom properties:
 - **Colour:** brand plus the accessible text tokens from [brand.md](../brand.md#colour), with blue for graphics only.
@@ -57,9 +70,9 @@ The `/_design/*` routes and the style page are noindex, and they are excluded fr
 - optimised SVG copies of the marks (masters untouched)
 - the wordmark's accent split into three paths (c-arc, line, grip)
 - a wordmark component that themes `.cd-ink` and `.cd-accent` with `currentColor`
-- the `web/` favicon set copied to the public root, with the head snippet added
+- the `web/` favicon set copied to the public root, with the head snippet added. It replaces the empty `data:,` icon placeholder in `src/layouts/BaseLayout.astro`.
 
-**6. Base components:**
+**6. Base components**, as Astro components (React only where a component needs to be an island):
 - header with mobile menu
 - footer (title-block style in direction A)
 - button, section, card

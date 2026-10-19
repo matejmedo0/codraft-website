@@ -1,8 +1,12 @@
 # Codraft — napredak
 
-**Trenutna faza:** 1 — Arhitektura, gotova 19. 10. 2026. Čeka vaš pregled PR-a #1 (grana `phase/1-architecture`).
+**Trenutna faza:** 2 — Dizajn, kreće u novoj sesiji na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak:** pregledajte PR #1: https://github.com/matejmedo0/codraft-website/pull/1. Na vašu riječ („idemo dalje“) spajam ga u `main` i krećem u fazu 2 (dizajn). Redoslijed u fazi 1:
+**Sljedeći korak:** nova sesija pokreće fazu 2 prema `docs/phases/2-design.md`.
+- Prvo pita samo ono što faza 2 treba: animaciju loga, C2PA metapodatke i privatni pregled prototipova (uz VPS to traži domenu i server).
+- Zatim izrađuje 2–3 smjera kao žive prototipove, a smjer birate vi.
+
+Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
 2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
 3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
@@ -59,8 +63,8 @@ Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototi
 ## Faze
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
-- [x] 1 — Arhitektura (gotova 19. 10. 2026., čeka vaše odobrenje): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
-- [ ] 2 — Dizajn: 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
+- [x] 1 — Arhitektura (gotova i odobrena 19. 10. 2026., PR #1): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
+- [ ] 2 — Dizajn (sljedeća, u novoj sesiji): 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
 - [ ] 5 — Kvaliteta: E2E i unit testovi, pristupačnost, performanse → `docs/phases/5-quality.md`

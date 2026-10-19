@@ -1,6 +1,6 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** Done and in review at the phase gate (2026-10-19). PR #2 is the phase report. The client likes the result and asked for a few refinements before phase 3, in a new session: [2-design-review.md](2-design-review.md) is the brief.
+- **Status:** Done and in review at the phase gate (2026-10-19). PR #2 is the phase report. The client is refining the design before phase 3: the first refinements session made six batches on `/lab/pocetna` and handed over; [2-design-review.md](2-design-review.md) is the brief for the next session.
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
   - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md).
   - **The client chose** D with a paper header and hero ([ADR 0015](../decisions/0015-design-direction-model-i-list.md)) and Figma for quick iterations ([ADR 0016](../decisions/0016-figma-for-design-iterations.md)); the answers are in [2-design-system.md](2-design-system.md).
@@ -266,3 +266,21 @@ Load `frontend-a11y` for the menu, focus states and skip link.
   - **Screenshots** for the report are in [screenshots/phase-2/system/](screenshots/phase-2/system/), with frames of motion in progress for the client, who can't see it on their machine.
   - **The client's first reaction:** "Dobro sviđa mi se". The client asked what phase 3 holds (summarised in Croatian), then asked for a handover: "imam par dorada koje bih htio rješiti prije finalne faze 3". [2-design-review.md](2-design-review.md) is the brief for the refinements session. `PROGRESS.md` and PR #2 point to it, and the client has a prompt for the new session.
   - **The dev server** was restarted on port 4321 so the client could open `/lab/style`. The next session checks the port before E2E.
+- **2026-10-19, first review refinements session** ([2-design-review.md](2-design-review.md) has every refinement, verbatim and sorted):
+  - **Skills loaded:** `frontend-design:frontend-design`, `frontend-a11y`, `motion-foundations`. Figma skills weren't loaded: the library isn't synced yet.
+  - **The client's batches** (refinements 1–20, each recorded before the change):
+    1. "mali" out of the studio's description; the free-audit button once per page, where the audit is explained, with no button in the header and "Pošaljite upit" in the closing call to action ([ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md)); the paper hero confirmed.
+    2. The H1 in two lines, as A showed it on a wide screen; no "žargon" in the Croatian copy (a new hero lead, `services.intro`, "Jasno objašnjeno"); „Tehničko crtanje“ instead of „CAD crtanje“, for architecture and construction only, slug `/tehnicko-crtanje` ([ADR 0018](../decisions/0018-drafting-for-architecture-and-construction.md)).
+    3. "Što radimo": larger, darker service lines and three layouts to compare; the process line drawn as one stroke (`data-draw-wait` in draw.ts).
+    4. The client chose option 3 „Središnja os“, with one short line per service; offered custom icons (specification in brand.md).
+    5. A floor plan drawn as a timelapse instead of the machined plate; the prompt for the icons; the English aligned at the end. The H1 across the sheet was tried for laptops.
+    6. The hero back as before; no room names on the plan; 3D models in the drafting offer ([ADR 0019](../decisions/0019-drafting-adds-3d-models.md)); three layouts for "Tehničko crtanje".
+    7. The hero already matched the client's screenshot; option C for drafting is likely; handover.
+  - **Built:** `/lab/pocetna` (Home in the chosen direction on the production components, where the refinements are shown), `/lab/sto-radimo` and `/lab/crtanje` (the comparisons), and the parts in `src/lab/home/`.
+  - **Self-review along the way:**
+    - A script between two zones hid the rule above the next zone, so the scripts moved inside the zones.
+    - The process line first took 0.7 s on a desktop, too fast to follow; it was slowed to about 1.3–1.7 s.
+    - With one line per service, the stages of the central axis sat too far apart, so they moved closer.
+  - **Lesson:** batch 5 changed the hero's composition when the client had asked only for line breaks, and the client rejected it ("Počeo si raditi gluposti"). From now on a change goes only as far as the request; anything more is shown as options first.
+  - **Checks after each batch:** lint, `astro check`, 138 unit tests, format and the copy guardrails passed; on the dev server, no console errors and no horizontal overflow at 375, 768 and 1440 px on every new lab page; CI green on every push. The checks on the lab build, E2E, the Figma sync and PR #2 wait for the end of the review.
+  - **Handover** at the client's request; the open items are in [2-design-review.md](2-design-review.md#handover-2026-10-19).

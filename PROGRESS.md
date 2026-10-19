@@ -1,17 +1,29 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, **gotova i čeka vaš pregled** (19. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
+**Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: vaše dorade u novoj sesiji, prije faze 3.** Rezultat vam se sviđa („Dobro sviđa mi se“), a prije faze 3 želite riješiti nekoliko dorada. Sažetak za tu sesiju je `docs/phases/2-design-review.md`:
-1. Najprije zapisujem vaše dorade.
-2. Zatim ih radim na grani `phase/2-design`, provjeravam i usklađujem Figma knjižnicu.
-3. Na kraju ažuriram PR #2 i javljam vam se.
+**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U prvoj sesiji dorada (19. 10. 2026.) poslali ste šest skupina, a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover“):
+1. **Gotovo:**
+   - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
+   - bez „mali“ i bez „žargon“ u tekstu
+   - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019)
+   - naslov u dva reda na širokim ekranima
+   - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i plavom crtom jednim potezom
+   - tlocrt koji se iscrtava kao timelapse
+2. **Otvoreno:**
+   - potvrda opcije C za Tehničko crtanje (`/lab/crtanje`)
+   - vaše ikone usluga (prompt je u `docs/brand.md`)
+   - 3D prikaz tlocrta, ako ga želite
+   - engleski tekst na kraju dorada
+   - usklađivanje Figme
+   - završne provjere i ažuriranje PR-a #2
 
 Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 
 **Što pregledati:**
-- **Stranica sa stilovima:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
-- **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta.
+- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo` i `/lab/crtanje`.
+- **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
+- **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja).
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
 - **Animacije:** na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa ih Chrome ne prikazuje. Uključite ih ovdje: Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti. Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
 

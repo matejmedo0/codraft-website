@@ -1,9 +1,45 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-19): open; the next session starts here.** Phase 2 is done and in review (PR #2). The client likes the design system and wants a few refinements before phase 3. They bring them to the next session.
-> - **First**, ask the client, in Croatian, for the refinements. Record each one under [Refinements](#refinements) before changing anything.
-> - **Then** make them on `phase/2-design`, check them, and update the docs, the Figma library and PR #2.
-> - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says.
+> **Status (2026-10-19, end of the first refinements session): open; the next session starts at [Handover](#handover-2026-10-19).** Phase 2 is done and in review (PR #2). In the first refinements session the client sent six batches (refinements 1–20 below), reviewed on `/lab/pocetna`, then asked for a handover.
+> - **Next:** the open items under [Handover](#handover-2026-10-19), in order, then the steps under [After the refinements](#after-the-refinements).
+> - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
+> - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
+
+## Handover (2026-10-19)
+
+The client asked for a handover at the end of batch 7: "updateaj dokumentaciju za nastavak u drugoj sesiji i daj prompt za drugu sesiju".
+
+**Where things are**
+- **Branch:** `phase/2-design`, pushed; the last refinements commit is `564ceeb`, and CI was green on every push before it.
+- **Lab pages** (`npm run dev`, then http://localhost:4321):
+  - `/lab/pocetna`: Home in the chosen direction, on the production components. Every approved refinement is here.
+  - `/lab/sto-radimo`: the three "Što radimo" options; the client chose 3 „Središnja os“ (now on Home).
+  - `/lab/crtanje`: the three "Tehničko crtanje" options; the client leans to C „Legenda“, not yet confirmed. Home still shows A.
+  - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (navy hero, the plate, five audit buttons).
+- **Code of the refinements:** `src/lab/home/` (Home's zones, `ServiceItem`, `chapters.ts`, `process-line.ts`, `services.css`, `PlanDrawing.astro` with `plan-timelapse.ts`, `drafting/`), `src/lab/pages/{pocetna,sto-radimo,crtanje}.astro`, `src/lab/copy.ts`. Production code changed only in the header (no button), the route map (`/tehnicko-crtanje`), the locales and `draw.ts` (`data-draw-wait`).
+- **Decisions:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md) (one audit button per page), [ADR 0018](../decisions/0018-drafting-for-architecture-and-construction.md) („Tehničko crtanje“, architecture and construction only), [ADR 0019](../decisions/0019-drafting-adds-3d-models.md) (3D models). All accepted.
+- **Copy:** every new or changed line is in `docs/content.md` (§2 blocks, §3 suggestions S17–S19, "Prototype copy" tables for batches 1–6, changelog). All are HR drafts for the client to approve.
+- **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), from the dev server (the Astro toolbar shows in the full-page ones); `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
+- **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser was about 1920 px wide in the client's screenshot); the laptop is 2560 × 1600 at 150 % (1707 px).
+- **The dev server** still runs on port 4321 (`node` PID 29544 at the handover). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
+
+**Open items, in order**
+1. **Tehničko crtanje:** confirm the option with the client ("Opcija C vjerovatno"). On their word, put `DraftingLegend` on `/lab/pocetna` instead of `DraftingSide`, and record it under batch 7.
+2. **The service icons:** the client is generating nine icons with the prompt in [brand.md](../brand.md#imagery). When they arrive (SVG or transparent PNG): redraw each as a stroke SVG on the 48 px grid (`currentColor`, 1.5 px, square caps), put them on the services in "Što radimo", and draw each stage's icons as the process line reaches the stage (`process-line.ts` knows when). Static with reduced motion. Then write the ADR that adopts them.
+3. **Proposed, not yet answered:** after the floor plan's timelapse, raise it into a 3D view (walls extruded), to show the 3D service. Do it only if the client says yes.
+4. **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Two lines on a laptop would need smaller letters (about 54 px instead of 70). The client rejected the other way (the H1 across the sheet). Don't change it unasked; if the client raises it, show both at 1440 px side by side first.
+5. **Further batches** from the client, if any.
+6. **English, at the end of the review** (the client's word, batch 5): S17–S19 and every Croatian change of this review, including the new `drafting.3d.*` blocks and the one-line services, then `src/locales/en.json` where a UI string changed.
+7. **Figma:** not yet synced with any refinement. Bring the library "Codraft sustav dizajna" in line with the code once the batches settle: the component Zaglavlje (no button; "Tehničko crtanje"), the example page Početna (hero copy and two lines, "Što radimo" as the central axis with one line per service, the drafting zone with the floor plan and 3D, the closing call to action with "Pošaljite upit"), and the text styles if a size changed. Load `figma:figma-use` and `figma:figma-generate-library` first.
+8. **The steps under [After the refinements](#after-the-refinements):** the checks on the lab build (add `/lab/pocetna`, `/lab/sto-radimo` and `/lab/crtanje` to `.playwright-mcp/check-lab-r3.mjs`), `npm run verify`, `npm run test:e2e`, report screenshots from the lab build, the phase log, `PROGRESS.md`, PR #2's "Review refinements" section, green CI, the report, and stop.
+
+**Working notes from this session**
+- **A `<script>` between two zones breaks `.zone + .zone`** (the rule above a zone disappears), because Astro renders a component's script in place. Put a component's script inside its zone.
+- **A part that is in view at load and must still animate** takes `data-draw-wait` (draw.ts) and hides itself with CSS under `.js` and `prefers-reduced-motion: no-preference`, so it never flashes complete.
+- **Classes passed to `Zone`, `Button` and `ServiceItem` get the parent's scoped styles** (they spread their attributes); `Item` and `Steps` don't, so wrap them or use `:global()`.
+- **Playwright scripts** must live in the project (`.playwright-mcp/`, ignored by git) to find `@playwright/test`. In Git Bash, run them with `MSYS_NO_PATHCONV=1` when an argument starts with `/`.
+- **Editing files with Python on Windows:** write with `newline="\n"`, or the file gets CRLF line endings. For long edits, write the script to the scratchpad first; heredocs with Croatian quotes broke once.
+- **Lab copy is shared:** `src/lab/copy.ts` feeds A–E too, so a copy change shows there as well; that is accepted (the client's wording applies everywhere).
 
 ## Where things stand
 
@@ -137,6 +173,13 @@ The client answered the open questions of batches 2–4 here.
 | 16 | "Tlocrt dobar no nazivi prostorija nepotrebni ovdje makni ih ostalo je ok" | The room names and areas are gone, with their layer "Oznake"; the plan keeps the axes, walls, openings, dimensions and title block. | `src/lab/home/PlanDrawing.astro`, `plan-timelapse.ts`, `src/lab/copy.ts`, `docs/content.md` | None | Done; in review |
 | 17 | "Sekcija CAD crtanje, sada Tehničko crtanje kako smo rekli, Ubaciti i 3D mogućnost ne samo 2D crteže." | The drafting offer gains "3D modeli", between the 2D drawings and the documentation. New HR draft: "Trodimenzionalni modeli zgrada i detalja, izrađeni prema vašim nacrtima i skicama, za provjeru i prezentaciju."; on Home, one line: "Modeli zgrada i detalja prema vašim nacrtima i skicama." | [ADR 0019](../decisions/0019-drafting-adds-3d-models.md); `docs/content.md`, `docs/information-architecture.md`, the phase 3 plan; `src/lab/copy.ts` | New ADR 0019 | Done; in review |
 | 18 | "Te isto tako uskladiti sa sekcijom što radimo u smislu izgleda i veličine teksta da bude u skladu nije loša no izbaci mi opet tri opcije za usporedbu da vidimo može li bolje." | Every option uses the type of "Što radimo": the tagline as its muted lead, the services as its items (a title and one line in full ink, a hairline above), one short line per service. Three options on `/lab/crtanje`: **A „Uz tlocrt“**, the current layout tidied, text on the left and the plan on the right (on `/lab/pocetna` until the client chooses); **B „Središnja os“**, centred like "Što radimo", with the plan in the middle and the services around the axis below it; **C „Legenda“**, the plan large on the left and, on the right, the services in a ruled table like a drawing's legend. | `src/lab/home/drafting/`, `src/lab/pages/crtanje.astro` | The client chooses an option | Options in review |
+
+**Batch 7 (2026-10-19): handover**
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 19 | "Počeo si raditi gluposti rekao sam što se tiče hero sekcije da vratiš kao prije što je bilo poslao sam ti screesnhot." (with a screenshot of the hero) | No code change. The hero on `/lab/pocetna` already matched the client's screenshot, checked at 1920 px: the H1 in two lines at 72 px, the lead, "Pogledajte usluge", the drafting link, and the graph-paper drawing of 741 × 555 px. The screenshot is kept as the reference. **Lesson:** batch 5 changed the hero's composition when the client had asked only about line breaks. Change only what is asked; when a request needs more, show the options first and let the client choose. | `screenshots/phase-2/review/hero-reference-client.png` | None | Matches the reference |
+| 20 | "Opcija C vjerovatno no updateaj dokumentaciju za nastavak u drugoj sesiji i daj prompt za drugu sesiju" | The client leans to option C „Legenda“ for "Tehničko crtanje", not yet final. Confirm in the next session, then put it on `/lab/pocetna`. The handover is above. | — | The client chooses | To confirm |
 
 ## After the refinements
 

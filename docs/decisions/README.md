@@ -13,8 +13,10 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0005](0005-design-review-with-coded-prototypes.md) | Design directions are reviewed as coded prototypes | Accepted | 2026-10-18 |
 | [0006](0006-github-repo-and-phase-branches.md) | Private GitHub repository, one branch and PR per phase | Accepted | 2026-10-18 |
 | [0007](0007-launch-scope-and-constraints.md) | Launch scope and constraints: team photos, audit flow, AI demo, budget | Accepted | 2026-10-18 |
+| [0008](0008-stack-astro-with-react-islands.md) | Stack: Astro with React islands, static-first | Accepted | 2026-10-19 |
+| [0009](0009-hosting-ovhcloud-vps-eu.md) | Hosting: an OVHcloud VPS in the EU (budget ceiling €10/month) | Accepted | 2026-10-19 |
 
-Next number: **0008**. Phase 1 will add the stack, hosting, email, analytics and booking decisions.
+Next number: **0010**. Phase 1 still adds the email, analytics, booking and mailbox decisions.
 
 ## How to add one
 

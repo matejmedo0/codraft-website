@@ -1,6 +1,6 @@
 # Phase 1: Architecture (Arhitektura)
 
-- **Status:** In progress (started 2026-10-19). Steps 1–2 done; waiting for the client's choice (step 3).
+- **Status:** In progress (started 2026-10-19). Steps 1–2 done. Step 3: stack and hosting chosen (ADR 0008, ADR 0009); the service choices are pending.
 - **Branch:** `phase/1-architecture`
 
 ## Goal
@@ -152,3 +152,5 @@ Accounts and keys are created in phase 4; mailboxes are set up in phase 7.
     - Everything is in [1-architecture-options.md](1-architecture-options.md).
   - **Step 3.** The options were presented to the client in Croatian. Waiting for the client's choice.
   - **Budget ceiling.** The client set a ceiling of €10 a month and asked whether it changes the recommendation. It doesn't: Option 1 with the chatbot and Zoho Mail Lite for three users comes to about €9.96 incl. VAT ([fit](1-architecture-options.md#budget-ceiling-10-a-month-client-2026-10-19)). Recorded here and in `PROGRESS.md`; it goes into the hosting ADR's context.
+  - **Hostinger.** At the client's request, Hostinger Cloud Startup was checked ([research addendum](../research/2026-10-19-hosting.md#addendum-hostinger-cloud-startup-client-request-2026-10-19)). It was not shortlisted: the $7.99/month price needs a 48-month prepay, the renewal is $25.99/month excl. VAT, and there is no full server access.
+  - **Decision: Option 1.** The client confirmed Option 1 once Hostinger had been ruled out. Recorded as [ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) (stack) and [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md) (hosting). Waiting for the service choices: email API, analytics, booking tool, mailbox provider.

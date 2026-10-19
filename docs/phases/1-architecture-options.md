@@ -1,9 +1,9 @@
 # Phase 1: architecture options (2026-10-19)
 
-> **Status: proposal, waiting for the client's choice.**
+> **Status: Option 1 chosen by the client on 2026-10-19** ([ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) stack, [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md) hosting). The service choices (email, analytics, booking, mailboxes) are pending.
 > - The `architect` agent wrote these options in the `/architecture` step, from [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md) and the inputs in [1-architecture.md](1-architecture.md).
 > - The main session reviewed them; see [Review notes](#review-notes-main-session).
-> - The client's choices will be recorded as ADR 0008 and later. Nothing is ordered, bought or set up yet.
+> - Nothing is ordered, bought or set up yet.
 >
 > Prices exclude VAT unless stated. Croatian VAT is 25 %; $1 ≈ €0.89. "Verify" marks what the research note does not confirm.
 
@@ -375,6 +375,7 @@ Sizes are gzip and count all JS a page loads, including what loads when islands 
   - Bunny.net: no previews, and its database can't be pinned to the EU.
   - statichost.eu: static only, no previews.
   - Vercel Hobby: non-commercial use only.
+  - Hostinger Cloud Startup (checked at the client's request after the options were presented): $7.99/month only on a 48-month prepay, renewal at $25.99/month excl. VAT (≈ €28.87 incl. VAT, nearly three times the €10 ceiling), no full server access ([research addendum](../research/2026-10-19-hosting.md#addendum-hostinger-cloud-startup-client-request-2026-10-19)).
 
 ## Recommendation: Option 1
 

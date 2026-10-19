@@ -2,10 +2,10 @@
 
 **Trenutna faza:** 1 — Arhitektura (u tijeku od 19. 10. 2026., grana `phase/1-architecture`)
 
-**Sljedeći korak:** birate opciju i servise (vidi „Faza 1: za vašu odluku“ niže). Redoslijed u fazi 1:
+**Sljedeći korak:** potvrdite servise: e-mail, analitiku, booking i sandučiće (vidi „Faza 1: za vašu odluku“ niže). Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
 2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
-3. **vaš izbor stacka, hostinga i servisa** ← sada
+3. vaš izbor: ✓ stack i hosting (opcija 1, ADR 0008 i 0009); **servisi ← sada**
 4. plan scaffolda (za vaše odobrenje)
 5. scaffold, CI, hookovi i dozvole
 
@@ -31,8 +31,10 @@ Detalji, rizici i cijeli izračun troškova: `docs/phases/1-architecture-options
 
 **Budžet:** do 10 € mjesečno (vaša odluka, 19. 10. 2026.). Preporuka ostaje opcija 1. S chatbotom i Zoho Mail Lite za tri osobe to je oko 9,96 € s PDV-om. Domena je zaseban godišnji trošak.
 
-Trebamo sada (bilježi se kao ADR 0008 i dalje):
-1. **Opcija** (stack i hosting): 1, 2 ili 3. Preporuka: 1.
+Hostinger Cloud Startup provjeren je na vaš zahtjev i nije u užem izboru. Cijena od 7,99 $ vrijedi samo uz 48 mjeseci unaprijed, a obnova je 25,99 $ mjesečno bez PDV-a (oko 28,87 € s PDV-om).
+
+Trebamo sada (bilježi se kao ADR):
+1. ✓ **Opcija 1** (stack i hosting), odlučeno 19. 10. 2026. → ADR 0008 i ADR 0009
 2. **Servis za e-mail iz formi:** Scaleway (preporuka), AhaSend ili Mailjet. Sva tri su u EU i besplatna pri našem obujmu.
 3. **Analitika:** GoatCounter uz privolu, uz Search Console i Bing (preporuka). Druge mogućnosti: statistika iz server logova bez ikakve skripte (samo uz VPS) ili Plausible za 9 € bez PDV-a.
 4. **Booking:** uz opciju 1 Easy!Appointments (preporuka) ili NeetoCal; uz opciju 2 NeetoCal. Cal.com ne preporučujemo: nema hrvatsko sučelje, a podaci su u SAD-u.
@@ -65,6 +67,8 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-18 | Dizajn smjerove pregledavamo kao žive prototipove u kodu; Figma po želji | [ADR 0005](docs/decisions/0005-design-review-with-coded-prototypes.md) |
 | 2026-10-18 | GitHub: privatan repozitorij; svaka faza ima granu i PR, a merge ide na vašu riječ | [ADR 0006](docs/decisions/0006-github-repo-and-phase-branches.md) |
 | 2026-10-18 | Opseg za objavu:<br>- tim s fotografijama<br>- analiza: forma, pa termin<br>- AI asistent u fazi 4<br>- budžet što bliže 0 €, mali plaćeni EU hosting je u redu<br>- forme i e-mail po mjeri | [ADR 0007](docs/decisions/0007-launch-scope-and-constraints.md) |
+| 2026-10-19 | Stack: Astro s React otocima, statične stranice, mali Node API; TypeScript 6, npm, Node 24 LTS; budžet JavaScripta po stranici | [ADR 0008](docs/decisions/0008-stack-astro-with-react-islands.md) |
+| 2026-10-19 | Hosting: OVHcloud VPS-1 u EU-u, s Caddyjem i deployem iz GitHub Actionsa; budžet do 10 € mjesečno | [ADR 0009](docs/decisions/0009-hosting-ovhcloud-vps-eu.md) |
 
 ## Sitemap
 

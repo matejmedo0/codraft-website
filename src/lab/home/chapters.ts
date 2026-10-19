@@ -19,17 +19,18 @@ export interface Chapter {
 const services = pathFor("services", "hr");
 
 /**
- * The three stages of "Što radimo" on Home. Stage 01 lists its two items
- * from its own text, without a link to the audit: the audit zone follows
- * and asks once (ADR 0017). The services of stages 02 and 03 link to their
- * anchors on /usluge.
+ * The three stages of "Što radimo" on Home, each service with its one short
+ * line (review batch 4; the full sentences are for /usluge). Stage 01 lists
+ * its two items from its own text, without a link to the audit: the audit
+ * zone follows and asks once (ADR 0017). The services of stages 02 and 03
+ * link to their anchors on /usluge.
  */
 export const CHAPTERS: Chapter[] = [
   {
     number: SERVICES.plan.number,
     title: SERVICES.plan.title,
     tagline: SERVICES.plan.tagline,
-    items: PLAN_ITEMS,
+    items: PLAN_ITEMS.map(({ title, short }) => ({ title, body: short })),
   },
   ...SERVICES.stages.map(({ number, title, tagline, items }) => ({
     number,
@@ -37,7 +38,7 @@ export const CHAPTERS: Chapter[] = [
     tagline,
     items: items.map((item) => ({
       title: item.title,
-      body: item.body,
+      body: item.short,
       href: `${services}#${item.anchor}`,
     })),
   })),

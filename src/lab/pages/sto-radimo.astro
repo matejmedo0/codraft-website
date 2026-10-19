@@ -11,8 +11,8 @@ import Zone from "../../components/ui/Zone.astro";
 import { t } from "../../features/i18n/ui.ts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import LabBar from "../components/LabBar.astro";
-import HomeServices from "../home/HomeServices.astro";
 import ServicesAxis from "../home/ServicesAxis.astro";
+import ServicesChapters from "../home/ServicesChapters.astro";
 import ServicesSchedule from "../home/ServicesSchedule.astro";
 
 const locale = "hr";
@@ -56,8 +56,9 @@ const [first, second, third] = OPTIONS;
         <p class="options__lead">
           Tri načina da odjeljak bude puniji i čitljiviji. U svima su opisi
           usluga veći i tamniji, a plava crta se iscrtava jednim potezom od 01
-          do 03 kad odjeljak dođe u vidno polje. Na početnoj je zasad opcija 1;
-          odabranu stavljam tamo.
+          do 03 kad odjeljak dođe u vidno polje. Odabrali ste opciju 3 (19. 10.
+          2026.); ona je sada na početnoj, s jednim kratkim retkom po usluzi.
+          Ova stranica ostaje kao zapis usporedbe.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (
@@ -68,7 +69,7 @@ const [first, second, third] = OPTIONS;
           ))}
         </ol>
       </Zone>
-      <HomeServices headingId={first.id} label={first.name} />
+      <ServicesChapters headingId={first.id} label={first.name} />
       <ServicesSchedule headingId={second.id} label={second.name} />
       <ServicesAxis headingId={third.id} label={third.name} />
     </main>

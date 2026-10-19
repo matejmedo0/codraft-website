@@ -103,6 +103,13 @@ The wordmark is a custom geometric face drawn as outlines, so the site needs web
 
 **CAD samples.** These are sheets drawn for the site, not client work (G10). Deliver them as DWG plus PDF, exportable per layer, so they can be shown in the layer viewer.
 
+**Service icons (proposed).** The client offered a set of custom icons, one per service in "Što radimo", drawn as the line reaches each stage (review batch 4, 2026-10-19). They are custom, never a generic pack (below). What the files need, so they fit the drawing sheet and can be drawn on screen:
+- **Count and names:** nine, one per service, named by the service's anchor: `besplatna-analiza`, `fiksni-opseg`, `web-stranice`, `web-aplikacije`, `integracije`, `ai-asistenti`, `hosting`, `seo`, `analitika`.
+- **Style:** line drawings in the drafting language: navy strokes of one weight, square corners, at most one blue accent per icon (a drafting line or a grip, as in the wordmark). No fills, gradients, shadows, text or perspective.
+- **Format:** one SVG per icon, `viewBox="0 0 48 48"`, drawn on a 48 px grid with 2 px of clear space. Strokes stay strokes (`stroke`, not outlined to fills), 1.5 px wide, with `stroke-linecap="square"` and `stroke-linejoin="miter"`, and `currentColor` for the ink, so the site can colour them and draw them stroke by stroke. Paths are listed in drawing order. No `style` attributes (the CSP blocks them), no embedded images, no metadata.
+- **Source and rights:** the editable source (Figma or Illustrator) and confirmation that Codraft owns the icons.
+- **On the site:** about 40–48 px, decorative (the service's title carries the meaning), drawn once and static with reduced motion.
+
 **What we don't use**
 - stock photography
 - AI-generated people

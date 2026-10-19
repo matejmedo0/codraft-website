@@ -1,7 +1,8 @@
 ---
 /**
  * Zone B, "Što radimo", option 3 "Središnja os" (the client's review,
- * batch 3). On wide screens the process line runs down the middle of the
+ * batch 3), the client's choice in batch 4, with one short line per service
+ * (chapters.ts). On wide screens the process line runs down the middle of the
  * sheet: each stage's bubble sits on it with the title and tagline centred
  * below, and its services stand left and right of the line, the left ones
  * aligned to it. The stage head covers the line where it passes behind the
@@ -122,9 +123,9 @@ const labelId = `${headingId}-opcija`;
   /* Wide screens: the line down the middle. */
   @media (min-width: 64rem) {
     .axis-stage {
-      --stage-top: var(--space-6);
+      --stage-top: var(--space-5);
 
-      padding: var(--stage-top) 0 var(--space-7);
+      padding: var(--stage-top) 0 var(--space-5);
     }
 
     .axis-stage:last-child {

@@ -294,6 +294,20 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 - **Free audit zone:** the only "Rezervirajte besplatnu analizu" on the page.
 - **Closing call to action:** "Prvo jasnoća." with one button, "Pošaljite upit".
 
+**One line per service on Home** (review batch 4, 2026-10-19). The client asked for less text under the services on Home, because the services page has the full sentences. Each line is shortened from the service's own sentence (§2) and adds no claim. They are drafts for the client to approve.
+
+| Service | HR (Home, one line) | Shortened from |
+|---|---|---|
+| Besplatna analiza | Pregled vaše web stranice i vidljivosti na Googleu. | `plan.body` |
+| Fiksni opseg, rok i cijena | Znate ih prije početka rada. | `plan.body` |
+| Web stranice i web trgovine | Brze, prilagođene mobitelu i usmjerene na upite i narudžbe. | `build.websites.body` |
+| Web aplikacije i interni alati | Alati po mjeri umjesto tablica i ručnog rada. | `build.apps.body` |
+| Integracije i online rezervacije | Kalendari, plaćanja i CRM povezani s vašom stranicom. | `build.integrations.body` |
+| AI asistenti i automatizacija | Chatbot koji odgovara danonoćno, na temelju vašeg sadržaja. | `build.ai.body` |
+| Hosting i održavanje | Ažuriranja i sigurnosne kopije za fiksnu mjesečnu naknadu. | `run.hosting.body` |
+| SEO i lokalna vidljivost | Rad na vašem položaju na Googleu i u AI tražilicama. | `run.seo.body` |
+| Analitika i usklađenost | Analitika, kolačići i pristupačnost postavljeni kako treba. | `run.analytics.body` |
+
 ### UI strings of the base components (phase 2)
 
 The header, footer and skip link of the design system (ADR 0015) read these strings from `src/locales/{hr,en}.json`. Both languages are drafts (`draft`); the Croatian lines come from the glossary and the prototype copy, and the English lines are new (gap G27). The navigation labels follow the glossary, so they change with it.
@@ -363,6 +377,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 2):**
   - No "žargon" in the Croatian copy, at the client's request: a new hero lead, the end of `services.intro`, and "Jasno objašnjeno" in "Kako radimo". Suggestion S18 asks about the EN.
   - "Tehničko crtanje" replaces "CAD crtanje", for architecture and construction only ([ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)): the glossary, `drafting.title`, `drafting.audience`, `nav.drafting`, the hero link and G25. Suggestion S19 asks about the EN.
+- **2026-10-19 (phase 2, review refinements, batch 4):** "One line per service on Home" added under "Prototype copy": each service's sentence shortened for Home, drafts. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

@@ -20,6 +20,12 @@ export interface ServiceItem {
   body: string;
 }
 
+/** A service in a stage, with its one line for Home (review batch 4). */
+export interface StageService extends ServiceItem {
+  /** Shortened from the body for Home; /usluge keeps the full sentence. */
+  short: string;
+}
+
 export interface Stage {
   number: string;
   /** The anchor on /usluge (docs/content.md §1). */
@@ -34,7 +40,7 @@ export interface PlanStage extends Stage {
 }
 
 export interface ServiceStage extends Stage {
-  items: ServiceItem[];
+  items: StageService[];
 }
 
 export interface ServicesCopy {
@@ -130,21 +136,25 @@ export const SERVICES: ServicesCopy = {
           anchor: "web-stranice",
           title: "Web stranice i web trgovine", // build.websites.*
           body: "Brze stranice i web trgovine, osmišljene najprije za mobitel, koje posjetitelje pretvaraju u pozive, rezervacije i narudžbe.",
+          short: "Brze, prilagođene mobitelu i usmjerene na upite i narudžbe.",
         },
         {
           anchor: "web-aplikacije",
           title: "Web aplikacije i interni alati", // build.apps.*
           body: "Portali, nadzorne ploče i administracijski alati po mjeri koji zamjenjuju tablice i ručna zaobilazna rješenja.",
+          short: "Alati po mjeri umjesto tablica i ručnog rada.",
         },
         {
           anchor: "integracije",
           title: "Integracije i online rezervacije", // build.integrations.*
           body: "Vaša web stranica povezana s kalendarima, plaćanjima i CRM-om, da svaki upit stigne do prave osobe.",
+          short: "Kalendari, plaćanja i CRM povezani s vašom stranicom.",
         },
         {
           anchor: "ai-asistenti",
           title: "AI asistenti i automatizacija", // build.ai.*
           body: "Chatbotovi koji klijentima odgovaraju danonoćno, na temelju vašeg vlastitog sadržaja, i automatizacije koje s vas skidaju ponavljajuće zadatke.",
+          short: "Chatbot koji odgovara danonoćno, na temelju vašeg sadržaja.",
         },
       ],
     },
@@ -158,16 +168,19 @@ export const SERVICES: ServicesCopy = {
           anchor: "hosting",
           title: "Hosting i održavanje", // run.hosting.*
           body: "Hosting o kojem brinemo mi, redovita ažuriranja, sigurnosne kopije i zakrpe, sve za fiksnu mjesečnu naknadu.",
+          short: "Ažuriranja i sigurnosne kopije za fiksnu mjesečnu naknadu.",
         },
         {
           anchor: "seo",
           title: "SEO i lokalna vidljivost", // run.seo.*
           body: "Kontinuirani rad na vašem položaju u tražilicama, Profilu tvrtke na Googleu i recenzijama, uključujući vidljivost u AI tražilicama.",
+          short: "Rad na vašem položaju na Googleu i u AI tražilicama.",
         },
         {
           anchor: "analitika",
           title: "Analitika i usklađenost", // run.analytics.*
           body: "Analitika, privola za kolačiće i pristupačnost postavljene kako treba, da možete mjeriti rezultate i ispuniti zahtjeve EU-a.",
+          short: "Analitika, kolačići i pristupačnost postavljeni kako treba.",
         },
       ],
     },
@@ -225,14 +238,21 @@ export interface TextItem {
 }
 
 /** Stage 01's two items, split from plan.body, so the stages hold 2, 4, 3. */
-export const PLAN_ITEMS: TextItem[] = [
+/** A stage 01 item, with its one line for Home (review batch 4). */
+export interface PlanItem extends TextItem {
+  short: string;
+}
+
+export const PLAN_ITEMS: PlanItem[] = [
   {
     title: "Besplatna analiza",
     body: "Pregled vaše postojeće web stranice i vidljivosti na Googleu.",
+    short: "Pregled vaše web stranice i vidljivosti na Googleu.",
   },
   {
     title: "Fiksni opseg, rok i cijena",
     body: "Dobivate ih prije početka bilo kakvog rada.",
+    short: "Znate ih prije početka rada.",
   },
 ];
 

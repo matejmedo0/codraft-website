@@ -1,8 +1,8 @@
 # Phase 2, round 2: brief for the hybrid prototypes
 
-> **Status (2026-10-19): not started; the next session starts here.** This brief was written at the end of the session that built round 1, because that session's context was full.
-> - **First**, discuss the questions below with the client, in Croatian, and record the answers in this file.
-> - **Then** build the round 2 prototypes.
+> **Status (2026-10-19): the questions are answered; the hybrid prototypes D and E are being built.** This brief was written at the end of the session that built round 1, because that session's context was full.
+> - The client answered the eight questions on 2026-10-19: see [The client's answers](#the-clients-answers-2026-10-19). No answer changes an accepted ADR.
+> - The two hybrids follow the [plan as agreed](#round-2-as-agreed).
 >
 > Nothing here is decided unless it is marked as decided.
 
@@ -92,6 +92,44 @@
    - section transitions as drawing lines or dimensions
    - the three audit steps joined by a line that grows between grips (already in motion.md)
 8. **How many hybrids.** One refined hybrid, or two to compare?
+
+## The client's answers (2026-10-19)
+
+Discussed in Croatian at the start of the round 2 session. Claude read the feedback back as keep, change and new (as above) and recommended an answer to each question. The client took every recommendation, except for "Što radimo", where they asked to see both treatments.
+
+| # | Question | Answer | What follows |
+|---|---|---|---|
+| 8 | How many hybrids | **Two, to compare.** | Hybrids D and E share the copy and the motion system. They differ in where navy goes, in "Što radimo" and in the hero ground. |
+| 1 | Base and navy | **A's drawing sheet is the base of both. Navy goes in both places, one per hybrid.** | D: a navy hero (the first screen); the rest of the sheet is paper, and navy returns once in the closing call to action. E: a paper hero and a navy band for the free audit and its three steps. |
+| 2 | Hero | **The headline and a drawing with the mark.** | The headline on the left, a drawing on a grid on the right (a blueprint on navy in D, graph paper in E). The mark is mid-size inside the drawing and plays its entrance there. The entrance stays in the home hero, so [ADR 0014](../decisions/0014-logo-animation-web-copies-and-local-review.md) stands. |
+| 3 | Headline | **Large, in 3–4 lines.** | Up to about 72 px on desktop and about 40 px on phones. A heavier Archivo weight (about 680) with tighter leading, over about 7 of the 12 columns, so it stays in balance with the drawing. |
+| 4 | "Što radimo" | **Both treatments, to compare.** The client's words: "Želim obje opcije za usporedbu". | D: chapters on the sheet's grid. Each stage is a row with its number in a grid bubble and a large title, and a process line joins 01 → 02 → 03. E: three balanced columns. In both, stage 01 lists two items taken from its own text (the free audit; a fixed scope, timeline and price), so the stages hold 2, 4 and 3 items. |
+| 5 | Team photos | **A team strip on Home.** | [ADR 0007](../decisions/0007-launch-scope-and-constraints.md) stands. The strip shows honest placeholders until the photos arrive in phase 3. |
+| 6 | Page length | **The full Home outline.** | Hero, "Što radimo", the free audit with its three steps, CAD drafting, "Kako radimo", the team strip, the closing call to action and the title block. The AI assistant teaser joins in phase 4, when the demo exists. New lines are derived from the existing copy only (content.md, "Prototype copy"). |
+| 7 | Motion | **All four.** | 1. The logo entrance in the hero. 2. The CAD drawing in layers. 3. Section transitions. 4. Lines through the steps. Each plays once, in its own section. |
+
+**No new ADR.** The logo entrance stays in the home hero (ADR 0014), and the team strip stays on Home (ADR 0007). The chosen direction gets its ADR after the client picks between D and E.
+
+## Round 2 as agreed
+
+Both hybrids are built on A's sheet, with Archivo as the only family.
+
+| | D „Model i list“ | E „Nacrt s pojasom“ |
+|---|---|---|
+| Idea | Navy is the model space where the drawing happens, and paper is the sheet where it is read. | The whole page is a paper sheet, with one navy band where the visitor acts. |
+| Header and hero | Navy, with a blueprint grid in the drawing | Paper, with graph paper in the drawing |
+| "Što radimo" | Chapters, with a process line through 01 → 02 → 03 | Three columns, with one line through the three bubbles |
+| Free audit | On paper | The navy band |
+| Closing call to action | Navy | Paper |
+| Shared | The CAD drawing in layers, "Kako radimo", the team strip, the title block, and the section transitions | Same |
+
+**Motion, in drafting terms** ([motion.md](../motion.md)):
+- **Logo entrance.** The line draws, then the grip snaps in. It plays once, on load, in the hero drawing (ADR 0014).
+- **Section transition.** When a zone's top edge comes into view, a blue drafting line draws across the sheet, its grip snaps in at the frame, and the selection releases: the line and the grip fade, leaving the plain zone rule. The zone letter in the margin snaps in with it. The boundary is always there; only the selection moves.
+- **CAD drawing in layers.** When most of the drawing is in view, it builds in order: outlines → centre lines → section → dimensions → labels → title block. Each layer is revealed like a pen stroke, with `clip-path`. A layer list beside the drawing switches on in step, and "Iscrtaj ponovno" replays it.
+- **Lines through the steps.** In D, the process line draws down through each stage as it arrives. In E, one line draws through the three bubbles. In the free audit, the line grows from grip to grip (form → time slot → confirmation).
+- **Page change.** A 200 ms crossfade between the two hybrids, using cross-document view transitions where the browser supports them.
+- **Rules.** Text is never hidden, and nothing is pinned or scrubbed. Elements already on screen at load stay complete. Without JavaScript, or with reduced motion, everything is complete at once.
 
 ## Initial notes for the hybrid (Claude; to discuss, not decided)
 

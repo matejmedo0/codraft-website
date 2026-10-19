@@ -255,6 +255,33 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Skip link | Preskoči na sadržaj | UI string |
 | Footer, placeholder note | Podaci o tvrtki stižu prije objave. | Stands in for the company data until the client sends it (lab only) |
 
+**Added for round 2** (the hybrids D and E, 2026-10-19). They follow the full Home outline in [information-architecture.md](information-architecture.md).
+
+| Where | HR (prototype) | Derived from |
+|---|---|---|
+| "Što radimo", stage 01, first item | **Besplatna analiza:** Pregled vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body` |
+| "Što radimo", stage 01, second item | **Fiksni opseg, rok i cijena:** Dobivate ih prije početka bilo kakvog rada. | `plan.body` |
+| Free audit, heading | Besplatna analiza | Glossary |
+| Free audit, lead | Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body`, first sentence verbatim |
+| Free audit, the three steps | 1 **Forma:** Ispunite kratku formu. · 2 **Termin:** Odaberite termin u kalendaru. · 3 **Potvrda:** Dobivate potvrdu termina. | The audit flow in [ADR 0007](decisions/0007-launch-scope-and-constraints.md); a first draft of the G20 microcopy |
+| Free audit, placeholder note | Popis onoga što analiza provjerava stiže prije objave. | Stands in for G4 until the client defines the scope (lab only) |
+| Free audit, button | Rezervirajte besplatnu analizu | Glossary |
+| CAD section, layer list | Slojevi: Konture, Osi, Presjek, Kote, Oznake, Zaglavlje | Glossary (*sloj*, *zaglavlje*); drafting terms |
+| CAD section, replay button | Iscrtaj ponovno | UI string |
+| CAD drawing, title block | Ploča s utorom · mm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
+| CAD drawing, accessible name | Ilustracija: crtež ploče s četiri provrta i utorom, s presjekom A–A i kotama u milimetrima. | Describes the illustration (a first draft for G28) |
+| "Kako radimo", heading | Kako radimo | [information-architecture.md](information-architecture.md), Home §6 |
+| "Kako radimo", first item | **Cijena poznata unaprijed:** Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu. | `plan.body` |
+| "Kako radimo", second item | **Bez žargona:** Objašnjavamo jasno, jer su vam važni rezultati, a ne žargon. | `services.intro` |
+| "Kako radimo", third item | **Ne nestajemo nakon objave:** Hosting, ažuriranja, sigurnosne kopije i zakrpe brinemo mi, za fiksnu mjesečnu naknadu. | `run.tagline`, `run.hosting.body` |
+| Team strip, heading | Tim | [information-architecture.md](information-architecture.md), Home §7 |
+| Team strip, placeholders | Ime i prezime · Uloga | Stand in for G3 (lab only) |
+| Team strip, placeholder note | Fotografije, imena i uloge stižu u fazi 3. | Stands in for G3 (lab only) |
+| Team strip, link | Više o nama | Glossary (*O nama*) |
+| Closing call to action, heading | Prvo jasnoća. | `plan.tagline` |
+| Closing call to action, button | Rezervirajte besplatnu analizu | `plan.cta` |
+| Closing call to action, second link | Pošaljite upit | Glossary (alternative for "Request a quote"); the Contact page CTA |
+
 ## 5. Editorial notes (not site copy)
 
 - **The name is Code + Draft.** The CAD line in the logo is not decoration: it is the other half of the name, and the About page should tell that story. Source: the earlier chat, quoted in Appendix A.
@@ -281,6 +308,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
   - Glossary: banned-word forms and the approved phrasing aligned with compliance.md; the `/usluge` H1 clarified.
   - G11, G18 and G28 clarified.
 - **2026-10-19 (phase 2):** "Prototype copy" added under §4: the lines the design-lab prototypes derive from the existing blocks. No copy block changed.
+- **2026-10-19 (phase 2, round 2):** Lines for the hybrids D and E added under "Prototype copy": stage 01's two items, the free audit's three steps, the CAD layer names, "Kako radimo", the team strip and the closing call to action. All are derived from existing blocks or are lab placeholders. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

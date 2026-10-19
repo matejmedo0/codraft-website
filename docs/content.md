@@ -291,6 +291,14 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
 
+**The closing call to action on Home** (review batch 11, 2026-10-20). The client's text, verbatim; it replaces "Prvo jasnoća." (`plan.tagline`, which stays in "Što radimo").
+
+| Where | HR (Home) | Source |
+|---|---|---|
+| Heading | Imate skicu, stranicu ili samo ideju? | The client |
+| Lead | Pošaljite nam što imate i javit ćemo vam se s prijedlogom. | The client |
+| Button | Pošaljite upit | Unchanged (ADR 0017) |
+
 **"Kako radimo" on Home** (review batch 10, 2026-10-20). The client's three commitments, verbatim and in this order; they replace the three lines of round 2 ("Cijena poznata unaprijed", "Jasno objašnjeno", "Ne nestajemo nakon objave", in the table further down). The client proofreads every text before the public launch.
 
 | Item | HR (Home) | Source |
@@ -439,6 +447,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 8):** "Tehničko crtanje on Home, option C" added under "Prototype copy": the client's heading, lead and three service lines, verbatim, plus Claude's wording of the third line at the client's request. `drafting.tagline` is no longer on Home. No copy block changed; the EN follows at the end of the review.
 - **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 10):** "'Kako radimo' on Home" added under "Prototype copy": the client's three commitments, verbatim, in place of the round 2 lines. G2 answered ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)). Files come by email, not through the site ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)). No copy block changed.
+- **2026-10-20 (phase 2, review refinements, batch 11):** "The closing call to action on Home" added under "Prototype copy": the client's heading and lead in place of "Prvo jasnoća.". No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

@@ -283,6 +283,33 @@ Then the batch, verbatim:
 | 32 | Point 1 (quoted above) | The three commitments of "Kako radimo" are the client's, verbatim and in this order; the layout, spacing and style are unchanged. The third settles gap G2: the code, drawings, domain and access belong to the client's customer ([ADR 0021](../decisions/0021-the-customer-owns-the-work.md)). | `src/lab/copy.ts`, `docs/content.md`, `docs/information-architecture.md` | New ADR 0021 | Done; in review |
 | 33 | Point 2 (quoted above) | The grey was already 5.16:1 on paper, above 4.5:1. As the client asked for it darker, the paper grey `--color-grey-on-paper` goes from `#5E6878` to `#4A5362`, the same blue-grey: **7.11:1** on paper (WCAG AAA) and 6.51:1 on the sunk paper of panels and disabled buttons. It is one token, so every grey text on paper follows: the lines in "Kako radimo" and "Tehničko crtanje", the taglines of "Što radimo", the team's note and roles, the audit's note, labels, the sheet's numbers and zone letters, and the disabled button. Text on navy keeps its own grey. Lab A–E keep the old grey as the round 1 and 2 record. | `src/styles/tokens.css`, `docs/brand.md`; the Figma variable follows with the Figma sync | None (a token value; [ADR 0015](../decisions/0015-design-direction-model-i-list.md) stands) | Done; in review |
 
+**Batch 11 (2026-10-20): the closing call to action**
+
+The client answered batch 10 first: "Ikone se smiju koristiti i dovršene su. Dopušteno je korištenje za njih makni cpa onaj kao za wordmark kako si maknuo, commitaj kao izvor ako želiš slobodno. Okvir lista ne znam na što misliš ali provjerimo to kasnije". The sheet's margin at 1920 px (#23) waits until then. Then the batch, verbatim:
+
+> Uredi samo tamnoplavu završnu traku iznad footera. Boja pozadine i gumb ostaju isti.
+>
+> 1. TEKST: Zamijeni "Prvo jasnoća." ovim:
+> Naslov: Imate skicu, stranicu ili samo ideju?
+> Rečenica ispod naslova: Pošaljite nam što imate i javit ćemo vam se s prijedlogom.
+> Gumb ostaje: Pošaljite upit
+>
+> 2. VELIČINA: Naslov mora biti manji od naslova u heroju. Koristi istu veličinu kao H2 ostalih sekcija ("Što radimo", "Kako radimo", "Tim") ili najviše 10 % veću. Rečenica ispod je u stilu leada ostalih sekcija, u svijetloj boji s kontrastom najmanje 4.5:1 prema tamnoj pozadini.
+>
+> 3. RASPORED: Naslov i rečenica čine jedan blok lijevo, gumb ostaje desno i vertikalno je centriran u odnosu na taj blok. Ograniči širinu teksta tako da naslov stane u najviše dva reda. Gornji i donji padding trake smanji proporcionalno manjem fontu, da traka ne ostane jednako visoka s praznim prostorom.
+>
+> 4. MOBITEL (ispod 900 px): naslov, rečenica pa gumb, jedno ispod drugoga, poravnato lijevo.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 34 | The answer above (the icons) | The nine icons in `Assets/codraft-icons/{png,svg}/` are finished and cleared for use. They carry no C2PA or other metadata (checked: the SVGs are plain, the PNGs hold only their colour chunks), so nothing was stripped; they are committed as the source. The SVGs already follow [brand.md](../brand.md#imagery): 48 × 48, real 1.5 px strokes in `currentColor`, square caps, the blue accent in `<g id="accent">`. Putting them on the services waits for the client's word. | `Assets/codraft-icons/` | The ADR comes when they go on the site | Source committed |
+| 35 | Point 1, text (quoted above) | The heading is "Imate skicu, stranicu ili samo ideju?", with the lead "Pošaljite nam što imate i javit ćemo vam se s prijedlogom." under it; the button stays "Pošaljite upit" (to Kontakt). Files still come by email (ADR 0020). | `src/lab/copy.ts`, `docs/content.md`, `docs/information-architecture.md` | None | Done; in review |
+| 36 | Point 2, size (quoted above) | The heading is a plain zone `h2`, the size of "Što radimo", "Kako radimo" and "Tim" (48 px at most, was the hero's 72 px). The lead has the other zones' lead style, in the navy surface's own ink, off-white: 15.84:1. | `src/lab/home/HomeClosing.astro` | None | Done; in review |
+| 37 | Point 3, layout (quoted above) | One block on the left (heading and lead, at most 40rem wide, so the heading takes one or two lines and never more), the button on the right, centred on the block. The zone's top and bottom padding is two thirds of the others', as the heading is two thirds of its old size (48 of 72 px). | `HomeClosing.astro` | None | Done; in review |
+| 38 | Point 4, phones (quoted above) | Below 900 px: heading, lead, button, one under the other, aligned left. | `HomeClosing.astro` | None | Done; in review |
+
+The style page's navy sample (`StyleClosing.astro`) shows the same band, so it follows.
+
 ## After the refinements
 
 1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.

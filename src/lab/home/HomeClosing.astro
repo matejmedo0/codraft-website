@@ -2,8 +2,12 @@
 /**
  * Zone G: the closing call to action, the page's one navy surface
  * (ADR 0015). It invites a conversation and doesn't repeat the audit, which
- * its own zone asks for once (ADR 0017): the stage 01 tagline, then one
- * button to Kontakt.
+ * its own zone asks for once (ADR 0017): the client's question and lead
+ * (review batch 11), then one button to Kontakt.
+ *
+ * The heading is a zone h2, smaller than the hero's; the heading and lead
+ * are one block on the left, the button on the right, centred on it. Below
+ * 900 px (the client's breakpoint) they stack, aligned left.
  */
 import Button from "../../components/ui/Button.astro";
 import Zone from "../../components/ui/Zone.astro";
@@ -12,48 +16,49 @@ import { CLOSING } from "../copy.ts";
 ---
 
 <Zone labelledby="zavrsni-poziv" surface="navy" class="home-closing">
-  <h2 class="home-closing__title" id="zavrsni-poziv">
-    {CLOSING.title}
-  </h2>
-  <div class="home-closing__actions">
-    <Button href={pathFor("contact", "hr")}>{CLOSING.secondary}</Button>
+  <div class="home-closing__text">
+    <h2 id="zavrsni-poziv">{CLOSING.title}</h2>
+    <p class="home-closing__lead">{CLOSING.lead}</p>
   </div>
+  <Button href={pathFor("contact", "hr")} class="home-closing__cta">
+    {CLOSING.secondary}
+  </Button>
 </Zone>
 
 <style>
+  /* Two thirds of a zone's padding, as the heading is two thirds of its
+     old size (48 of 72 px). */
   .home-closing {
-    display: grid;
-    gap: var(--space-6);
-  }
-
-  .home-closing__title {
-    font-size: var(--step-display);
-    font-weight: var(--weight-display);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
-  }
-
-  .home-closing__actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    align-items: center;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-items: flex-start;
+    padding-block: calc(var(--zone-pad) * 2 / 3);
   }
 
-  @media (min-width: 64rem) {
+  /* Narrow enough that the heading takes two lines at most. */
+  .home-closing__text {
+    max-width: 40rem;
+  }
+
+  /* As the other zones' leads, in the navy surface's ink. */
+  .home-closing__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  @media (min-width: 56.25rem) {
     .home-closing {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
+      flex-direction: row;
       gap: var(--gap);
-      align-items: end;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .home-closing__title {
-      grid-column: 1 / span 6;
-    }
-
-    .home-closing__actions {
-      grid-column: 7 / -1;
-      justify-content: flex-end;
+    .home-closing__cta {
+      flex: none;
     }
   }
 </style>

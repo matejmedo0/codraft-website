@@ -3,6 +3,7 @@
  * The navy surface, as the closing call to action uses it: once on a page,
  * at the end (ADR 0015). The same button as on paper, with the surface's own
  * tokens. It invites a conversation and doesn't repeat the audit (ADR 0017).
+ * Laid out as on Home (HomeClosing.astro, review batch 11).
  */
 import Button from "../../components/ui/Button.astro";
 import Zone from "../../components/ui/Zone.astro";
@@ -13,19 +14,25 @@ import { CLOSING } from "../copy.ts";
 <Zone labelledby="zavrsni-poziv" surface="navy" class="closing">
   <div class="closing__text">
     <p class="closing__label t-label">Tamnoplava površina: završni poziv</p>
-    <h2 class="closing__title" id="zavrsni-poziv">
-      {CLOSING.title}
-    </h2>
+    <h2 id="zavrsni-poziv">{CLOSING.title}</h2>
+    <p class="closing__lead">{CLOSING.lead}</p>
   </div>
-  <div class="closing__actions">
-    <Button href={pathFor("contact", "hr")}>{CLOSING.secondary}</Button>
-  </div>
+  <Button href={pathFor("contact", "hr")} class="closing__cta">
+    {CLOSING.secondary}
+  </Button>
 </Zone>
 
 <style>
   .closing {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-6);
+    align-items: flex-start;
+    padding-block: calc(var(--zone-pad) * 2 / 3);
+  }
+
+  .closing__text {
+    max-width: 40rem;
   }
 
   .closing__label {
@@ -33,34 +40,23 @@ import { CLOSING } from "../copy.ts";
     color: var(--ink-muted);
   }
 
-  .closing__title {
-    font-size: var(--step-display);
-    font-weight: var(--weight-display);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
+  .closing__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
   }
 
-  .closing__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    align-items: center;
-  }
-
-  @media (min-width: 64rem) {
+  @media (min-width: 56.25rem) {
     .closing {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
+      flex-direction: row;
       gap: var(--gap);
-      align-items: end;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .closing__text {
-      grid-column: 1 / span 6;
-    }
-
-    .closing__actions {
-      grid-column: 7 / -1;
-      justify-content: flex-end;
+    .closing__cta {
+      flex: none;
     }
   }
 </style>

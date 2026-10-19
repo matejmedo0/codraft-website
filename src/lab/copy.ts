@@ -418,7 +418,10 @@ export const TEAM: TeamCopy = {
 };
 
 export const CLOSING = {
-  title: "Prvo jasnoća.", // plan.tagline
+  // The client's text (review batch 11), in place of "Prvo jasnoća."
+  // (plan.tagline).
+  title: "Imate skicu, stranicu ili samo ideju?",
+  lead: "Pošaljite nam što imate i javit ćemo vam se s prijedlogom.",
   primary: "Rezervirajte besplatnu analizu", // plan.cta
   // Glossary: alternative for "Request a quote"; the Contact page CTA.
   secondary: "Pošaljite upit",

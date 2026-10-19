@@ -5,8 +5,8 @@
  * per load (ADR 0014). On paper, like the header above it.
  *
  * The hero orients and doesn't sell (ADR 0017): its one button leads to the
- * services, and the drafting clients get their own path below it. The free
- * audit is asked for once, in its own zone.
+ * services, and the drafting clients get their own path below it
+ * (ADR 0018). The free audit is asked for once, in its own zone.
  */
 import Button from "../../components/ui/Button.astro";
 import Wordmark from "../../components/ui/Wordmark.astro";
@@ -19,7 +19,10 @@ const locale = "hr";
 
 <Zone labelledby="naslov" select={false} class="home-hero">
   <div class="home-hero__text">
-    <h1 id="naslov">{HERO.title}</h1>
+    <h1 id="naslov">
+      <span class="home-hero__line">{HERO.titleLines[0]}</span>{" "}
+      <span class="home-hero__line">{HERO.titleLines[1]}</span>
+    </h1>
     <p class="home-hero__lead">{HERO.lead}</p>
     <div class="home-hero__actions">
       <Button href={pathFor("services", locale)}>{HERO.secondary}</Button>
@@ -40,8 +43,23 @@ const locale = "hr";
     padding-block: var(--space-7) var(--space-8);
   }
 
-  .home-hero h1 {
-    max-width: 20ch;
+  /* The H1's two lines, as in direction A (the client's review, batch 2).
+     The first line is about 14 em long. From a 54rem column (a screen of
+     about 1660 px) each half is a line of its own, and the size eases just
+     enough for the first to fit; a narrower column wraps the sentence
+     evenly at full size. */
+  .home-hero__text {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 54rem) {
+    .home-hero h1 {
+      font-size: min(var(--step-display), 100cqi / 14.2);
+    }
+
+    .home-hero__line {
+      display: block;
+    }
   }
 
   .home-hero__lead {

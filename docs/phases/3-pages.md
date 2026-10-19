@@ -23,7 +23,7 @@ Build every launch page in Croatian and English, one page at a time in sitemap o
 
 1. Početna
 2. Usluge
-3. CAD crtanje
+3. Tehničko crtanje
 4. O nama
 5. Besplatna analiza (static parts; the form comes in phase 4)
 6. Kontakt (static parts; the form comes in phase 4)
@@ -52,7 +52,7 @@ The AI asistenti page is built in phase 4.
 
 **JSON-LD**
 - `ProfessionalService` (Organization) on Home, with `areaServed`: Croatia. Include the address only if it is public, and `sameAs` links to the real profiles.
-- `Service` × 8 on Usluge (Plan, four Build, three Run & Grow) and × 2 on CAD crtanje.
+- `Service` × 8 on Usluge (Plan, four Build, three Run & Grow) and × 2 on Tehničko crtanje.
 - `BreadcrumbList` on inner pages.
 
 **Metadata**

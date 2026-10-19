@@ -65,7 +65,7 @@ export interface FooterCopy {
 
 export const NAV: NavItem[] = [
   { page: "services", label: "Usluge" },
-  { page: "drafting", label: "CAD crtanje" },
+  { page: "drafting", label: "Tehničko crtanje" },
   { page: "about", label: "O nama" },
   { page: "contact", label: "Kontakt" },
 ];
@@ -79,24 +79,36 @@ export const HEADER = {
   skipLink: "Preskoči na sadržaj",
 } as const;
 
+/**
+ * The H1 in two lines, as the client asked (review batch 2): what we do,
+ * then what we make. A wide hero column sets them apart; a narrow one wraps
+ * them as one sentence.
+ */
+const HERO_TITLE_LINES = [
+  "Planiramo, izrađujemo i održavamo",
+  "web stranice, softver i AI alate.",
+] as const;
+
 export const HERO = {
   // Prototype draft for gap G1, derived from services.intro.
-  title: "Planiramo, izrađujemo i održavamo web stranice, softver i AI alate.",
-  // Derived from services.intro.
-  lead: "Codraft je studio za tvrtke kojima su važni rezultati, a ne žargon.",
+  title: HERO_TITLE_LINES.join(" "),
+  titleLines: HERO_TITLE_LINES,
+  // plan.body and run.tagline; replaces "rezultati, a ne žargon" (review
+  // batch 2).
+  lead: "Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas.",
   // Glossary: "Book a free audit".
   primary: "Rezervirajte besplatnu analizu",
   // docs/information-architecture.md, Home hero.
   secondary: "Pogledajte usluge",
-  // drafting.title and drafting.audience.
-  draftingLink: "CAD crtanje za arhitekte, inženjerske urede i proizvođače",
+  // drafting.title and drafting.audience (ADR 0018).
+  draftingLink: "Tehničko crtanje za arhitekturu i građevinarstvo",
 } as const;
 
 export const SERVICES: ServicesCopy = {
   title: "Što radimo", // services.title
   // services.intro
   intro:
-    "Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.",
+    "Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke koje žele razumjeti što dobivaju.",
   plan: {
     number: "01",
     anchor: "planiranje",
@@ -163,11 +175,11 @@ export const SERVICES: ServicesCopy = {
 };
 
 export const DRAFTING: DraftingCopy = {
-  title: "CAD crtanje", // drafting.title
+  title: "Tehničko crtanje", // drafting.title (ADR 0018)
   tagline: "Precizni crteži, isporučeni u roku.", // drafting.tagline
   // drafting.audience
   audience:
-    "Za arhitekte, inženjerske urede i proizvođače kojima treba dodatni kapacitet za crtanje.",
+    "Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.",
   items: [
     {
       anchor: "2d-crtezi",
@@ -294,8 +306,8 @@ export const PRINCIPLES: { title: string; items: TextItem[] } = {
       body: "Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu.",
     },
     {
-      title: "Bez žargona", // services.intro
-      body: "Objašnjavamo jasno, jer su vam važni rezultati, a ne žargon.",
+      title: "Jasno objašnjeno", // services.intro
+      body: "Objašnjavamo što radimo i zašto, jednostavnim jezikom i bez nepotrebnih tehničkih izraza.",
     },
     {
       title: "Ne nestajemo nakon objave", // run.tagline, run.hosting.body

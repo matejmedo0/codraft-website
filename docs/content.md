@@ -30,7 +30,7 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | Hosting & Maintenance | **Hosting i održavanje** | — | `#hosting` · `#hosting` |
 | SEO & Local Visibility | **SEO i lokalna vidljivost** | Vidljivost na Googleu | `#seo` · `#seo` |
 | Analytics & Compliance | **Analitika i usklađenost** | Analitika, kolačići i pristupačnost | `#analitika` · `#analytics` |
-| Engineering Drafting | **CAD crtanje** | Tehničko crtanje | `/cad-crtanje` · `/en/engineering-drafting` |
+| Engineering Drafting | **Tehničko crtanje** (the client's choice, [ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)) | CAD crtanje | `/tehnicko-crtanje` · `/en/engineering-drafting` |
 | CAD Drafting | **2D CAD crteži** | CAD crtanje u AutoCAD-u | `#2d-crtezi` · `#cad-drafting` |
 | Technical Documentation | **Tehnička dokumentacija** | — | `#dokumentacija` · `#documentation` |
 | Free audit | **Besplatna analiza** | Besplatni audit; Besplatni pregled | `/besplatna-analiza` · `/en/free-audit` |
@@ -49,8 +49,8 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | layer | **sloj** | — | — |
 
 **Why these choices**
-- **"Analiza", not "audit".** To a small-business owner "audit" is jargon, and the copy promises "results, not jargon". "Revizija" reads as a financial audit.
-- **"CAD crtanje".** Clients in the field all know "CAD", and the term avoids "projektiranje", which is a regulated activity. "Inženjersko crtanje" would suggest engineering services and protected titles.
+- **"Analiza", not "audit".** To a small-business owner "audit" is jargon, and the copy promises plain language. "Revizija" reads as a financial audit.
+- **"Tehničko crtanje".** The client chose it over "CAD crtanje" on 2026-10-19, for architecture and construction only (ADR 0018). It avoids "projektiranje", which is a regulated activity. "Inženjersko crtanje" would suggest engineering services and protected titles. "CAD" stays in the deliverable's name, "2D CAD crteži".
 
 **Do not use** (both languages):
 - **As Codraft deliverables:** *projektiranje, projektiramo, projektant, projektna dokumentacija, snimka postojećeg stanja*. In English, nothing that presents Codraft as the designer of record.
@@ -80,8 +80,8 @@ Each EN line is identical to the client's text. Where the original puts a title 
   - HR `draft`: Što radimo
 - **`services.intro`**
   - EN: Codraft is a small studio that plans, builds and looks after websites, software and AI tools for businesses that want results, not jargon.
-  - HR `draft`: Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke kojima su važni rezultati, a ne žargon.
-  - Without "mali" at the client's request (2026-10-19). The EN keeps "small" until the client decides on S17.
+  - HR `draft`: Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke koje žele razumjeti što dobivaju.
+  - Changed at the client's request (2026-10-19): without "mali", and without "žargon", which the client found generic. The EN keeps "small" and "not jargon" until the client decides on S17 and S18.
 
 ### 01 — Plan
 
@@ -162,13 +162,14 @@ Each EN line is identical to the client's text. Where the original puts a title 
 
 - **`drafting.title`**
   - EN: Engineering Drafting
-  - HR `draft`: CAD crtanje
+  - HR `draft`: Tehničko crtanje (the client's choice, ADR 0018; the EN waits for S19)
 - **`drafting.tagline`**
   - EN: Precise drawings, delivered on deadline.
   - HR `draft`: Precizni crteži, isporučeni u roku.
 - **`drafting.audience`**
   - EN: For architects, engineering firms and manufacturers who need extra drafting capacity.
-  - HR `draft`: Za arhitekte, inženjerske urede i proizvođače kojima treba dodatni kapacitet za crtanje.
+  - HR `draft`: Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.
+  - Architecture and construction only, at the client's request (ADR 0018). The EN keeps its three audiences until S19.
 - **`drafting.cad.title`**
   - EN: CAD Drafting
   - HR `draft`: 2D CAD crteži
@@ -205,6 +206,8 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 | S15 | page metadata only | — | Add "Croatia" to English page titles and meta descriptions, not to body copy | No | pending |
 | S16 | `build.integrations.body` | — | Local angle: mention e-invoicing (eRačun) and fiscalisation integrations for Croatian businesses | **Yes** (new claim) | pending |
 | S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | pending |
+| S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | pending |
+| S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | pending |
 
 ## 4. Content gaps
 
@@ -212,7 +215,7 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 
 | ID | Page · section | What is needed | Owner | Needed by |
 |---|---|---|---|---|
-| G1 | Home · hero | H1 built on "results, not jargon" | Claude drafts | Phase 3 |
+| G1 | Home · hero | H1 and lead; the prototype's two-line H1 and its lead are under "Prototype copy" | Claude drafts | Phase 3 |
 | G2 | Home · how we work | Who owns the domain and the code | Client decides | Phase 3 |
 | G3 | Home · team strip | Photos, names, roles (same source as G15) | Client | Phase 3 |
 | G4 | Services · plan; Free audit · what we check | Scope of the free audit: speed, mobile, Google and Google Business Profile, accessibility, AI search… | Client defines, Claude writes | Phase 3 |
@@ -236,7 +239,7 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 | G22 | Free audit · FAQ | Is it really free, what if I have no website, how long, any obligation | Claude drafts | Phase 3 |
 | G23 | Contact · intro | Response-time promise | Client | Phase 3 |
 | G24 | Contact · details | Email, phone, hours, whether the address is public | Client | Phase 3 |
-| G25 | Contact · form | Topic options (Web i softver / CAD crtanje / Ostalo) and the CAD fields | Claude drafts | Phases 3–4 |
+| G25 | Contact · form | Topic options (Web i softver / Tehničko crtanje / Ostalo) and the drafting fields | Claude drafts | Phases 3–4 |
 | G26 | Legal pages | Privacy, cookies, legal notice (impresum), accessibility statement | Claude drafts from company data; client and a lawyer review | Phase 3 |
 | G27 | Site-wide microcopy | 404 ("Ova stranica nije na nacrtu."), form errors and success, cookie banner | Claude drafts | Phases 3–4 |
 | G28 | All pages · metadata and alt text | Title and meta description per page and language; alt text for every meaningful image in both languages (decorative images get an empty `alt`) | Claude drafts | Phase 3 |
@@ -248,10 +251,10 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 
 | Where | HR (prototype) | Derived from |
 |---|---|---|
-| Home hero, H1 (G1 draft) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate. | `services.intro` |
-| Home hero, lead | Codraft je studio za tvrtke kojima su važni rezultati, a ne žargon. ("mali" removed at the client's request, 2026-10-19) | `services.intro` |
+| Home hero, H1 (G1 draft) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate. On a wide hero column it sets as two lines, "Planiramo, izrađujemo i održavamo" / "web stranice, softver i AI alate." (the client's review, batch 2) | `services.intro` |
+| Home hero, lead | Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas. (Replaces "Codraft je (mali) studio za tvrtke kojima su važni rezultati, a ne žargon." at the client's request, 2026-10-19.) | `plan.body`, `run.tagline` |
 | Home hero, secondary CTA | Pogledajte usluge (the primary button on `/lab/pocetna`, ADR 0017) | [information-architecture.md](information-architecture.md), Home hero |
-| Home hero, drafting path | CAD crtanje za arhitekte, inženjerske urede i proizvođače | `drafting.title`, `drafting.audience` |
+| Home hero, drafting path | Tehničko crtanje za arhitekturu i građevinarstvo | `drafting.title`, `drafting.audience`, ADR 0018 |
 | Header CTA | Besplatna analiza (lab A–E only; the production header has no button, ADR 0017) | Glossary |
 | Menu button | Izbornik | UI string |
 | Skip link | Preskoči na sadržaj | UI string |
@@ -274,7 +277,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | CAD drawing, accessible name | Ilustracija: crtež ploče s četiri provrta i utorom, s presjekom A–A i kotama u milimetrima. | Describes the illustration (a first draft for G28) |
 | "Kako radimo", heading | Kako radimo | [information-architecture.md](information-architecture.md), Home §6 |
 | "Kako radimo", first item | **Cijena poznata unaprijed:** Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu. | `plan.body` |
-| "Kako radimo", second item | **Bez žargona:** Objašnjavamo jasno, jer su vam važni rezultati, a ne žargon. | `services.intro` |
+| "Kako radimo", second item | **Jasno objašnjeno:** Objašnjavamo što radimo i zašto, jednostavnim jezikom i bez nepotrebnih tehničkih izraza. (Replaces "Bez žargona", 2026-10-19.) | `services.intro` |
 | "Kako radimo", third item | **Ne nestajemo nakon objave:** Hosting, ažuriranja, sigurnosne kopije i zakrpe brinemo mi, za fiksnu mjesečnu naknadu. | `run.tagline`, `run.hosting.body` |
 | Team strip, heading | Tim | [information-architecture.md](information-architecture.md), Home §7 |
 | Team strip, placeholders | Ime i prezime · Uloga | Stand in for G3 (lab only) |
@@ -302,7 +305,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `header.menu` | Izbornik | Menu | Menu button on narrow screens |
 | `header.navLabel` | Glavna navigacija | Main navigation | Accessible name of the main navigation |
 | `nav.services` | Usluge | Services | Navigation |
-| `nav.drafting` | CAD crtanje | Engineering Drafting | Navigation |
+| `nav.drafting` | Tehničko crtanje | Engineering Drafting | Navigation (EN waits for S19) |
 | `nav.about` | O nama | About | Navigation |
 | `nav.contact` | Kontakt | Contact | Navigation |
 | `legal.privacy` | Privatnost | Privacy | Title block |
@@ -357,6 +360,9 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-19 (phase 2, review refinements, batch 1):**
   - The client removed "mali" from the Croatian `services.intro` and the hero lead. Suggestion S17 asks whether the EN drops "small" too.
   - The free-audit call to action now appears once per page ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)). The header button and its string `header.cta` are gone, and "Review refinements" under "Prototype copy" lists the new arrangement. No new line.
+- **2026-10-19 (phase 2, review refinements, batch 2):**
+  - No "žargon" in the Croatian copy, at the client's request: a new hero lead, the end of `services.intro`, and "Jasno objašnjeno" in "Kako radimo". Suggestion S18 asks about the EN.
+  - "Tehničko crtanje" replaces "CAD crtanje", for architecture and construction only ([ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)): the glossary, `drafting.title`, `drafting.audience`, `nav.drafting`, the hero link and G25. Suggestion S19 asks about the EN.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

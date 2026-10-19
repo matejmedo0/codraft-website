@@ -29,7 +29,7 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 |---|---|---|
 | Početna | `/` | `/en` |
 | Usluge | `/usluge` | `/en/services` |
-| CAD crtanje | `/cad-crtanje` | `/en/engineering-drafting` |
+| Tehničko crtanje | `/tehnicko-crtanje` | `/en/engineering-drafting` |
 | O nama | `/o-nama` | `/en/about` |
 | Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` |
 | Kontakt | `/kontakt` | `/en/contact` |

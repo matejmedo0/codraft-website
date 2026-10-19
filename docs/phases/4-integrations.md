@@ -36,7 +36,7 @@ Make the site work end to end: the free audit flow (form, then booking), the con
 - If the visitor leaves at this step, the lead from step 1 is kept, and the microcopy says they will be contacted by email.
 
 **3. Contact form**
-- A topic field: Web i softver / CAD crtanje / Ostalo.
+- A topic field: Web i softver / Tehničko crtanje / Ostalo.
 - For CAD it adds work type, sheet count, deadline and formats.
 - Same pipeline as the audit form.
 

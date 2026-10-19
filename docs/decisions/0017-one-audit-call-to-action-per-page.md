@@ -1,6 +1,6 @@
 # 0017. One free-audit button per page
 
-- **Status:** Proposed (2026-10-19), until the client reviews `/lab/pocetna`
+- **Status:** Accepted (2026-10-19; the client reviewed `/lab/pocetna`: "Sviđa mi se")
 - **Date:** 2026-10-19
 - **Deciders:** client (Codraft team), Claude
 

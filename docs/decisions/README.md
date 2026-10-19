@@ -22,9 +22,10 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0014](0014-logo-animation-web-copies-and-local-review.md) | Logo animation, web copies of the marks, and local design review | Accepted | 2026-10-19 |
 | [0015](0015-design-direction-model-i-list.md) | Design direction: „Model i list“ with a paper hero | Accepted | 2026-10-19 |
 | [0016](0016-figma-for-design-iterations.md) | Figma for quick design iterations | Accepted | 2026-10-19 |
-| [0017](0017-one-audit-call-to-action-per-page.md) | One free-audit button per page | Proposed (client review) | 2026-10-19 |
+| [0017](0017-one-audit-call-to-action-per-page.md) | One free-audit button per page | Accepted | 2026-10-19 |
+| [0018](0018-drafting-for-architecture-and-construction.md) | Drafting: „Tehničko crtanje“ for architecture and construction | Accepted | 2026-10-19 |
 
-Next number: **0018**.
+Next number: **0019**.
 
 ## How to add one
 

@@ -13,7 +13,7 @@ import type { Locale } from "../../config/site.ts";
 export const ROUTES = {
   home: { hr: "", en: "" },
   services: { hr: "usluge", en: "services" },
-  drafting: { hr: "cad-crtanje", en: "engineering-drafting" },
+  drafting: { hr: "tehnicko-crtanje", en: "engineering-drafting" },
   about: { hr: "o-nama", en: "about" },
   audit: { hr: "besplatna-analiza", en: "free-audit" },
   contact: { hr: "kontakt", en: "contact" },

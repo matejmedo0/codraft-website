@@ -1,6 +1,6 @@
 # Motion
 
-> **Status (2026-10-18):** this is the agreed motion concept, input for phase 2. Durations and easings become motion tokens in phase 2 (`motion-foundations` skill). The client approved the logo entrance animation on 2026-10-19, for the home hero only ([ADR 0014](decisions/0014-logo-animation-web-copies-and-local-review.md)).
+> **Status (2026-10-19):** the agreed motion concept. The tokens are built: `src/styles/motion.css` for CSS and `src/styles/motion.ts` for React islands, kept in step by a unit test. The client approved the logo entrance on 2026-10-19, for the home hero only ([ADR 0014](decisions/0014-logo-animation-web-copies-and-local-review.md)), and kept all four moments of round 2 with the chosen direction ([ADR 0015](decisions/0015-design-direction-model-i-list.md)): the logo entrance, the CAD drawing in layers, the section transitions and the lines through the steps.
 
 ## Idea
 
@@ -38,19 +38,24 @@ When `prefers-reduced-motion: reduce` is set:
 - Final states are shown immediately. The logo appears complete and the layers appear all on.
 - Grips still appear on focus, but without the scale animation.
 
-## Tokens (starting values for phase 2)
+## Tokens (built in phase 2, `src/styles/motion.css`)
 
 | Token | Value | Typical use |
 |---|---|---|
 | `--motion-instant` | 80 ms | Snap |
 | `--motion-fast` | 140 ms | Grips, small state changes |
-| `--motion-base` | 200 ms | Page-change crossfade, menus |
-| `--motion-slow` | 480 ms | Dimension lines |
+| `--motion-base` | 200 ms | Page-change crossfade, menus, a dimension's value |
+| `--motion-snap` | 320 ms | A grip snapping in at the end of a line |
+| `--motion-slow` | 480 ms | Dimension lines; a selection's release |
 | `--motion-draw` | 700 ms | Drafting line reveal |
-| `--ease-standard` | `cubic-bezier(.2, 0, 0, 1)` | Most UI transitions |
-| `--ease-pen` | ease-in-out curve (tuned in phase 2) | Drawing lines, like a pen stroke |
+| `--motion-entrance-delay` | 250 ms | The pause before the logo entrance |
+| `--motion-hold` | 1700 ms | How long a zone rule stays selected |
+| `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Most UI transitions |
+| `--ease-pen` | `cubic-bezier(0.5, 0, 0.2, 1)` | Drawing lines, like a pen stroke |
+| `--ease-spring` | `linear()` of the "snappy" spring (300/30) | Grips |
+| `--ease-snap` | `linear()` of the "snap" spring (400/24) | A grip snapping in |
 
-Interactive elements use spring presets from `motion-foundations` where they feel better than fixed curves.
+The springs come from `motion-foundations`; CSS uses them sampled into `linear()`, and `motion.ts` keeps the spring parameters for islands.
 
 ## Ruled out
 

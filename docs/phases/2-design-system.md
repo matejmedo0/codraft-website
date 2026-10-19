@@ -1,8 +1,9 @@
 # Phase 2, last part: the direction and the design system (brief)
 
-> **Status (2026-10-19): the client's final decisions are recorded; the design system is being built.** Round 2 is done, and the hybrids D and E are built, checked and pushed. This brief was written at the end of the round 2 session, because its context was full.
+> **Status (2026-10-19): done.** The client's final decisions are recorded, and the design system is built and checked: steps 3–8 of [2-design.md](2-design.md), whose log has the details. Round 2 is done, and the hybrids D and E are built, checked and pushed. This brief was written at the end of the round 2 session, because its context was full.
 > - **The decisions:** taken on 2026-10-19 and recorded in [The client's answers](#the-clients-answers-2026-10-19). The direction is [ADR 0015](../decisions/0015-design-direction-model-i-list.md), and the use of Figma is [ADR 0016](../decisions/0016-figma-for-design-iterations.md).
-> - **Next:** build steps 3–7 of [2-design.md](2-design.md) from the chosen direction, then step 8 (Figma), then close phase 2 at the phase gate.
+> - **Result:** the tokens and Archivo in `src/styles/`, the brand web copies, the base components in `src/components/`, `SiteLayout`, the style page `/lab/style`, and the Figma library "Codraft sustav dizajna" (https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0). Screenshots: [screenshots/phase-2/system/](screenshots/phase-2/system/).
+> - **Next:** the client's review at the phase gate (PR #2). Phase 3 starts only on the client's word.
 
 ## Where things stand
 
@@ -76,7 +77,7 @@ Discussed in Croatian at the start of the session. The client's opening message 
 | 6 | The lab | **Keep A–E as the record** (the recommendation). | Nothing is removed. The style page joins them. |
 | 7 | Figma | **Yes, for quick and cheap prototypes and refinements.** The client's words: "Možemo implementirati figmu za brze i jeftine prototipe i dorade onog što mi se ne sviđa, koristimo je". | Step 8 runs: the coded system is mirrored as a Figma library, and the client iterates there. Code stays the source of truth (ADR 0005). [ADR 0016](../decisions/0016-figma-for-design-iterations.md). |
 
-## Plan for the next session
+## Plan for the next session (done 2026-10-19)
 
 1. Put the decisions to the client and record the answers above.
    - Write ADR 0015 for the direction and a line under "Odluke" in `PROGRESS.md`.

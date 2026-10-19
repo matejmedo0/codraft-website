@@ -1,6 +1,6 @@
 # Brand
 
-> **Status (2026-10-18):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses optimised copies made in phase 2. The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png).
+> **Status (2026-10-19):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses the web copies made in phase 2 by `scripts/brand-web-copies.mjs` (the favicon set in `public/`, the marks in `src/assets/brand/`, all without C2PA). The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png). The colour and type tokens are final in `src/styles/` ([ADR 0015](decisions/0015-design-direction-model-i-list.md)).
 
 ## The marks
 
@@ -56,7 +56,7 @@ Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-co
 | White on blue `#2F6BFF` | **4.4988:1** | **Fails AA** (4.5:1). Don't round up; no white text on brand blue |
 | Blue on navy | 3.84:1 | Large text and graphics only |
 
-**Proposed text tokens** (contrast verified; final values set in phase 2):
+**Text tokens** (contrast verified; final in `src/styles/tokens.css` as `--color-blue-on-paper`, `--color-blue-on-navy`, `--color-grey-on-paper` and `--color-grey-on-navy`, with every text pair checked in `tokens.test.ts`):
 
 | Token | Hex | Contrast |
 |---|---|---|
@@ -72,7 +72,7 @@ Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-co
 
 ## Typography
 
-The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. They are chosen in phase 2 to these requirements:
+The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. **Chosen in phase 2: Archivo, the only family** ([ADR 0015](decisions/0015-design-direction-model-i-list.md)), at three widths: 100 % for text, 87.5 % for headings, 75 % for labels and title-block data. It is self-hosted in two files split by `unicode-range` (a 36.5 KB core file for English and Croatian, preloaded) with size-adjusted Arial fallbacks; details in [research/2026-10-19-design-system.md](research/2026-10-19-design-system.md). It met these requirements:
 
 **Croatian coverage**
 - Full Latin Extended-A, including Č č Ć ć Đ đ Š š Ž ž, plus „ “ ‚ ‘ – — €.
@@ -115,4 +115,4 @@ Instead the site uses drafting motifs: a grid, dimension lines, a title block, a
 
 ## Favicon and manifest
 
-The `web/` set is ready for the site root (phase 2). `site.webmanifest` names the site "Codraft"; `theme_color` is `#0F1B2D` and `background_color` is `#F6F5F1`.
+The `web/` set is served from the site root since phase 2 (`public/`, PNGs without their C2PA chunk), and BaseLayout carries the package's head snippet. `site.webmanifest` names the site "Codraft"; `theme_color` is `#0F1B2D` and `background_color` is `#F6F5F1`.

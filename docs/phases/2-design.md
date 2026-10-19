@@ -1,9 +1,10 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** In progress (started 2026-10-19).
+- **Status:** Done, waiting for the client's review at the phase gate (2026-10-19). PR #2 is the phase report.
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
-  - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md). They wait for the client's choice.
-  - **Next, in a new session:** the client's final decisions, then steps 3–7 and the phase gate. [2-design-system.md](2-design-system.md) is the brief.
+  - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md).
+  - **The client chose** D with a paper header and hero ([ADR 0015](../decisions/0015-design-direction-model-i-list.md)) and Figma for quick iterations ([ADR 0016](../decisions/0016-figma-for-design-iterations.md)); the answers are in [2-design-system.md](2-design-system.md).
+  - **Steps 3–8 are done:** tokens, fonts, motion, brand assets in code, base components, the style page (`/lab/style`) and the Figma library.
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -101,10 +102,10 @@ Load `frontend-a11y` for the menu, focus states and skip link.
 
 ## Exit criteria
 
-- [ ] A style page exists with the tokens and base components; screenshots at 375, 768 and 1440 px.
-- [ ] The client approves a direction (recorded as an ADR).
-- [ ] Contrast meets AA for all text pairs. Blue is never used for body text, and there is no white text on brand blue.
-- [ ] Reduced motion is respected; keyboard focus shows the grips plus a visible outline.
+- [x] A style page exists with the tokens and base components; screenshots at 375, 768 and 1440 px (`/lab/style`; [screenshots/phase-2/system/](screenshots/phase-2/system/)).
+- [x] The client approves a direction (recorded as an ADR): [ADR 0015](../decisions/0015-design-direction-model-i-list.md).
+- [x] Contrast meets AA for all text pairs. Blue is never used for body text, and there is no white text on brand blue (`src/styles/tokens.test.ts`; the style page's table).
+- [x] Reduced motion is respected; keyboard focus shows the grips plus a visible outline (the lab check script and the E2E tests).
 
 ## Log
 
@@ -213,3 +214,53 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - `PROGRESS.md` and the PR #2 description are updated.
     - The Playwright MCP browser is closed, so the next session can open its own.
     - The client has a prompt for the new session.
+- **2026-10-19, design system session:**
+  - **Skills loaded:** `frontend-design:frontend-design`, `motion-foundations`, `frontend-a11y`, `vite-patterns`, `react-patterns`; for Figma, `figma:figma-create-new-file`, `figma:figma-use` and `figma:figma-generate-library`.
+  - **The client's final decisions,** asked in Croatian because the opening message left them as a template. Recorded in [2-design-system.md](2-design-system.md#the-clients-answers-2026-10-19):
+    - **Direction:** D „Model i list“ with a paper header and hero. A follow-up question settled which navy turns to paper: the header and hero do, the closing call to action stays navy. Recorded as [ADR 0015](../decisions/0015-design-direction-model-i-list.md).
+    - **Motion:** all four moments, as built. The client sees none of them: Windows "Animation effects" is off on their machine (checked with `SystemParametersInfo`), so Chrome reports reduced motion. The client was told how to switch it on or emulate it, and deferred the review ("kasnije razrješimo").
+    - **Team strip:** two people.
+    - **Font:** Archivo only.
+    - **Corners:** 2 px.
+    - **Lab:** keep A–E.
+    - **Figma:** yes, for quick and cheap prototypes and refinements: [ADR 0016](../decisions/0016-figma-for-design-iterations.md).
+  - **Step 5, brand assets in code** (no new dependency). `scripts/brand-web-copies.mjs` writes the web copies from the masters: the favicon set to `public/`, the marks to `src/assets/brand/`. SVGs lose the `<metadata>` block; PNGs lose their `caBX` chunk byte for byte. A unit test checks every copy against its master. BaseLayout carries the package's head snippet.
+  - **Step 3, tokens and fonts** (`src/styles/`, in cascade layers):
+    - colour roles for paper and `.surface-navy`
+    - the fluid type scale, weights and widths
+    - space, the sheet, and the 2 px radius
+    - grips and focus
+    - Archivo split by `unicode-range` from the lab subset with fonttools outside the repository: the preloaded core file is 36.5 KB, against the lab's 71 KB. Size-adjusted Arial and Arial Narrow Bold fallbacks keep the swap still.
+    - The disabled button moved to the sunk paper, because its old grey ground measured 4.26:1.
+  - **Step 4, motion:** `motion.css` (tokens, springs as `linear()`, keyframes) and `motion.ts` for islands. `motion.test.ts` keeps them in step and checks the springs against their equation.
+  - **Step 6, base components:**
+    - `src/components/ui/`: Sheet, Zone, ZoneMark, Button, Grips, Item, Steps, Dimension, SkipLink, Wordmark, and `draw.ts`
+    - `src/components/site/`: Header with a disclosure menu, Footer as the title block, LanguageSwitcher
+    - `SiteLayout`
+    - The UI strings went into `content.md` first, then into both locales.
+    - Home and the 404 pages now sit on the sheet, so 33 new E2E tests cover the components under the CSP at three widths.
+  - **Step 7, the style page** `/lab/style`: the hero composition, colours with contrast read from the tokens, type, space and shape, motion with a replay, components, and the navy surface.
+  - **Step 8, Figma:** the library "Codraft sustav dizajna" in the client's account (https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0):
+    - 58 variables (palette, roles with the modes Papir and Tamnoplava, layout with three widths, shape), each with its CSS name and a scope
+    - 24 text styles in Archivo at the site's exact widths
+    - components: Znak, Grip, Gumb (16 variants), Stavka, Korak, Kota, Milimetarski papir, Zaglavlje, Zaglavlje nacrta
+    - pages: a cover with instructions, the foundations, and the home page composed from instances
+  - **Self-review along the way:**
+    - The wordmark's script rendered inside the header link, because Astro renders component scripts in place, so the wordmark has no script now.
+    - Zone letters became a CSS counter, so no props are needed.
+    - Two spaces collapsed by Astro's whitespace handling were restored.
+    - The title block's cells now wrap and fill every row, so no cell is ever empty.
+    - In Figma, the dimension's arrowheads were redrawn as vectors, and the process line through the chapters was made continuous.
+  - **Checks:**
+    - On the lab build under the CSP, at 375, 768 and 1440 px, on every lab page:
+      - no axe findings
+      - no console errors
+      - no overflow
+      - every part draws after a slow scroll
+      - the replay works
+      - keyboard: the skip link comes first, the menu opens, Escape closes it and returns focus, and focus shows the outline and the grips
+      - reduced motion and no JavaScript show the final states
+    - The prototypes A–E look as in their round screenshots.
+    - `npm run verify` passes (138 unit tests, 1.0 KB of JavaScript per page), and `npm run test:e2e` passes (51 tests).
+    - The first CI run failed in lint: the `?raw` import had no type before `astro sync`. `src/env.d.ts` fixed it.
+  - **Screenshots** for the report are in [screenshots/phase-2/system/](screenshots/phase-2/system/), with frames of motion in progress for the client, who can't see it on their machine.

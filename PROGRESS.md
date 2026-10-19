@@ -1,93 +1,68 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
+**Trenutna faza:** 2 — Dizajn, **gotova i čeka vaš pregled** (19. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: gradim sustav dizajna prema vašim konačnim odlukama** (19. 10. 2026., zapisane u `docs/phases/2-design-system.md`, ADR 0015 i 0016):
+**Sljedeći korak: vaš pregled faze 2.** Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
+
+**Što pregledati:**
+- **Stranica sa stilovima:** pokrenite `npm run dev` i otvorite http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj.
+- **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta.
+- **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
+- **Animacije:** na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa ih Chrome ne prikazuje. Uključite ih ovdje: Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti. Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
+
+**Vaše konačne odluke** (19. 10. 2026., `docs/phases/2-design-system.md`, ADR 0015 i 0016):
 - **Smjer:** D „Model i list“ sa svijetlim (papirnatim) zaglavljem i herojem. U heroju je znak na milimetarskom papiru, a tamnoplava ostaje samo u završnom pozivu.
-- **Animacije:** sve četiri, kako su izrađene. Na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa Chrome javlja smanjeno kretanje i lab sve prikazuje odmah gotovo. Pregled animacija ostaje za kasnije, kako ste rekli.
+- **Animacije:** sve četiri, kako su izrađene: ulaz loga, CAD crtež u slojevima, prijelazi odjeljaka i linije kroz korake. Pregled animacija ostaje za kasnije, kako ste rekli.
 - **Traka tima:** dvije osobe.
 - **Font:** samo Archivo.
-- **Kutovi:** 2 px na gumbima, poljima i pločama; crtački elementi (okvir lista, crte zona, zaglavlje, gripovi) ostaju oštri.
+- **Kutovi:** 2 px na gumbima, poljima i pločama. Crtački elementi ostaju oštri: okvir lista, crte zona, zaglavlje nacrta i gripovi.
 - **Lab:** A–E ostaju kao zapis.
 - **Figma:** da, za brze i jeftine prototipe i dorade; kod ostaje izvor istine.
 
-Redom slijede tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima, zatim Figma knjižnica. Na kraju zatvaram fazu 2: izlazne provjere, PR #2 kao izvještaj faze i zeleni CI. Merge i faza 3 idu tek na vašu riječ.
+**Što je izrađeno u završnom dijelu faze 2:**
+1. **Brand asseti u kodu:** web kopije znakova i favicona bez C2PA. Skripta ih uvijek može ponovno izvesti iz originala, koji ostaju netaknuti.
+2. **Tokeni:**
+   - boje za papir i tamnoplavu površinu, s kontrastom svih parova teksta provjerenim testovima
+   - tipografska skala, razmaci, kutovi, gripovi i fokus
+3. **Font:** Archivo s vlastitog servera. Osnovna datoteka za hrvatski i engleski ima 36,5 KB (u labu 71 KB), a zamjenski font je podešen da se tekst ne pomakne kad stigne pravi.
+4. **Animacija:** tokeni u CSS-u i ista vrijednost za buduće React otoke.
+5. **Komponente:**
+   - list sa zonama i prijelazima
+   - gumb, gripovi, stavka, koraci, kota i znak
+   - zaglavlje s izbornikom za mobitel
+   - zaglavlje nacrta kao podnožje
+   - prebacivanje jezika i poveznica „Preskoči na sadržaj“
 
-Za pregled prije odluke:
-- pokrenite `npm run dev` i otvorite http://localhost:4321/lab/d i http://localhost:4321/lab/e
-- snimke su u `docs/phases/screenshots/phase-2/round-2/`
-- opis je u `docs/phases/2-design-round-2.md`
+   Početna i 404 stranice već stoje na listu, a sadržaj stiže u fazi 3.
+6. **Stranica sa stilovima** `/lab/style`.
+7. **Figma knjižnica:**
+   - 58 varijabli: paleta, uloge s načinima Papir i Tamnoplava, raspored za mobitel, tablet i desktop, oblik
+   - 24 stila teksta
+   - 9 komponenti
+   - primjer početne stranice složen od instanci
 
-**Runda 2 (19. 10. 2026.).** Na osam pitanja prihvatili ste sve preporuke, a za „Što radimo“ tražili ste obje izvedbe. Odgovori su zapisani u `docs/phases/2-design-round-2.md`. Nijedan odgovor ne mijenja prihvaćeni ADR:
-- ulaz loga ostaje u heroju početne (ADR 0014)
-- traka tima ostaje na početnoj (ADR 0007)
-
-Izrađena su dva hibrida na listu nacrta iz A, s Archivom kao jedinim fontom i cijelom početnom stranicom:
-1. hero
-2. Što radimo
-3. besplatna analiza s tri koraka
-4. CAD crtanje
-5. Kako radimo
-6. tim
-7. završni poziv
-8. zaglavlje nacrta
-
-- **D „Model i list“:**
-  - tamnoplavo zaglavlje i hero, sa znakom na plavoj mreži nacrta
-  - „Što radimo“ u poglavljima, spojenima plavom linijom 01 → 02 → 03
-  - tamnoplavi završni poziv
-- **E „Nacrt s pojasom“:**
-  - cijela stranica je svijetli list, sa znakom na milimetarskom papiru
-  - „Što radimo“ u tri stupca, s jednom linijom kroz krugove; stupanj 01 je istaknuta ploha s gumbom za analizu
-  - tamnoplavi pojas nosi besplatnu analizu i njezina tri koraka
-- **Animacije u oba hibrida:** svaka se igra jednom, u svom odjeljku.
-  - ulaz loga u heroju
-  - CAD crtež koji se gradi sloj po sloj kad dođete do njega: konture → osi → presjek → kote → oznake → zaglavlje, s popisom slojeva i gumbom „Iscrtaj ponovno“
-  - prijelazi odjeljaka kao CAD odabir crte zone
-  - linije kroz korake
-- **Provjere:** sve prolaze.
-  - Na lab buildu pod pravim CSP-om, na 375, 768 i 1440 px:
-    - axe bez nalaza
-    - konzola bez grešaka
-    - bez vodoravnog pomicanja
-    - smanjeno kretanje i prikaz bez JavaScripta prikazuju gotovo stanje
-  - `npm run verify` (87 unit testova)
-  - `npm run test:e2e` (18 testova)
-
-**Što ste rekli o rundi 1** (19. 10. 2026.; doslovno i razvrstano u `docs/phases/2-design-directions.md`): nijedan smjer ne uzimate kakav jest.
-- **Sviđa vam se:**
-  - list nacrta iz A i njegov CAD odjeljak na milimetarskom papiru
-  - tamnoplava iz B, zbog premium dojma
-  - ideja velikog naslova i fotografija tima iz C, te vidljiviji „Što radimo“ iz C
-- **Ne sviđa vam se:**
-  - presitan „Što radimo“ i kratka stranica u A
-  - veliki znak ispred heroja i neuravnotežen „Što radimo“ u B
-  - prevelik naslov i znak iznad gumba u C
-- **Niste sigurni** idu li fotografije tima na početnu ili samo na O nama.
-- **Želite:**
-  - hibridne opcije
-  - više animacije u profesionalnom tonu, npr. prijelaze između odjeljaka
-  - animirani logo
-  - CAD crtež koji se iscrtava u koracima kad posjetitelj dođe do njega
-
-Prototipovi obiju rundi su na `/lab` (`npm run dev`, zatim http://localhost:4321/lab): runda 2 (D, E) i runda 1 (A–C) kao zapis. Snimke runde 1 su u `docs/phases/screenshots/phase-2/`, a runde 2 u `docs/phases/screenshots/phase-2/round-2/`.
-
-Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
+**Provjere:**
+- Na lab buildu pod pravim CSP-om, na 375, 768 i 1440 px, na svim stranicama laba:
+  - axe bez nalaza
+  - konzola bez grešaka
+  - bez vodoravnog pomicanja
+  - svi dijelovi se iscrtaju
+  - tipkovnica i izbornik rade
+  - smanjeno kretanje i prikaz bez JavaScripta prikazuju gotovo stanje
+- Prototipovi A–E izgledaju isto kao prije.
+- `npm run verify`: 138 unit testova, 1,0 KB JavaScripta po stranici.
+- `npm run test:e2e`: 51 test.
 
 Redoslijed u fazi 2:
-1. ✓ vaše tri odluke s početka faze (ADR 0014):
-   - animacija loga: da, jednom na početnoj
-   - C2PA metapodaci: uklanjaju se iz svih web kopija, a originali ih zadržavaju
-   - privatni pregled na internetu: ne treba, pregled ide na localhostu i kroz snimke
-2. ✓ tri smjera kao živi prototipovi, sa snimkama (19. 10. 2026.):
-   - **A „Nacrt“:** stranica kao list nacrta: okvir sa zonama, tehničko pismo (Archivo), podnožje kao zaglavlje nacrta s podacima o tvrtki. Preporuka.
-   - **B „Noćni nacrt“:** tamnoplavi hero s velikim znakom, usluge na svijetlom listu, crtež kao plava kopija (Schibsted Grotesk).
-   - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
-3. ✓ vaš pregled runde 1 (19. 10. 2026.): nijedan smjer nije za uzeti kakav jest; želite hibrid i više animacije
-4. ✓ runda 2 (19. 10. 2026.): rasprava o vašim povratnim informacijama i dva hibridna prototipa, D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
-5. ✓ vaš izbor smjera i ostale konačne odluke (19. 10. 2026., ADR 0015 i 0016)
-6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima, Figma knjižnica ← u tijeku
-7. izlazne provjere i PR faze 2 (draft PR #2 je već otvoren: https://github.com/matejmedo0/codraft-website/pull/2)
+1. ✓ vaše tri odluke s početka faze (ADR 0014): animacija loga samo na početnoj; web kopije bez C2PA; pregled na localhostu
+2. ✓ tri smjera kao živi prototipovi: A „Nacrt“, B „Noćni nacrt“, C „Studio“ (`docs/phases/2-design-directions.md`)
+3. ✓ vaš pregled runde 1: nijedan smjer nije za uzeti kakav jest; željeli ste hibrid i više animacije
+4. ✓ runda 2: hibridi D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
+5. ✓ vaš izbor smjera i ostale konačne odluke (ADR 0015 i 0016)
+6. ✓ tokeni, font, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima, Figma knjižnica
+7. ✓ izlazne provjere i PR #2 kao izvještaj faze ← čeka vaš pregled
+
+Prototipovi obiju rundi ostaju na `/lab` kao zapis; snimke su u `docs/phases/screenshots/phase-2/` (runda 1), `.../round-2/` i `.../system/`.
 
 Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
@@ -147,7 +122,7 @@ Za kasnije, kad ih faza zatraži: uvjeti najma servera i rok čuvanja upita iz f
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
 - [x] 1 — Arhitektura (gotova i odobrena 19. 10. 2026., PR #1): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
-- [ ] 2 — Dizajn (u tijeku od 19. 10. 2026.): 2–3 smjera kao prototipovi, tokeni, animacija, osnovne komponente → `docs/phases/2-design.md`
+- [ ] 2 — Dizajn (gotova 19. 10. 2026., čeka vaš pregled, PR #2): smjer (ADR 0015), tokeni, font, animacija, komponente, stranica sa stilovima, Figma knjižnica → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
 - [ ] 5 — Kvaliteta: E2E i unit testovi, pristupačnost, performanse → `docs/phases/5-quality.md`
@@ -225,9 +200,9 @@ Pregled je u `docs/brand.md`.
 
 ### Radimo mi
 
-- optimizirane web kopije znakova i favicona (faza 2)
-- web fontovi: najviše dvije obitelji, latin-ext, na vlastitom serveru (faza 2)
-- CAD motivi u SVG-u; nema generičkog paketa ikona (faza 2)
+- ✓ optimizirane web kopije znakova i favicona, bez C2PA (faza 2)
+- ✓ web font: Archivo, na vlastitom serveru, s latin-ext u zasebnoj datoteci (faza 2)
+- ✓ CAD motivi u kodu (gripovi, kota, milimetarski papir, crte zona); nema generičkog paketa ikona (faza 2)
 - OG slike, generirane pri izradi stranice (faza 3)
 - nacrti teksta za praznine koje su na nama (`docs/content.md` §4, faze 3–6)
 - nacrti pravnih tekstova (faza 3)

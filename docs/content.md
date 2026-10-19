@@ -176,6 +176,12 @@ Each EN line is identical to the client's text. Where the original puts a title 
 - **`drafting.cad.body`**
   - EN: Accurate 2D drawings in AutoCAD, prepared to your layer and title-block standards from sketches, scans or markups.
   - HR `draft`: Točni 2D crteži u AutoCAD-u, izrađeni prema vašim standardima slojeva i zaglavlja, na temelju skica, skenova ili označenih nacrta.
+- **`drafting.3d.title`** (new, at the client's request, 2026-10-19, [ADR 0019](decisions/0019-drafting-adds-3d-models.md))
+  - EN: written when the English is aligned, at the end of the review
+  - HR `draft`: 3D modeli
+- **`drafting.3d.body`** (new, same)
+  - EN: written when the English is aligned
+  - HR `draft`: Trodimenzionalni modeli zgrada i detalja, izrađeni prema vašim nacrtima i skicama, za provjeru i prezentaciju.
 - **`drafting.docs.title`**
   - EN: Technical Documentation
   - HR `draft`: Tehnička dokumentacija
@@ -280,10 +286,17 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 
 | Where | HR (prototype) | Derived from |
 |---|---|---|
-| Floor plan, layer list | Slojevi: Osi, Zidovi, Otvori, Kote, Oznake, Zaglavlje | Glossary (*sloj*, *zaglavlje*); drafting terms |
-| Floor plan, room labels | Dnevni boravak 36,10 m² · Spavaća soba 13,25 m² · Ulaz 4,96 m² · Kupaonica 4,33 m² | The drawing's own dimensions |
+| Floor plan, layer list | Slojevi: Osi, Zidovi, Otvori, Kote, Zaglavlje ("Oznake" and the room names removed at the client's request, batch 6) | Glossary (*sloj*, *zaglavlje*); drafting terms |
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
-| Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima, kotama u centimetrima i nazivima prostorija. | Describes the illustration (a first draft for G28) |
+| Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
+
+**Tehničko crtanje on Home** (review batch 6, 2026-10-19). One line per service, as in "Što radimo"; the drafting page keeps the full sentences. Drafts.
+
+| Service | HR (Home, one line) | Shortened from |
+|---|---|---|
+| 2D CAD crteži | Točni crteži u AutoCAD-u, prema vašim standardima slojeva i zaglavlja. | `drafting.cad.body` |
+| 3D modeli | Modeli zgrada i detalja prema vašim nacrtima i skicama. | `drafting.3d.body` |
+| Tehnička dokumentacija | Kompleti crteža ujednačenog formata, spremni za predaju. | `drafting.docs.body` |
 | Floor plan, replay button | Iscrtaj ponovno | UI string (as before) |
 | "Kako radimo", heading | Kako radimo | [information-architecture.md](information-architecture.md), Home §6 |
 | "Kako radimo", first item | **Cijena poznata unaprijed:** Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu. | `plan.body` |
@@ -389,6 +402,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
   - "Tehničko crtanje" replaces "CAD crtanje", for architecture and construction only ([ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)): the glossary, `drafting.title`, `drafting.audience`, `nav.drafting`, the hero link and G25. Suggestion S19 asks about the EN.
 - **2026-10-19 (phase 2, review refinements, batch 4):** "One line per service on Home" added under "Prototype copy": each service's sentence shortened for Home, drafts. No copy block changed.
 - **2026-10-19 (phase 2, review refinements, batch 5):** "The floor plan on Home" added under "Prototype copy": its layers, room labels, title block and accessible name. The client will align the English at the end of all the changes. No copy block changed.
+- **2026-10-19 (phase 2, review refinements, batch 6):** New blocks `drafting.3d.title` and `drafting.3d.body`, HR drafts, at the client's request ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)); the EN follows at the end of the review. The floor plan loses its room names. "Tehničko crtanje on Home" added under "Prototype copy".
 
 ## Appendix A: Original copy as received (2026-10-18)
 

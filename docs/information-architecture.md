@@ -137,7 +137,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 ### Tehničko crtanje / Engineering Drafting (`/tehnicko-crtanje`)
 
 1. **Hero:** H1 "Tehničko crtanje za arhitekturu i građevinarstvo" (I); `drafting.tagline`, `drafting.audience` (P).
-2. **The two services:** `drafting.cad.*`, `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
+2. **The three services:** `drafting.cad.*`, `drafting.3d.*` (P; added 2026-10-19, [ADR 0019](decisions/0019-drafting-adds-3d-models.md)) and `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
 3. **Uzorci / Samples:** 2–3 sample sheets made in-house for the site, shown in a layer viewer (N, G10). Each is labelled "Uzorak izrađen za Codraft — nije rad za klijenta".
 4. **Opseg i odgovornost / Scope and responsibility** (N, G11; legally sensitive):
    - We draft to your sketches, markups and standards.

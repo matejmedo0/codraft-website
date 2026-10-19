@@ -21,7 +21,6 @@ const TIMINGS: Partial<Record<string, LayerTiming>> = {
   zidovi: { duration: 280, stagger: 60 },
   otvori: { duration: 300, stagger: 55 },
   kote: { duration: 450, stagger: 120 },
-  oznake: { duration: 300, stagger: 100 },
   zaglavlje: { duration: 400, stagger: 0 },
 };
 

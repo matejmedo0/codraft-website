@@ -6,6 +6,8 @@
 
 .svc {
   --bubble: 2.75rem;
+  /* The services' one line, larger than body text (review batch 3). */
+  --step-service: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
 }
 
 .svc > h2 {

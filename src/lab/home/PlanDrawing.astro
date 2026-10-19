@@ -4,7 +4,8 @@
  * ADR 0018: architecture and construction only). A small flat, drawn like a
  * timelapse of drafting: once half of it is in view (draw.ts), its elements
  * appear one by one, each wiped in along its own direction, layer after
- * layer: axes, walls, openings, dimensions, labels, title block. The layer
+ * layer: axes, walls, openings, dimensions, title block (the room names
+ * were removed in review batch 6). The layer
  * list switches on in step and "Iscrtaj ponovno" replays it.
  * plan-timelapse.ts times the steps. Without JavaScript, or with reduced
  * motion, the plan is complete.
@@ -71,13 +72,14 @@ const ROWS = [
   { at: 68.5, label: "C" },
 ];
 
-const { rooms } = PLAN;
-const ROOMS = [
-  { ...rooms.living, x: 31, y: 33 },
-  { ...rooms.bedroom, x: 78.8, y: 19 },
-  { ...rooms.entrance, x: 70, y: 48.5 },
-  { ...rooms.bathroom, x: 88.8, y: 58 },
-];
+interface Props {
+  /** Prefixes the drawing's ids, so a page can show it more than once. */
+  idPrefix?: string;
+}
+
+const { idPrefix = "plan" } = Astro.props;
+const drawingId = `${idPrefix}-crtez`;
+const layersId = `${idPrefix}-slojevi`;
 
 const { titleBlock } = PLAN;
 ---
@@ -88,10 +90,10 @@ const { titleBlock } = PLAN;
       class="plan__drawing"
       viewBox="-21 -21 125 110"
       role="img"
-      aria-labelledby="plan-crtez"
+      aria-labelledby={drawingId}
       focusable="false"
     >
-      <title id="plan-crtez">{PLAN.drawingLabel}</title>
+      <title id={drawingId}>{PLAN.drawingLabel}</title>
 
       <g data-layer="osi">
         {COLUMNS.map(({ at, label }) => (
@@ -189,19 +191,6 @@ const { titleBlock } = PLAN;
         </g>
       </g>
 
-      <g data-layer="oznake">
-        {ROOMS.map(({ name, area, x, y }) => (
-          <g data-wipe="fade">
-            <text class="plan-room" x={x} y={y}>
-              {name}
-            </text>
-            <text class="plan-room__area" x={x} y={y + 3.6}>
-              {area}
-            </text>
-          </g>
-        ))}
-      </g>
-
       <g data-layer="zaglavlje">
         <g data-wipe="fade">
           <path class="plan-frame" d="M54 75H100V87H54ZM54 81H100M84 75V87" />
@@ -223,10 +212,10 @@ const { titleBlock } = PLAN;
   </div>
 
   <div class="plan__toolbar">
-    <p class="plan__layers-label t-label" id="plan-slojevi">
+    <p class="plan__layers-label t-label" id={layersId}>
       {PLAN.layersLabel}
     </p>
-    <ol class="plan__layers" aria-labelledby="plan-slojevi">
+    <ol class="plan__layers" aria-labelledby={layersId}>
       {PLAN.layers.map(({ id, label }) => (
         <li class="plan__layer" data-lamp={id}>
           <span class="plan__lamp" aria-hidden="true" />
@@ -321,19 +310,6 @@ const { titleBlock } = PLAN;
     fill: var(--accent-text);
     font-size: 2.4px;
     font-weight: var(--weight-medium);
-    text-anchor: middle;
-  }
-
-  .plan-room {
-    fill: var(--drawing-ink);
-    font-size: 2.8px;
-    font-weight: var(--weight-strong);
-    text-anchor: middle;
-  }
-
-  .plan-room__area {
-    fill: var(--drawing-ink);
-    font-size: 2.4px;
     text-anchor: middle;
   }
 

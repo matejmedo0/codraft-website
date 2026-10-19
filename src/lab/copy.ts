@@ -54,7 +54,8 @@ export interface DraftingCopy {
   title: string;
   tagline: string;
   audience: string;
-  items: ServiceItem[];
+  /** Each with its one line for Home (review batch 6). */
+  items: StageService[];
   cta: string;
 }
 
@@ -198,11 +199,20 @@ export const DRAFTING: DraftingCopy = {
       anchor: "2d-crtezi",
       title: "2D CAD crteži", // drafting.cad.*
       body: "Točni 2D crteži u AutoCAD-u, izrađeni prema vašim standardima slojeva i zaglavlja, na temelju skica, skenova ili označenih nacrta.",
+      short:
+        "Točni crteži u AutoCAD-u, prema vašim standardima slojeva i zaglavlja.",
+    },
+    {
+      anchor: "3d-modeli",
+      title: "3D modeli", // drafting.3d.* (ADR 0019)
+      body: "Trodimenzionalni modeli zgrada i detalja, izrađeni prema vašim nacrtima i skicama, za provjeru i prezentaciju.",
+      short: "Modeli zgrada i detalja prema vašim nacrtima i skicama.",
     },
     {
       anchor: "dokumentacija",
       title: "Tehnička dokumentacija", // drafting.docs.*
       body: "Jasne specifikacije i kompleti crteža, ujednačenog formata i spremni za predaju.",
+      short: "Kompleti crteža ujednačenog formata, spremni za predaju.",
     },
   ],
   cta: "Zatražite ponudu", // Glossary: "Request a quote".
@@ -323,14 +333,7 @@ export const CAD: CadCopy = {
  * machined plate on /lab/pocetna; lab D and E keep the plate.
  */
 
-export type PlanLayerId =
-  "osi" | "zidovi" | "otvori" | "kote" | "oznake" | "zaglavlje";
-
-export interface PlanRoom {
-  name: string;
-  /** In square metres, from the drawing's own dimensions. */
-  area: string;
-}
+export type PlanLayerId = "osi" | "zidovi" | "otvori" | "kote" | "zaglavlje";
 
 export interface PlanCopy {
   layersLabel: string;
@@ -338,12 +341,6 @@ export interface PlanCopy {
   layers: { id: PlanLayerId; label: string }[];
   replay: string;
   drawingLabel: string;
-  rooms: {
-    living: PlanRoom;
-    bedroom: PlanRoom;
-    entrance: PlanRoom;
-    bathroom: PlanRoom;
-  };
   titleBlock: { title: string; units: string; studio: string; note: string };
 }
 
@@ -354,18 +351,12 @@ export const PLAN: PlanCopy = {
     { id: "zidovi", label: "Zidovi" },
     { id: "otvori", label: "Otvori" },
     { id: "kote", label: "Kote" },
-    { id: "oznake", label: "Oznake" },
     { id: "zaglavlje", label: "Zaglavlje" },
   ],
   replay: "Iscrtaj ponovno",
+  // Without the room names, at the client's request (review batch 6).
   drawingLabel:
-    "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima, kotama u centimetrima i nazivima prostorija.",
-  rooms: {
-    living: { name: "Dnevni boravak", area: "36,10 m²" },
-    bedroom: { name: "Spavaća soba", area: "13,25 m²" },
-    entrance: { name: "Ulaz", area: "4,96 m²" },
-    bathroom: { name: "Kupaonica", area: "4,33 m²" },
-  },
+    "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima.",
   // The illustration says what it is (ADR 0004).
   titleBlock: {
     title: "Tlocrt stana",

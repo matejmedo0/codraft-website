@@ -8,7 +8,7 @@
 import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
 
 interface Props {
-  current?: LabDirectionId | "style" | "pocetna" | "sto-radimo";
+  current?: LabDirectionId | "style" | "pocetna" | "sto-radimo" | "crtanje";
 }
 
 const { current } = Astro.props;
@@ -43,6 +43,13 @@ const ROUNDS = [
     aria-current={current === "sto-radimo" ? "page" : undefined}
   >
     Što radimo: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/crtanje"
+    aria-current={current === "crtanje" ? "page" : undefined}
+  >
+    Tehničko crtanje: opcije
   </a>
   {ROUNDS.map(({ round, label }) => (
     <div class="lab-bar__round">

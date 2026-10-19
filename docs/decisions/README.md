@@ -24,8 +24,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0016](0016-figma-for-design-iterations.md) | Figma for quick design iterations | Accepted | 2026-10-19 |
 | [0017](0017-one-audit-call-to-action-per-page.md) | One free-audit button per page | Accepted | 2026-10-19 |
 | [0018](0018-drafting-for-architecture-and-construction.md) | Drafting: „Tehničko crtanje“ for architecture and construction | Accepted | 2026-10-19 |
+| [0019](0019-drafting-adds-3d-models.md) | The drafting offer adds 3D models | Accepted | 2026-10-19 |
 
-Next number: **0019**.
+Next number: **0020**.
 
 ## How to add one
 

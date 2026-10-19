@@ -1,0 +1,110 @@
+---
+/**
+ * Zone D, "Tehničko crtanje", option C "Legenda" (the client's review,
+ * batch 6): the drawing leads. On wide screens the floor plan is large on
+ * the left, and on the right, like a drawing's legend, the tagline, the
+ * audience and the three services (ADR 0019) in a ruled table whose cells
+ * share their rules, as in the title block; then the button. The services
+ * use the type of "Što radimo". The plan draws like a timelapse
+ * (PlanDrawing.astro).
+ */
+import "../services.css";
+
+import Button from "../../../components/ui/Button.astro";
+import Zone from "../../../components/ui/Zone.astro";
+import { pathFor } from "../../../features/i18n/urls.ts";
+import { DRAFTING } from "../../copy.ts";
+import PlanDrawing from "../PlanDrawing.astro";
+import ServiceItem from "../ServiceItem.astro";
+import { DRAFTING_SERVICES } from "./drafting.ts";
+
+interface Props {
+  /** The heading's id; the comparison page shows several options. */
+  headingId?: string;
+  /** The option's name, on the comparison page. */
+  label?: string;
+}
+
+const { headingId = "cad", label } = Astro.props;
+const labelId = `${headingId}-opcija`;
+---
+
+<Zone
+  labelledby={label === undefined ? headingId : `${labelId} ${headingId}`}
+  class="svc"
+>
+  {label !== undefined && (
+    <p class="svc-label t-label" id={labelId}>
+      {label}
+    </p>
+  )}
+  <h2 id={headingId}>{DRAFTING.title}</h2>
+  <div class="legend">
+    <div class="legend__figure">
+      <PlanDrawing idPrefix={headingId} />
+    </div>
+    <div class="legend__text">
+      <p class="svc-tagline">{DRAFTING.tagline}</p>
+      <p class="legend__audience">{DRAFTING.audience}</p>
+      <ul class="svc-items legend__cells">
+        {DRAFTING_SERVICES.map((item) => (
+          <ServiceItem
+            title={item.title}
+            body={item.body}
+            href={item.href}
+            class="legend__cell"
+          />
+        ))}
+      </ul>
+      <Button href={pathFor("drafting", "hr")}>{DRAFTING.cta}</Button>
+    </div>
+  </div>
+</Zone>
+
+<style>
+  .legend {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .legend__audience {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-3);
+    font-size: var(--step-service);
+    line-height: 1.5;
+  }
+
+  /* The ruled table: the cells share their rules. */
+  .legend__cells {
+    gap: var(--rule);
+    margin: var(--space-5) 0 var(--space-6);
+    border: var(--rule) solid var(--line);
+    background: var(--line);
+  }
+
+  .legend__cell {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    background: var(--surface);
+  }
+
+  /* A selected cell's grips and outline lie over its neighbours. */
+  .legend__cell:is(:hover, :focus-within) {
+    z-index: 1;
+  }
+
+  @media (min-width: 64rem) {
+    .legend {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    .legend__figure {
+      grid-column: 1 / span 7;
+    }
+
+    .legend__text {
+      grid-column: 8 / -1;
+    }
+  }
+</style>

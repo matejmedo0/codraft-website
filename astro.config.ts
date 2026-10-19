@@ -16,6 +16,7 @@ const LAB_PAGES = [
   "style",
   "pocetna",
   "sto-radimo",
+  "crtanje",
 ] as const;
 
 /**

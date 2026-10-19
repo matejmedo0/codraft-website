@@ -160,6 +160,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Figma za brze prototipe i dorade: sustav iz koda zrcali se u Figma knjižnicu, a kod ostaje izvor istine | [ADR 0016](docs/decisions/0016-figma-for-design-iterations.md) |
 | 2026-10-19 | Poziv na besplatnu analizu najviše jednom na stranici, ondje gdje je objašnjena; zaglavlje bez gumba; hero vodi na usluge; završni poziv je „Pošaljite upit“ | [ADR 0017](docs/decisions/0017-one-audit-call-to-action-per-page.md) |
 | 2026-10-19 | „Tehničko crtanje“ umjesto „CAD crtanje“ (`/tehnicko-crtanje`), samo za arhitekturu i građevinarstvo | [ADR 0018](docs/decisions/0018-drafting-for-architecture-and-construction.md) |
+| 2026-10-19 | Tehničko crtanje nudi i 3D modele, uz 2D crteže i tehničku dokumentaciju | [ADR 0019](docs/decisions/0019-drafting-adds-3d-models.md) |
 
 ## Sitemap
 

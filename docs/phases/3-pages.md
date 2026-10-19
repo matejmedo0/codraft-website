@@ -52,7 +52,7 @@ The AI asistenti page is built in phase 4.
 
 **JSON-LD**
 - `ProfessionalService` (Organization) on Home, with `areaServed`: Croatia. Include the address only if it is public, and `sameAs` links to the real profiles.
-- `Service` × 8 on Usluge (Plan, four Build, three Run & Grow) and × 2 on Tehničko crtanje.
+- `Service` × 8 on Usluge (Plan, four Build, three Run & Grow) and × 3 on Tehničko crtanje (2D, 3D, documentation; ADR 0019).
 - `BreadcrumbList` on inner pages.
 
 **Metadata**

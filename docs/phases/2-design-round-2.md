@@ -1,8 +1,8 @@
 # Phase 2, round 2: brief for the hybrid prototypes
 
-> **Status (2026-10-19): the questions are answered; the hybrid prototypes D and E are being built.** This brief was written at the end of the session that built round 1, because that session's context was full.
+> **Status (2026-10-19): the hybrid prototypes D and E are built and checked, and wait for the client's choice.** This brief was written at the end of the session that built round 1, because that session's context was full.
 > - The client answered the eight questions on 2026-10-19: see [The client's answers](#the-clients-answers-2026-10-19). No answer changes an accepted ADR.
-> - The two hybrids follow the [plan as agreed](#round-2-as-agreed).
+> - The two hybrids follow the [plan as agreed](#round-2-as-agreed); [The hybrids as built](#the-hybrids-as-built-2026-10-19) describes them, with screenshots and checks.
 >
 > Nothing here is decided unless it is marked as decided.
 
@@ -131,6 +131,84 @@ Both hybrids are built on A's sheet, with Archivo as the only family.
 - **Page change.** A 200 ms crossfade between the two hybrids, using cross-document view transitions where the browser supports them.
 - **Rules.** Text is never hidden, and nothing is pinned or scrubbed. Elements already on screen at load stay complete. Without JavaScript, or with reduced motion, everything is complete at once.
 
+## The hybrids as built (2026-10-19)
+
+**How to review**
+1. Run `npm run dev` and open http://localhost:4321/lab/d and http://localhost:4321/lab/e. The lab bar switches between them and round 1.
+2. Things to try:
+   - Scroll slowly from the top: each zone rule is selected as it arrives, the process line draws through "Što radimo", the audit's line grows from grip to grip, and the CAD drawing builds layer by layer.
+   - Press "Iscrtaj ponovno" under the drawing to watch it again.
+   - Reload to replay the logo entrance in the hero.
+   - Press Tab: every link and button shows the outline and its grips.
+   - Narrow the window and open "Izbornik".
+   - Turn on "reduce motion" in the operating system: everything appears complete at once.
+
+**What both share** (`src/lab/hybrid/`)
+- A's sheet: the frame, zone numbers along the top, zone letters A–H in the margin, and the title block as the footer.
+- Archivo as the only family (71 KB). Headings use the semi-condensed width. The H1 is weight 680 and reaches about 70 px at 1440 px, in 3 lines; on phones it is 40 px.
+- The full Home outline in eight zones:
+  - A hero
+  - B "Što radimo"
+  - C free audit
+  - D CAD drafting
+  - E "Kako radimo"
+  - F team
+  - G closing call to action
+  - H title block
+- The hero drawing: the mark sits mid-size on a grid and plays the entrance. On narrow screens the drawing becomes a low strip, so the mark never grows into B's large wordmark.
+- The CAD drawing: A's part on graph paper, plus a title block that says "Ilustracija". A layer list (Konture, Osi, Presjek, Kote, Oznake, Zaglavlje) switches on in step with the drawing.
+- 0.9 KB of gzip JavaScript per page, against a budget of 15 KB: the menu, the draws, the replay button and the end-of-page fallback. Round 1 loaded 0.7 KB, and all lab pages share the same script.
+
+**D „Model i list“**
+- **Navy as the model space at both ends.** The header and hero are navy, with the mark on a blueprint grid; the sheet in between is paper; the closing call to action is navy again.
+- **"Što radimo" as chapters.** Each stage is a row: a grid bubble on a blue process line, a large title (up to 36 px) and its tagline. The services sit beside it in two columns. Each chapter draws its stretch of the line as it arrives.
+- **Free audit on paper.** The text sits on the left; the three steps run on the right, as grips joined by a line.
+
+Screenshots: [1440](screenshots/phase-2/round-2/d-model-i-list-1440.png) · [768](screenshots/phase-2/round-2/d-model-i-list-768.png) · [375](screenshots/phase-2/round-2/d-model-i-list-375.png) · full page [1440](screenshots/phase-2/round-2/d-model-i-list-1440-full.jpg) · [768](screenshots/phase-2/round-2/d-model-i-list-768-full.jpg) · [375](screenshots/phase-2/round-2/d-model-i-list-375-full.jpg) · ["Što radimo"](screenshots/phase-2/round-2/d-model-i-list-1440-services.png) · [menu at 375](screenshots/phase-2/round-2/d-model-i-list-375-menu.png) · [keyboard focus](screenshots/phase-2/round-2/d-model-i-list-focus-item.png)
+
+**E „Nacrt s pojasom“**
+- **The whole page is a paper sheet.** The hero holds the mark on graph paper.
+- **"Što radimo" in three columns.** One blue line runs through the three bubbles and ends in a grip, like the line in the wordmark; the columns draw their stretches in turn.
+  - Stage 01 holds its two items and the "Rezervirajte besplatnu analizu" button in a panel: the place to start.
+  - A first version stretched the panel to the height of the tallest column and left a hollow middle, so the panel now wraps its content.
+- **The free audit is the one navy band,** with its three steps on navy.
+
+Screenshots: [1440](screenshots/phase-2/round-2/e-nacrt-s-pojasom-1440.png) · [768](screenshots/phase-2/round-2/e-nacrt-s-pojasom-768.png) · [375](screenshots/phase-2/round-2/e-nacrt-s-pojasom-375.png) · full page [1440](screenshots/phase-2/round-2/e-nacrt-s-pojasom-1440-full.jpg) · [768](screenshots/phase-2/round-2/e-nacrt-s-pojasom-768-full.jpg) · [375](screenshots/phase-2/round-2/e-nacrt-s-pojasom-375-full.jpg) · ["Što radimo"](screenshots/phase-2/round-2/e-nacrt-s-pojasom-1440-services.png) · [the navy audit band](screenshots/phase-2/round-2/e-nacrt-s-pojasom-1440-audit.png)
+
+**The CAD drawing in steps** (1440 px): [outlines](screenshots/phase-2/round-2/cad-layers-1.png) → [centre lines and the section](screenshots/phase-2/round-2/cad-layers-2.png) → [dimensions](screenshots/phase-2/round-2/cad-layers-3.png) → [labels and title block, complete](screenshots/phase-2/round-2/cad-layers-4.png)
+
+**Motion as built** (springs and durations from `styles/lab-base.css`)
+
+| Moment | Trigger | Sequence |
+|---|---|---|
+| Logo entrance | Page load | After 250 ms the line draws (700 ms, pen curve), then the grip snaps in (320 ms, snap spring) |
+| Section transition | The zone's top edge reaches 70 % of the viewport height | The blue line draws across the zone (700 ms), its grip snaps in at the frame, and both fade 1 s later (480 ms); the zone letter snaps in with the grip |
+| Process line (D) | Each chapter at 70 % | Its stretch draws downward (700 ms) |
+| Line through the bubbles (E) | The columns at 70 % | Three stretches in turn (700 ms each), then the end grip snaps in; on phones each column draws on its own |
+| Audit steps | The list at 70 % | Grip, line (600 ms), grip, line, grip: 1.8 s in all |
+| CAD drawing | Half of the drawing in view | Outlines 0–0.9 s, centre lines from 0.8 s, section from 1.25 s (top down), dimensions from 1.75 s, labels at 2.5 s, title block at 2.7 s: 3.2 s in all |
+
+**Self-review along the way**
+- The audit's first step sat 8 px lower than the others, because the steps stretched to equal height. Fixed.
+- At 768 px the hero drawing spanned the full width, and the mark grew to 470 px, close to B's large wordmark. Below 64rem the drawing is now a 21:9 strip with the mark at about half its width.
+- The title block left an empty cell at 2 and 3 columns, and the grid's navy showed through. Cells now span so that every row is full.
+- In the pending state, a section arrow peeked out of its clipped layer. Each wipe now starts at the layer's own edge.
+- A part close to the end of a page could never reach its trigger and stayed hidden (the specimen's dimension at 375 px, also in round 1). At the bottom of the page, every part still waiting in view now draws.
+
+**Checks** (2026-10-19)
+- **On the lab build, under the CSP,** with `.playwright-mcp/check-lab-r2.mjs` (local, not in git), on every lab page (`/lab`, A–E) at 375, 768 and 1440 px:
+  - no axe findings at any level
+  - no console errors, CSP violations included
+  - no horizontal overflow
+  - on D and E, after a slow scroll to the bottom, no part left waiting; the replay runs without errors
+  - reduced motion: the complete mark, every layer on, no part waiting, no replay button
+  - no JavaScript: the navigation open, every layer on, no replay button
+- **Keyboard:** focus shows the outline and the grips, and the menu opens and closes on the navy header.
+- **`npm run verify` passes:** lint, format, types, 87 unit tests, the normal build (without the lab), the JavaScript budget and the copy guardrails.
+- **`npm run test:e2e` passes,** with the dev server stopped (18 tests).
+
+**Next: the client chooses** D, E, or a mix (for example D's hero with E's columns). Then come an ADR for the direction and steps 3–7 of [2-design.md](2-design.md). D and E stay in the lab as the round 2 record, as A–C do for round 1.
+
 ## Initial notes for the hybrid (Claude; to discuss, not decided)
 
 - **Frame from A:** the sheet, the zones, the title-block footer, technical lettering, and the CAD section on graph paper.
@@ -145,19 +223,19 @@ Both hybrids are built on A's sheet, with Archivo as the only family.
   - one moving thing per viewport
   - all CSS, plus the existing small observer script
 
-## Plan for the next session
+## Plan for the round 2 session
 
-1. Read this brief and [2-design-directions.md](2-design-directions.md). Ask the client the questions above, in Croatian, and record the answers here.
-2. Build the hybrid prototype or prototypes as new lab pages, such as `/lab/d`.
+1. ✓ Read this brief and [2-design-directions.md](2-design-directions.md). Ask the client the questions above, in Croatian, and record the answers here.
+2. ✓ Build the hybrid prototype or prototypes as new lab pages, such as `/lab/d`.
    - Keep A–C as the round 1 record.
    - Reuse the lab parts: `Wordmark`, `Grips`, `PartDrawing`, `PhotoSlot`, `Specimen`, `scripts/lab.ts` and `styles/lab-base.css`.
    - New pages are added to `LAB_PAGES` in `astro.config.ts` and to `src/lab/directions.ts`.
-3. Build the motion: the CAD drawing's layer sequence, the section transitions, the logo entrance, and reduced motion for all of them.
-4. Check it:
+3. ✓ Build the motion: the CAD drawing's layer sequence, the section transitions, the logo entrance, and reduced motion for all of them.
+4. ✓ Check it:
    - on the lab build: console, axe, overflow, reduced motion, focus
    - `npm run verify`, and `npm run test:e2e` with the dev server stopped
-5. Take screenshots at 375, 768 and 1440 px into `.playwright-mcp/` and copy the ones for the report to `docs/phases/screenshots/phase-2/round-2/`.
-6. Commit with messages from files, push, and present to the client in Croatian.
+5. ✓ Take screenshots at 375, 768 and 1440 px into `.playwright-mcp/` and copy the ones for the report to `docs/phases/screenshots/phase-2/round-2/`.
+6. ✓ Commit with messages from files, push, and present to the client in Croatian.
 7. After the client picks: an ADR for the direction, then steps 3–7 of [2-design.md](2-design.md).
 
 ## Working notes from round 1
@@ -174,3 +252,13 @@ Both hybrids are built on A's sheet, with Archivo as the only family.
   - Size the wordmark with `--wordmark-width`.
   - Vitest needs every injected lab page file to exist.
 - **Fonts in the lab:** Archivo, Schibsted Grotesk, Literata and Hanken Grotesk in `src/lab/fonts/`. Sizes, coverage and licences are in the research note. A hybrid keeps at most two families.
+
+## Working notes from round 2
+
+- **Checks:** `.playwright-mcp/check-lab-r2.mjs` (local, not in git) runs on the lab build on port 4322. It covers axe, console errors, overflow, a slow scroll that must leave no part waiting, the replay, reduced motion and no JavaScript, on every lab page at three widths.
+- **Playwright MCP and an old browser.** "Browser is already in use for …mcp-chrome-…" means that a Chrome started by an earlier session's MCP server still holds the profile. Reconnecting with `/mcp` doesn't help. With the client's OK, close that Chrome (its parent is the old `playwright-mcp` Node process); the MCP then opens its own.
+- **Screenshots of motion.** The MCP's headed Chrome draws no frames while it is in the background, so a screenshot can catch an animation at its first frame. Call `finish()` on `document.getAnimations()` before a final-state screenshot. To catch a frame mid-sequence, `pause()` the animations and set their `currentTime`.
+- **The pieces:**
+  - `src/lab/hybrid/`: the shared sections, `hybrid.css` and `CadDrawing.astro`
+  - `src/lab/directions/d/` and `e/`: the two page compositions
+  - `src/lab/scripts/lab.ts`: the draw triggers (`data-draw`, `"late"`, `"half"`), the replay (`data-draw-replay`) and the end-of-page fallback

@@ -2,7 +2,7 @@
 
 - **Status:** In progress (started 2026-10-19).
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
-  - **Round 2 is next, in a new session:** hybrid prototypes with more motion, briefed in [2-design-round-2.md](2-design-round-2.md).
+  - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md). They wait for the client's choice.
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -169,3 +169,37 @@ Load `frontend-a11y` for the menu, focus states and skip link.
       - initial notes for the hybrid
       - the plan
     - `PROGRESS.md` is updated, and the client has a prompt for the new session.
+- **2026-10-19, round 2 session:**
+  - **Skills loaded:** `frontend-design:frontend-design`, `motion-foundations`, `motion-patterns`, `frontend-a11y`, `vite-patterns`, `react-patterns`. `motion-advanced` wasn't needed: the drawing in steps is CSS.
+  - **The eight questions, discussed in Croatian.** The client took every recommendation and asked to see both "Što radimo" treatments. The answers are recorded in [2-design-round-2.md](2-design-round-2.md#the-clients-answers-2026-10-19):
+    - two hybrids
+    - navy in the hero (D) and as a band (E)
+    - the headline with a drawing that holds the mark
+    - a large headline in 3–4 lines
+    - chapters (D) and columns (E)
+    - the team strip on Home
+    - the full Home outline
+    - all four kinds of motion
+  - **No new ADR.** The logo entrance stays in the home hero (ADR 0014), and the team strip stays on Home (ADR 0007).
+  - **Copy first.** The new lines went into [content.md](../content.md) ("Prototype copy", round 2) before the code. All are derived from existing blocks or are lab placeholders.
+  - **Built:** the hybrids D „Model i list“ and E „Nacrt s pojasom“ (`/lab/d`, `/lab/e`), from shared parts in `src/lab/hybrid/`. They include the CAD drawing that builds layer by layer, the section transitions, the process lines and the audit steps.
+    - The lab script gained the draw triggers, the replay button and an end-of-page fallback.
+    - The fallback also fixes a round 1 trap: a part close to the end of a page stayed hidden.
+  - **Self-review:**
+    - E's stage 01 panel no longer stretches into a hollow card.
+    - The hero mark stays mid-size on narrow screens.
+    - The title block has no empty cells.
+    - The audit steps are aligned.
+    - The CAD wipes start at each layer's edge.
+  - **Playwright MCP** couldn't open its browser: a Chrome from an earlier session held the profile. With the client's OK, that Chrome was closed, and the MCP worked again.
+  - **Checks:**
+    - On the lab build under the CSP, at 375, 768 and 1440 px, on every lab page:
+      - no axe findings
+      - no console errors
+      - no overflow
+      - every part draws
+      - reduced motion and no JavaScript show the final states
+    - `npm run verify` passes (87 unit tests), and `npm run test:e2e` passes (18 tests).
+    - The lab pages load 0.9 KB of gzip JavaScript.
+  - **Screenshots** for the report are in [screenshots/phase-2/round-2/](screenshots/phase-2/round-2/).
+  - **Presented** to the client in Croatian. The choice between D and E (or a mix) is the client's.

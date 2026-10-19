@@ -2,7 +2,7 @@
 
 > **Status: round 1, reviewed by the client on 2026-10-19.** Three directions are built as live prototypes in the design lab: `/lab/a`, `/lab/b`, `/lab/c`. Steps 1–2 of [2-design.md](2-design.md).
 > - **The client takes none of the three as is.** They asked for hybrid options and more motion; see [Client review, round 1](#client-review-round-1-2026-10-19).
-> - Round 2 is briefed in [2-design-round-2.md](2-design-round-2.md) and starts in a new session.
+> - Round 2 built two hybrids from this review, D and E, described in [2-design-round-2.md](2-design-round-2.md#the-hybrids-as-built-2026-10-19).
 > - The lab runs only in `npm run dev` and in `npm run build:lab`. Its pages are noindex and never part of a production build.
 > - Screenshots at 375, 768 and 1440 px are in [screenshots/phase-2/](screenshots/phase-2/).
 > - Nothing is decided until the client picks. Tokens, fonts, motion and the base components are built only after the choice.

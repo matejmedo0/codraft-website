@@ -2,9 +2,46 @@
 
 **Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak: runda 2 dizajna, u novoj sesiji.**
-1. Zajedno prolazimo vaše povratne informacije o tri smjera i osam otvorenih pitanja iz `docs/phases/2-design-round-2.md`.
-2. Zatim izrađujem nove, dorađene hibridne prototipove s više animacije.
+**Sljedeći korak: vi birate smjer, D, E ili njihov spoj** (npr. hero iz D sa stupcima iz E).
+- **Pregled:** pokrenite `npm run dev` i otvorite http://localhost:4321/lab/d i http://localhost:4321/lab/e.
+- **Snimke:** `docs/phases/screenshots/phase-2/round-2/`.
+- **Opis:** `docs/phases/2-design-round-2.md`.
+
+**Runda 2 (19. 10. 2026.).** Na osam pitanja prihvatili ste sve preporuke, a za „Što radimo“ tražili ste obje izvedbe. Odgovori su zapisani u `docs/phases/2-design-round-2.md`. Nijedan odgovor ne mijenja prihvaćeni ADR:
+- ulaz loga ostaje u heroju početne (ADR 0014)
+- traka tima ostaje na početnoj (ADR 0007)
+
+Izrađena su dva hibrida na listu nacrta iz A, s Archivom kao jedinim fontom i cijelom početnom stranicom:
+1. hero
+2. Što radimo
+3. besplatna analiza s tri koraka
+4. CAD crtanje
+5. Kako radimo
+6. tim
+7. završni poziv
+8. zaglavlje nacrta
+
+- **D „Model i list“:**
+  - tamnoplavo zaglavlje i hero, sa znakom na plavoj mreži nacrta
+  - „Što radimo“ u poglavljima, spojenima plavom linijom 01 → 02 → 03
+  - tamnoplavi završni poziv
+- **E „Nacrt s pojasom“:**
+  - cijela stranica je svijetli list, sa znakom na milimetarskom papiru
+  - „Što radimo“ u tri stupca, s jednom linijom kroz krugove; stupanj 01 je istaknuta ploha s gumbom za analizu
+  - tamnoplavi pojas nosi besplatnu analizu i njezina tri koraka
+- **Animacije u oba hibrida:** svaka se igra jednom, u svom odjeljku.
+  - ulaz loga u heroju
+  - CAD crtež koji se gradi sloj po sloj kad dođete do njega: konture → osi → presjek → kote → oznake → zaglavlje, s popisom slojeva i gumbom „Iscrtaj ponovno“
+  - prijelazi odjeljaka kao CAD odabir crte zone
+  - linije kroz korake
+- **Provjere:** sve prolaze.
+  - Na lab buildu pod pravim CSP-om, na 375, 768 i 1440 px:
+    - axe bez nalaza
+    - konzola bez grešaka
+    - bez vodoravnog pomicanja
+    - smanjeno kretanje i prikaz bez JavaScripta prikazuju gotovo stanje
+  - `npm run verify` (87 unit testova)
+  - `npm run test:e2e` (18 testova)
 
 **Što ste rekli o rundi 1** (19. 10. 2026.; doslovno i razvrstano u `docs/phases/2-design-directions.md`): nijedan smjer ne uzimate kakav jest.
 - **Sviđa vam se:**
@@ -22,7 +59,7 @@
   - animirani logo
   - CAD crtež koji se iscrtava u koracima kad posjetitelj dođe do njega
 
-Prototipovi runde 1 i dalje su na `/lab` (`npm run dev`, zatim http://localhost:4321/lab). Snimke su u `docs/phases/screenshots/phase-2/`.
+Prototipovi obiju rundi su na `/lab` (`npm run dev`, zatim http://localhost:4321/lab): runda 2 (D, E) i runda 1 (A–C) kao zapis. Snimke runde 1 su u `docs/phases/screenshots/phase-2/`, a runde 2 u `docs/phases/screenshots/phase-2/round-2/`.
 
 Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
 
@@ -36,8 +73,8 @@ Redoslijed u fazi 2:
    - **B „Noćni nacrt“:** tamnoplavi hero s velikim znakom, usluge na svijetlom listu, crtež kao plava kopija (Schibsted Grotesk).
    - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
 3. ✓ vaš pregled runde 1 (19. 10. 2026.): nijedan smjer nije za uzeti kakav jest; želite hibrid i više animacije
-4. runda 2: rasprava o vašim povratnim informacijama, zatim hibridni prototipovi ← sljedeća sesija (`docs/phases/2-design-round-2.md`)
-5. vaš izbor smjera (ADR)
+4. ✓ runda 2 (19. 10. 2026.): rasprava o vašim povratnim informacijama i dva hibridna prototipa, D „Model i list“ i E „Nacrt s pojasom“ (`docs/phases/2-design-round-2.md`)
+5. vaš izbor smjera (ADR) ← sljedeće
 6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
 7. izlazne provjere i PR faze 2 (draft PR #2 je već otvoren: https://github.com/matejmedo0/codraft-website/pull/2)
 
@@ -210,7 +247,11 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 
 **Kasnije:**
 - **Faza 1:** ✓ stack, hosting i servisi su odlučeni (ADR 0008–0013).
-- **Faza 2:** ✓ animacija loga, C2PA metapodaci i privatni pregled su odlučeni (ADR 0014).
+- **Faza 2:**
+  - ✓ animacija loga, C2PA metapodaci i privatni pregled su odlučeni (ADR 0014)
+  - ✓ pitanja runde 2 su odgovorena (19. 10. 2026.)
+  - otvoren je samo vaš izbor smjera: D, E ili spoj
+  - broj osoba u traci tima: prototip prikazuje tri mjesta
 - **Faza 3:** tim i fotografije, opseg analize, cijene, vlasništvo i NDA, CAD podaci i uzorci, kontakt podaci, rok čuvanja upita iz formi (prijedlog: 12 mjeseci).
 - **Faza 4:**
   - računi i ključevi (e-mail API, booking, Anthropic API)

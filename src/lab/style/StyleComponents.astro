@@ -1,0 +1,147 @@
+---
+/**
+ * The base components: buttons, items with grips, the language switcher,
+ * and notes on the header, the title block and the skip link, which are
+ * this page's own.
+ */
+import LanguageSwitcher from "../../components/site/LanguageSwitcher.astro";
+import Button from "../../components/ui/Button.astro";
+import Item from "../../components/ui/Item.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { HERO, PLAN_ITEMS, SERVICES } from "../copy.ts";
+
+const services = pathFor("services", "hr");
+const build = SERVICES.stages[0]?.items.slice(0, 2) ?? [];
+const fixedScope = PLAN_ITEMS[1];
+---
+
+<Zone labelledby="komponente" class="style-zone">
+  <div class="style-zone__head">
+    <h2 id="komponente">Komponente</h2>
+    <p class="style-zone__intro">
+      Sve ovdje je živo: prijeđite mišem ili pritisnite Tab. Fokus uvijek
+      pokazuje pravu crtu, a gripovi u kutovima označe odabir.
+    </p>
+    <p class="style-zone__intro">
+      Zaglavlje gore i zaglavlje nacrta dolje također su komponente, kao i
+      poveznica „Preskoči na sadržaj“ (prvi Tab na stranici).
+    </p>
+  </div>
+
+  <div class="style-zone__body">
+    <section class="style-block" aria-labelledby="gumbi">
+      <h3 id="gumbi">Gumbi</h3>
+      <ul class="specimens">
+        <li>
+          <Button href={pathFor("audit", "hr")}>{HERO.primary}</Button>
+          <span class="specimens__caption t-label">Primarni</span>
+        </li>
+        <li>
+          <Button href={services} variant="secondary">
+            {HERO.secondary}
+          </Button>
+          <span class="specimens__caption t-label">Sekundarni</span>
+        </li>
+        <li>
+          <Button href={pathFor("audit", "hr")} size="compact">
+            Besplatna analiza
+          </Button>
+          <span class="specimens__caption t-label">Kompaktni, 44 px</span>
+        </li>
+        <li>
+          <Button disabled>Besplatna analiza</Button>
+          <span class="specimens__caption t-label">Onemogućen</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="style-block" aria-labelledby="stavke">
+      <h3 id="stavke">Stavke</h3>
+      <ul class="items">
+        {build.map((item) => (
+          <Item
+            as="li"
+            title={item.title}
+            href={`${services}#${item.anchor}`}
+            level={4}
+          >
+            {item.body}
+          </Item>
+        ))}
+      </ul>
+      {fixedScope && (
+        <Item
+          title={fixedScope.title}
+          level={4}
+          variant="panel"
+          class="items__panel"
+        >
+          {fixedScope.body}
+        </Item>
+      )}
+      <p class="style-note">
+        Stavka s poveznicom cijela je klikabilna i pokazuje gripove. Ploča je za
+        sadržaj koji stoji po strani, poput napomene ili koraka forme.
+      </p>
+    </section>
+
+    <section class="style-block" aria-labelledby="jezik">
+      <h3 id="jezik">Prebacivanje jezika</h3>
+      <ul class="specimens">
+        <li>
+          <LanguageSwitcher locale="hr" display="code" />
+          <span class="specimens__caption t-label">U zaglavlju</span>
+        </li>
+        <li>
+          <LanguageSwitcher locale="hr" />
+          <span class="specimens__caption t-label">U zaglavlju nacrta</span>
+        </li>
+      </ul>
+      <p class="style-note">
+        Vodi na istu stranicu na drugom jeziku, prema karti ruta. Tekst
+        poveznice je na jeziku na koji vodi.
+      </p>
+    </section>
+  </div>
+</Zone>
+
+<style>
+  .specimens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5) var(--space-6);
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .specimens > li {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .specimens__caption {
+    color: var(--ink-muted);
+  }
+
+  .items {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--gap);
+    }
+  }
+
+  .style-block :global(.items__panel) {
+    margin-top: var(--space-5);
+  }
+</style>

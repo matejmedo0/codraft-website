@@ -1,0 +1,83 @@
+/*
+ * Layout of the style page (/lab/style). Lab only: the components bring
+ * their own styles; this file only arranges the specimens.
+ */
+
+/* A zone with its heading and intro on the left and the specimens on the
+   right, on the sheet's 12 columns. */
+.style-zone {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.style-zone__intro {
+  max-width: var(--measure);
+  margin-top: var(--space-4);
+  color: var(--ink-muted);
+}
+
+.style-zone__intro + .style-zone__intro {
+  margin-top: var(--space-3);
+}
+
+.style-block + .style-block {
+  margin-top: var(--space-8);
+}
+
+.style-block > h3 {
+  margin-bottom: var(--space-4);
+}
+
+.style-note {
+  max-width: var(--measure);
+  margin-top: var(--space-3);
+  color: var(--ink-muted);
+  font-size: var(--step-small);
+}
+
+@media (min-width: 64rem) {
+  .style-zone {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .style-zone__head {
+    grid-column: 1 / span 4;
+  }
+
+  .style-zone__body {
+    grid-column: 5 / -1;
+  }
+}
+
+/* Token tables. */
+.style-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step-small);
+}
+
+.style-table th,
+.style-table td {
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  border-bottom: var(--rule) solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.style-table thead th {
+  color: var(--ink-muted);
+  font-size: var(--step-label);
+  font-stretch: var(--width-label);
+  font-weight: var(--weight-medium);
+}
+
+.style-table code {
+  font-family: inherit;
+  font-stretch: var(--width-label);
+  font-variant-numeric: tabular-nums;
+}
+
+.style-table td:last-child {
+  color: var(--ink-muted);
+}

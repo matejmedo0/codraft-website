@@ -1,0 +1,69 @@
+---
+/**
+ * The navy surface, as the closing call to action uses it: once on a page,
+ * at the end (ADR 0015). The same buttons as on paper, with the surface's
+ * own tokens.
+ */
+import Button from "../../components/ui/Button.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { CLOSING } from "../copy.ts";
+---
+
+<Zone labelledby="zavrsni-poziv" surface="navy" class="closing">
+  <div class="closing__text">
+    <p class="closing__label t-label">Tamnoplava površina: završni poziv</p>
+    <h2 class="closing__title" id="zavrsni-poziv">
+      {CLOSING.title}
+    </h2>
+  </div>
+  <div class="closing__actions">
+    <Button href={pathFor("audit", "hr")}>{CLOSING.primary}</Button>
+    <Button href={pathFor("contact", "hr")} variant="secondary">
+      {CLOSING.secondary}
+    </Button>
+  </div>
+</Zone>
+
+<style>
+  .closing {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .closing__label {
+    margin-bottom: var(--space-4);
+    color: var(--ink-muted);
+  }
+
+  .closing__title {
+    font-size: var(--step-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .closing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  @media (min-width: 64rem) {
+    .closing {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: end;
+    }
+
+    .closing__text {
+      grid-column: 1 / span 6;
+    }
+
+    .closing__actions {
+      grid-column: 7 / -1;
+      justify-content: flex-end;
+    }
+  }
+</style>

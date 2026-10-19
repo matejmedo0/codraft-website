@@ -1,0 +1,1411 @@
+/*
+ * Round 2 hybrids, D "Model i list" and E "Nacrt s pojasom"
+ * (docs/phases/2-design-round-2.md). Both are A's drawing sheet: paper
+ * ground, navy ink at drafting line weights, a frame with zone references,
+ * Archivo as the only family, and the title block as the footer. B's navy
+ * comes in as a surface (.on-navy), and C's ideas as a larger headline and
+ * the team strip. Blue is for graphics only: drafting lines, grips,
+ * dimensions and the focus ring.
+ *
+ * The surface tokens (--ink, --ink-muted, --line, --line-strong, --link,
+ * --surface, the grid and drawing colours, the button colours) describe the
+ * current surface: paper by default, navy inside .on-navy. Every part works
+ * on both.
+ */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../fonts/archivo.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f6f5f1;
+  --paper-sunk: #edebe5;
+  --navy: #0f1b2d;
+  --navy-raised: #18273e;
+  --accent: #2f6bff;
+  --focus: var(--accent);
+  --radius: 0;
+
+  /* Paper surface (the default). */
+  --surface: var(--paper);
+  --ink: var(--navy);
+  --ink-muted: #5e6878;
+  --line: color-mix(in srgb, var(--navy) 16%, var(--paper));
+  --line-strong: var(--navy);
+  --link: #2457d6;
+  --grip-fill: var(--paper);
+
+  --btn-primary-bg: var(--navy);
+  --btn-primary-bg-hover: #27364f;
+  --btn-primary-fg: var(--paper);
+  --btn-secondary-border: var(--navy);
+  --btn-secondary-fg: var(--navy);
+  --btn-secondary-bg-hover: var(--paper-sunk);
+  --btn-disabled-bg: #e2e0da;
+  --btn-disabled-border: #e2e0da;
+  --btn-disabled-fg: #5e6878;
+
+  --grid-major: color-mix(in srgb, var(--navy) 11%, transparent);
+  --grid-minor: color-mix(in srgb, var(--navy) 5%, transparent);
+
+  --pd-ink: var(--navy);
+  --pd-muted: color-mix(in srgb, var(--navy) 45%, var(--paper));
+  --pd-dim: var(--accent);
+  --pd-dim-text: #2457d6;
+  --pd-fill: var(--paper);
+
+  --font-text: "Archivo", system-ui, sans-serif;
+  --font-label: var(--font-text);
+  --label-stretch: 75%;
+
+  /* Fluid type scale, 375 → 1440 px. The H1 reaches about 70 px. */
+  --step-h1: clamp(2.5rem, 1.85rem + 2.8vw, 4.5rem);
+  --step-h2: clamp(1.875rem, 1.45rem + 1.8vw, 3rem);
+  --step-stage: clamp(1.625rem, 1.35rem + 1.15vw, 2.25rem);
+  --step-h3: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem);
+  --step-lead: clamp(1.125rem, 1.06rem + 0.3vw, 1.375rem);
+  --step-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+  --step-label: 0.8125rem;
+
+  --sheet-margin: 0.5rem;
+  --pad: 1rem;
+  --zone-pad: 3rem;
+  --gap: 2rem;
+  --bubble: 2.75rem;
+  --rail: 2px;
+
+  /* The section transition: the selection releases after the grip. */
+  --select-release: 1700ms;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --sheet-margin: 1.5rem;
+    --pad: 2rem;
+    --zone-pad: 4rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --pad: 3rem;
+    --zone-pad: 5rem;
+  }
+}
+
+/* The navy surface: B's model space, used once or twice per page. */
+.on-navy {
+  --surface: var(--navy);
+  --ink: var(--paper);
+  --ink-muted: #a7b0bd;
+  --line: color-mix(in srgb, var(--paper) 16%, var(--navy));
+  --line-strong: var(--paper);
+  --link: #77a0ff;
+  --grip-fill: var(--navy);
+
+  --btn-primary-bg: var(--paper);
+  --btn-primary-bg-hover: #dde3ec;
+  --btn-primary-fg: var(--navy);
+  --btn-secondary-border: var(--paper);
+  --btn-secondary-fg: var(--paper);
+  --btn-secondary-bg-hover: var(--navy-raised);
+
+  --grid-major: color-mix(in srgb, var(--paper) 10%, transparent);
+  --grid-minor: color-mix(in srgb, var(--paper) 4%, transparent);
+
+  --pd-ink: var(--paper);
+  --pd-muted: color-mix(in srgb, var(--paper) 45%, var(--navy));
+  --pd-dim-text: #77a0ff;
+  --pd-fill: var(--navy);
+
+  background: var(--navy);
+  color: var(--ink);
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-text);
+  font-size: var(--step-body);
+  line-height: 1.55;
+}
+
+/* Technical lettering: headings at the semi-condensed width. */
+:is(h1, h2, h3, h4, .t-h1, .t-h2, .t-h3) {
+  margin: 0;
+  font-stretch: 87.5%;
+  font-weight: 620;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+:is(h1, .t-h1) {
+  font-size: var(--step-h1);
+  font-weight: 680;
+  line-height: 0.98;
+  letter-spacing: -0.026em;
+}
+
+:is(h2, .t-h2) {
+  font-size: var(--step-h2);
+  letter-spacing: -0.02em;
+}
+
+:is(h3, .t-h3) {
+  font-size: var(--step-h3);
+  line-height: 1.2;
+}
+
+h4 {
+  font-size: 1.125rem;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0;
+}
+
+.t-label {
+  font-size: var(--step-label);
+  font-stretch: 75%;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* The sheet: a frame inset from the viewport, with zone numbers above it
+   and a zone letter in the margin beside each zone. */
+.sheet {
+  position: relative;
+  margin: var(--sheet-margin);
+  border: 1px solid var(--navy);
+}
+
+.sheet__zones {
+  display: none;
+}
+
+.zone {
+  position: relative;
+  padding: var(--zone-pad) var(--pad);
+}
+
+.zone + .zone,
+.title-block {
+  border-top: 1px solid var(--navy);
+}
+
+.zone__letter {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .sheet__zones {
+    position: absolute;
+    top: calc(var(--sheet-margin) * -1);
+    right: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    height: var(--sheet-margin);
+    margin: 0;
+    padding: 0;
+    color: #5e6878;
+    font-size: 0.6875rem;
+    font-stretch: 75%;
+    font-variant-numeric: tabular-nums;
+    list-style: none;
+  }
+
+  .sheet__zones li {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .sheet__zones li + li::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    height: 0.5rem;
+    background: var(--navy);
+    content: "";
+  }
+
+  .zone__letter {
+    position: absolute;
+    top: calc(var(--zone-pad) + 0.25rem);
+    left: calc((var(--sheet-margin) + 1px) * -1);
+    display: block;
+    width: var(--sheet-margin);
+    color: #5e6878;
+    font-size: 0.6875rem;
+    font-stretch: 75%;
+    text-align: center;
+  }
+}
+
+/* The section transition (ZoneMark): a CAD selection of the zone rule. */
+.zone-select {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  pointer-events: none;
+}
+
+.zone-select::before {
+  position: absolute;
+  inset: -0.5px 0;
+  background: var(--accent);
+  content: "";
+  opacity: 0;
+  transform-origin: 0 50%;
+}
+
+.zone-select__grip {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: var(--grip-size);
+  height: var(--grip-size);
+  border: var(--grip-stroke) solid var(--accent);
+  background: var(--grip-fill);
+  opacity: 0;
+  translate: 50% -50%;
+}
+
+.zone-select.is-drawing::before {
+  opacity: 1;
+  animation:
+    draw-x var(--motion-draw) var(--ease-pen) both,
+    release var(--motion-slow) var(--ease-standard) var(--select-release)
+      forwards;
+}
+
+.zone-select.is-drawing .zone-select__grip {
+  animation:
+    snap-in var(--motion-snap) var(--ease-snap) var(--motion-draw) both,
+    release var(--motion-slow) var(--ease-standard) var(--select-release)
+      forwards;
+}
+
+.zone-select.is-pending ~ .zone__letter {
+  opacity: 0;
+  scale: 0.6;
+}
+
+.zone-select.is-drawing ~ .zone__letter {
+  animation: snap-in var(--motion-snap) var(--ease-snap) var(--motion-draw) both;
+}
+
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes snap-in {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes release {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Masthead */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  padding: 0.875rem var(--pad);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+
+.masthead.on-navy {
+  border-bottom-color: var(--line);
+}
+
+.masthead__home {
+  display: block;
+  width: 7.25rem;
+  padding: 0.375rem 0;
+  color: var(--ink);
+}
+
+.masthead__toggle {
+  display: none;
+  gap: 0.625rem;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-left: auto;
+  padding: 0 0.875rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Two lines that become a cross: drafting lines, not a hamburger glyph. */
+.masthead__toggle-icon {
+  position: relative;
+  width: 1rem;
+  height: 0.5rem;
+  border-block: 1.5px solid currentColor;
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon {
+  border: 0;
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::before,
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::after {
+  transform: rotate(-45deg);
+}
+
+.masthead__nav {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.masthead__links {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.masthead__links a,
+.masthead__lang {
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.masthead__links a:hover,
+.masthead__lang:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.masthead__lang {
+  align-self: start;
+  border: 0;
+}
+
+@media (max-width: 63.99rem) {
+  .js .masthead__toggle {
+    display: inline-flex;
+  }
+
+  .js .masthead__nav:not(.is-open) {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .masthead {
+    flex-wrap: nowrap;
+  }
+
+  .masthead__nav {
+    flex-basis: auto;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: center;
+    margin-left: auto;
+    padding: 0;
+  }
+
+  .masthead__links {
+    display: flex;
+    gap: 1.75rem;
+  }
+
+  .masthead__links a,
+  .masthead__lang {
+    padding: 0.5rem 0;
+    border: 0;
+    font-size: 1rem;
+  }
+
+  .masthead__nav .btn {
+    min-height: 2.75rem;
+    padding-block: 0.5rem;
+  }
+}
+
+/* Zone A: the hero. */
+.hero {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 2.5rem 3rem;
+}
+
+.hero h1 {
+  max-width: 20ch;
+}
+
+.hero__lead {
+  max-width: 34ch;
+  margin-top: 1.5rem;
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero__drafting {
+  margin-top: 1.5rem;
+}
+
+.hero__drafting a {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.drafting-grid {
+  border: 1px solid var(--line);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size:
+    40px 40px,
+    40px 40px,
+    8px 8px,
+    8px 8px;
+}
+
+/* Below the headline on narrow screens, the drawing is a low strip and the
+   mark stays mid-size: the client didn't like B's large mark in front. */
+.hero__drawing {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 21 / 9;
+  padding: 6% 25%;
+}
+
+.hero__mark {
+  color: var(--ink);
+}
+
+@media (min-width: 40rem) {
+  .hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hero {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: center;
+    padding-block: 4.5rem 5rem;
+  }
+
+  .hero__text {
+    grid-column: 1 / span 7;
+  }
+
+  .hero__drawing {
+    grid-column: 8 / -1;
+    aspect-ratio: 4 / 3;
+    padding: 14%;
+  }
+}
+
+/* Zone B: "Što radimo". Shared parts first. */
+.services > h2 {
+  margin-bottom: 2rem;
+}
+
+/* A grid bubble, as at the end of a drawing's grid line. */
+.bubble {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--bubble);
+  height: var(--bubble);
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-stretch: 75%;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 1rem 0 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.item__title {
+  font-size: var(--step-h3);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+.item__title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.item__body {
+  max-width: 44ch;
+  margin-top: 0.375rem;
+  color: var(--ink-muted);
+}
+
+.stage-cta {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 600;
+}
+
+/* A boxed card: only the specimen uses it; on the page, items are boxless
+   and their grips show the selection. */
+.card {
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* Chapters (hybrid D): the bubbles sit in their own column on a process
+   line; each chapter draws its stretch of the line (lab.ts, data-draw). */
+.chapter {
+  --chapter-top: 2rem;
+
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  padding: var(--chapter-top) 0 2.5rem calc(var(--bubble) + 1rem);
+}
+
+.chapter + .chapter {
+  border-top: 1px solid var(--line);
+}
+
+.chapter__title {
+  padding-top: max(0px, (var(--bubble) - 1lh) / 2);
+  font-size: var(--step-stage);
+  font-weight: 640;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+
+.chapter__bubble {
+  position: absolute;
+  z-index: 1;
+  top: var(--chapter-top);
+  left: 0;
+}
+
+.chapter__tagline {
+  max-width: 26ch;
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+  font-size: var(--step-lead);
+  line-height: 1.4;
+}
+
+.chapter__rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc((var(--bubble) - var(--rail)) / 2);
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+.chapter:first-child .chapter__rail {
+  top: calc(var(--chapter-top) + var(--bubble) / 2);
+}
+
+.chapter:last-child .chapter__rail {
+  bottom: auto;
+  height: calc(var(--chapter-top) + var(--bubble) / 2);
+}
+
+.chapter.is-pending .chapter__rail {
+  transform: scaleY(0);
+}
+
+.chapter.is-drawing .chapter__rail {
+  animation: draw-y var(--motion-draw) var(--ease-pen) both;
+}
+
+@media (min-width: 40rem) {
+  .items--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+}
+
+@media (min-width: 64rem) {
+  .chapter {
+    --chapter-top: 2.75rem;
+
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: var(--gap);
+    padding: var(--chapter-top) 0 3rem calc(var(--bubble) + var(--gap));
+  }
+}
+
+/* Columns (hybrid E): one line through the three bubbles on wide screens,
+   ending in a grip like the line in the wordmark. */
+.stages {
+  display: grid;
+  gap: 3rem;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage__title {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  font-size: var(--step-stage);
+  font-weight: 640;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+
+.stage__tagline {
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+  font-size: var(--step-lead);
+  line-height: 1.4;
+}
+
+.stage .items {
+  margin-top: 1.5rem;
+}
+
+/* Stage 01: every project starts with the free audit, so its items and
+   the call to action sit together in a panel: the place to start. */
+.stage__start {
+  margin-top: 1.5rem;
+  padding: 0.25rem 1.25rem 1.5rem;
+  background: var(--paper-sunk);
+}
+
+.stage__start .items {
+  margin-top: 0;
+}
+
+.stage__start .item:first-child {
+  border-top: 0;
+}
+
+.stage__start-action {
+  padding-top: 0.5rem;
+}
+
+.stage__rail {
+  position: absolute;
+  top: calc((var(--bubble) - var(--rail)) / 2);
+  right: 0;
+  left: var(--bubble);
+  height: var(--rail);
+  background: var(--accent);
+  transform-origin: 0 50%;
+}
+
+.stage__end {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: var(--grip-size);
+  height: var(--grip-size);
+  border: var(--grip-stroke) solid var(--accent);
+  background: var(--grip-fill);
+  translate: 50% -50%;
+}
+
+.stage.is-pending .stage__rail {
+  transform: scaleX(0);
+}
+
+.stage.is-pending .stage__end {
+  opacity: 0;
+  scale: 0.6;
+}
+
+.stage.is-drawing .stage__rail {
+  animation: draw-x var(--motion-draw) var(--ease-pen) var(--stage-at, 0ms) both;
+}
+
+.stage.is-drawing .stage__end {
+  animation: snap-in var(--motion-snap) var(--ease-snap)
+    calc(var(--stage-at, 0ms) + var(--motion-draw)) both;
+}
+
+@media (min-width: 64rem) {
+  .stages {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  /* The three columns arrive together; their stretches draw in turn. */
+  .stage + .stage {
+    --stage-at: var(--motion-draw);
+  }
+
+  .stage + .stage + .stage {
+    --stage-at: calc(var(--motion-draw) * 2);
+  }
+
+  .stage__rail {
+    right: calc(var(--gap) * -1);
+  }
+
+  .stage:last-child .stage__rail {
+    right: 0;
+  }
+}
+
+/* Zone C: the free audit and its three steps. */
+.audit {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.audit__lead {
+  max-width: 36ch;
+  margin-top: 1rem;
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.audit__actions {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.audit__note {
+  color: var(--ink-muted);
+}
+
+.steps {
+  --node: 1rem;
+  --step-title: clamp(1.25rem, 1.15rem + 0.45vw, 1.625rem);
+  /* The node sits on the centre of the step title's first line. */
+  --node-top: calc((var(--step-title) * 1.2 - var(--node)) / 2);
+
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--node) minmax(0, 1fr);
+  align-content: start;
+  column-gap: 1.125rem;
+  padding-bottom: 2rem;
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step__node {
+  position: relative;
+  z-index: 1;
+  grid-row: 1 / span 2;
+  width: var(--node);
+  height: var(--node);
+  margin-top: var(--node-top);
+  border: var(--grip-stroke) solid var(--accent);
+  background: var(--grip-fill);
+}
+
+.step__link {
+  position: absolute;
+  top: calc(var(--node-top) + var(--node));
+  bottom: calc(var(--node-top) * -1);
+  left: calc((var(--node) - var(--rail)) / 2);
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+.step__title {
+  grid-column: 2;
+  font-size: var(--step-title);
+}
+
+.step__number {
+  margin-right: 0.5rem;
+  color: var(--ink-muted);
+  font-stretch: 75%;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.step__body {
+  grid-column: 2;
+  margin-top: 0.25rem;
+  color: var(--ink-muted);
+}
+
+/* The line grows from grip to grip: node, line, node, line, node. */
+.step:nth-child(1) {
+  --node-at: 0ms;
+  --link-at: 150ms;
+}
+
+.step:nth-child(2) {
+  --node-at: 750ms;
+  --link-at: 900ms;
+}
+
+.step:nth-child(3) {
+  --node-at: 1500ms;
+}
+
+.steps.is-pending .step__node {
+  opacity: 0;
+  scale: 0.6;
+}
+
+.steps.is-pending .step__link {
+  transform: scaleY(0);
+}
+
+.steps.is-drawing .step__node {
+  animation: snap-in var(--motion-snap) var(--ease-snap) var(--node-at) both;
+}
+
+.steps.is-drawing .step__link {
+  animation: draw-y 600ms var(--ease-pen) var(--link-at) both;
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  .step {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+  }
+
+  .step__node {
+    grid-row: auto;
+    margin: 0 0 1.25rem;
+  }
+
+  .step__link {
+    top: calc((var(--node) - var(--rail)) / 2);
+    right: -1.5rem;
+    bottom: auto;
+    left: var(--node);
+    width: auto;
+    height: var(--rail);
+    transform-origin: 0 50%;
+  }
+
+  .step__title,
+  .step__body {
+    grid-column: 1;
+  }
+
+  .steps.is-pending .step__link {
+    transform: scaleX(0);
+  }
+
+  .steps.is-drawing .step__link {
+    animation-name: draw-x;
+  }
+}
+
+@media (min-width: 64rem) {
+  .audit {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 2.5rem;
+  }
+
+  .audit__intro,
+  .audit__actions {
+    grid-column: 1 / span 5;
+  }
+
+  .steps {
+    grid-row: 1 / span 2;
+    grid-column: 7 / -1;
+    align-self: center;
+  }
+}
+
+/* Zone D: CAD drafting, with the drawing on graph paper. */
+.drafting {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.drafting__tagline {
+  margin-top: 1rem;
+  font-size: var(--step-h3);
+  font-stretch: 87.5%;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.drafting__audience {
+  max-width: 36ch;
+  margin-top: 1rem;
+  color: var(--ink-muted);
+}
+
+.drafting__items {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.drafting__items h3 {
+  margin-bottom: 0.375rem;
+  font-size: 1.125rem;
+  font-stretch: 100%;
+}
+
+@media (min-width: 64rem) {
+  .drafting {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: center;
+  }
+
+  .drafting__text {
+    grid-column: 1 / span 5;
+  }
+
+  .drafting__figure {
+    grid-column: 6 / -1;
+  }
+}
+
+/* Zone E: "Kako radimo". */
+.principles__list {
+  display: grid;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.principle {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem 0 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.principle p {
+  max-width: 44ch;
+  color: var(--ink-muted);
+}
+
+@media (min-width: 64rem) {
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: start;
+  }
+
+  .principles > h2 {
+    grid-column: 1 / span 4;
+  }
+
+  .principles__list {
+    grid-column: 5 / -1;
+    margin: 0;
+  }
+
+  .principle {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+    gap: var(--gap);
+    padding-block: 1.5rem 1.75rem;
+  }
+
+  .principle:first-child {
+    padding-top: 0.5rem;
+    border-top: 0;
+  }
+}
+
+/* Zone F: the team strip. */
+.team {
+  display: grid;
+  gap: 2rem;
+}
+
+.team__note {
+  max-width: 30ch;
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+}
+
+.team__more {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.team__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member {
+  display: grid;
+  align-content: start;
+  gap: 0.125rem;
+}
+
+.member__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 0.625rem;
+  border: 1px solid var(--line);
+  background: var(--paper-sunk);
+}
+
+.member__photo svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.member__photo path {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.member__name {
+  font-stretch: 87.5%;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.member__role {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 48rem) {
+  .team__list {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .team {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: start;
+  }
+
+  .team__head {
+    grid-column: 1 / span 4;
+  }
+
+  .team__list {
+    grid-column: 5 / -1;
+    gap: var(--gap);
+  }
+}
+
+/* Zone G: the closing call to action. */
+.closing {
+  display: grid;
+  gap: 2rem;
+}
+
+.closing__title {
+  font-size: var(--step-h1);
+  font-weight: 680;
+  line-height: 0.98;
+  letter-spacing: -0.026em;
+}
+
+.closing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  align-items: center;
+}
+
+.closing__link {
+  font-weight: 600;
+}
+
+@media (min-width: 64rem) {
+  .closing {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: end;
+  }
+
+  .closing__title {
+    grid-column: 1 / span 6;
+  }
+
+  .closing__actions {
+    grid-column: 7 / -1;
+    justify-content: flex-end;
+  }
+}
+
+/* Zone H: the title block holds the company data a drawing's title block
+   would. */
+.title-block {
+  position: relative;
+}
+
+.title-block .zone__letter {
+  top: 1rem;
+}
+
+.title-block__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--navy);
+}
+
+.title-block__grid > div {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem 0.875rem;
+  background: var(--paper);
+}
+
+.title-block dt {
+  color: var(--ink-muted);
+}
+
+.title-block dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.title-block__mark {
+  --wordmark-width: 8.5rem;
+
+  grid-column: 1 / -1;
+  color: var(--ink);
+}
+
+.title-block__legal {
+  grid-column: 1 / -1;
+}
+
+.title-block__legal ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.title-block__legal a,
+.title-block__lang a {
+  color: var(--ink);
+}
+
+.title-block__note {
+  grid-column: 1 / -1;
+  color: var(--ink-muted);
+}
+
+/* No cell may stay empty: the grid's navy would show through. Two columns
+   need the contact and the date to span both. */
+.title-block__contact,
+.title-block__date {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 48rem) {
+  .title-block__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .title-block__contact,
+  .title-block__date,
+  .title-block__legal {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 80rem) {
+  .title-block__grid {
+    grid-template-columns: 1.6fr repeat(5, minmax(0, 1fr));
+  }
+
+  .title-block__mark {
+    grid-row: span 2;
+    grid-column: auto;
+    align-content: center;
+  }
+
+  .title-block__legal {
+    grid-column: span 2;
+  }
+}
+
+/* Page change: a short crossfade between pages that opt in, where the
+   browser supports cross-document view transitions (docs/motion.md). */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(root) {
+  animation-duration: var(--motion-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  .zone-select {
+    display: none;
+  }
+
+  .zone-select.is-pending ~ .zone__letter {
+    opacity: 1;
+    scale: none;
+  }
+
+  .chapter.is-pending .chapter__rail,
+  .stage.is-pending .stage__rail,
+  .steps.is-pending .step__link {
+    transform: none;
+  }
+
+  .stage.is-pending .stage__end,
+  .steps.is-pending .step__node {
+    opacity: 1;
+    scale: none;
+  }
+
+  .zone-select.is-drawing ~ .zone__letter,
+  .chapter.is-drawing .chapter__rail,
+  .stage.is-drawing .stage__rail,
+  .stage.is-drawing .stage__end,
+  .steps.is-drawing .step__node,
+  .steps.is-drawing .step__link {
+    animation: none;
+  }
+}

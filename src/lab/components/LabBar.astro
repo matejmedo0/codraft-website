@@ -1,7 +1,8 @@
 ---
 /**
  * The design-lab bar above each prototype: which direction this is, and
- * links to the others. Lab chrome only; it is not part of any direction.
+ * links to the others, round 2 first. Lab chrome only; it is not part of
+ * any direction.
  */
 import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
 
@@ -10,24 +11,36 @@ interface Props {
 }
 
 const { current } = Astro.props;
+
+const ROUNDS = [
+  { round: 2, label: "Runda 2:" },
+  { round: 1, label: "Runda 1:" },
+] as const;
 ---
 
 <nav class="lab-bar" aria-label="Laboratorij dizajna">
   <a class="lab-bar__home" href="/lab">
     Laboratorij dizajna
   </a>
-  <ul class="lab-bar__list">
-    {LAB_DIRECTIONS.map(({ id, letter, name }) => (
-      <li>
-        <a
-          href={`/lab/${id}`}
-          aria-current={id === current ? "page" : undefined}
-        >
-          {letter} „{name}“
-        </a>
-      </li>
-    ))}
-  </ul>
+  {ROUNDS.map(({ round, label }) => (
+    <div class="lab-bar__round">
+      <span class="lab-bar__label">{label}</span>
+      <ul class="lab-bar__list">
+        {LAB_DIRECTIONS.filter((direction) => direction.round === round).map(
+          ({ id, letter, name }) => (
+            <li>
+              <a
+                href={`/lab/${id}`}
+                aria-current={id === current ? "page" : undefined}
+              >
+                {letter} „{name}“
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+    </div>
+  ))}
   <span class="lab-bar__note">Prototip, nije objavljen</span>
 </nav>
 
@@ -51,6 +64,17 @@ const { current } = Astro.props;
 
   .lab-bar__home {
     font-weight: 700;
+  }
+
+  .lab-bar__round {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    align-items: baseline;
+  }
+
+  .lab-bar__label {
+    color: #4a5260;
   }
 
   .lab-bar__list {

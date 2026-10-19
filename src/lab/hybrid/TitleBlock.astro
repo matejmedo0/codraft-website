@@ -1,0 +1,88 @@
+---
+/**
+ * The footer as the drawing's title block (from direction A): the company
+ * data a title block would hold, the legal links, the sheet number and the
+ * date of the last change. The company data arrives from the client
+ * (PROGRESS.md, item A); until then the cells show where it goes.
+ */
+import { pathFor } from "../../features/i18n/urls.ts";
+import Wordmark from "../components/Wordmark.astro";
+import { FOOTER } from "../copy.ts";
+import ZoneMark from "./ZoneMark.astro";
+
+interface Props {
+  letter: string;
+}
+
+const { letter } = Astro.props;
+const locale = "hr";
+
+/** Home is sheet 1 of the six main pages (docs/information-architecture.md). */
+const SHEET = { number: 1, of: 6 };
+
+const built = new Date();
+const builtLabel = new Intl.DateTimeFormat("hr-HR", {
+  day: "numeric",
+  month: "numeric",
+  year: "numeric",
+}).format(built);
+const builtIso = built.toISOString().slice(0, 10);
+---
+
+<footer class="title-block">
+  <ZoneMark letter={letter} />
+  <dl class="title-block__grid">
+    <div class="title-block__mark">
+      <dt class="visually-hidden">Znak</dt>
+      <dd>
+        <Wordmark label="Codraft" />
+      </dd>
+    </div>
+    {FOOTER.company.map(({ label, value }) => (
+      <div>
+        <dt class="t-label">{label}</dt>
+        <dd>{value}</dd>
+      </div>
+    ))}
+    <div class="title-block__contact">
+      <dt class="t-label">Kontakt</dt>
+      <dd>—</dd>
+    </div>
+    <div class="title-block__legal">
+      <dt class="t-label">Pravne informacije</dt>
+      <dd>
+        <ul>
+          {FOOTER.legal.map(({ page, label }) => (
+            <li>
+              <a href={pathFor(page, locale)}>{label}</a>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+    <div class="title-block__lang">
+      <dt class="t-label">Jezik</dt>
+      <dd>
+        <a href={pathFor("home", "en")} hreflang="en" lang="en">
+          English
+        </a>
+      </dd>
+    </div>
+    <div>
+      <dt class="t-label">List</dt>
+      <dd>
+        {SHEET.number} od {SHEET.of}
+      </dd>
+    </div>
+    <div class="title-block__date">
+      <dt class="t-label">Zadnja izmjena</dt>
+      <dd>
+        <time datetime={builtIso}>{builtLabel}</time>
+      </dd>
+    </div>
+    <div class="title-block__note">
+      <dt class="visually-hidden">Napomena</dt>
+      <dd class="t-label">{FOOTER.placeholderNote}</dd>
+    </div>
+  </dl>
+</footer>

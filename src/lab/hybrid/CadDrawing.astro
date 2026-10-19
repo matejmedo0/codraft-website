@@ -1,0 +1,525 @@
+---
+/**
+ * The CAD section's drawing, built layer by layer (docs/phases/2-design-round-2.md,
+ * docs/motion.md "Layers"): outlines → centre lines → section → dimensions →
+ * labels → title block. When half of it is in view, each layer is revealed
+ * in turn like a pen stroke (a clip-path wipe), once, and the layer list
+ * below switches on in step. "Iscrtaj ponovno" replays it. Without
+ * JavaScript, or with reduced motion, the drawing is complete at once and
+ * the replay button stays hidden.
+ *
+ * The part is the plate from PartDrawing (units in mm), plus a title block.
+ * It is an illustration, not client work or a sample sheet, and the title
+ * block says so (ADR 0004).
+ *
+ * Colours come from the page: --pd-ink (outlines), --pd-muted (centre lines,
+ * hatching), --pd-dim (dimension lines), --pd-dim-text and --pd-fill.
+ * Strokes don't scale, so line weights stay the same at every size.
+ */
+import Grips from "../components/Grips.astro";
+import { CAD } from "../copy.ts";
+
+const holes = [
+  [15, 15],
+  [145, 15],
+  [15, 85],
+  [145, 85],
+] as const;
+
+/** Dimension lines with an arrowhead at each end. */
+const dimensions = [
+  { d: "M0 118H160", text: "160", x: 80, y: 115.5 },
+  { d: "M15 -14H145", text: "130", x: 60, y: -16.5 },
+  {
+    d: "M-16 0V100",
+    text: "100",
+    transform: "translate(-18.5 50) rotate(-90)",
+  },
+  { d: "M178 15V85", text: "70", transform: "translate(175.5 50) rotate(-90)" },
+] as const;
+
+/** The arrows of the cutting plane A–A, which show the viewing direction. */
+const sectionArrows = ["M80 -7H88", "M80 107H88"];
+/** The small "8" dimension: two arrows pointing in from outside. */
+const smallArrows = ["M190 -10H200", "M218 -10H208"];
+
+const { titleBlock } = CAD;
+---
+
+<div class="cad" data-draw="half">
+  <div class="cad__sheet drafting-grid">
+    <svg
+      class="cad__drawing"
+      viewBox="-28 -26 250 178"
+      role="img"
+      aria-labelledby="cad-crtez"
+      focusable="false"
+    >
+      <title id="cad-crtez">{CAD.drawingLabel}</title>
+      <defs>
+        <marker
+          id="cad-arrow"
+          viewBox="0 0 6 4"
+          refX="6"
+          refY="2"
+          markerWidth="6"
+          markerHeight="4"
+          markerUnits="userSpaceOnUse"
+          orient="auto-start-reverse"
+        >
+          <path class="pd-arrowhead" d="M0 0L6 2L0 4Z"></path>
+        </marker>
+        <pattern
+          id="cad-hatch"
+          width="3"
+          height="3"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <line class="pd-hatch-line" x1="0" y1="0" x2="0" y2="3"></line>
+        </pattern>
+      </defs>
+
+      <g class="cad-layer cad-layer--konture">
+        <rect
+          class="pd-body"
+          x="0"
+          y="0"
+          width="160"
+          height="100"
+          rx="6"
+        ></rect>
+        {holes.map(([cx, cy]) => (
+          <circle class="pd-outline" cx={cx} cy={cy} r="5" />
+        ))}
+        <path
+          class="pd-outline"
+          d="M57 43H103A7 7 0 0 1 103 57H57A7 7 0 0 1 57 43Z"
+        ></path>
+      </g>
+
+      <g class="cad-layer cad-layer--osi">
+        <path class="pd-center" d="M-6 50H164"></path>
+        {holes.map(([cx, cy]) => (
+          <path
+            class="pd-center"
+            d={`M${cx - 8} ${cy}H${cx + 8}M${cx} ${cy - 8}V${cy + 8}`}
+          />
+        ))}
+      </g>
+
+      <g class="cad-layer cad-layer--presjek">
+        <path class="pd-center" d="M80 -4V104"></path>
+        <path class="pd-cut" d="M80 -7V-1M80 101V107"></path>
+        {sectionArrows.map((d) => (
+          <path class="pd-dim" d={d} marker-end="url(#cad-arrow)" />
+        ))}
+        <rect class="pd-section" x="200" y="0" width="8" height="43"></rect>
+        <rect class="pd-section" x="200" y="57" width="8" height="43"></rect>
+      </g>
+
+      <g class="cad-layer cad-layer--kote">
+        <path
+          class="pd-ext"
+          d="M0 103V121M160 103V121M-3 0H-19M-3 100H-19M15 7V-17M145 7V-17M153 15H181M153 85H181M200 -2V-13M208 -2V-13"
+        ></path>
+        {dimensions.map(({ d }) => (
+          <path
+            class="pd-dim"
+            d={d}
+            marker-start="url(#cad-arrow)"
+            marker-end="url(#cad-arrow)"
+          />
+        ))}
+        {smallArrows.map((d) => (
+          <path class="pd-dim" d={d} marker-end="url(#cad-arrow)" />
+        ))}
+        {dimensions.map((dimension) =>
+          "transform" in dimension ? (
+            <text
+              class="pd-text"
+              transform={dimension.transform}
+              text-anchor="middle"
+            >
+              {dimension.text}
+            </text>
+          ) : (
+            <text
+              class="pd-text"
+              x={dimension.x}
+              y={dimension.y}
+              text-anchor="middle"
+            >
+              {dimension.text}
+            </text>
+          ),
+        )}
+        <text class="pd-text" x="204" y="-12.5" text-anchor="middle">
+          8
+        </text>
+        <path class="pd-dim" d="M148.5 11.5L156 4H180"></path>
+        <text class="pd-text" x="157" y="1.5">
+          4× Ø10
+        </text>
+      </g>
+
+      <g class="cad-layer cad-layer--oznake">
+        <text class="pd-text" x="91" y="-4.5">
+          A
+        </text>
+        <text class="pd-text" x="91" y="109.5">
+          A
+        </text>
+        <text
+          class="pd-text pd-text--title"
+          x="204"
+          y="116"
+          text-anchor="middle"
+        >
+          A–A
+        </text>
+      </g>
+
+      <g class="cad-layer cad-layer--zaglavlje">
+        <path
+          class="pd-frame"
+          d="M118 132H222V150H118ZM118 141H222M190 132V150"
+        ></path>
+        <text class="pd-cell pd-cell--strong" x="121.5" y="138.6">
+          {titleBlock.part}
+        </text>
+        <text class="pd-cell" x="193.5" y="138.6">
+          {titleBlock.units}
+        </text>
+        <text class="pd-cell pd-cell--strong" x="121.5" y="147.6">
+          {titleBlock.studio}
+        </text>
+        <text class="pd-cell" x="193.5" y="147.6">
+          {titleBlock.note}
+        </text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="cad__toolbar">
+    <p class="cad__layers-label t-label" id="cad-slojevi">
+      {CAD.layersLabel}
+    </p>
+    <ol class="cad__layers" aria-labelledby="cad-slojevi">
+      {CAD.layers.map(({ id, label }) => (
+        <li class:list={["cad__layer", `cad__layer--${id}`]}>
+          <span class="cad__lamp" aria-hidden="true" />
+          {label}
+        </li>
+      ))}
+    </ol>
+    <button
+      class="btn btn--secondary has-grips cad__replay"
+      type="button"
+      data-draw-replay
+    >
+      {CAD.replay}
+      <Grips />
+    </button>
+  </div>
+</div>
+
+<style>
+  /* The sequence: when each layer starts. Its list item switches on then. */
+  .cad {
+    --t-konture: 0ms;
+    --t-osi: 800ms;
+    --t-presjek: 1250ms;
+    --t-kote: 1750ms;
+    --t-oznake: 2500ms;
+    --t-zaglavlje: 2700ms;
+  }
+
+  .cad-layer--konture,
+  .cad__layer--konture {
+    --at: var(--t-konture);
+    --for: 900ms;
+  }
+
+  .cad-layer--osi,
+  .cad__layer--osi {
+    --at: var(--t-osi);
+    --for: 600ms;
+  }
+
+  .cad-layer--presjek,
+  .cad__layer--presjek {
+    --at: var(--t-presjek);
+    --for: 500ms;
+  }
+
+  .cad-layer--kote,
+  .cad__layer--kote {
+    --at: var(--t-kote);
+    --for: 800ms;
+  }
+
+  .cad-layer--oznake,
+  .cad__layer--oznake {
+    --at: var(--t-oznake);
+    --for: var(--motion-base);
+  }
+
+  .cad-layer--zaglavlje,
+  .cad__layer--zaglavlje {
+    --at: var(--t-zaglavlje);
+    --for: 500ms;
+  }
+
+  .cad__sheet {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .cad__drawing {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Line work (as in PartDrawing). */
+  .cad__drawing :is(path, rect, circle) {
+    vector-effect: non-scaling-stroke;
+    fill: none;
+  }
+
+  .pd-body,
+  .pd-outline {
+    stroke: var(--pd-ink);
+    stroke-width: 1.75px;
+  }
+
+  .cad__drawing .pd-body {
+    fill: var(--pd-fill, none);
+  }
+
+  .cad__drawing .pd-section {
+    fill: url(#cad-hatch);
+    stroke: var(--pd-ink);
+    stroke-width: 1.75px;
+  }
+
+  .pd-hatch-line {
+    stroke: var(--pd-muted);
+    stroke-width: 0.35;
+  }
+
+  .pd-center {
+    stroke: var(--pd-muted);
+    stroke-width: 1px;
+    stroke-dasharray: 12 3 2 3;
+  }
+
+  .pd-cut {
+    stroke: var(--pd-ink);
+    stroke-width: 2.5px;
+  }
+
+  .pd-ext,
+  .pd-dim {
+    stroke: var(--pd-dim);
+    stroke-width: 1px;
+  }
+
+  .pd-frame {
+    stroke: var(--pd-ink);
+    stroke-width: 1px;
+  }
+
+  .cad__drawing .pd-arrowhead {
+    fill: var(--pd-dim);
+  }
+
+  .pd-text,
+  .pd-cell {
+    font-family: var(--font-label);
+    font-stretch: var(--label-stretch, 100%);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pd-text {
+    fill: var(--pd-dim-text);
+    font-size: 6.5px;
+    font-weight: 500;
+  }
+
+  .pd-text--title {
+    fill: var(--pd-ink);
+    font-size: 7px;
+    font-weight: 600;
+  }
+
+  .pd-cell {
+    fill: var(--pd-ink);
+    font-size: 5px;
+    font-weight: 500;
+  }
+
+  .pd-cell--strong {
+    font-weight: 650;
+  }
+
+  /* The layer list, styled like a CAD layer manager: a lamp per layer. */
+  .cad__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .cad__layers-label {
+    color: var(--ink-muted);
+  }
+
+  .cad__layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 1rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9375rem;
+    list-style: none;
+  }
+
+  .cad__layer {
+    display: inline-flex;
+    gap: 0.4375rem;
+    align-items: center;
+  }
+
+  .cad__lamp {
+    position: relative;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1.5px solid var(--accent);
+  }
+
+  .cad__lamp::after {
+    position: absolute;
+    inset: 2px;
+    background: var(--accent);
+    content: "";
+  }
+
+  /* The replay button needs the script and motion. */
+  .cad__replay {
+    display: none;
+    min-height: 2.75rem;
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.9375rem;
+  }
+
+  :global(.js) .cad__replay {
+    display: inline-flex;
+  }
+
+  /* Before the drawing starts: every layer and lamp off. */
+  .cad.is-pending .cad-layer {
+    clip-path: inset(-20% 100% -20% 0);
+  }
+
+  .cad.is-pending .cad-layer--presjek {
+    clip-path: inset(0 -20% 100% -20%);
+  }
+
+  .cad.is-pending .cad-layer--oznake {
+    clip-path: none;
+    opacity: 0;
+  }
+
+  .cad.is-pending .cad__lamp::after {
+    opacity: 0;
+    scale: 0;
+  }
+
+  /* Each layer wipes in from the left, like a pen stroke; the section from
+     the top, along its cutting plane; the labels fade in. */
+  .cad.is-drawing .cad-layer {
+    animation: cad-wipe-x var(--for) var(--ease-pen) var(--at) both;
+  }
+
+  .cad.is-drawing .cad-layer--presjek {
+    animation-name: cad-wipe-y;
+  }
+
+  .cad.is-drawing .cad-layer--oznake {
+    animation-name: cad-fade;
+  }
+
+  .cad.is-drawing .cad__lamp::after {
+    animation: cad-lamp var(--motion-fast) var(--ease-spring) var(--at) both;
+  }
+
+  @keyframes cad-wipe-x {
+    from {
+      clip-path: inset(-20% 100% -20% 0);
+    }
+    to {
+      clip-path: inset(-20%);
+    }
+  }
+
+  @keyframes cad-wipe-y {
+    from {
+      clip-path: inset(0 -20% 100% -20%);
+    }
+    to {
+      clip-path: inset(-20%);
+    }
+  }
+
+  @keyframes cad-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cad-lamp {
+    from {
+      opacity: 0;
+      scale: 0;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .cad__sheet {
+      padding: 2.5rem 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .cad__replay {
+      display: none;
+    }
+
+    .cad.is-pending .cad-layer {
+      clip-path: none;
+      opacity: 1;
+    }
+
+    .cad.is-pending .cad__lamp::after {
+      opacity: 1;
+      scale: none;
+    }
+
+    .cad.is-drawing .cad-layer,
+    .cad.is-drawing .cad__lamp::after {
+      animation: none;
+    }
+  }
+</style>

@@ -7,21 +7,10 @@
  */
 import { contrast, formatRatio } from "../contrast.ts";
 import Grips from "./Grips.astro";
+import type { Swatch, TextPair } from "./specimen-types.ts";
 import Wordmark from "./Wordmark.astro";
 
-export interface Swatch {
-  name: string;
-  hex: string;
-  use: string;
-}
-
-export interface TextPair {
-  label: string;
-  fg: string;
-  bg: string;
-  /** Large text only (24 px, or 18.66 px bold): AA needs 3:1. */
-  large?: boolean;
-}
+export type { Swatch, TextPair } from "./specimen-types.ts";
 
 interface Props {
   letter: string;

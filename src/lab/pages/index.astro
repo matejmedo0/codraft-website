@@ -1,9 +1,12 @@
 ---
-// The design-lab index: the three directions of phase 2 (noindex; only in
-// `astro dev` and lab builds, see astro.config.ts).
+// The design-lab index: the directions of phase 2, round 2 first (noindex;
+// only in `astro dev` and lab builds, see astro.config.ts).
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import LabBar from "../components/LabBar.astro";
 import { LAB_DIRECTIONS } from "../directions.ts";
+
+const hybrids = LAB_DIRECTIONS.filter(({ round }) => round === 2);
+const firstRound = LAB_DIRECTIONS.filter(({ round }) => round === 1);
 ---
 
 <BaseLayout locale="hr" title="Laboratorij dizajna | Codraft">
@@ -11,12 +14,32 @@ import { LAB_DIRECTIONS } from "../directions.ts";
   <main class="lab-index">
     <h1>Laboratorij dizajna</h1>
     <p>
-      Tri smjera za fazu 2, izrađena kao živi prototipovi s pravim tekstom,
-      fontovima i animacijom. Otvorite ih u pregledniku, isprobajte na mobitelu
-      i tipkovnicom (Tab), pa odaberite smjer.
+      Prototipovi za fazu 2, s pravim tekstom, fontovima i animacijom. Otvorite
+      ih u pregledniku, isprobajte na mobitelu i tipkovnicom (Tab), pa odaberite
+      smjer.
+    </p>
+
+    <h2>Runda 2: hibridi</h2>
+    <p>
+      Dva hibrida prema vašem pregledu runde 1: list nacrta iz A, tamnoplava iz
+      B, veći naslov i traka tima iz C, te nove animacije. Skrolajte polako:
+      crte se iscrtavaju kad dođete do njih, a CAD crtež se gradi sloj po sloj.
     </p>
     <ol class="lab-index__list">
-      {LAB_DIRECTIONS.map(({ id, letter, name, summary }) => (
+      {hybrids.map(({ id, letter, name, summary }) => (
+        <li>
+          <a href={`/lab/${id}`}>
+            Hibrid {letter} „{name}“
+          </a>
+          <p>{summary}</p>
+        </li>
+      ))}
+    </ol>
+
+    <h2>Runda 1: tri smjera</h2>
+    <p>Zapis prvog pregleda (19. 10. 2026.).</p>
+    <ol class="lab-index__list">
+      {firstRound.map(({ id, letter, name, summary }) => (
         <li>
           <a href={`/lab/${id}`}>
             Smjer {letter} „{name}“
@@ -42,10 +65,15 @@ import { LAB_DIRECTIONS } from "../directions.ts";
     font-size: 2rem;
   }
 
+  .lab-index h2 {
+    margin: 2.5rem 0 0.5rem;
+    font-size: 1.375rem;
+  }
+
   .lab-index__list {
     display: grid;
     gap: 1.5rem;
-    margin: 2rem 0 0;
+    margin: 1.5rem 0 0;
     padding-left: 1.25rem;
   }
 

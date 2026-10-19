@@ -1,0 +1,40 @@
+---
+/**
+ * Hybrid E "Nacrt s pojasom" (docs/phases/2-design-round-2.md): the whole
+ * page is A's paper sheet, with the mark on graph paper in the hero, and
+ * one navy band where the visitor acts: the free audit and its three steps.
+ * "Što radimo" reads as three balanced columns.
+ */
+import "../../hybrid/hybrid.css";
+
+import AuditSection from "../../hybrid/AuditSection.astro";
+import CadSection from "../../hybrid/CadSection.astro";
+import ClosingCta from "../../hybrid/ClosingCta.astro";
+import Hero from "../../hybrid/Hero.astro";
+import Masthead from "../../hybrid/Masthead.astro";
+import Principles from "../../hybrid/Principles.astro";
+import ServicesColumns from "../../hybrid/ServicesColumns.astro";
+import TeamStrip from "../../hybrid/TeamStrip.astro";
+import TitleBlock from "../../hybrid/TitleBlock.astro";
+
+const ZONES = [1, 2, 3, 4, 5, 6];
+---
+
+<div class="sheet">
+  <ol class="sheet__zones" aria-hidden="true">
+    {ZONES.map((zone) => (
+      <li>{zone}</li>
+    ))}
+  </ol>
+  <Masthead menuId="izbornik-e" />
+  <main id="sadrzaj">
+    <Hero letter="A" />
+    <ServicesColumns letter="B" />
+    <AuditSection letter="C" navy />
+    <CadSection letter="D" />
+    <Principles letter="E" />
+    <TeamStrip letter="F" />
+    <ClosingCta letter="G" />
+  </main>
+  <TitleBlock letter="H" />
+</div>

@@ -200,3 +200,130 @@ export const FOOTER: FooterCopy = {
   ],
   placeholderNote: "Podaci o tvrtki stižu prije objave.",
 };
+
+/*
+ * Round 2 (the hybrids D and E): the rest of the Home outline in
+ * docs/information-architecture.md. docs/content.md lists every line under
+ * "Prototype copy", "Added for round 2".
+ */
+
+export interface TextItem {
+  title: string;
+  body: string;
+}
+
+/** Stage 01's two items, split from plan.body, so the stages hold 2, 4, 3. */
+export const PLAN_ITEMS: TextItem[] = [
+  {
+    title: "Besplatna analiza",
+    body: "Pregled vaše postojeće web stranice i vidljivosti na Googleu.",
+  },
+  {
+    title: "Fiksni opseg, rok i cijena",
+    body: "Dobivate ih prije početka bilo kakvog rada.",
+  },
+];
+
+export interface AuditCopy {
+  title: string;
+  lead: string;
+  /** The flow in ADR 0007: form → time slot → confirmation. */
+  steps: TextItem[];
+  placeholderNote: string;
+  cta: string;
+}
+
+export const AUDIT: AuditCopy = {
+  title: "Besplatna analiza", // Glossary: "Free audit".
+  // plan.body, first sentence.
+  lead: "Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu.",
+  steps: [
+    { title: "Forma", body: "Ispunite kratku formu." },
+    { title: "Termin", body: "Odaberite termin u kalendaru." },
+    { title: "Potvrda", body: "Dobivate potvrdu termina." },
+  ],
+  // Stands in for G4 until the client defines the audit's scope.
+  placeholderNote: "Popis onoga što analiza provjerava stiže prije objave.",
+  cta: "Rezervirajte besplatnu analizu",
+};
+
+export type CadLayerId =
+  "konture" | "osi" | "presjek" | "kote" | "oznake" | "zaglavlje";
+
+export interface CadLayer {
+  id: CadLayerId;
+  label: string;
+}
+
+export interface CadCopy {
+  layersLabel: string;
+  /** In drawing order (docs/motion.md, "Layers"). */
+  layers: CadLayer[];
+  replay: string;
+  drawingLabel: string;
+  titleBlock: { part: string; units: string; studio: string; note: string };
+}
+
+export const CAD: CadCopy = {
+  layersLabel: "Slojevi",
+  layers: [
+    { id: "konture", label: "Konture" },
+    { id: "osi", label: "Osi" },
+    { id: "presjek", label: "Presjek" },
+    { id: "kote", label: "Kote" },
+    { id: "oznake", label: "Oznake" },
+    { id: "zaglavlje", label: "Zaglavlje" },
+  ],
+  replay: "Iscrtaj ponovno",
+  drawingLabel:
+    "Ilustracija: crtež ploče s četiri provrta i utorom, s presjekom A–A i kotama u milimetrima.",
+  // The illustration says what it is (ADR 0004).
+  titleBlock: {
+    part: "Ploča s utorom",
+    units: "mm",
+    studio: "Codraft",
+    note: "Ilustracija",
+  },
+};
+
+export const PRINCIPLES: { title: string; items: TextItem[] } = {
+  title: "Kako radimo",
+  items: [
+    {
+      title: "Cijena poznata unaprijed", // plan.body
+      body: "Prije početka bilo kakvog rada dobivate fiksni opseg posla, rok i cijenu.",
+    },
+    {
+      title: "Bez žargona", // services.intro
+      body: "Objašnjavamo jasno, jer su vam važni rezultati, a ne žargon.",
+    },
+    {
+      title: "Ne nestajemo nakon objave", // run.tagline, run.hosting.body
+      body: "Hosting, ažuriranja, sigurnosne kopije i zakrpe brinemo mi, za fiksnu mjesečnu naknadu.",
+    },
+  ],
+};
+
+export interface TeamCopy {
+  title: string;
+  /** Placeholders until the photos, names and roles arrive (G3). */
+  members: { name: string; role: string }[];
+  placeholderNote: string;
+  more: string;
+}
+
+const MEMBER_PLACEHOLDER = { name: "Ime i prezime", role: "Uloga" };
+
+export const TEAM: TeamCopy = {
+  title: "Tim",
+  members: [MEMBER_PLACEHOLDER, MEMBER_PLACEHOLDER, MEMBER_PLACEHOLDER],
+  placeholderNote: "Fotografije, imena i uloge stižu u fazi 3.",
+  more: "Više o nama",
+};
+
+export const CLOSING = {
+  title: "Prvo jasnoća.", // plan.tagline
+  primary: "Rezervirajte besplatnu analizu", // plan.cta
+  // Glossary: alternative for "Request a quote"; the Contact page CTA.
+  secondary: "Pošaljite upit",
+} as const;

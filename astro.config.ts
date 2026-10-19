@@ -6,7 +6,7 @@ import { defineConfig } from "astro/config";
 import { DEFAULT_LOCALE, LOCALES, SITE_URL } from "./src/config/site.ts";
 
 /** The design-lab pages in src/lab/pages, served under /lab. */
-const LAB_PAGES = ["index", "a", "b", "c"] as const;
+const LAB_PAGES = ["index", "a", "b", "c", "d", "e"] as const;
 
 /**
  * The phase 2 design lab (docs/phases/2-design.md): the prototypes and the

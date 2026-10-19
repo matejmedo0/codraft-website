@@ -1,11 +1,27 @@
 /**
- * Behaviour shared by the design-lab prototypes: the mobile menu, the rules
- * that draw once when they scroll into view, and the wordmark entrance when
- * the mark starts below the fold (docs/motion.md). Without JavaScript the
- * menu stays open, every rule is drawn, and the entrance plays on load.
+ * Behaviour shared by the design-lab prototypes: the mobile menu, the parts
+ * that draw once when they scroll into view, the wordmark entrance when the
+ * mark starts below the fold, and the replay button of the CAD drawing
+ * (docs/motion.md). Without JavaScript the menu stays open, every part is
+ * drawn, and the entrance plays on load.
  */
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+/** By default a part draws once its top is 15 % above the viewport's bottom. */
+const DEFAULT_TRIGGER: IntersectionObserverInit = {
+  rootMargin: "0px 0px -15% 0px",
+};
+
+/**
+ * Other triggers, by the value of `data-draw`: "late" draws higher on
+ * screen, and "half" waits until half of the part is in view (the CAD
+ * drawing, so its sequence is seen from the start).
+ */
+const DRAW_TRIGGERS: Partial<Record<string, IntersectionObserverInit>> = {
+  late: { rootMargin: "0px 0px -30% 0px" },
+  half: { threshold: 0.5 },
+};
 
 function initMenus(): void {
   const toggles =
@@ -32,16 +48,22 @@ function initMenus(): void {
   }
 }
 
-/** Calls `onEnter` once, when the element first scrolls into view. */
-function onFirstView(element: Element, onEnter: () => void): void {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      observer.disconnect();
-      onEnter();
-    },
-    { rootMargin: "0px 0px -15% 0px" },
-  );
+/** Calls `onEnter` once, when the element first reaches its trigger. */
+function onFirstView(
+  element: Element,
+  onEnter: () => void,
+  trigger: IntersectionObserverInit = DEFAULT_TRIGGER,
+): void {
+  const threshold =
+    typeof trigger.threshold === "number" ? trigger.threshold : 0;
+  const observer = new IntersectionObserver((entries) => {
+    const reached = entries.some(
+      (entry) => entry.isIntersecting && entry.intersectionRatio >= threshold,
+    );
+    if (!reached) return;
+    observer.disconnect();
+    onEnter();
+  }, trigger);
   observer.observe(element);
 }
 
@@ -49,18 +71,66 @@ function isBelowFold(element: Element): boolean {
   return element.getBoundingClientRect().top > window.innerHeight;
 }
 
-function initRuleDraws(): void {
-  // Only rules below the fold wait to draw; the ones already on screen stay
+/**
+ * Starts a part's drawing. `.is-drawing` sets its animation or transition;
+ * removing `.is-pending` a frame later lets a transition run from the
+ * hidden state.
+ */
+function startDrawing(element: Element): void {
+  element.classList.add("is-drawing");
+  requestAnimationFrame(() => {
+    element.classList.remove("is-pending");
+  });
+}
+
+function initDraws(): void {
+  // Only parts below the fold wait to draw; the ones already on screen stay
   // as they are, so nothing flickers on load. `.rule-draw` scales itself;
-  // `[data-draw]` lets its own CSS animate parts (a line, then its grip).
-  for (const rule of document.querySelectorAll(".rule-draw, [data-draw]")) {
-    if (!isBelowFold(rule)) continue;
-    rule.classList.add("is-pending");
-    onFirstView(rule, () => {
-      rule.classList.add("is-drawing");
-      requestAnimationFrame(() => {
-        rule.classList.remove("is-pending");
-      });
+  // `[data-draw]` lets its own CSS animate its parts (a line, then its grip).
+  const parts = document.querySelectorAll<HTMLElement>(
+    ".rule-draw, [data-draw]",
+  );
+  for (const part of parts) {
+    if (!isBelowFold(part)) continue;
+    part.classList.add("is-pending");
+    const trigger = DRAW_TRIGGERS[part.dataset.draw ?? ""] ?? DEFAULT_TRIGGER;
+    onFirstView(
+      part,
+      () => {
+        if (part.classList.contains("is-pending")) startDrawing(part);
+      },
+      trigger,
+    );
+  }
+}
+
+function initBottomOfPage(): void {
+  // A part near the end of the page may never scroll up to its trigger. At
+  // the bottom of the page, every part still waiting in view draws.
+  const onScroll = (): void => {
+    const { scrollHeight } = document.documentElement;
+    if (window.scrollY + window.innerHeight < scrollHeight - 2) return;
+    for (const part of document.querySelectorAll(".is-pending")) {
+      if (part.classList.contains("is-drawing")) continue;
+      if (part.getBoundingClientRect().top < window.innerHeight) {
+        startDrawing(part);
+      }
+    }
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function initReplays(): void {
+  // "Iscrtaj ponovno": hide the part, then draw it again. Reading the layout
+  // in between applies the hidden state, so the animations restart.
+  for (const button of document.querySelectorAll("[data-draw-replay]")) {
+    const part = button.closest("[data-draw]");
+    if (part === null) continue;
+    button.addEventListener("click", () => {
+      part.classList.remove("is-drawing");
+      part.classList.add("is-pending");
+      part.getBoundingClientRect();
+      startDrawing(part);
     });
   }
 }
@@ -79,6 +149,8 @@ function initWordmarkDraws(): void {
 
 initMenus();
 if (!window.matchMedia(REDUCED_MOTION).matches) {
-  initRuleDraws();
+  initDraws();
+  initBottomOfPage();
   initWordmarkDraws();
+  initReplays();
 }

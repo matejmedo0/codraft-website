@@ -67,11 +67,12 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Dev server on http://localhost:4321. The CSP is off in dev. |
+| `npm run dev` | Dev server on http://localhost:4321. The CSP is off in dev. The design lab (phase 2 prototypes) is at `/lab`. |
 | `npm run build` | Production build: static pages in `dist/client`, the Node server in `dist/server/entry.mjs`. |
+| `npm run build:lab` | The production build plus the design lab, for checking it under the CSP. Never deploy it. |
 | `npm run preview` | Runs the built Node server. |
 | `npm run verify` | What CI's verify job runs, in order: lint, format check, typecheck (`astro check`), unit tests, build, JavaScript budget, copy guardrails. |
-| `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first; install the browser once with `npx playwright install chromium`. |
+| `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first, and stop the dev server: locally Playwright reuses whatever listens on port 4321. Install the browser once with `npx playwright install chromium`. |
 | `npm run format` | Prettier on everything except `docs/`, `Assets/` and the root Markdown files. |
 
 - One unit test file or name: `npm run test -- src/features/i18n/urls.test.ts`, or `npm run test -- -t "pathFor"`.
@@ -81,6 +82,7 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 
 - **One route map drives every URL.** `src/features/i18n/route-map.ts` holds each launch page's `{ hr, en }` slug, and `urls.ts` builds the paths (no trailing slash), absolute URLs and hreflang links (`x-default` points to English). Never hard-code a URL, and never build a canonical from `Astro.url`: the directory build format keeps a trailing slash there.
 - **One catch-all route renders every page.** `src/pages/[...slug].astro` generates a route-map page in both languages once the page has a view in `src/views/`; the view registry is inside its `getStaticPaths`. Until phase 3 only `home` has a view. The 404 pages and `/api/*` are static routes and take precedence.
+- **The design lab** (`src/lab/`, phase 2 prototypes and the style page) is injected by an integration in `astro.config.ts` only in `astro dev` and `npm run build:lab`. Site code never imports from `src/lab/`.
 - **UI strings** live in `src/locales/{hr,en}.json` and are read with `t(locale, key)`. Both files must have the same keys (a type check plus a unit test). Copy goes into `docs/content.md` before it goes into the site.
 - **CSP.** Astro adds a hash-based CSP `<meta>` to every built page. It blocks inline `style` attributes and anything from another origin. It is off in `astro dev`, so test CSP-sensitive changes on the build; the E2E tests fail on any console error, CSP violations included.
 - **Layers, enforced by ESLint:** client code (`.tsx`, client scripts in `.astro`) never imports `**/server/**`, and `src/components/ui/` never imports features, views, layouts or pages. `src/config/site.ts` is the bottom layer.

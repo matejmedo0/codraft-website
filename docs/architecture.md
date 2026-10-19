@@ -28,11 +28,12 @@ codraft-website/
 ├── .github/               CI (workflows/ci.yml), Dependabot, PR template, issue forms, CODEOWNERS
 ├── Assets/codraft-brand/  Brand masters: final, read-only (the site uses optimised copies)
 ├── docs/                  Project documentation; start at docs/README.md
-├── scripts/               check-js-budget.mjs, check-guardrails.mjs, and the guardrail tests
+├── scripts/               check-js-budget.mjs, check-guardrails.mjs (with tests), build-lab.mjs
 ├── src/
 │   ├── config/site.ts     Site URL and locales: the bottom layer, also read by astro.config.ts
 │   ├── features/i18n/     Route map, URL helpers, UI-string lookup, with their tests
-│   ├── layouts/           BaseLayout: <html lang>, head, canonical and hreflang
+│   ├── lab/               The phase 2 design lab: prototypes, their fonts and components (see below)
+│   ├── layouts/           BaseLayout: <html lang>, head (with a `head` slot), canonical and hreflang
 │   ├── locales/           UI strings: hr.json and en.json
 │   ├── pages/             [...slug].astro (every route-map page), 404.astro, en/404.astro, api/health.ts
 │   ├── styles/global.css  Global styles; the design tokens arrive in phase 2
@@ -41,6 +42,12 @@ codraft-website/
 ├── astro.config.ts · tsconfig.json · eslint.config.js · prettier.config.mjs · vitest.config.ts · playwright.config.ts
 └── CLAUDE.md · CONTRIBUTING.md · PROGRESS.md · README.md
 ```
+
+**The design lab (`src/lab/`).** The phase 2 prototypes and, later, the style page live here, outside `src/pages`.
+- **When it exists:** an integration in `astro.config.ts` injects the `/lab/*` routes in `astro dev` and in builds made with `CODRAFT_LAB=1` (`npm run build:lab`), never in a normal production build.
+- **What it carries:** the pages have no route-map entry, so they are noindex. The lab also adds a `js` class to `<html>` before the first paint, through a head-inline script that Astro hashes for the CSP.
+- **Fonts:** the lab's fonts sit in `src/lab/fonts/` and are emitted only when a lab page uses them.
+- **Checks:** lint, typecheck and the unit tests cover the lab. Check the prototypes under the real CSP with `npm run build:lab`; CI builds without them.
 
 **Planned additions, when a phase needs them:**
 - `public/`: favicons, optimised brand copies and self-hosted fonts (phase 2)
@@ -153,3 +160,4 @@ codraft-website/
 
 - **The Croatian 404 on unknown `/en/*` paths.** `@astrojs/node` 11.1.8 always serves the root `404.html`, so `/en/x` returns status 404 with the Croatian page; `/en/404` itself is English. In production, Caddy maps `/en/*` errors to `en/404/index.html` (phase 7).
 - **The favicon** is an empty placeholder (`data:,`) until the favicon set from the brand package arrives in phase 2.
+- **E2E and a running dev server.** Locally, Playwright reuses whatever listens on port 4321. Stop `npm run dev` before `npm run test:e2e`, or the tests run against the dev server, which has no CSP.

@@ -1,6 +1,6 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** In progress (started 2026-10-19). Steps 1–2: the prototypes.
+- **Status:** In progress (started 2026-10-19). Steps 1–2 are done: three prototypes, described in [2-design-directions.md](2-design-directions.md). Waiting for the client to choose a direction.
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -113,3 +113,34 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - C2PA metadata is stripped from every web copy. Inspecting it showed that the manifest is signed by Anthropic and binds to the exact file bytes, so an optimised copy could not keep a valid signature anyway.
     - No private online preview: the client builds the site with one colleague, so review stays on localhost and the screenshots. Nothing is ordered.
   - **Font tooling.** fonttools and brotli run from a throwaway virtual environment outside the repository. They subset the web fonts and check their Croatian coverage; nothing is added to the project's dependencies.
+  - **Fonts (step 1).** Nine OFL variable families were inspected and compared in a Croatian specimen. Mona Sans and Hubot Sans were dropped: their Reserved Font Names forbid a subset under the original name. Picked for the prototypes:
+    - A: Archivo
+    - B: Schibsted Grotesk
+    - C: Literata with Hanken Grotesk
+    - Details: [research/2026-10-19-design-lab.md](../research/2026-10-19-design-lab.md).
+  - **The design lab (step 2).**
+    - `src/lab/` holds the prototypes. An integration in `astro.config.ts` injects `/lab`, `/lab/a`, `/lab/b` and `/lab/c` in `astro dev`, and in production builds only with `CODRAFT_LAB=1` (`npm run build:lab`). A normal build has no lab.
+    - The lab adds a `js` class before first paint through a head-inline script, which Astro hashes for the CSP.
+    - `BaseLayout` gained a `head` slot for font preloads.
+  - **Three directions (steps 1–2):** A "Nacrt", B "Noćni nacrt", C "Studio", as described in [2-design-directions.md](2-design-directions.md).
+    - The same HR copy in all three; the derived lines are listed in [content.md](../content.md) under "Prototype copy".
+    - The wordmark is inlined with its accent split into three paths. The entrance runs in CSS: it needs no JavaScript and plays even if scripts fail. A small script replays it when the mark starts below the fold.
+    - The springs from `motion-foundations` run as CSS `linear()` curves.
+    - Grips and the focus outline are shared by all three.
+    - Each page loads 0.7 KB of JavaScript.
+  - **Self-review along the way:**
+    - B's hero split the CTAs from the headline, so it became one column.
+    - C's headline was set smaller.
+    - Scoped wordmark styles beat the sizing classes, so the mark is now sized with `--wordmark-width`.
+    - A's drafting grid takes a 16:9 box below 1024 px.
+  - **Checks on the lab build:**
+    - no console errors or CSP violations at 375, 768 and 1440 px
+    - axe: no findings at any level, after two fixes:
+      - The visible "EN" is now part of the link's accessible name (WCAG 2.5.3).
+      - The skip link comes first on the page.
+    - no horizontal overflow
+    - reduced motion shows the complete mark
+    - menu: Escape closes it and returns focus
+  - **Normal build:** `npm run verify` passes (87 unit tests, including 4 new contrast tests). `npm run test:e2e` passes (18). A first E2E run hit the dev server on port 4321 and 9 tests failed for lack of a CSP. The trap is now documented.
+  - **Screenshots** of all three at 375, 768 and 1440 px are in [screenshots/phase-2/](screenshots/phase-2/). The client reviews on localhost; no online preview (ADR 0014).
+  - **Waiting for the client's choice of direction.** Steps 3–7 start after it.

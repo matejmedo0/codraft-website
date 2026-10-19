@@ -2,15 +2,23 @@
 
 **Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak:** izrada tri smjera kao živih prototipova na `/lab/*` (koraci 1 i 2 u `docs/phases/2-design.md`), sa snimkama na 375, 768 i 1440 px. Zatim vi birate smjer. Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
+**Sljedeći korak: vi birate smjer** (A, B ili C, ili kombinaciju). Tri smjera su gotova kao živi prototipovi:
+- **Kako ih pogledati:** `npm run dev`, zatim http://localhost:4321/lab.
+- **Opis, usporedba i preporuka:** `docs/phases/2-design-directions.md`.
+- **Snimke na 375, 768 i 1440 px:** `docs/phases/screenshots/phase-2/`.
+
+Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
 
 Redoslijed u fazi 2:
 1. ✓ vaše tri odluke s početka faze (ADR 0014):
    - animacija loga: da, jednom na početnoj
    - C2PA metapodaci: uklanjaju se iz svih web kopija, a originali ih zadržavaju
    - privatni pregled na internetu: ne treba, pregled ide na localhostu i kroz snimke
-2. tri smjera kao živi prototipovi, sa snimkama
-3. vaš izbor smjera (ADR)
+2. ✓ tri smjera kao živi prototipovi, sa snimkama (19. 10. 2026.):
+   - **A „Nacrt“:** stranica kao list nacrta: okvir sa zonama, tehničko pismo (Archivo), podnožje kao zaglavlje nacrta s podacima o tvrtki. Preporuka.
+   - **B „Noćni nacrt“:** tamnoplavi hero s velikim znakom, usluge na svijetlom listu, crtež kao plava kopija (Schibsted Grotesk).
+   - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
+3. vaš izbor smjera (ADR) ← čekamo vas
 4. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
 5. izlazne provjere i PR faze 2
 

@@ -5,7 +5,7 @@ The website of **Codraft**, a small studio that plans, builds and looks after we
 - **Languages:** Croatian (default, at `/`) and English (`/en`)
 - **Market:** Croatia
 - **Stack:** Astro 7 with React islands and a small Node API, TypeScript, on an EU VPS ([ADR 0008](docs/decisions/0008-stack-astro-with-react-islands.md), [ADR 0009](docs/decisions/0009-hosting-ovhcloud-vps-eu.md))
-- **Status:** phase 1 (Architecture): the project is scaffolded, with an empty home page in both languages. Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
+- **Status:** phase 2 (Design): three design directions are built as prototypes in the design lab (`/lab`, dev server only) for the client to choose from. Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
 
 ## Getting started
 
@@ -23,12 +23,13 @@ There are no environment variables yet; `.env.example` documents them when they 
 
 | Script | What it does |
 |---|---|
-| `npm run dev` | Dev server. The Content-Security-Policy is active only in the build. |
+| `npm run dev` | Dev server. The Content-Security-Policy is active only in the build. The design lab is at http://localhost:4321/lab. |
 | `npm run build` | Production build: static pages in `dist/client`, the Node server in `dist/server/entry.mjs` |
+| `npm run build:lab` | The same build plus the design lab (`/lab/*`), to check the prototypes under the real CSP. Never deploy it. |
 | `npm run preview` | Runs the built Node server |
 | `npm run verify` | Lint, format check, typecheck, unit tests, build, JavaScript budget and copy guardrails, in the same order as CI |
 | `npm run test` | Unit tests (Vitest) |
-| `npm run test:e2e` | E2E tests (Playwright) on the built server at 375, 768 and 1440 px; run `npm run build` first |
+| `npm run test:e2e` | E2E tests (Playwright) on the built server at 375, 768 and 1440 px; run `npm run build` first, and stop `npm run dev` (Playwright reuses port 4321) |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `astro check` |
 | `npm run format` / `npm run format:check` | Prettier |

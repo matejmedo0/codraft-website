@@ -240,6 +240,21 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 | G28 | All pages · metadata and alt text | Title and meta description per page and language; alt text for every meaningful image in both languages (decorative images get an empty `alt`) | Claude drafts | Phase 3 |
 | G29 | AI assistants page | Page copy and the chatbot's knowledge base | Claude drafts | Phase 4 |
 
+### Prototype copy (phase 2)
+
+The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchanged, plus the lines below, derived from them. None adds a claim. All stay `draft`: the final hero copy (G1) is written in phase 3, and the UI strings go into the locale files with the base components.
+
+| Where | HR (prototype) | Derived from |
+|---|---|---|
+| Home hero, H1 (G1 draft) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate. | `services.intro` |
+| Home hero, lead | Codraft je mali studio za tvrtke kojima su važni rezultati, a ne žargon. | `services.intro` |
+| Home hero, secondary CTA | Pogledajte usluge | [information-architecture.md](information-architecture.md), Home hero |
+| Home hero, drafting path | CAD crtanje za arhitekte, inženjerske urede i proizvođače | `drafting.title`, `drafting.audience` |
+| Header CTA | Besplatna analiza | Glossary |
+| Menu button | Izbornik | UI string |
+| Skip link | Preskoči na sadržaj | UI string |
+| Footer, placeholder note | Podaci o tvrtki stižu prije objave. | Stands in for the company data until the client sends it (lab only) |
+
 ## 5. Editorial notes (not site copy)
 
 - **The name is Code + Draft.** The CAD line in the logo is not decoration: it is the other half of the name, and the About page should tell that story. Source: the earlier chat, quoted in Appendix A.
@@ -265,6 +280,7 @@ Copy or material the site needs that does not exist yet. "Client" means the Codr
 - **2026-10-19:** Fixes after the fresh-session test. No copy blocks changed.
   - Glossary: banned-word forms and the approved phrasing aligned with compliance.md; the `/usluge` H1 clarified.
   - G11, G18 and G28 clarified.
+- **2026-10-19 (phase 2):** "Prototype copy" added under §4: the lines the design-lab prototypes derive from the existing blocks. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

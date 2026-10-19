@@ -328,6 +328,12 @@ The client's message, verbatim:
 | 40 | Points 3 and 4 (quoted above) | Heading to lead 1rem, lead to button 1.5rem (1.5 times). The top and bottom padding stay equal (two thirds of a zone's, #37), and the heading's first line is trimmed to its cap height, so the space above the letters matches the space below the button. | `HomeClosing.astro` | None | Done; in review |
 | 41 | Point 5 (quoted above) | On phones everything stays centred and the heading wraps balanced. | `HomeClosing.astro` | None | Done; in review |
 
+**Batch 13 (2026-10-20): the service icons, options**
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 42 | "U redu sada idemo na implementaciju ikona pošalji ako imaš ideju dvije opcije implementacije barem , i ako ima smisla neka jednostavna animacija koja prati profesionalne standarde i traku u sredini." | The nine icons, transcribed from `Assets/codraft-icons/svg/` into code (`src/lab/home/icons/`), on "Što radimo" in two options on a new comparison page, `/lab/ikone`; Home stays without icons until the client chooses. Both keep the central axis and put each icon on the side of the item that faces the line. **A „Iznad naslova“:** the icon above the title. **B „Uz tekst“:** the icon beside the title and its line, in its own column. The centred last service of stage 03 has its icon centred above it in both. Icons are 40 px, decorative (`aria-hidden`; the title carries the meaning), with a 1.5 px line on screen, navy ink and the blue accent from the surface's tokens. **The animation follows the line:** as the blue pen of the process line passes an icon's height, the icon draws itself stroke by stroke in its drawing order, then its blue drafting line runs out and the grip snaps in (the "Draw a line" and "Select" moments of [motion.md](../motion.md)). The icons below the line's end (stage 03) follow once it arrives, in reading order. One stroke of the pen, once; no fades or slides. Reduced motion and no JavaScript show the icons complete. | `src/lab/home/icons/`, `ServiceItem.astro`, `ServicesAxis.astro`, `chapters.ts`, `process-line.ts`, `src/lab/pages/ikone.astro`, `LabBar.astro`; [motion.md](../motion.md), [brand.md](../brand.md#imagery) | The client chooses an option; the ADR comes with it | Options in review |
+
 ## After the refinements
 
 1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.

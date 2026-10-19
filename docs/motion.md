@@ -20,6 +20,8 @@ The client asked for animation that is high quality and **not generic**. The con
 
 **The process line through "Što radimo"** (the client's review, batch 3) is one stroke. It isn't there until the section reaches its trigger, then it runs from bubble 01 to bubble 03 at a constant speed, like a plotter's pen: about 1.3 s on a desktop, at most 2.4 s on a phone. A part like this, which must wait even when it starts in view, takes `data-draw-wait` (`draw.ts`) and is hidden from the first paint.
 
+**The service icons follow the pen** (review batch 13; two placements on `/lab/ikone`, Home waits for the client's choice). As the process line passes an icon's middle, the icon draws itself: its navy strokes run along their paths in the source's drawing order (each 360 ms, starting within 420 ms), then its blue drafting line runs out (240 ms) and the grip snaps in (`--motion-snap`, `--ease-snap`). Icons below the line's end start when it arrives, and no two start less than 90 ms apart, so a row reads left to right. It is part of the pen's one movement and plays once; reduced motion and no JavaScript show the icons complete (`icons/icon-draw.ts`, `services.css`).
+
 ## Principles
 
 1. **Every motion must earn its place.** It guides attention, communicates state, or keeps spatial continuity. If it does none of these, cut it.

@@ -1,0 +1,62 @@
+---
+/**
+ * One service icon of "Što radimo" (service-icons.ts; review batch 13),
+ * inline so its strokes can be drawn on screen. 40 px, with the line 1.5 px
+ * on screen (1.8 on the 48 grid); navy ink and the surface's blue accent.
+ * Decorative: the service's title carries the meaning.
+ *
+ * Every stroke has `pathLength="1"` and a `data-stroke` role (ink, the blue
+ * line, the grip). Inside the process line, icon-draw.ts times them to the
+ * pen and services.css plays them; anywhere else the icon is still.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import { SERVICE_ICONS, type ServiceIconId } from "./service-icons.ts";
+
+interface Props extends HTMLAttributes<"svg"> {
+  icon: ServiceIconId;
+}
+
+const { icon, class: className, ...attributes } = Astro.props;
+const { ink, line, grip } = SERVICE_ICONS[icon];
+const Line = line.tag;
+const Grip = grip.tag;
+---
+
+<svg
+  class:list={["service-icon", className]}
+  viewBox="0 0 48 48"
+  width="40"
+  height="40"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="square"
+  stroke-linejoin="miter"
+  aria-hidden="true"
+  focusable="false"
+  data-icon
+  {...attributes}
+>
+  {ink.map(({ tag: Shape, attrs }) => (
+    <Shape {...attrs} pathLength="1" data-stroke="ink" />
+  ))}
+  <g class="service-icon__accent">
+    <Line {...line.attrs} pathLength="1" data-stroke="line" />
+    <Grip {...grip.attrs} data-stroke="grip" />
+  </g>
+</svg>
+
+<style>
+  .service-icon {
+    display: block;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    overflow: visible;
+  }
+
+  .service-icon__accent {
+    stroke: var(--accent);
+  }
+</style>

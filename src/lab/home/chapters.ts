@@ -1,11 +1,21 @@
 import { pathFor } from "../../features/i18n/urls.ts";
 import { PLAN_ITEMS, SERVICES } from "../copy.ts";
+import { SERVICE_ICONS, type ServiceIconId } from "./icons/service-icons.ts";
 
 /** A service in "Što radimo": its title, its sentence and its anchor. */
 export interface ServiceEntry {
   title: string;
   body: string;
   href?: string;
+  /** Its icon (review batch 13), named by the service's anchor. */
+  icon?: ServiceIconId | undefined;
+}
+
+/** Stage 01's items have no anchor of their own. */
+const PLAN_ICONS: ServiceIconId[] = ["besplatna-analiza", "fiksni-opseg"];
+
+function isIconId(value: string): value is ServiceIconId {
+  return Object.hasOwn(SERVICE_ICONS, value);
 }
 
 /** One stage of "Što radimo", with its number in a grid bubble. */
@@ -30,7 +40,11 @@ export const CHAPTERS: Chapter[] = [
     number: SERVICES.plan.number,
     title: SERVICES.plan.title,
     tagline: SERVICES.plan.tagline,
-    items: PLAN_ITEMS.map(({ title, short }) => ({ title, body: short })),
+    items: PLAN_ITEMS.map(({ title, short }, index) => ({
+      title,
+      body: short,
+      icon: PLAN_ICONS[index],
+    })),
   },
   ...SERVICES.stages.map(({ number, title, tagline, items }) => ({
     number,
@@ -40,6 +54,7 @@ export const CHAPTERS: Chapter[] = [
       title: item.title,
       body: item.short,
       href: `${services}#${item.anchor}`,
+      icon: isIconId(item.anchor) ? item.anchor : undefined,
     })),
   })),
 ];

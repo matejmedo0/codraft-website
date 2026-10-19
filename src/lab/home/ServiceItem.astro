@@ -6,15 +6,21 @@
  * anchor on /usluge and shows the grips on hover and keyboard focus; the
  * outline goes around the item. Each option of the section places the
  * items its own way.
+ *
+ * With `icon` the item starts with its service icon (review batch 13); the
+ * section places it.
  */
 import type { HTMLAttributes } from "astro/types";
 
 import Grips from "../../components/ui/Grips.astro";
+import ServiceIcon from "./icons/ServiceIcon.astro";
+import type { ServiceIconId } from "./icons/service-icons.ts";
 
 interface Props extends HTMLAttributes<"li"> {
   title: string;
   body: string;
   href?: string | undefined;
+  icon?: ServiceIconId | undefined;
   /** The title's level under the zone's headings. */
   level?: "h3" | "h4";
 }
@@ -23,6 +29,7 @@ const {
   title,
   body,
   href,
+  icon,
   level = "h4",
   class: className,
   ...attributes
@@ -34,6 +41,7 @@ const Heading = level;
   class:list={["service", { "has-grips": href !== undefined }, className]}
   {...attributes}
 >
+  {icon !== undefined && <ServiceIcon icon={icon} class="service__icon" />}
   <Heading class="service__title">
     {href === undefined ? (
       title

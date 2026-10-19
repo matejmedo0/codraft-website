@@ -77,3 +77,57 @@
   animation: motion-draw-y var(--rail-for, 600ms) linear var(--rail-at, 0ms)
     both;
 }
+
+/* The service icons (review batch 13) draw as the pen passes them
+   (icon-draw.ts): each ink stroke runs along its path, then the blue line,
+   then the grip snaps in. Before the pen starts they aren't there; once a
+   stroke is drawn it is plain again. Without JavaScript or with reduced
+   motion the icons are complete. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .svc-line:not(.is-drawing) [data-stroke] {
+    opacity: 0;
+  }
+}
+
+.svc-line.is-drawing :is([data-stroke="ink"], [data-stroke="line"]) {
+  animation: icon-stroke var(--for, 360ms) var(--ease-pen) var(--at, 0ms)
+    backwards;
+}
+
+.svc-line.is-drawing [data-stroke="grip"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: icon-grip var(--motion-snap) var(--ease-snap) var(--at, 0ms)
+    backwards;
+}
+
+/* Hidden at the very start, so a square cap never shows as a dot. */
+@keyframes icon-stroke {
+  0% {
+    opacity: 0;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes icon-grip {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

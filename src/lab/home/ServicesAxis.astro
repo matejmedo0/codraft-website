@@ -11,6 +11,11 @@
  *
  * The process line joins the bubbles 01 → 02 → 03 and draws as one stroke
  * when the section reaches its trigger (process-line.ts).
+ *
+ * With `icons` each service shows its icon on the side facing the line
+ * (review batch 13, /lab/ikone): "above" the title, or "beside" the title
+ * and its line, mirrored in the left column. The centred last service has
+ * its icon centred above it. The icons draw as the pen passes them.
  */
 import "./services.css";
 
@@ -24,9 +29,11 @@ interface Props {
   headingId?: string;
   /** The option's name, on the comparison page. */
   label?: string;
+  /** Where the service icons go; without it there are none. */
+  icons?: "above" | "beside";
 }
 
-const { headingId = "usluge", label } = Astro.props;
+const { headingId = "usluge", label, icons } = Astro.props;
 const labelId = `${headingId}-opcija`;
 ---
 
@@ -40,7 +47,15 @@ const labelId = `${headingId}-opcija`;
     </p>
   )}
   <h2 id={headingId}>{SERVICES.title}</h2>
-  <div class="svc-line axis" data-draw="late" data-draw-wait data-process-line>
+  <div
+    class:list={[
+      "svc-line axis",
+      icons !== undefined && `axis--icons-${icons}`,
+    ]}
+    data-draw="late"
+    data-draw-wait
+    data-process-line
+  >
     {CHAPTERS.map((chapter) => (
       <div class="axis-stage">
         <span class="svc-rail axis-stage__rail" data-rail aria-hidden="true" />
@@ -57,6 +72,7 @@ const labelId = `${headingId}-opcija`;
               title={item.title}
               body={item.body}
               href={item.href}
+              icon={icons === undefined ? undefined : item.icon}
               class="axis-stage__item"
             />
           ))}
@@ -118,6 +134,30 @@ const labelId = `${headingId}-opcija`;
   .axis-stage__item {
     padding: var(--space-4) 0 var(--space-5);
     border-top: var(--rule) solid var(--line);
+  }
+
+  /* The icons (review batch 13). A: above the title. */
+  .axis--icons-above .axis-stage__item :global(.service__icon) {
+    margin-bottom: var(--space-3);
+  }
+
+  /* B: beside the title and its line, in a column of its own. */
+  .axis--icons-beside .axis-stage__item {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-content: start;
+    align-items: start;
+  }
+
+  .axis--icons-beside .axis-stage__item :global(.service__icon) {
+    grid-row: 1 / span 2;
+  }
+
+  .axis--icons-beside
+    .axis-stage__item
+    :global(:is(.service__title, .service__body)) {
+    grid-column: 2;
   }
 
   /* Wide screens: the line down the middle. */
@@ -189,6 +229,40 @@ const labelId = `${headingId}-opcija`;
 
     .axis-stage__item:last-child:nth-child(odd) :global(.service__body) {
       margin-inline: auto;
+    }
+
+    /* The icons face the line: the left column's lean on it too, and the
+       centred last service has its icon centred above it. */
+    .axis--icons-above
+      .axis-stage__item:nth-child(odd)
+      :global(.service__icon) {
+      margin-left: auto;
+    }
+
+    .axis--icons-beside .axis-stage__item:nth-child(odd) {
+      grid-template-columns: minmax(0, 1fr) 2.5rem;
+    }
+
+    .axis--icons-beside
+      .axis-stage__item:nth-child(odd)
+      :global(.service__icon) {
+      grid-column: 2;
+    }
+
+    .axis--icons-beside
+      .axis-stage__item:nth-child(odd)
+      :global(:is(.service__title, .service__body)) {
+      grid-column: 1;
+    }
+
+    .axis--icons-beside .axis-stage__item:last-child:nth-child(odd) {
+      display: block;
+    }
+
+    .axis:is(.axis--icons-above, .axis--icons-beside)
+      .axis-stage__item:last-child:nth-child(odd)
+      :global(.service__icon) {
+      margin: 0 auto var(--space-3);
     }
   }
 </style>

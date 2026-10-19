@@ -1,0 +1,15 @@
+/*
+ * Global styles, kept minimal in phase 1. Phase 2 adds the design tokens
+ * (colour, type scale, spacing, radius, motion) as custom properties.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}

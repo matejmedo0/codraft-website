@@ -56,13 +56,19 @@ One logical change per commit. Commits made with Claude Code carry a `Co-Authore
 - **Merging:**
   - Phase PRs: merge commit, so phase boundaries stay visible in history.
   - Small PRs: squash.
-- **CI:** once it exists (phase 1), it must be green before a merge.
+- **CI** (`.github/workflows/ci.yml`) runs on every PR and on pushes to `main`:
+  - `verify` on Node 24 and Node 26: lint, format check, typecheck, unit tests, build, JavaScript budget, copy guardrails
+  - `e2e` on Node 24: the Playwright tests on the production build
+
+  CI must be green before a merge.
+- **Dependabot** opens PRs for npm and GitHub Actions every Monday, with minor and patch updates grouped. TypeScript stays below 6.1 (ADR 0008). Merge them by squash once CI is green.
 
 ## Definition of done
 
 A change is done when:
 - [ ] It does what the phase document or issue asked.
-- [ ] Format, lint, typecheck, tests and build pass (from phase 1).
+- [ ] `npm run verify` passes: lint, format check, typecheck, unit tests, build, JavaScript budget and copy guardrails.
+- [ ] `npm run test:e2e` passes after `npm run build`, and CI is green on the PR.
 - [ ] UI changes are checked at 375, 768 and 1440 px, with no console errors.
 - [ ] Keyboard and screen-reader basics work: focus visible, labels present, reduced motion respected.
 - [ ] Site copy matches [docs/content.md](docs/content.md); new copy was added there first.
@@ -83,4 +89,12 @@ A change is done when:
 
 ## Secrets
 
-Never commit secrets or `.env` files. Document every variable in `.env.example`. Repository secrets (for CI or deploys) are added only with the client's OK.
+Never commit secrets or `.env` files. Declare every variable in the `env.schema` of `astro.config.ts` and document it in `.env.example`. Repository secrets (for CI or deploys) are added only with the client's OK.
+
+## Claude Code settings
+
+`.claude/settings.json` is shared by everyone who runs Claude Code in this repository:
+- **Hooks:** edits to `.env` files (except `.env.example`) are blocked, and after every edit Prettier and ESLint run on the changed file and report their findings.
+- **Permissions:** the project scripts and common `git` and `gh` commands run without a prompt. Force pushes, branch deletion, `git switch` that discards changes, and `gh pr merge` always ask.
+
+Personal overrides go in `.claude/settings.local.json`, which is gitignored.

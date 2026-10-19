@@ -4,21 +4,53 @@ The website of **Codraft**, a small studio that plans, builds and looks after we
 
 - **Languages:** Croatian (default, at `/`) and English (`/en`)
 - **Market:** Croatia
-- **Status:** phase 0 (Foundation) done; waiting for the go-ahead for phase 1 (Architecture). Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
+- **Stack:** Astro 7 with React islands and a small Node API, TypeScript, on an EU VPS ([ADR 0008](docs/decisions/0008-stack-astro-with-react-islands.md), [ADR 0009](docs/decisions/0009-hosting-ovhcloud-vps-eu.md))
+- **Status:** phase 1 (Architecture): the project is scaffolded, with an empty home page in both languages. Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
+
+## Getting started
+
+**Requirements:** Node.js 24 LTS, at least 24.16 (see `.nvmrc`), and npm 11.
+
+```sh
+npm ci                            # install the exact versions from package-lock.json
+npm run dev                       # dev server on http://localhost:4321
+npx playwright install chromium   # once, for the E2E tests
+```
+
+There are no environment variables yet; `.env.example` documents them when they arrive (phase 4).
+
+## Scripts
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | Dev server. The Content-Security-Policy is active only in the build. |
+| `npm run build` | Production build: static pages in `dist/client`, the Node server in `dist/server/entry.mjs` |
+| `npm run preview` | Runs the built Node server |
+| `npm run verify` | Lint, format check, typecheck, unit tests, build, JavaScript budget and copy guardrails, in the same order as CI |
+| `npm run test` | Unit tests (Vitest) |
+| `npm run test:e2e` | E2E tests (Playwright) on the built server at 375, 768 and 1440 px; run `npm run build` first |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | `astro check` |
+| `npm run format` / `npm run format:check` | Prettier |
+| `npm run check:budget` | JavaScript budget per built page (ADR 0008) |
+| `npm run check:guardrails` | Banned drafting terms in `src/` ([compliance.md](docs/compliance.md#copy-guardrails)) |
 
 ## Repository structure
 
 ```
-.claude/rules/          How Claude Code works on this project (phases, gates, authority)
-.github/                PR template, issue forms, CODEOWNERS (CI and Dependabot from phase 1)
+.claude/                Claude Code: workflow rules, hooks, permissions
+.github/                CI, Dependabot, PR template, issue forms, CODEOWNERS
 Assets/codraft-brand/   Final brand package: read-only masters
 docs/                   Project documentation and the plan by phase
+scripts/                Build checks: JavaScript budget, copy guardrails
+src/                    The site: pages, layouts, views, features, locales, config
+tests/e2e/              Playwright tests
 CLAUDE.md               Entry point for Claude Code
 CONTRIBUTING.md         How we work: phases, branches, commits, PRs, definition of done
 PROGRESS.md             Live status (Croatian)
 ```
 
-The application code arrives in phase 1, once the stack is chosen. The principles it will follow are in [docs/architecture.md](docs/architecture.md).
+The code structure and its rules are described in [docs/architecture.md](docs/architecture.md).
 
 ## Documentation
 
@@ -27,16 +59,13 @@ Start with [docs/README.md](docs/README.md). Key documents:
 | Document | Contents |
 |---|---|
 | [docs/phases/](docs/phases/README.md) | Roadmap and one document per phase (0–8) |
+| [docs/architecture.md](docs/architecture.md) | Stack, code structure, quality gates, integrations |
 | [docs/information-architecture.md](docs/information-architecture.md) | Sitemap, URLs, page outlines |
 | [docs/content.md](docs/content.md) | Site copy (source of truth), HR drafts, suggestions, gaps |
 | [docs/brand.md](docs/brand.md) | Brand marks, colours, contrast, typography |
 | [docs/motion.md](docs/motion.md) | Motion concept |
 | [docs/compliance.md](docs/compliance.md) | Croatian and EU requirements |
 | [docs/decisions/](docs/decisions/README.md) | Architecture Decision Records |
-
-## Getting started
-
-There is no application code yet. Setup, scripts and commands are added in phase 1 (see [docs/phases/1-architecture.md](docs/phases/1-architecture.md)).
 
 ## Contributing
 

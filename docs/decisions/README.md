@@ -13,8 +13,14 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0005](0005-design-review-with-coded-prototypes.md) | Design directions are reviewed as coded prototypes | Accepted | 2026-10-18 |
 | [0006](0006-github-repo-and-phase-branches.md) | Private GitHub repository, one branch and PR per phase | Accepted | 2026-10-18 |
 | [0007](0007-launch-scope-and-constraints.md) | Launch scope and constraints: team photos, audit flow, AI demo, budget | Accepted | 2026-10-18 |
+| [0008](0008-stack-astro-with-react-islands.md) | Stack: Astro with React islands, static-first | Accepted | 2026-10-19 |
+| [0009](0009-hosting-ovhcloud-vps-eu.md) | Hosting: an OVHcloud VPS in the EU (budget ceiling €10/month) | Accepted | 2026-10-19 |
+| [0010](0010-transactional-email-scaleway.md) | Transactional email: Scaleway | Accepted | 2026-10-19 |
+| [0011](0011-analytics-goatcounter-after-consent.md) | Analytics: self-hosted GoatCounter after consent, plus Search Console and Bing | Accepted | 2026-10-19 |
+| [0012](0012-booking-easy-appointments.md) | Booking: self-hosted Easy!Appointments | Accepted | 2026-10-19 |
+| [0013](0013-mailboxes-zoho-mail-lite.md) | Mailboxes: Zoho Mail Lite (recommended provider) | Accepted | 2026-10-19 |
 
-Next number: **0008**. Phase 1 will add the stack, hosting, email, analytics and booking decisions.
+Next number: **0014**.
 
 ## How to add one
 

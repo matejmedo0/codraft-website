@@ -2,11 +2,11 @@
 
 **Trenutna faza:** 1 — Arhitektura (u tijeku od 19. 10. 2026., grana `phase/1-architecture`)
 
-**Sljedeći korak:** potvrdite servise: e-mail, analitiku, booking i sandučiće (vidi „Faza 1: za vašu odluku“ niže). Redoslijed u fazi 1:
+**Sljedeći korak:** odobrite plan scaffolda. Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
 2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
-3. vaš izbor: ✓ stack i hosting (opcija 1, ADR 0008 i 0009); **servisi ← sada**
-4. plan scaffolda (za vaše odobrenje)
+3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
+4. **plan scaffolda (za vaše odobrenje) ← sada**
 5. scaffold, CI, hookovi i dozvole
 
 Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je zelen.
@@ -17,7 +17,7 @@ Faza 1 je gotova kad build prolazi, prazna stranica radi na tri širine i CI je 
 - Indeks dokumentacije: `docs/README.md`
 - Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
 
-## Faza 1: za vašu odluku
+## Faza 1: odluke (donesene 19. 10. 2026.)
 
 Detalji, rizici i cijeli izračun troškova: `docs/phases/1-architecture-options.md`. Iznosi su mjesečni.
 
@@ -33,12 +33,14 @@ Detalji, rizici i cijeli izračun troškova: `docs/phases/1-architecture-options
 
 Hostinger Cloud Startup provjeren je na vaš zahtjev i nije u užem izboru. Cijena od 7,99 $ vrijedi samo uz 48 mjeseci unaprijed, a obnova je 25,99 $ mjesečno bez PDV-a (oko 28,87 € s PDV-om).
 
-Trebamo sada (bilježi se kao ADR):
-1. ✓ **Opcija 1** (stack i hosting), odlučeno 19. 10. 2026. → ADR 0008 i ADR 0009
-2. **Servis za e-mail iz formi:** Scaleway (preporuka), AhaSend ili Mailjet. Sva tri su u EU i besplatna pri našem obujmu.
-3. **Analitika:** GoatCounter uz privolu, uz Search Console i Bing (preporuka). Druge mogućnosti: statistika iz server logova bez ikakve skripte (samo uz VPS) ili Plausible za 9 € bez PDV-a.
-4. **Booking:** uz opciju 1 Easy!Appointments (preporuka) ili NeetoCal; uz opciju 2 NeetoCal. Cal.com ne preporučujemo: nema hrvatsko sučelje, a podaci su u SAD-u.
-5. **Sandučići @codraft.hr:** Zoho Mail Lite za 0,90 € po korisniku bez PDV-a (preporuka), Zoho Mail Free ili Exchange Online Plan 1. Postavljaju se u fazi 7.
+Odlučeno (svaka stavka ima ADR):
+1. ✓ **Opcija 1:** stack (ADR 0008) i hosting (ADR 0009)
+2. ✓ **E-mail iz formi:** Scaleway (ADR 0010)
+3. ✓ **Analitika:** GoatCounter na našem serveru uz privolu, plus Search Console i Bing (ADR 0011)
+4. ✓ **Booking:** Easy!Appointments na našem serveru (ADR 0012)
+5. ✓ **Sandučići @codraft.hr:** Zoho Mail Lite, postavljaju se u fazi 7 (ADR 0013)
+
+Računi i ključevi otvaraju se u fazi 4, a sandučići u fazi 7.
 
 Za kasnije, kad ih faza zatraži: uvjeti najma servera, privatni pregled prototipova u fazi 2 i rok čuvanja upita iz formi.
 
@@ -69,6 +71,10 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-18 | Opseg za objavu:<br>- tim s fotografijama<br>- analiza: forma, pa termin<br>- AI asistent u fazi 4<br>- budžet što bliže 0 €, mali plaćeni EU hosting je u redu<br>- forme i e-mail po mjeri | [ADR 0007](docs/decisions/0007-launch-scope-and-constraints.md) |
 | 2026-10-19 | Stack: Astro s React otocima, statične stranice, mali Node API; TypeScript 6, npm, Node 24 LTS; budžet JavaScripta po stranici | [ADR 0008](docs/decisions/0008-stack-astro-with-react-islands.md) |
 | 2026-10-19 | Hosting: OVHcloud VPS-1 u EU-u, s Caddyjem i deployem iz GitHub Actionsa; budžet do 10 € mjesečno | [ADR 0009](docs/decisions/0009-hosting-ovhcloud-vps-eu.md) |
+| 2026-10-19 | E-mail iz formi: Scaleway (EU), uz zaštitu od zlouporabe | [ADR 0010](docs/decisions/0010-transactional-email-scaleway.md) |
+| 2026-10-19 | Analitika: GoatCounter na našem serveru, tek nakon privole; plus Search Console i Bing | [ADR 0011](docs/decisions/0011-analytics-goatcounter-after-consent.md) |
+| 2026-10-19 | Booking: Easy!Appointments na našem serveru (hrvatsko sučelje, podaci u EU) | [ADR 0012](docs/decisions/0012-booking-easy-appointments.md) |
+| 2026-10-19 | Sandučići: Zoho Mail Lite (EU), postavljaju se u fazi 7 | [ADR 0013](docs/decisions/0013-mailboxes-zoho-mail-lite.md) |
 
 ## Sitemap
 
@@ -151,7 +157,7 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
 7. Želite li GitHub organizaciju za tim? Repozitorij se može premjestiti, a stare adrese se same preusmjeravaju.
 
 **Kasnije:**
-- **Faza 1 (sada):** stack, hosting, servis za e-mail, analitika, alat za booking i preporučeni pružatelj sandučića. Opcije su gore.
+- **Faza 1:** ✓ stack, hosting i servisi su odlučeni (ADR 0008–0013).
 - **Faza 2:**
   - animacija loga (README paketa zabranjuje efekte na znaku)
   - C2PA metapodaci u web kopijama

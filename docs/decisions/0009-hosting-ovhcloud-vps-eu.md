@@ -57,7 +57,7 @@ The client chose Option 1 on 2026-10-19.
 
 - **Cost:** €4.49 a month excl. VAT, or €5.61 incl. 25 % VAT. That is within the €10 ceiling, with room for mailboxes and the phase 4 chatbot.
 - **Data:** site data stays in the EU with an EU provider.
-- **Upkeep:** Codraft runs the server, at about 2–3 hours a month for updates, backups and monitoring. Phase 1 adds a provisioning script and a runbook (`docs/operations.md`).
+- **Upkeep:** Codraft runs the server, at about 2–3 hours a month for updates, backups and monitoring. A provisioning script and a runbook (`docs/operations.md`) are written when the server is first set up.
 - **A single server:** the static pages are still served if Node stops, and a restore is tested every quarter.
 - **Portability:** moving to another VPS takes hours; moving to Cloudflare takes 1–2 days.
 - **Ask first:** opening the OVH account, ordering the server and adding the deploy key to the repository secrets are "ask first" items, done together with the client.

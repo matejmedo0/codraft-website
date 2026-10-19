@@ -1,6 +1,6 @@
 # Phase 1: architecture options (2026-10-19)
 
-> **Status: Option 1 chosen by the client on 2026-10-19** ([ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) stack, [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md) hosting). The service choices (email, analytics, booking, mailboxes) are pending.
+> **Status: decided on 2026-10-19.** The client chose Option 1 with the recommended services: [ADR 0008](../decisions/0008-stack-astro-with-react-islands.md) stack, [ADR 0009](../decisions/0009-hosting-ovhcloud-vps-eu.md) hosting, [ADR 0010](../decisions/0010-transactional-email-scaleway.md) email, [ADR 0011](../decisions/0011-analytics-goatcounter-after-consent.md) analytics, [ADR 0012](../decisions/0012-booking-easy-appointments.md) booking, [ADR 0013](../decisions/0013-mailboxes-zoho-mail-lite.md) mailboxes.
 > - The `architect` agent wrote these options in the `/architecture` step, from [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md) and the inputs in [1-architecture.md](1-architecture.md).
 > - The main session reviewed them; see [Review notes](#review-notes-main-session).
 > - Nothing is ordered, bought or set up yet.

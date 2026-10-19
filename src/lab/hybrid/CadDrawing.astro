@@ -15,9 +15,20 @@
  * Colours come from the page: --pd-ink (outlines), --pd-muted (centre lines,
  * hatching), --pd-dim (dimension lines), --pd-dim-text and --pd-fill.
  * Strokes don't scale, so line weights stay the same at every size.
+ *
+ * Pages on the production design system (/lab/pocetna) pass their own
+ * graph-paper class and their own replay button (the `replay` slot, with
+ * `data-draw-replay`); D and E keep the defaults.
  */
 import Grips from "../components/Grips.astro";
 import { CAD } from "../copy.ts";
+
+interface Props {
+  /** The class that draws the graph paper behind the drawing. */
+  sheetClass?: string;
+}
+
+const { sheetClass = "drafting-grid" } = Astro.props;
 
 const holes = [
   [15, 15],
@@ -47,7 +58,7 @@ const { titleBlock } = CAD;
 ---
 
 <div class="cad" data-draw="half">
-  <div class="cad__sheet drafting-grid">
+  <div class:list={["cad__sheet", sheetClass]}>
     <svg
       class="cad__drawing"
       viewBox="-28 -26 250 178"
@@ -213,14 +224,16 @@ const { titleBlock } = CAD;
         </li>
       ))}
     </ol>
-    <button
-      class="btn btn--secondary has-grips cad__replay"
-      type="button"
-      data-draw-replay
-    >
-      {CAD.replay}
-      <Grips />
-    </button>
+    <slot name="replay">
+      <button
+        class="btn btn--secondary has-grips cad__replay"
+        type="button"
+        data-draw-replay
+      >
+        {CAD.replay}
+        <Grips />
+      </button>
+    </slot>
   </div>
 </div>
 

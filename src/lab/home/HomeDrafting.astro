@@ -1,0 +1,120 @@
+---
+/**
+ * Zone D: the drafting offer, the second audience's own path, with the CAD
+ * drawing on graph paper beside it, built layer by layer when half of it is
+ * in view (src/lab/hybrid/CadDrawing.astro, draw.ts). The drawing takes its
+ * colours from the surface's drawing tokens; the replay button is the
+ * design system's.
+ */
+import Button from "../../components/ui/Button.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { CAD, DRAFTING } from "../copy.ts";
+import CadDrawing from "../hybrid/CadDrawing.astro";
+---
+
+<Zone labelledby="cad" class="home-drafting">
+  <div class="home-drafting__text">
+    <h2 id="cad">{DRAFTING.title}</h2>
+    <p class="home-drafting__tagline">{DRAFTING.tagline}</p>
+    <p class="home-drafting__audience">{DRAFTING.audience}</p>
+    <div class="home-drafting__items">
+      {DRAFTING.items.map((item) => (
+        <div>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </div>
+      ))}
+    </div>
+    <Button href={pathFor("drafting", "hr")}>{DRAFTING.cta}</Button>
+  </div>
+  <div class="home-drafting__figure">
+    <CadDrawing sheetClass="graph-paper">
+      <Button
+        slot="replay"
+        variant="secondary"
+        size="compact"
+        class="home-drafting__replay"
+        data-draw-replay
+      >
+        {CAD.replay}
+      </Button>
+    </CadDrawing>
+  </div>
+</Zone>
+
+<style>
+  .home-drafting {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .home-drafting__tagline {
+    margin-top: var(--space-4);
+    font-size: var(--step-title);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-medium);
+    line-height: 1.25;
+  }
+
+  .home-drafting__audience {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+    color: var(--ink-muted);
+  }
+
+  .home-drafting__items {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-6) 0;
+  }
+
+  .home-drafting__items h3 {
+    margin-bottom: 0.375rem;
+    font-size: 1.125rem;
+    font-stretch: var(--width-text);
+  }
+
+  /* The drawing's colours (CadDrawing reads --pd-*). */
+  .home-drafting__figure {
+    --pd-ink: var(--drawing-ink);
+    --pd-muted: var(--drawing-muted);
+    --pd-dim: var(--accent);
+    --pd-dim-text: var(--accent-text);
+    --pd-fill: var(--drawing-fill);
+    --font-label: var(--font-text);
+    --label-stretch: var(--width-label);
+  }
+
+  /* Replaying needs the script and motion. */
+  .home-drafting__figure .home-drafting__replay {
+    display: none;
+    margin-left: auto;
+  }
+
+  :global(.js) .home-drafting__figure .home-drafting__replay {
+    display: inline-flex;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .home-drafting__figure .home-drafting__replay {
+      display: none;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .home-drafting {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: center;
+    }
+
+    .home-drafting__text {
+      grid-column: 1 / span 5;
+    }
+
+    .home-drafting__figure {
+      grid-column: 6 / -1;
+    }
+  }
+</style>

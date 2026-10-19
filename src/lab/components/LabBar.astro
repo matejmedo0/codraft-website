@@ -1,14 +1,14 @@
 ---
 /**
  * The design-lab bar above each prototype and the style page: which page
- * this is, and links to the others: the style page of the chosen direction
- * first, then round 2 and round 1. Lab chrome only; it is not part of any
+ * this is, and links to the others: the style page and Home of the chosen
+ * direction first, then round 2 and round 1. Lab chrome only; it is not part of any
  * direction.
  */
 import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
 
 interface Props {
-  current?: LabDirectionId | "style";
+  current?: LabDirectionId | "style" | "pocetna";
 }
 
 const { current } = Astro.props;
@@ -29,6 +29,13 @@ const ROUNDS = [
     aria-current={current === "style" ? "page" : undefined}
   >
     Sustav dizajna
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/pocetna"
+    aria-current={current === "pocetna" ? "page" : undefined}
+  >
+    Početna
   </a>
   {ROUNDS.map(({ round, label }) => (
     <div class="lab-bar__round">

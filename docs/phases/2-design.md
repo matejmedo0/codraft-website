@@ -1,6 +1,8 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** In progress (started 2026-10-19). Steps 1–2 are done: three prototypes, described in [2-design-directions.md](2-design-directions.md). Waiting for the client to choose a direction.
+- **Status:** In progress (started 2026-10-19).
+  - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
+  - **Round 2 is next, in a new session:** hybrid prototypes with more motion, briefed in [2-design-round-2.md](2-design-round-2.md).
 - **Branch:** `phase/2-design`
 
 ## Goal
@@ -143,4 +145,27 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - menu: Escape closes it and returns focus
   - **Normal build:** `npm run verify` passes (87 unit tests, including 4 new contrast tests). `npm run test:e2e` passes (18). A first E2E run hit the dev server on port 4321 and 9 tests failed for lack of a CSP. The trap is now documented.
   - **Screenshots** of all three at 375, 768 and 1440 px are in [screenshots/phase-2/](screenshots/phase-2/). The client reviews on localhost; no online preview (ADR 0014).
-  - **Waiting for the client's choice of direction.** Steps 3–7 start after it.
+  - **Presented** to the client in Croatian, with the draft PR [#2](https://github.com/matejmedo0/codraft-website/pull/2) open so CI checks every push. CI is green: verify on Node 24 and 26, and E2E.
+  - **Client review of round 1.** None of the three is taken as is. Recorded sorted and verbatim in [2-design-directions.md](2-design-directions.md#client-review-round-1-2026-10-19).
+    - Liked:
+      - A's drawing sheet and its CAD section on graph paper
+      - B's navy and its premium feel
+      - C's ideas of a large headline and team photos, and its more visible "Što radimo"
+    - Not liked:
+      - A's small "Što radimo" and short page
+      - B's large wordmark in front of the hero, and its unbalanced "Što radimo"
+      - C's oversized headline and the wordmark above the CTAs
+    - The client is unsure whether team photos belong on Home.
+    - Asked for:
+      - hybrid options
+      - more motion in a professional tone, such as section transitions
+      - the logo animating
+      - the CAD drawing drawing itself in steps when its section scrolls into view
+  - **Handover.** This session's context was full, so the client asked for documentation only. No other work was done.
+    - [2-design-round-2.md](2-design-round-2.md) is the brief for the next session. It covers:
+      - the feedback as keep and change
+      - the constraints, including a new ADR if the logo animates outside the home hero or the team strip leaves Home (ADR 0007)
+      - eight questions to discuss with the client first
+      - initial notes for the hybrid
+      - the plan
+    - `PROGRESS.md` is updated, and the client has a prompt for the new session.

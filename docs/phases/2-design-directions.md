@@ -1,6 +1,8 @@
 # Phase 2: design directions (2026-10-19)
 
-> **Status: waiting for the client's choice.** Three directions are built as live prototypes in the design lab: `/lab/a`, `/lab/b`, `/lab/c`. Steps 1–2 of [2-design.md](2-design.md).
+> **Status: round 1, reviewed by the client on 2026-10-19.** Three directions are built as live prototypes in the design lab: `/lab/a`, `/lab/b`, `/lab/c`. Steps 1–2 of [2-design.md](2-design.md).
+> - **The client takes none of the three as is.** They asked for hybrid options and more motion; see [Client review, round 1](#client-review-round-1-2026-10-19).
+> - Round 2 is briefed in [2-design-round-2.md](2-design-round-2.md) and starts in a new session.
 > - The lab runs only in `npm run dev` and in `npm run build:lab`. Its pages are noindex and never part of a production build.
 > - Screenshots at 375, 768 and 1440 px are in [screenshots/phase-2/](screenshots/phase-2/).
 > - Nothing is decided until the client picks. Tokens, fonts, motion and the base components are built only after the choice.
@@ -102,6 +104,47 @@ Screenshots: [375](screenshots/phase-2/c-studio-375.png) · [768](screenshots/ph
 - Elements can move between directions. For example, A could take B's blueprint as a single navy band for the CAD section.
 
 **The client chooses.** Any mix is possible; say which elements to keep.
+
+## Client review, round 1 (2026-10-19)
+
+The client reviewed the three prototypes on localhost and in the screenshots. **None is to be taken as is.** The client wants hybrid options that mix elements of the three, a direction to follow from them, and more motion in a professional tone. Round 2 is briefed in [2-design-round-2.md](2-design-round-2.md).
+
+### Sorted
+
+| | Liked | Not liked |
+|---|---|---|
+| **A "Nacrt"** | The page as a drawing sheet: it shows precision and links straight to technical drafting. The CAD section: the drawing sits on graph paper ("milimetarski papir"), which suits it better than B's version. | The "Što radimo" section below the hero; its design needs more work; it is too small and not emphasised enough. The page feels short. It lacks C's integration of team photos. |
+| **B "Noćni nacrt"** | Navy gives a premium look. The hero is solid. | Something is missing in the hero. The large wordmark right in front isn't liked (the client allows that this is a prototype). "Što radimo" is unbalanced: under 01 Planiranje there is empty space, while Izrada and Održavanje i rast have several services each. The CAD section is weaker than A's. |
+| **C "Studio"** | The ideas: a large, emphasised headline, and team photos. "Što radimo" is fine, more visible and perhaps better than A's: not perfect, but a good idea. | The execution: the headline is too big and out of balance. The wordmark "signature" just above the CTA buttons isn't liked. The client is unsure whether team photos belong on the home page at all, since About and Contact are separate pages. The CAD section is weaker than A's. |
+
+**New requests**
+- **Hybrid options** that mix a few of the directions, or only some of their elements. The client will then follow one of them.
+- **More motion**, for example animated transitions between sections, in a professional tone that underlines the studio's professionalism.
+- **Animate the codraft logo and the CAD drawing.** The drawing would draw itself in steps when the visitor scrolls to its section; the client calls this a cool idea.
+
+### The client's message, verbatim
+
+Frozen record, character for character. Do not edit.
+
+```text
+Odlično problem je što svaki od ovih smjerova ima svoje prednosti i mane moram navesti , 
+
+Krenimo sa A - Sam dizajn stranica kao list nacrta mi se čini fora , pokazuje preciznost i povezuje odmah tehničko crtanje ,  no ovaj dio ispod već odnosno ispod hero sekcije što radimo sekcija mi se i ne sviđa toliko mislim da se tu može poraditi još na samom dizajnu , stranica je dosta kratka , fali mi recimo dio C kao kod studija gdje se integrira fotografije tima , recimo nekako i njihova sekcija Što radimo nije savršena ali opet mi se više sviđa.
+
+Smjer B - tamno plava boja daje nekako premium izgled to mi se sviđa , hero sekcija solidna no fali mi nešto , ne sviđa mi se veliki wordmark odmah ispred ali razumijem da je ovo samo prototip pa neću biti prestrog , što radimo sekcija nije najbolje implementirana dosta praznog prostora recimo ispod planiranje je prazan prostor dok izrada i održavanje i rast imaju više kategorija svojih pa je nesklad u popunjenosti , CAD crtanje sekcija mi je bolja kod A jer ima onaj tehnički papir ( milimetarski ) nisam siguran kako se zove točno koji ljepše paše uz crtež. 
+
+Smjer C - Ima odlične elemente i zamisao koji su po meni loše implementirani , njegova hero sekcija sa našim nekim sloganom koji si smislio je zgodan da je tekst povećan i naglašen ali nekako prevelik i neskladan , zgodna zamisao je fotografije tima , no nisam siguran treba li to oupće ići na prvi page kada posjetitelj klikne na link naše stranice , jer imat ćemo više stranica kao što si i sam planirao about os , kontaksst itd...
+Ne sviđa me se ni codraft wordmark odmah inzad rezervirajte besplatnu ponudu , Što radimo sekcija je ok zgodna vidljivija i bolja možda nego kod A je nekako presitna i nenaglašena dovoljno ali barem s dobrom idejom.
+CAD crtanje sekcija mi se sviđda manje nego kod A .
+
+Sve u svemu hoću reći da mi niti jedna nije najbolja slijepo za uzeti već da bih ja napravio hibridne opcije miksa par njih ili samo nekih i onda se po tome ravnao i znam da je ovo prototip ali fali mi animacija . To ćemo kasnije srediti ili animiranih prijelaza sekcija koji su opet u profesionalnom nekom tonu i naglašavaju našu profesionalnost.
+
+Ili čak možda da animiramom tipa codraft logo i recimo crtež dolje CAD koji se recimo u koracima crta kako korsnik dođe na tu sekciju skrolom stranice. To mi djeluje kao fora ideja.
+
+Pošto je context u ovoj sesiji pun , želim da pripremiš dokumentaciju za sljedeći chat gdje ćemo zajedno ovo što sam ti ja sada rekao prodiskutirati i analizirati te ćeš ti izaći sa novim dorađenim prototipima.
+
+Za sad ništa ne radi osim pripreme dokumentacije da ne izgubimo kontekst u dokumentaciju namijenjenu za to i pripremimo se za novi chat i nastavak rada.
+```
 
 ## After the choice
 

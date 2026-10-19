@@ -2,10 +2,27 @@
 
 **Trenutna faza:** 2 — Dizajn, u tijeku od 19. 10. 2026. na grani `phase/2-design`. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1: https://github.com/matejmedo0/codraft-website/pull/1).
 
-**Sljedeći korak: vi birate smjer** (A, B ili C, ili kombinaciju). Tri smjera su gotova kao živi prototipovi:
-- **Kako ih pogledati:** `npm run dev`, zatim http://localhost:4321/lab.
-- **Opis, usporedba i preporuka:** `docs/phases/2-design-directions.md`.
-- **Snimke na 375, 768 i 1440 px:** `docs/phases/screenshots/phase-2/`.
+**Sljedeći korak: runda 2 dizajna, u novoj sesiji.**
+1. Zajedno prolazimo vaše povratne informacije o tri smjera i osam otvorenih pitanja iz `docs/phases/2-design-round-2.md`.
+2. Zatim izrađujem nove, dorađene hibridne prototipove s više animacije.
+
+**Što ste rekli o rundi 1** (19. 10. 2026.; doslovno i razvrstano u `docs/phases/2-design-directions.md`): nijedan smjer ne uzimate kakav jest.
+- **Sviđa vam se:**
+  - list nacrta iz A i njegov CAD odjeljak na milimetarskom papiru
+  - tamnoplava iz B, zbog premium dojma
+  - ideja velikog naslova i fotografija tima iz C, te vidljiviji „Što radimo“ iz C
+- **Ne sviđa vam se:**
+  - presitan „Što radimo“ i kratka stranica u A
+  - veliki znak ispred heroja i neuravnotežen „Što radimo“ u B
+  - prevelik naslov i znak iznad gumba u C
+- **Niste sigurni** idu li fotografije tima na početnu ili samo na O nama.
+- **Želite:**
+  - hibridne opcije
+  - više animacije u profesionalnom tonu, npr. prijelaze između odjeljaka
+  - animirani logo
+  - CAD crtež koji se iscrtava u koracima kad posjetitelj dođe do njega
+
+Prototipovi runde 1 i dalje su na `/lab` (`npm run dev`, zatim http://localhost:4321/lab). Snimke su u `docs/phases/screenshots/phase-2/`.
 
 Tek nakon vašeg izbora slijede ADR za smjer, tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente i stranica sa stilovima.
 
@@ -18,9 +35,11 @@ Redoslijed u fazi 2:
    - **A „Nacrt“:** stranica kao list nacrta: okvir sa zonama, tehničko pismo (Archivo), podnožje kao zaglavlje nacrta s podacima o tvrtki. Preporuka.
    - **B „Noćni nacrt“:** tamnoplavi hero s velikim znakom, usluge na svijetlom listu, crtež kao plava kopija (Schibsted Grotesk).
    - **C „Studio“:** topli urednički stil sa serifnim naslovima (Literata i Hanken Grotesk) i mjestima za fotografije tima.
-3. vaš izbor smjera (ADR) ← čekamo vas
-4. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
-5. izlazne provjere i PR faze 2
+3. ✓ vaš pregled runde 1 (19. 10. 2026.): nijedan smjer nije za uzeti kakav jest; želite hibrid i više animacije
+4. runda 2: rasprava o vašim povratnim informacijama, zatim hibridni prototipovi ← sljedeća sesija (`docs/phases/2-design-round-2.md`)
+5. vaš izbor smjera (ADR)
+6. tokeni, fontovi, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima
+7. izlazne provjere i PR faze 2 (draft PR #2 je već otvoren: https://github.com/matejmedo0/codraft-website/pull/2)
 
 Redoslijed u fazi 1:
 1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`

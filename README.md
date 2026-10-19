@@ -5,7 +5,7 @@ The website of **Codraft**, a small studio that plans, builds and looks after we
 - **Languages:** Croatian (default, at `/`) and English (`/en`)
 - **Market:** Croatia
 - **Stack:** Astro 7 with React islands and a small Node API, TypeScript, on an EU VPS ([ADR 0008](docs/decisions/0008-stack-astro-with-react-islands.md), [ADR 0009](docs/decisions/0009-hosting-ovhcloud-vps-eu.md))
-- **Status:** phase 2 (Design): three design directions are built as prototypes in the design lab (`/lab`, dev server only) for the client to choose from. Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
+- **Status:** phase 2 (Design): round 1 of the design prototypes (three directions in the design lab, `/lab`, dev server only) is reviewed; hybrid round 2 is next. Live status: [PROGRESS.md](PROGRESS.md) (Croatian).
 
 ## Getting started
 

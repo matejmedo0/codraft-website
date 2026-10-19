@@ -1,0 +1,75 @@
+---
+// Design lab, direction B "Noćni nacrt" (noindex; only in `astro dev` and lab
+// builds, see astro.config.ts).
+import "../styles/lab-base.css";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabBar from "../components/LabBar.astro";
+import { HEADER } from "../copy.ts";
+import Specimen, {
+  type Swatch,
+  type TextPair,
+} from "../components/Specimen.astro";
+import NocniNacrtPage from "../directions/b/NocniNacrtPage.astro";
+import schibsted from "../fonts/schibsted-grotesk.woff2?url";
+
+const swatches: Swatch[] = [
+  { name: "Tamnoplava", hex: "#0F1B2D", use: "Podloga, tekst na papiru" },
+  { name: "Papir", hex: "#F6F5F1", use: "Listovi, tekst na tamnoj" },
+  {
+    name: "Plava",
+    hex: "#2F6BFF",
+    use: "Samo grafika: crta, gripovi, kote, fokus",
+  },
+  {
+    name: "Plava za tekst (tamna)",
+    hex: "#77A0FF",
+    use: "Poveznice na tamnoj",
+  },
+  {
+    name: "Plava za tekst (papir)",
+    hex: "#2457D6",
+    use: "Poveznice na papiru",
+  },
+  { name: "Siva (tamna)", hex: "#A7B0BD", use: "Sporedni tekst na tamnoj" },
+  { name: "Siva (papir)", hex: "#5E6878", use: "Sporedni tekst na papiru" },
+];
+
+const pairs: TextPair[] = [
+  { label: "Papir na tamnoplavoj", fg: "#F6F5F1", bg: "#0F1B2D" },
+  { label: "Siva na tamnoplavoj", fg: "#A7B0BD", bg: "#0F1B2D" },
+  { label: "Plava za tekst na tamnoplavoj", fg: "#77A0FF", bg: "#0F1B2D" },
+  { label: "Tamnoplava na papiru", fg: "#0F1B2D", bg: "#F6F5F1" },
+  { label: "Siva na papiru", fg: "#5E6878", bg: "#F6F5F1" },
+  { label: "Plava za tekst na papiru", fg: "#2457D6", bg: "#F6F5F1" },
+  { label: "Tamnoplava na gumbu, prijelaz", fg: "#0F1B2D", bg: "#DDE3EC" },
+  { label: "Papir na gumbu, prijelaz", fg: "#F6F5F1", bg: "#18273E" },
+  {
+    label: "Brand plava na tamnoplavoj",
+    fg: "#2F6BFF",
+    bg: "#0F1B2D",
+    large: true,
+  },
+];
+---
+
+<BaseLayout locale="hr" title="Smjer B „Noćni nacrt“ | Laboratorij dizajna">
+  <link
+    slot="head"
+    rel="preload"
+    href={schibsted}
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <a class="skip-link" href="#sadrzaj">
+    {HEADER.skipLink}
+  </a>
+  <LabBar current="b" />
+  <NocniNacrtPage />
+  <Specimen letter="B" swatches={swatches} pairs={pairs} />
+</BaseLayout>
+
+<script>
+  import "../scripts/lab.ts";
+</script>

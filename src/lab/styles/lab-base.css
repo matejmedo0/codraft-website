@@ -1,0 +1,296 @@
+/*
+ * Shared base for the design-lab prototypes: motion tokens, grips, focus,
+ * skip link and the button skeleton. Each direction sets its own colour,
+ * type and spacing tokens and its layout. The production tokens arrive after
+ * the client picks a direction (docs/phases/2-design.md, step 3).
+ */
+
+:root {
+  /* Motion (docs/motion.md). Springs from motion-foundations, sampled into
+     CSS linear() curves: "snappy" (stiffness 300, damping 30) for UI state,
+     "snap" (400/24, about 9 % overshoot) for the logo grip. */
+  --motion-instant: 80ms;
+  --motion-fast: 140ms;
+  --motion-base: 200ms;
+  --motion-slow: 480ms;
+  --motion-draw: 700ms;
+  --motion-snap: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-pen: cubic-bezier(0.5, 0, 0.2, 1);
+  --ease-spring: linear(
+    0,
+    0.109 6.3%,
+    0.319 12.5%,
+    0.529 18.8%,
+    0.699 25%,
+    0.822 31.3%,
+    0.903 37.5%,
+    0.953 43.8%,
+    0.981 50%,
+    0.996 56.3%,
+    1.002 62.5%,
+    1.004 68.8%,
+    1.004 75%,
+    1.003 81.3%,
+    1.002 87.5%,
+    1
+  );
+  --ease-snap: linear(
+    0,
+    0.075 4.2%,
+    0.248 8.3%,
+    0.457 12.5%,
+    0.657 16.7%,
+    0.825 20.8%,
+    0.951 25%,
+    1.033 29.2%,
+    1.078 33.3%,
+    1.094 37.5%,
+    1.091 41.7%,
+    1.076 45.8%,
+    1.057 50%,
+    1.038 54.2%,
+    1.021 58.3%,
+    1.008 62.5%,
+    0.999 66.7%,
+    0.993 70.8%,
+    0.991 75%,
+    0.992 83.3%,
+    0.996 91.7%,
+    1
+  );
+  --wordmark-delay: 250ms;
+
+  /* Grips echo the corner squares of icon C. */
+  --grip-size: 9px;
+  --grip-stroke: 2px;
+  --focus-width: 2px;
+  --focus-offset: 3px;
+  /* Grips sit on the corners of the focus outline. */
+  --grip-offset: calc(var(--focus-offset) + var(--focus-width) / 2);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Focus: a real outline, always; grips add to it. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-300%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Grips (src/lab/components/Grips.astro). */
+.has-grips {
+  position: relative;
+}
+
+.grips {
+  position: absolute;
+  inset: calc(var(--grip-offset) * -1);
+  pointer-events: none;
+}
+
+.grips > span {
+  position: absolute;
+  width: var(--grip-size);
+  height: var(--grip-size);
+  border: var(--grip-stroke) solid var(--accent);
+  background: var(--grip-fill);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--motion-fast) var(--ease-standard),
+    transform var(--motion-fast) var(--ease-spring);
+}
+
+.grips > span:nth-child(1) {
+  top: calc(var(--grip-size) / -2);
+  left: calc(var(--grip-size) / -2);
+}
+
+.grips > span:nth-child(2) {
+  top: calc(var(--grip-size) / -2);
+  right: calc(var(--grip-size) / -2);
+}
+
+.grips > span:nth-child(3) {
+  bottom: calc(var(--grip-size) / -2);
+  left: calc(var(--grip-size) / -2);
+}
+
+.grips > span:nth-child(4) {
+  right: calc(var(--grip-size) / -2);
+  bottom: calc(var(--grip-size) / -2);
+}
+
+.has-grips:focus-visible > .grips > span,
+.has-grips:has(:focus-visible) > .grips > span,
+.has-grips.is-focus > .grips > span,
+.has-grips.is-hover > .grips > span {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) {
+  .has-grips:hover > .grips > span {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Cards with a stretched link: the outline goes on the card. */
+.has-grips:has(.stretched-link:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.stretched-link:focus-visible {
+  outline: none;
+}
+
+.stretched-link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+/* Buttons: colours come from each direction. No colour transitions; only
+   the press "snap" moves (docs/motion.md). */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--motion-instant) var(--ease-standard);
+}
+
+.btn:active,
+.btn.is-active {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+}
+
+.btn--primary:hover,
+.btn--primary.is-hover {
+  background: var(--btn-primary-bg-hover);
+}
+
+.btn--secondary {
+  border-color: var(--btn-secondary-border);
+  background: transparent;
+  color: var(--btn-secondary-fg);
+}
+
+.btn--secondary:hover,
+.btn--secondary.is-hover {
+  background: var(--btn-secondary-bg-hover);
+}
+
+.btn[aria-disabled="true"] {
+  border-color: var(--btn-disabled-border);
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-fg);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.is-focus {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* A rule that draws once when it scrolls into view (src/lab/scripts/lab.ts). */
+.rule-draw {
+  transform-origin: 0 50%;
+}
+
+.rule-draw.is-pending {
+  transform: scaleX(0);
+}
+
+.rule-draw.is-drawing {
+  transition: transform var(--motion-draw) var(--ease-pen);
+}
+
+/* A dimension draws top to bottom, over --motion-slow (docs/motion.md). */
+.rule-draw--y {
+  transform-origin: 50% 0;
+}
+
+.rule-draw--y.is-pending {
+  transform: scaleY(0);
+}
+
+.rule-draw--y.is-drawing {
+  transition-duration: var(--motion-slow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grips > span {
+    transform: none;
+    transition: opacity var(--motion-fast) linear;
+  }
+
+  .btn:active,
+  .btn.is-active {
+    transform: none;
+  }
+
+  .rule-draw.is-pending {
+    transform: none;
+  }
+}

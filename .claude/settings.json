@@ -4,6 +4,7 @@
     "allow": [
       "Bash(npm run dev *)",
       "Bash(npm run build *)",
+      "Bash(npm run build:lab *)",
       "Bash(npm run preview *)",
       "Bash(npm run typecheck *)",
       "Bash(npm run lint *)",
@@ -31,6 +32,7 @@
       "Bash(gh run *)",
       "PowerShell(npm run dev *)",
       "PowerShell(npm run build *)",
+      "PowerShell(npm run build:lab *)",
       "PowerShell(npm run preview *)",
       "PowerShell(npm run typecheck *)",
       "PowerShell(npm run lint *)",

@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:lab": "node scripts/build-lab.mjs",
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint .",

@@ -1,0 +1,195 @@
+---
+/**
+ * Direction C "Studio" (docs/phases/2-design.md, step 1): warm and
+ * editorial. The wordmark signs the hero like a pen stroke, the photos of
+ * the team carry the warmth (placeholders until phase 3), and the drafting
+ * line opens each section once.
+ */
+import "./studio.css";
+
+import { pathFor } from "../../../features/i18n/urls.ts";
+import Grips from "../../components/Grips.astro";
+import PhotoSlot from "../../components/PhotoSlot.astro";
+import Wordmark from "../../components/Wordmark.astro";
+import { DRAFTING, FOOTER, HEADER, HERO, NAV, SERVICES } from "../../copy.ts";
+
+const locale = "hr";
+const services = pathFor("services", locale);
+---
+
+<header class="wrap bar">
+  <a class="bar__home" href={pathFor("home", locale)}>
+    <span class="visually-hidden">{HEADER.home}</span>
+    <Wordmark />
+  </a>
+  <button
+    class="bar__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="izbornik-c"
+    data-menu-toggle
+  >
+    {HEADER.menu}
+    <span class="bar__toggle-icon" aria-hidden="true"></span>
+  </button>
+  <nav class="bar__nav" id="izbornik-c" aria-label="Glavna navigacija">
+    <ul class="bar__links">
+      {NAV.map(({ page, label }) => (
+        <li>
+          <a href={pathFor(page, locale)}>{label}</a>
+        </li>
+      ))}
+    </ul>
+    <a class="btn btn--primary has-grips" href={pathFor("audit", locale)}>
+      {HEADER.cta}
+      <Grips />
+    </a>
+    <a class="bar__lang" href={pathFor("home", "en")} hreflang="en" lang="en">
+      {HEADER.otherLanguage}
+      <span class="visually-hidden">({HEADER.otherLanguageName})</span>
+    </a>
+  </nav>
+</header>
+
+<main id="sadrzaj">
+  <section class="wrap hero" aria-labelledby="naslov">
+    <div class="hero__text">
+      <h1 id="naslov">{HERO.title}</h1>
+      <p class="hero__lead">{HERO.lead}</p>
+      <Wordmark class="hero__signature" draw />
+      <div class="hero__actions">
+        <a class="btn btn--primary has-grips" href={pathFor("audit", locale)}>
+          {HERO.primary}
+          <Grips />
+        </a>
+        <a class="btn btn--secondary has-grips" href={services}>
+          {HERO.secondary}
+          <Grips />
+        </a>
+      </div>
+      <p class="hero__drafting">
+        <a href={pathFor("drafting", locale)}>{HERO.draftingLink}</a>
+      </p>
+    </div>
+    <PhotoSlot
+      ratio="portrait"
+      shot="Fotografija tima na poslu"
+      note="Stiže u fazi 3, prema specifikaciji iz brand.md"
+    />
+  </section>
+
+  <section class="wrap services" aria-labelledby="usluge">
+    <div class="section-line" data-draw aria-hidden="true">
+      <span class="section-line__grip"></span>
+    </div>
+    <div class="services__head">
+      <h2 id="usluge">{SERVICES.title}</h2>
+      <p class="services__intro">{SERVICES.intro}</p>
+    </div>
+
+    <div class="chapter">
+      <div>
+        <h3>
+          <span class="chapter__number">{SERVICES.plan.number}</span>
+          {SERVICES.plan.title}
+        </h3>
+        <p class="chapter__tagline">{SERVICES.plan.tagline}</p>
+      </div>
+      <div class="chapter__body">
+        <p>{SERVICES.plan.body}</p>
+        <a class="chapter__cta" href={pathFor("audit", locale)}>
+          {SERVICES.plan.cta}
+        </a>
+      </div>
+    </div>
+
+    {SERVICES.stages.map((stage) => (
+      <div class="chapter">
+        <div>
+          <h3>
+            <span class="chapter__number">{stage.number}</span>
+            {stage.title}
+          </h3>
+          <p class="chapter__tagline">{stage.tagline}</p>
+        </div>
+        <ul class="entries">
+          {stage.items.map((item) => (
+            <li class="entry has-grips">
+              <h4>
+                <a class="stretched-link" href={`${services}#${item.anchor}`}>
+                  {item.title}
+                </a>
+              </h4>
+              <p>{item.body}</p>
+              <Grips />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="wrap drafting" aria-labelledby="cad">
+    <div class="section-line" data-draw aria-hidden="true">
+      <span class="section-line__grip"></span>
+    </div>
+    <div class="drafting__grid">
+      <div class="drafting__head">
+        <h2 id="cad">{DRAFTING.title}</h2>
+        <p class="drafting__tagline">{DRAFTING.tagline}</p>
+        <p class="drafting__audience">{DRAFTING.audience}</p>
+        <div class="drafting__items">
+          {DRAFTING.items.map((item) => (
+            <div>
+              <h3 class="drafting__item-title">{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))}
+        </div>
+        <a
+          class="btn btn--primary has-grips"
+          href={pathFor("drafting", locale)}
+        >
+          {DRAFTING.cta}
+          <Grips />
+        </a>
+      </div>
+      <PhotoSlot
+        ratio="landscape"
+        shot="Ruke na označenom nacrtu"
+        note="Stiže u fazi 3, uz uzorke crteža"
+      />
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <Wordmark class="footer__mark" label="Codraft" />
+      <p class="footer__note t-label">{FOOTER.placeholderNote}</p>
+    </div>
+    <dl class="footer__company">
+      {FOOTER.company.map(({ label, value }) => (
+        <div>
+          <dt class="t-label">{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+    <nav aria-label="Pravne informacije">
+      <ul class="footer__links">
+        {FOOTER.legal.map(({ page, label }) => (
+          <li>
+            <a href={pathFor(page, locale)}>{label}</a>
+          </li>
+        ))}
+        <li>
+          <a href={pathFor("home", "en")} hreflang="en" lang="en">
+            English
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</footer>

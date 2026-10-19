@@ -1,0 +1,688 @@
+/*
+ * Direction A "Nacrt": the page is a drawing sheet. Paper ground, navy ink at
+ * drafting line weights, a frame with zone references, technical lettering
+ * (Archivo, semi-condensed and condensed), and a title block as the footer.
+ * Blue is for graphics only: the drafting line, grips, dimensions, focus.
+ */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../../fonts/archivo.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f6f5f1;
+  --paper-sunk: #edebe5;
+  --ink: #0f1b2d;
+  --ink-muted: #5e6878;
+  --line: color-mix(in srgb, var(--ink) 16%, var(--paper));
+  --line-strong: var(--ink);
+  --accent: #2f6bff;
+  --link: #2457d6;
+  --focus: var(--accent);
+  --grip-fill: var(--paper);
+  --radius: 0;
+
+  --btn-primary-bg: var(--ink);
+  --btn-primary-bg-hover: #27364f;
+  --btn-primary-fg: var(--paper);
+  --btn-secondary-border: var(--ink);
+  --btn-secondary-fg: var(--ink);
+  --btn-secondary-bg-hover: var(--paper-sunk);
+  --btn-disabled-bg: #e2e0da;
+  --btn-disabled-border: #e2e0da;
+  --btn-disabled-fg: var(--ink-muted);
+
+  --font-text: "Archivo", system-ui, sans-serif;
+  --font-label: var(--font-text);
+  --label-stretch: 75%;
+
+  /* Fluid type scale, 375 → 1440 px. */
+  --step-h1: clamp(2.25rem, 1.45rem + 3.4vw, 4.5rem);
+  --step-h2: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem);
+  --step-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --step-lead: clamp(1.125rem, 1.06rem + 0.3vw, 1.375rem);
+  --step-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+  --step-label: 0.8125rem;
+
+  --grid-major: color-mix(in srgb, var(--ink) 11%, transparent);
+  --grid-minor: color-mix(in srgb, var(--ink) 5%, transparent);
+
+  --pd-ink: var(--ink);
+  --pd-muted: color-mix(in srgb, var(--ink) 45%, var(--paper));
+  --pd-dim: var(--accent);
+  --pd-dim-text: var(--link);
+  --pd-fill: var(--paper);
+
+  --sheet-margin: 0.5rem;
+  --pad: 1rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --sheet-margin: 1.5rem;
+    --pad: 2rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --pad: 3rem;
+  }
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-text);
+  font-size: var(--step-body);
+  line-height: 1.55;
+}
+
+:is(h1, h2, h3, h4, .t-h1, .t-h2, .t-h3) {
+  margin: 0;
+  font-stretch: 87.5%;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+:is(h1, .t-h1) {
+  font-size: var(--step-h1);
+  font-weight: 560;
+  line-height: 1;
+  letter-spacing: -0.022em;
+}
+
+:is(h2, .t-h2) {
+  font-size: var(--step-h2);
+}
+
+:is(h3, .t-h3) {
+  font-size: var(--step-h3);
+  line-height: 1.15;
+}
+
+h4 {
+  font-size: 1.125rem;
+  font-stretch: 100%;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.t-label {
+  font-size: var(--step-label);
+  font-stretch: 75%;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* The sheet: a frame inset from the viewport, with zone numbers above it. */
+.sheet {
+  position: relative;
+  margin: var(--sheet-margin);
+  border: 1px solid var(--line-strong);
+}
+
+.sheet__zones {
+  display: none;
+}
+
+.zone {
+  position: relative;
+  padding: 2.5rem var(--pad);
+}
+
+.zone__letter {
+  display: none;
+}
+
+.zone__rule {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+@media (min-width: 48rem) {
+  .sheet__zones {
+    position: absolute;
+    top: calc(var(--sheet-margin) * -1);
+    right: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    height: var(--sheet-margin);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-muted);
+    font-size: 0.6875rem;
+    font-stretch: 75%;
+    font-variant-numeric: tabular-nums;
+    list-style: none;
+  }
+
+  .sheet__zones li {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .sheet__zones li + li::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    height: 0.5rem;
+    background: var(--line-strong);
+    content: "";
+  }
+
+  .zone__letter {
+    position: absolute;
+    top: 2.6rem;
+    left: calc((var(--sheet-margin) + 1px) * -1);
+    display: block;
+    width: var(--sheet-margin);
+    color: var(--ink-muted);
+    font-size: 0.6875rem;
+    font-stretch: 75%;
+    text-align: center;
+  }
+}
+
+/* Masthead */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  padding: 0.875rem var(--pad);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.masthead__home {
+  display: block;
+  width: 7.25rem;
+  padding: 0.375rem 0;
+  color: var(--ink);
+}
+
+.masthead__toggle {
+  display: none;
+  gap: 0.625rem;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-left: auto;
+  padding: 0 0.875rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Two lines that become a cross: drafting lines, not a hamburger glyph. */
+.masthead__toggle-icon {
+  position: relative;
+  width: 1rem;
+  height: 0.5rem;
+  border-block: 1.5px solid currentColor;
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon {
+  border: 0;
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::before,
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.masthead__toggle[aria-expanded="true"] .masthead__toggle-icon::after {
+  transform: rotate(-45deg);
+}
+
+.masthead__nav {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.masthead__links {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.masthead__links a,
+.masthead__lang {
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.masthead__links a:hover,
+.masthead__lang:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.masthead__lang {
+  align-self: start;
+  border: 0;
+}
+
+@media (max-width: 63.99rem) {
+  .js .masthead__toggle {
+    display: inline-flex;
+  }
+
+  .js .masthead__nav:not(.is-open) {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .masthead {
+    flex-wrap: nowrap;
+  }
+
+  .masthead__nav {
+    flex-basis: auto;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .masthead__links {
+    display: flex;
+    gap: 1.75rem;
+  }
+
+  .masthead__links a,
+  .masthead__lang {
+    padding: 0.5rem 0;
+    border: 0;
+    font-size: 1rem;
+  }
+
+  .masthead__nav .btn {
+    min-height: 2.75rem;
+    padding-block: 0.5rem;
+  }
+}
+
+/* Hero (zone A) */
+.hero {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 2.5rem 3rem;
+}
+
+.hero__lead {
+  max-width: 34ch;
+  margin-top: 1.5rem;
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero__drafting {
+  margin-top: 1.5rem;
+}
+
+.hero__drafting a {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.drafting-grid {
+  border: 1px solid var(--line);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size:
+    40px 40px,
+    40px 40px,
+    8px 8px,
+    8px 8px;
+}
+
+.hero__drawing {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: 8% 12%;
+}
+
+.hero__mark {
+  color: var(--ink);
+}
+
+@media (min-width: 40rem) {
+  .hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hero {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: center;
+    padding-block: 5rem 5.5rem;
+  }
+
+  .hero__text {
+    grid-column: 1 / span 7;
+  }
+
+  .hero__drawing {
+    grid-column: 8 / -1;
+    aspect-ratio: 4 / 3;
+    padding: 12%;
+  }
+}
+
+/* Services (zone B) */
+.services > h2 {
+  margin-bottom: 2rem;
+}
+
+.stage {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.stage h3 {
+  display: flex;
+  gap: 0.875rem;
+  align-items: center;
+}
+
+/* A grid bubble, as at the end of a drawing's grid line. */
+.bubble {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-stretch: 75%;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.stage__tagline {
+  max-width: 28ch;
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+  font-size: var(--step-lead);
+  line-height: 1.4;
+}
+
+.stage__body {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+}
+
+.stage__cta {
+  font-weight: 600;
+}
+
+.cards {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 1.25rem 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.card:hover {
+  border-color: var(--ink);
+}
+
+.card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.card h4 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.card p {
+  color: var(--ink-muted);
+}
+
+@media (min-width: 40rem) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .stage {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2rem;
+    padding-block: 2.5rem;
+  }
+
+  .stage__head {
+    grid-column: 1 / span 4;
+  }
+
+  .stage__body,
+  .cards {
+    grid-column: 5 / -1;
+  }
+}
+
+/* Drafting (zone C) */
+.drafting {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.drafting__tagline {
+  margin-top: 1rem;
+  font-size: var(--step-h3);
+  font-stretch: 87.5%;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.drafting__audience {
+  max-width: 36ch;
+  margin-top: 1rem;
+  color: var(--ink-muted);
+}
+
+.drafting__items {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.drafting__items h3 {
+  margin-bottom: 0.375rem;
+  font-size: 1.125rem;
+  font-stretch: 100%;
+}
+
+.drafting__drawing {
+  margin: 0;
+  padding: 1.5rem 1.25rem;
+}
+
+@media (min-width: 64rem) {
+  .drafting {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .drafting__text {
+    grid-column: 1 / span 5;
+  }
+
+  .drafting__drawing {
+    grid-column: 6 / -1;
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Title block (zone D): the footer holds the company data a drawing's title
+   block would. */
+.title-block {
+  position: relative;
+  border-top: 1px solid var(--line-strong);
+}
+
+.title-block .zone__letter {
+  top: 1rem;
+}
+
+.title-block__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--line-strong);
+}
+
+.title-block__grid > div {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem 0.875rem;
+  background: var(--paper);
+}
+
+.title-block dt {
+  color: var(--ink-muted);
+}
+
+.title-block dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.title-block__mark {
+  grid-column: 1 / -1;
+}
+
+.title-block__mark {
+  --wordmark-width: 8.5rem;
+
+  color: var(--ink);
+}
+
+.title-block__legal {
+  grid-column: 1 / -1;
+}
+
+.title-block__legal ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.title-block__legal a,
+.title-block__lang a {
+  color: var(--ink);
+}
+
+.title-block__note {
+  grid-column: 1 / -1;
+  color: var(--ink-muted);
+}
+
+@media (min-width: 48rem) {
+  .title-block__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 80rem) {
+  .title-block__grid {
+    grid-template-columns: 1.6fr repeat(5, minmax(0, 1fr));
+  }
+
+  .title-block__mark {
+    grid-row: span 2;
+    grid-column: auto;
+    align-content: center;
+  }
+
+  .title-block__legal {
+    grid-column: span 2;
+  }
+}

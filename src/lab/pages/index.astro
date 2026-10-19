@@ -1,0 +1,61 @@
+---
+// The design-lab index: the three directions of phase 2 (noindex; only in
+// `astro dev` and lab builds, see astro.config.ts).
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabBar from "../components/LabBar.astro";
+import { LAB_DIRECTIONS } from "../directions.ts";
+---
+
+<BaseLayout locale="hr" title="Laboratorij dizajna | Codraft">
+  <LabBar />
+  <main class="lab-index">
+    <h1>Laboratorij dizajna</h1>
+    <p>
+      Tri smjera za fazu 2, izrađena kao živi prototipovi s pravim tekstom,
+      fontovima i animacijom. Otvorite ih u pregledniku, isprobajte na mobitelu
+      i tipkovnicom (Tab), pa odaberite smjer.
+    </p>
+    <ol class="lab-index__list">
+      {LAB_DIRECTIONS.map(({ id, letter, name, summary }) => (
+        <li>
+          <a href={`/lab/${id}`}>
+            Smjer {letter} „{name}“
+          </a>
+          <p>{summary}</p>
+        </li>
+      ))}
+    </ol>
+  </main>
+</BaseLayout>
+
+<style>
+  .lab-index {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1rem 4rem;
+    color: #0f1b2d;
+    font-family: system-ui, sans-serif;
+  }
+
+  .lab-index h1 {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+  }
+
+  .lab-index__list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .lab-index__list a {
+    color: #2457d6;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .lab-index__list p {
+    margin: 0.25rem 0 0;
+  }
+</style>

@@ -37,6 +37,8 @@ const { locale, title, page } = Astro.props;
     ) : (
       <meta name="robots" content="noindex" />
     )}
+    {/* Page-specific head elements, such as font preloads. */}
+    <slot name="head" />
   </head>
   <body>
     <slot />

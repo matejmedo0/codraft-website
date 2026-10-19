@@ -1,0 +1,79 @@
+---
+/**
+ * The design-lab bar above each prototype: which direction this is, and
+ * links to the others. Lab chrome only; it is not part of any direction.
+ */
+import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
+
+interface Props {
+  current?: LabDirectionId;
+}
+
+const { current } = Astro.props;
+---
+
+<nav class="lab-bar" aria-label="Laboratorij dizajna">
+  <a class="lab-bar__home" href="/lab">
+    Laboratorij dizajna
+  </a>
+  <ul class="lab-bar__list">
+    {LAB_DIRECTIONS.map(({ id, letter, name }) => (
+      <li>
+        <a
+          href={`/lab/${id}`}
+          aria-current={id === current ? "page" : undefined}
+        >
+          {letter} „{name}“
+        </a>
+      </li>
+    ))}
+  </ul>
+  <span class="lab-bar__note">Prototip, nije objavljen</span>
+</nav>
+
+<style>
+  .lab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #e3e1da;
+    color: #1f2733;
+    font:
+      500 0.8125rem/1.4 system-ui,
+      sans-serif;
+  }
+
+  .lab-bar a {
+    color: inherit;
+  }
+
+  .lab-bar__home {
+    font-weight: 700;
+  }
+
+  .lab-bar__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lab-bar__list a[aria-current="page"] {
+    font-weight: 700;
+    text-decoration-thickness: 2px;
+  }
+
+  .lab-bar__note {
+    margin-left: auto;
+    color: #4a5260;
+  }
+
+  .lab-bar :focus-visible {
+    outline: 2px solid #2f6bff;
+    outline-offset: 2px;
+  }
+</style>

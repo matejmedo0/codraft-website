@@ -1,8 +1,46 @@
 import node from "@astrojs/node";
 import react from "@astrojs/react";
+import type { AstroIntegration } from "astro";
 import { defineConfig } from "astro/config";
 
 import { DEFAULT_LOCALE, LOCALES, SITE_URL } from "./src/config/site.ts";
+
+/** The design-lab pages in src/lab/pages, served under /lab. */
+const LAB_PAGES = ["index", "a", "b", "c"] as const;
+
+/**
+ * The phase 2 design lab (docs/phases/2-design.md): the prototypes and the
+ * style page under /lab. They exist in `astro dev` and in builds made with
+ * CODRAFT_LAB=1 (`npm run build:lab`), never in a normal production build.
+ * They have no route-map entry, so BaseLayout marks them noindex.
+ *
+ * The lab also adds a `js` class to <html> before the first paint, so its
+ * pages can style the no-script fallback. Astro hashes this head script for
+ * the CSP.
+ */
+function designLab(): AstroIntegration {
+  return {
+    name: "codraft:design-lab",
+    hooks: {
+      "astro:config:setup": ({ command, injectRoute, injectScript }) => {
+        if (command !== "dev" && process.env.CODRAFT_LAB !== "1") return;
+        for (const page of LAB_PAGES) {
+          injectRoute({
+            pattern: page === "index" ? "/lab" : `/lab/${page}`,
+            entrypoint: new URL(
+              `./src/lab/pages/${page}.astro`,
+              import.meta.url,
+            ),
+          });
+        }
+        injectScript(
+          "head-inline",
+          'document.documentElement.classList.add("js");',
+        );
+      },
+    },
+  };
+}
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -19,7 +57,7 @@ export default defineConfig({
   }),
 
   // React only for islands: forms, the CAD layer viewer, the chatbot.
-  integrations: [react()],
+  integrations: [react(), designLab()],
 
   // URLs without a trailing slash: /usluge, /en/services. The directory
   // format keeps /en working on the Node server ('file' would write en.html

@@ -18,6 +18,7 @@ export default defineConfig(
   globalIgnores([
     "dist/",
     ".astro/",
+    ".playwright-mcp/",
     "playwright-report/",
     "test-results/",
     "Assets/",

@@ -26,6 +26,10 @@
     --color-grey-on-paper: #4a5362;
     --color-grey-on-navy: #a7b0bd;
     --color-paper-hover: #dde3ec;
+    /* Selected text: a tint of the brand blue, like a selection in CAD; the
+       text keeps its surface's ink (base.css). */
+    --color-selection-on-paper: #c4d3f5;
+    --color-selection-on-navy: #1d3f8c;
 
     /* The sheet's frame, zone rules and title block: navy ink on every
        surface, like the border of a drawing. */
@@ -42,6 +46,7 @@
     --accent: var(--color-blue);
     --accent-text: var(--color-blue-on-paper);
     --focus: var(--color-blue);
+    --selection: var(--color-selection-on-paper);
     --grip-fill: var(--surface);
 
     --button-primary-bg: var(--color-navy);
@@ -173,6 +178,7 @@
     --line-strong: var(--color-paper);
     --link: var(--color-blue-on-navy);
     --accent-text: var(--color-blue-on-navy);
+    --selection: var(--color-selection-on-navy);
     --grip-fill: var(--color-navy);
 
     --button-primary-bg: var(--color-paper);

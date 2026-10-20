@@ -70,6 +70,16 @@ Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-co
 - Primary buttons are navy with off-white text, which matches the README's "blue: accents only".
 - Links are underlined.
 
+**What the browser draws** takes the brand's colours too ([ADR 0025](decisions/0025-browser-details-and-critique-re-check.md), `src/styles/base.css`):
+
+| Detail | Token | Hex | Contrast |
+|---|---|---|---|
+| Selected text on paper | `--color-selection-on-paper` | `#C4D3F5` | Navy text on it: 11.50:1. A light tint of the brand blue, like a selection in CAD. |
+| Selected text on navy | `--color-selection-on-navy` | `#1D3F8C` | Off-white text on it: 8.98:1 |
+| Text cursor in fields | `--accent` | `#2F6BFF` | A graphic: 4.12:1 on off-white, 3.84:1 on navy |
+
+Selected text always takes the surface's ink (navy on paper, off-white on navy), so links and grey text stay readable while selected.
+
 ## Typography
 
 The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. **Chosen in phase 2: Archivo, the only family** ([ADR 0015](decisions/0015-design-direction-model-i-list.md)), at three widths: 100 % for text, 87.5 % for headings, 75 % for labels and title-block data. It is self-hosted in two files split by `unicode-range` (a 36.5 KB core file for English and Croatian, preloaded) with size-adjusted Arial fallbacks; details in [research/2026-10-19-design-system.md](research/2026-10-19-design-system.md). It met these requirements:

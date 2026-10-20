@@ -81,6 +81,19 @@
     color: inherit;
   }
 
+  /* What the browser draws itself takes the brand's colours too: selected
+     text in a tint of the blue, in the surface's ink, and a blue text
+     cursor (docs/brand.md#colour). */
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  input,
+  textarea {
+    caret-color: var(--accent);
+  }
+
   /* Focus: a real outline, always; grips add to it (Grips.astro). */
   :focus-visible {
     outline: var(--focus-width) solid var(--focus);

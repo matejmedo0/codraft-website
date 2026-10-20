@@ -39,6 +39,9 @@ const TEXT_PAIRS = [
   ["blue-on-navy", "navy"],
   ["paper", "navy-raised"], // secondary button, hover
   ["navy", "paper-hover"], // primary button on navy, hover
+  // Selected text (base.css): the surface's ink on the selection tint
+  ["navy", "selection-on-paper"],
+  ["paper", "selection-on-navy"],
 ] as const;
 
 const GRAPHIC_PAIRS = [

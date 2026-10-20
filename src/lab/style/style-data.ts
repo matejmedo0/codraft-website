@@ -75,6 +75,16 @@ export const PALETTE: PaletteEntry[] = [
     name: "Siva na tamnoplavoj",
     use: "Sporedni tekst na tamnoplavoj",
   },
+  {
+    token: "selection-on-paper",
+    name: "Odabir na papiru",
+    use: "Pozadina označenog teksta na papiru; tekst ostaje tamnoplav",
+  },
+  {
+    token: "selection-on-navy",
+    name: "Odabir na tamnoplavoj",
+    use: "Pozadina označenog teksta na tamnoplavoj; tekst ostaje boje papira",
+  },
 ];
 
 export interface TextPair {
@@ -105,6 +115,16 @@ export const TEXT_PAIRS: TextPair[] = [
     label: "Tamnoplava na gumbu pod mišem (tamnoplava površina)",
     fg: "navy",
     bg: "paper-hover",
+  },
+  {
+    label: "Tamnoplava na odabiru (papir)",
+    fg: "navy",
+    bg: "selection-on-paper",
+  },
+  {
+    label: "Papir na odabiru (tamnoplava)",
+    fg: "paper",
+    bg: "selection-on-navy",
   },
   { label: "Plava na papiru", fg: "blue", bg: "paper", large: true },
   { label: "Plava na tamnoplavoj", fg: "blue", bg: "navy", large: true },

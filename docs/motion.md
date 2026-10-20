@@ -30,6 +30,12 @@ Options 1 and 2 on `/lab/sto-radimo` keep the earlier behaviour as their record:
 
 1. **Every motion must earn its place.** It guides attention, communicates state, or keeps spatial continuity. If it does none of these, cut it.
 2. **One moving thing per viewport at a time.** Body text appears instantly; motion is for key moments only, not fade-up-on-everything.
+   - `draw.ts` enforces it for the parts that draw once (review #78, after the critique of 2026-10-21). A part that reaches its trigger while another part is moving on screen waits for it.
+   - Meanwhile the moving part plays at double speed, and the waiting part does too when its turn comes, so a fast scroll gives quicker drawings and a slow one the full motion.
+   - A part that is off the screen by its turn shows its final state at once, and so does a moving part that leaves the screen.
+   - A selection's release (the fade after its hold) doesn't count as movement.
+   - An element that moves with a part but sits beside it, such as a zone's letter, has `data-draw-with`.
+   - A replay starts at once, at full motion.
 3. **Never take over the scroll.** No scroll-jacking, no pinned scroll sequences, no smooth-scroll libraries, no parallax.
 4. **The LCP element is visible at first paint.** The hero H1 never waits for an animation. Only decorative elements animate.
 5. **Compositor-friendly.**

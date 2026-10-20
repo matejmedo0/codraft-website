@@ -10,6 +10,16 @@
  * so it never flashes complete. Without JavaScript, or with reduced motion,
  * nothing is ever pending, so every part shows its final state.
  *
+ * One part moves on the screen at a time (motion.md, principle 2; the
+ * critique of 2026-10-21, finding 4). A part that reaches its trigger while
+ * another part is moving on screen waits for it; meanwhile the moving part
+ * plays at HURRY times its speed, and so does the waiting part when its
+ * turn comes, so a fast scroll gives quicker drawings and a slow one the
+ * full motion. A part that is off the screen by its turn shows its final
+ * state at once, and so does a moving part that leaves the screen. An
+ * element that moves with a part but sits beside it, such as a zone's
+ * letter, has `data-draw-with`.
+ *
  * Imported by the components' scripts; a module runs once per page however
  * many components import it.
  */
@@ -33,8 +43,22 @@ const DRAW_TRIGGERS: Partial<Record<string, IntersectionObserverInit>> = {
 /** How close to the end of the page counts as the bottom, in pixels. */
 const BOTTOM_TOLERANCE = 2;
 
+/** How much faster a part plays while another waits for it, or after waiting. */
+const HURRY = 2;
+
+/** The parts moving now, with their speed. */
+const moving = new Map<Element, number>();
+
+/** The parts waiting for their turn, in the order they reached their trigger. */
+const waiting: Element[] = [];
+
 function isBelowFold(element: Element): boolean {
   return element.getBoundingClientRect().top > window.innerHeight;
+}
+
+function isOnScreen(element: Element): boolean {
+  const box = element.getBoundingClientRect();
+  return box.bottom > 0 && box.top < window.innerHeight;
 }
 
 /** Calls `onEnter` once, when the element first reaches its trigger. */
@@ -59,12 +83,116 @@ function onFirstView(
 /**
  * Starts a part's drawing. `.is-drawing` sets its animation; removing
  * `.is-pending` a frame later lets a transition start from the hidden state.
+ * `onStarted` runs then, once every animation of the part exists.
  */
-function startDrawing(element: Element): void {
+function startDrawing(element: Element, onStarted?: () => void): void {
   element.classList.add("is-drawing");
   requestAnimationFrame(() => {
     element.classList.remove("is-pending");
+    onStarted?.();
   });
+}
+
+/** Every animation of a part: its own, its subtree's and its companions'. */
+function animationsOf(part: Element): Animation[] {
+  const companions = [...(part.parentElement?.children ?? [])].filter(
+    (sibling) => sibling !== part && sibling.hasAttribute("data-draw-with"),
+  );
+  return [part, ...companions].flatMap((element) =>
+    element.getAnimations({ subtree: true }),
+  );
+}
+
+/** A selection's release fades it after its hold; that isn't movement. */
+function isMovement(animation: Animation): boolean {
+  return !(
+    animation instanceof CSSAnimation &&
+    animation.animationName === "motion-release"
+  );
+}
+
+/** Jumps a part to its final state. */
+function finish(part: Element): void {
+  for (const animation of animationsOf(part)) animation.finish();
+}
+
+/** A moving part that leaves the screen finishes at once. */
+const leaving = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting && moving.has(entry.target)) {
+      finish(entry.target);
+    }
+  }
+});
+
+function blockers(): Element[] {
+  return [...moving.keys()].filter(isOnScreen);
+}
+
+function hurry(part: Element): void {
+  if (moving.get(part) === HURRY) return;
+  moving.set(part, HURRY);
+  for (const animation of animationsOf(part)) {
+    animation.updatePlaybackRate(HURRY);
+  }
+}
+
+/** Starts the next waiting part that is on screen; the others finish. */
+function next(): void {
+  while (waiting.length > 0 && blockers().length === 0) {
+    const part = waiting.shift();
+    if (part === undefined) return;
+    if (isOnScreen(part)) {
+      run(part, HURRY);
+      return;
+    }
+    startDrawing(part, () => {
+      finish(part);
+    });
+  }
+}
+
+/** Draws a part at `rate` times its speed and, when it is done, the next. */
+function run(part: Element, rate: number): void {
+  const queued = waiting.indexOf(part);
+  if (queued !== -1) waiting.splice(queued, 1);
+  moving.set(part, rate);
+  startDrawing(part, () => {
+    // Transitions start only now that `.is-pending` is gone.
+    const animations = animationsOf(part);
+    const speed = moving.get(part) ?? rate;
+    if (speed !== 1) {
+      for (const animation of animations) animation.updatePlaybackRate(speed);
+    }
+    leaving.observe(part);
+    const motion = animations.filter(isMovement);
+    void Promise.allSettled(motion.map(({ finished }) => finished)).then(() => {
+      // A replay restarts the part with new animations; it ends that run.
+      if (motion.some(({ playState }) => playState === "idle")) return;
+      moving.delete(part);
+      leaving.unobserve(part);
+      next();
+    });
+  });
+  // Its animations exist as soon as `.is-drawing` is set: a part that waited
+  // is quick from its first frame.
+  if (rate !== 1) {
+    for (const animation of animationsOf(part)) {
+      animation.updatePlaybackRate(rate);
+    }
+  }
+}
+
+/** A part reached its trigger: it draws now, or waits for the moving one. */
+function request(part: Element): void {
+  if (!part.classList.contains("is-pending") || moving.has(part)) return;
+  const busy = blockers();
+  if (busy.length === 0) {
+    run(part, 1);
+    return;
+  }
+  if (!waiting.includes(part)) waiting.push(part);
+  for (const blocker of busy) hurry(blocker);
 }
 
 function initDraws(): void {
@@ -75,7 +203,7 @@ function initDraws(): void {
     onFirstView(
       part,
       () => {
-        if (part.classList.contains("is-pending")) startDrawing(part);
+        request(part);
       },
       trigger,
     );
@@ -96,7 +224,7 @@ function initBottomOfPage(): void {
       for (const part of document.querySelectorAll(".is-pending")) {
         if (part.classList.contains("is-drawing")) continue;
         if (part.getBoundingClientRect().top < window.innerHeight) {
-          startDrawing(part);
+          request(part);
         }
       }
     },
@@ -106,8 +234,8 @@ function initBottomOfPage(): void {
 
 /**
  * A replay button (`data-draw-replay`) inside a part hides the part, then
- * draws it again. Reading the layout in between applies the hidden state,
- * so the animations restart.
+ * draws it again at once, at full motion. Reading the layout in between
+ * applies the hidden state, so the animations restart.
  */
 function initReplays(): void {
   for (const button of document.querySelectorAll("[data-draw-replay]")) {
@@ -117,7 +245,7 @@ function initReplays(): void {
       part.classList.remove("is-drawing");
       part.classList.add("is-pending");
       part.getBoundingClientRect();
-      startDrawing(part);
+      run(part, 1);
     });
   }
 }

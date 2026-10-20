@@ -29,7 +29,7 @@ codraft-website/
 ├── Assets/codraft-brand/  Brand masters: final, read-only (the site uses optimised copies)
 ├── docs/                  Project documentation; start at docs/README.md
 ├── public/                The favicon set and manifest: web copies of the brand package's web/ files, without C2PA
-├── scripts/               check-js-budget.mjs, check-guardrails.mjs, brand-web-copies.mjs (each with tests), build-lab.mjs
+├── scripts/               check-js-budget.mjs, check-guardrails.mjs, brand-web-copies.mjs (each with tests), build-lab.mjs, design-capture/ (screenshots and measurements for the design critic)
 ├── src/
 │   ├── assets/            brand/ (web copies of the marks), fonts/ (Archivo core and extended, with its OFL)
 │   ├── components/

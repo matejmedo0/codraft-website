@@ -16,6 +16,7 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 - **Brand assets:** `Assets/codraft-brand/`.
   - This is the final package. The masters are read-only; the site uses optimised copies.
   - See the package README and `docs/brand.md`.
+- **Design critique:** the `design-critic` agent in `.claude/agents/`. It is independent and report-only; how to run it is in `docs/design-critique.md` (ADR 0024).
 
 ## Languages and market
 
@@ -74,6 +75,7 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 | `npm run verify` | What CI's verify job runs, in order: lint, format check, typecheck (`astro check`), unit tests, build, JavaScript budget, copy guardrails. |
 | `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first, and stop the dev server: locally Playwright reuses whatever listens on port 4321. Install the browser once with `npx playwright install chromium`. |
 | `npm run format` | Prettier on everything except `docs/`, `Assets/` and the root Markdown files. |
+| `npm run design:capture` | Screenshots and measurements of running pages at six widths, for the `design-critic` agent (`docs/design-critique.md`). Pages go without the leading slash: `npm run design:capture -- lab/pocetna`. |
 
 - One unit test file or name: `npm run test -- src/features/i18n/urls.test.ts`, or `npm run test -- -t "pathFor"`.
 - One E2E test at one width: `npm run test:e2e -- -g "English 404" --project=mobile-375`.

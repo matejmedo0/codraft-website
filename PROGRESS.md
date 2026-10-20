@@ -20,6 +20,7 @@
    - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
    - engleski tekst na kraju dorada
    - usklađivanje Figme
+   - neovisna kritika dizajna: agent `design-critic` je napravljen (ADR 0024, `docs/design-critique.md`). Prvo pokretanje na početnoj čeka vašu riječ. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
    - završne provjere i ažuriranje PR-a #2
    - prije javne objave sami pregledavate i ispravljate sve tekstove
 
@@ -99,6 +100,7 @@ Izlazni kriteriji faze 1 su ispunjeni: build prolazi, dev server radi, prazna st
 **Gdje je što:**
 - Pravila rada i ovlasti: `.claude/rules/codraft-workflow.md`
 - Pokretanje projekta i naredbe: `README.md`
+- Neovisna kritika dizajna: `docs/design-critique.md`
 - Plan po fazama: `docs/phases/`
 - Indeks dokumentacije: `docs/README.md`
 - Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
@@ -182,6 +184,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Kod, crteži, domena i pristupi pripadaju klijentu, i kad ode drugdje („Sve ostaje vaše“) | [ADR 0021](docs/decisions/0021-the-customer-owns-the-work.md) |
 | 2026-10-20 | Vaše ikone usluga na početnoj (opcija B, uz tekst); crta i ikone iscrtavaju se red po red dok se skrola | [ADR 0022](docs/decisions/0022-service-icons-on-home.md) |
 | 2026-10-20 | Plava crta u „Što radimo“ raste glatko i stalno prati ekran; ikona se iscrta kad crta stigne do nje | [ADR 0023](docs/decisions/0023-process-line-follows-the-screen.md) |
+| 2026-10-20 | Neovisna kritika dizajna: agent `design-critic` u projektu radi sa snimkama i mjerenjima (`npm run design:capture`) i samo izvještava; nalazi koji se kose s vašim odlukama dolaze kao pitanja, a promjene idu samo na vašu riječ | [ADR 0024](docs/decisions/0024-independent-design-critique.md) |
 
 ## Sitemap
 

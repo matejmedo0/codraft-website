@@ -132,6 +132,7 @@ Exit: build passes, dev server runs, an empty page renders in Playwright at all 
 - `motion-foundations`: motion tokens, springs, `prefers-reduced-motion`.
 - Base components: header with mobile menu, footer, button, section, card. `frontend-a11y` for the menu, focus states and skip link.
 - Figma only when the user asks: `figma:figma-generate-design` or `figma:figma-generate-library`, with `figma:figma-use` before any `use_figma` call.
+- `design-critic` (project agent, ADR 0024) for an independent critique, on the user's word: capture with `npm run design:capture`, then one critic per lens, as `docs/design-critique.md` describes. Verify its findings before reporting them, and put them to the user as options.
 
 Exit: a style page with tokens and base components, screenshots at three widths, the user approves the direction.
 

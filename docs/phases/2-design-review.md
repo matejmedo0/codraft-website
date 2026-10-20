@@ -51,7 +51,8 @@ The client ended the second refinements session with: "Za sad je super , provjer
      - the drafting zone (option C as refined)
      - "Kako radimo"
      - the centred closing call to action
-8. **The steps under [After the refinements](#after-the-refinements):**
+8. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md), added 2026-10-20). The `design-critic` agent and `npm run design:capture` are ready; the first run waits for the client's word. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
+9. **The steps under [After the refinements](#after-the-refinements):**
    - the checks on the lab build, with `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` added to `.playwright-mcp/check-lab-r3.mjs`; include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build

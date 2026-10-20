@@ -305,3 +305,20 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - on the dev server: no console errors, the layouts measured at 375–1920 px, the motion with reduced motion, without JavaScript, on a reload mid-page and on a jump past the section
     - CI was green on every push
   - **Handover** at the client's request ("Za sad je super … u drugoj sesiji nastavljamo rad"); the open items are in [2-design-review.md](2-design-review.md#handover-2026-10-20).
+- **2026-10-20, the design critic** ([ADR 0024](../decisions/0024-independent-design-critique.md)):
+  - **The client's question:** are there skills or agents that critique design? The answer was that none of the installed agents judges visual design, and that `/check` skips CSS and copy.
+  - **Two outside skills evaluated** at the client's request: Microsoft's `frontend-design-review` and Anthropic's `frontend-design` ([research/2026-10-20-design-critique-skills.md](../research/2026-10-20-design-critique-skills.md)). Neither is an independent critic.
+  - **The client asked for our own:** "Napravi ga prvo detaljno i kvalitetno", and to hear how it works before it runs.
+  - **Built:**
+    - the project agent `.claude/agents/design-critic.md`: eleven criteria, five lenses, six phases from a blind first look, three severities, and client decisions as questions
+    - the capture `scripts/design-capture/` (`npm run design:capture`): screenshots at six widths, states, motion frames and measurements, with unit tests for its findings
+    - the guide [design-critique.md](../design-critique.md), the permission for the capture, and the workflow's phase 2 list
+  - **Self-review along the way:**
+    - Astro's dev toolbar showed in the screenshots; the capture now removes it the moment it appears.
+    - The hidden skip link was being measured; text and controls off the page are left out.
+    - The script was split into three modules (capture, measurement, findings).
+  - **Checks:**
+    - a capture of `/lab/pocetna` at six widths with motion: 150 screenshots in 48 s; no axe findings, no console errors and no overflow at any width (reduced motion)
+    - the motion frames hold the logo's entrance mid-draw
+    - lint, format and the 7 new unit tests pass
+  - **Not run yet:** the critique itself waits for the client's word.

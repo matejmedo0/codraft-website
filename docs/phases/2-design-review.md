@@ -37,7 +37,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 
 **The steps to the end of phase 2, in this order** (the client's order, batch 23)
 
-1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). **Run on 2026-10-21:** capture `2026-10-21-0037` at `a28938e`, four critics, all "Ready after fixes"; 22 verified findings and questions in [research/2026-10-21-design-critique-home.md](../research/2026-10-21-design-critique-home.md), put to the client as options. Nothing changed yet; next is the client's answer (sub-step 6). The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
    1. Make sure the dev server answers on port 4321 (start `npm run dev` if it doesn't).
    2. Capture Home: `npm run design:capture -- lab/pocetna` (six widths, motion at 1440 px). `/lab/style` only if the client asks.
    3. Launch four `design-critic` agents in one message, one per lens: `art-direction`, `craft`, `communication` and `motion`, each with the capture folder and the page.

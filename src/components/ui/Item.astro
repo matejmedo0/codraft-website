@@ -70,23 +70,20 @@ const Heading = `h${String(level)}` as "h2" | "h3" | "h4" | "h5";
     background: var(--surface-sunk);
   }
 
+  /* The heading's style at every level (h5 too), so every list of titles
+     on a page looks the same (critique 7). */
   .item__title {
     font-family: var(--font-heading);
     font-size: var(--step-title);
-    font-stretch: var(--width-text);
-    font-weight: var(--weight-strong);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
     line-height: var(--leading-title);
-    letter-spacing: -0.005em;
+    letter-spacing: var(--tracking-heading);
   }
 
+  /* Underlined at rest, like every link (brand.md), 2 px on hover. */
   .item__link {
     color: var(--ink);
-    text-decoration: none;
-  }
-
-  .item__link:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
   }
 
   .item__body {

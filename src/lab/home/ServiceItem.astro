@@ -60,22 +60,17 @@ const Heading = level;
     position: relative;
   }
 
+  /* The heading's width, weight and tracking come from base.css, as in
+     "Kako radimo" (critique 7). */
   .service__title {
     font-size: var(--step-title);
-    font-stretch: var(--width-text);
-    font-weight: var(--weight-strong);
     line-height: var(--leading-title);
-    letter-spacing: -0.005em;
   }
 
+  /* Underlined at rest, like every link (brand.md), 2 px on hover: a title
+     that links must look like one on a phone too (critique 2). */
   .service__link {
     color: var(--ink);
-    text-decoration: none;
-  }
-
-  .service__link:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
   }
 
   .service__body {

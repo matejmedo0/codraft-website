@@ -1,6 +1,6 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-20, end of the second refinements session): open; the next session starts at [Handover](#handover-2026-10-20).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–15 (refinements 21–45), all reviewed on `/lab/pocetna`. The client: "Za sad je super … mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini".
+> **Status (2026-10-20, third refinements session): open; the open items are under [Handover](#handover-2026-10-20).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third batch 19 (refinements 57–60), all reviewed on `/lab/pocetna`. The client: "Za sad je super … mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini".
 > - **Next:** the open items under [Handover](#handover-2026-10-20), in order, then the steps under [After the refinements](#after-the-refinements).
 > - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
 > - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
@@ -19,7 +19,7 @@ The client ended the second refinements session with: "Za sad je super , provjer
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
   - "Što radimo": `ServicesAxis.astro` (the chosen option), `ServiceItem.astro`, `chapters.ts`, `services.css`, and `axis-line.ts`, which drives the line and the icons
   - the icons: `icons/service-icons.ts` (transcribed from `Assets/codraft-icons/svg/`), `icons/ServiceIcon.astro`, `icons/icon-draw.ts`
-  - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`
+  - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`, and its 3D view from `plan-model.ts` and `plan-projection.ts` (#58)
   - "Tehničko crtanje": `drafting/DraftingLegend.astro` (the chosen option)
 
   Also `src/lab/pages/{pocetna,sto-radimo,crtanje,ikone}.astro` and `src/lab/copy.ts`. Production code changed in:
@@ -28,36 +28,39 @@ The client ended the second refinements session with: "Za sad je super , provjer
   - the locales
   - `draw.ts` (`data-draw-wait`)
   - the tokens: the paper grey `#4A5362` and `--motion-follow`
+  - the sheet's margin at every width (`Sheet.astro`, #57)
 - **Decisions of the review:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md)–[0023](../decisions/0023-process-line-follows-the-screen.md), all accepted (0022 point 3 superseded by 0023). See the list in `PROGRESS.md` under "Odluke".
 - **Copy:** every new or changed line is in `docs/content.md` ("Prototype copy", one table per batch, and the changelog). The client gave much of it verbatim and will proofread every text by hand before the public launch (batch 10).
 - **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), named by batch (`batch8-…` to `batch15-…`), from the dev server; `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
 - **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser about 1920 px wide); the laptop is 2560 × 1600 at 150 % (1707 px). The client now has Windows "Animation effects" on and reviews the motion.
 - **The dev server** runs on port 4321 (`node … astro dev`). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
 
-**Open items, in order**
-1. **Further batches** from the client ("još par detalja i popravka prije faze 3"). Ask for them if the first message doesn't list them.
-2. **The sheet's margin at 1920 px** (#23): the client said "ne znam na što misliš ali provjerimo to kasnije". Show it again simply: the two screenshots (`batch8-sheet-now-1920.png`, `batch8-sheet-fix-1920.png`) and one sentence (at 1920 px the page's frame touches the screen's edges and the page scrolls 4 px sideways; the fix moves the hero 24 px in from each side). Change nothing until the client says yes.
-3. **Proposed, not yet answered:** after the floor plan's timelapse, raise it into a 3D view (walls extruded). Only on the client's yes.
-4. **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
-5. **"Pošaljite skicu"** on Home may go (ADR 0020); it stays until the client decides.
-6. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11), then `src/locales/en.json` where a UI string changed.
-7. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
+**Open items, in order** (updated 2026-10-20 in the third refinements session, in the order the client set in batch 19)
+
+Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), and the inspector's three options (#59: all left as they are, the two type sizes go to phase 3).
+
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
+2. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
+3. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
+   - **The Kowalski proposals:** a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
+   - **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. An argument for the paper option, from Taste Skill (#55): its rule is that the bar's colour follows the page's first field. It is the skill's rule, not a measurement.
+4. **Unanswered, unchanged:**
+   - **"Pošaljite skicu"** on Home may go (ADR 0020); it stays until the client decides (asked again in batch 19, no answer).
+   - **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
+   - **The 3D view's details** (#58), if the client wants changes: the view's angle, the wall height, the floor plan coming back after the 3D view, or a 2D/3D switch. None was asked for; change nothing unasked.
+5. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58), then `src/locales/en.json` where a UI string changed.
+6. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
    - the variable for the paper grey (`#4A5362`)
    - the component Zaglavlje (no button; "Tehničko crtanje")
    - the nine service icons as components
    - the example page Početna:
      - the hero
      - "Što radimo" as the central axis with the icons beside the services
-     - the drafting zone (option C as refined)
+     - the drafting zone (option C as refined), with the floor plan's 3D view
      - "Kako radimo"
      - the centred closing call to action
-8. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md), added 2026-10-20). The `design-critic` agent and `npm run design:capture` are ready; the first run waits for the client's word. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
-9. **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later: „samo zapišeš kao razmatranje obje opcije testirati … kasnije odlučujem“. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. Change nothing until the client decides.
-   - The other project proposals of that evaluation (a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay) wait as well: „ništa ne mijenjamo drugo za sad“. They are listed in the [research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client).
-   - An argument for the paper option, from Taste Skill (#55): its rule is that the browser bar's colour follows the page's first field, and the header is paper. It is the skill's rule, not a measurement.
-10. **Taste Skill's browser inspector** (#56, [ADR 0027](../decisions/0027-taste-skill-ideas-in-the-setup.md)): run once on `/lab/pocetna` on 2026-10-20; the result is in the [research note](../research/2026-10-20-taste-skill-inspect.md). Of its 11 FAIL and 4 WARN, most are the client's direction or false positives, and the frame agrees with criterion 4. Three options wait for the client: the density of "Što radimo" at 1440 px, the two local font sizes, and a density measure for the critic. Change nothing until the client chooses.
-11. **The steps under [After the refinements](#after-the-refinements):**
-   - the checks on the lab build, with `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` added to `.playwright-mcp/check-lab-r3.mjs`; include the scroll motion of "Što radimo" with the motion on
+7. **The steps under [After the refinements](#after-the-refinements):**
+   - the checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` now covers `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` (2026-10-20); include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build
    - the phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description
@@ -69,7 +72,8 @@ The client ended the second refinements session with: "Za sad je super , provjer
 - **Classes passed to `Zone`, `Button`, `ServiceItem` and `PlanDrawing` get the parent's scoped styles** (they spread their attributes); `Item` and `Steps` don't, so wrap them or use `:global()`.
 - **The axis line** (`axis-line.ts`) is one element whose top and length the script measures from the bubbles (`data-axis-mark`); without JavaScript or with reduced motion the per-stage rails draw the line instead. The line is the first child of `.axis`, so the first stage is `.axis-stage:first-of-type`, not `:first-child`.
 - **The icons** are inline SVG with `pathLength="1"` on every stroke; on screen they are 40 px with `stroke-width="1.8"`, so the line stays 1.5 px. Their accent takes `--accent`.
-- **The sheet at 1920 px:** with motion on, the zone rules' end grips overflow by 4 px (#23). Checks for horizontal overflow at 1920 px fail until the client decides; note it, don't fix it unasked.
+- **The sheet at 1920 px** keeps its margin since #57; the overflow of #23 is gone, so a check at 1920 px must find none.
+- **The floor plan's 3D view** (#58): the plan's walls, windows and doors live in `plan-model.ts`, which builds the model's faces at build time; the view is in `plan-projection.ts`, shared with `plan-timelapse.ts`, which gives the CSS the two views (`--plan-from`, `--plan-to`) and each top's rise. Each side is a unit rectangle in its own frame (an SVG `transform` attribute), so CSS `scale` raises it from the floor: SVG's default transform origin is the frame's origin. Inline `style` attributes are blocked by the CSP, so per-element values go in through the CSSOM. `plan-model.test.ts` checks that the model fits above the title block.
 - **Playwright scripts** must live in the project (`.playwright-mcp/`, ignored by git) to find `@playwright/test`. In Git Bash, run them with `MSYS_NO_PATHCONV=1` when an argument starts with `/`. Element screenshots of tall sections at 375 px can come out shifted; give the viewport the section's height.
 - **Node scripts on Windows** import project modules through `file:///C:/…` URLs.
 - **Editing files with Python on Windows:** write with `newline="\n"`, or the file gets CRLF line endings. For long edits, write the script to the scratchpad first.
@@ -425,7 +429,31 @@ After a critical evaluation of the outside skill Leonxlnx/taste-skill ([research
 | 53 | B1–B3: the `animate` skill | Scroll-driven CSS animation and cross-document view transitions, with recipes; the values measured on award sites; readable-text limits; three "never ship" rows; the scroll-reveal recipe gated under `.js` and `no-preference`. | `~/.claude/skills/animate/` (backup in `~/.claude/backups/2026-10-20-taste-skill/`) | ADR 0027 | Done |
 | 54 | C1: phase 3 | Each page starts with its argument: one claim and its verifiable proof per zone (ADR 0004). | [3-pages.md](3-pages.md#steps-for-each-page) | ADR 0027 | Done |
 | 55 | D: `theme-color` | Taste Skill's rule, "the meta theme colour follows the first field", recorded as an argument for the paper option of open item 9. Nothing changes. | Open item 9 above, the research note | — | Open; the client decides |
-| 56 | „njihov inspect radi što točno prije nego odobrim“ | Explained to the client: what it opens, measures, writes and deletes. The client approved one run on `/lab/pocetna` in a new session: „U redu daj mi compact prompt za pokretanje u novoj sesiji tog inspecta“. Run once on 2026-10-20 (11 FAIL, 4 WARN), output in the scratchpad only, nothing fixed. Most failures are the client's direction (rules, 01/02/03, icons, no photographs, the off-white, the hero sentence) or false positives (the graph paper's gradients, the title block's cell lines, margins skewed by the lab bar). The frame agrees with criterion 4; new is a density reading of "Što radimo" at 1440 px, a rest by eye. Three options put to the client. | [Research note](../research/2026-10-20-taste-skill-inspect.md), open item 10 | — | Done; options wait for the client |
+| 56 | „njihov inspect radi što točno prije nego odobrim“ | Explained to the client: what it opens, measures, writes and deletes. The client approved one run on `/lab/pocetna` in a new session: „U redu daj mi compact prompt za pokretanje u novoj sesiji tog inspecta“. Run once on 2026-10-20 (11 FAIL, 4 WARN), output in the scratchpad only, nothing fixed. Most failures are the client's direction (rules, 01/02/03, icons, no photographs, the off-white, the hero sentence) or false positives (the graph paper's gradients, the title block's cell lines, margins skewed by the lab bar). The frame agrees with criterion 4; new is a density reading of "Što radimo" at 1440 px, a rest by eye. Three options put to the client. | [Research note](../research/2026-10-20-taste-skill-inspect.md), open item 10 | — | Done; the client chose in batch 19 (#59) |
+
+**Batch 19 (2026-10-20, third refinements session): answers to the open items**
+
+At the start of the session the open items were put to the client in Croatian. The client answered them in order:
+
+> 1. Dorade riješimo na kraju kad popraviš ostalo:
+> 2. Odobravam popravak okvira lista na 1920px
+> 3. 3D Prikaz tlocrta u sljedećem koraku može , bilo bi fora vidjeti 3d prikaz
+> 4. nakon inspecta :
+> gustoća ostaje kako je za sad
+> dvije veličine slova rješavamo u fazi 3
+> automatska mjera gustoće nema potrebe sad dodavati
+> 6. Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu
+> 7. To isto kasnije kowalskijeva provjera
+> 8. Kasnije isto
+
+The question about "Pošaljite skicu" on Home (open item 5) was not answered; it stays as it is.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 57 | "Odobravam popravak okvira lista na 1920px" | The fix proposed in #23 (closes it): the sheet is at most `min(--sheet-max, 100% - 2 × --sheet-margin)` wide with auto side margins, so it keeps its margin at every width and centres past 1920 px; the media query at 120rem is gone. Measured on the dev server: at 1920 px the margins went from 0/0 px (the page 1924 px wide, so it scrolled 4 px sideways) to 24/24 px with no overflow, the hero's H1 from 72 to 71.9 px and still two lines; 375–1707 px unchanged; 1983 and 2560 px centred as before. Every page on the sheet follows (Home, 404, the lab's Home and style page); lab A–E have their own sheets and stay the record. | `src/components/ui/Sheet.astro` | None | Done; in review |
+| 58 | "3D Prikaz tlocrta u sljedećem koraku može , bilo bi fora vidjeti 3d prikaz" | After the timelapse, the floor plan rises into a 3D model, on Home's option C (`model` on `PlanDrawing`; options A and B on `/lab/crtanje` keep the plan only). <br>- **The sequence** (about 2.9 s after the title block, 8 s in all): the finished plan holds 600 ms; the axes and dimensions switch off with their lamps (200 ms); the plan turns 45° and tilts back into an axonometric view (1200 ms, `--ease-pen`) as a paper floor fades in under it; then the walls rise from it (900 ms, `--ease-standard`), and the title block's "Tlocrt stana" becomes "3D model stana". "Iscrtaj ponovno" replays all of it. <br>- **The model:** the plan's own walls at 2.6 m, window sills at 0.9 m with the glass in a tint of the brand blue up to the 2.1 m head, lintels over every opening, and the four door leaves; seen from the south-west and about 53° above, so the living room is in front. The wall tops keep the plan's solid ink (the cut), the other faces are paper, those facing along x a 9 % shade darker. Built at build time from the same data as the plan (`plan-model.ts`, in the projection of `plan-projection.ts`), painted back to front; only `transform` and `opacity` animate (each side scales up from the floor, each top slides up with it). <br>- **The final state is the 3D view:** without JavaScript, with reduced motion, or when the drawing is already in view at load. The drawing's accessible name says the plan is raised into a 3D model. <br>Compared before choosing: walls cut at 1.2 m like the plan (less of a building) and a view from the south-east (the small rooms in front, harder to read). | `src/lab/home/PlanDrawing.astro`, `plan-timelapse.ts`, `plan-model.ts` (new; the plan's walls, windows and doors moved here), `plan-projection.ts` (new), `plan-model.test.ts` (new), `drafting/DraftingLegend.astro`, `src/lab/copy.ts`; `docs/content.md`, [motion.md](../motion.md) | None | Done; in review |
+| 59 | "gustoća ostaje kako je za sad / dvije veličine slova rješavamo u fazi 3 / automatska mjera gustoće nema potrebe sad dodavati" | No change. The three options of the inspector's run ([research note](../research/2026-10-20-taste-skill-inspect.md#proposed-for-the-client)): (1) "Što radimo" keeps its density at 1440 px; (2) `--step-service` and `--step-heading` are settled in phase 3, when "Što radimo" leaves the lab ([3-pages.md](3-pages.md#content-specifics)); (3) no density measure for the critic. | `docs/phases/3-pages.md` | None | Recorded |
+| 60 | "Dorade riješimo na kraju kad popraviš ostalo"; "Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu"; "To isto kasnije kowalskijeva provjera"; "Kasnije isto" | The order of the rest of the review: first #57 and #58; then the critic's first run on the client's word; the Kowalski proposals and `theme-color` later; the client's own further refinements at the end. | Open items under [Handover](#handover-2026-10-20) | None | Recorded |
 
 ## After the refinements
 

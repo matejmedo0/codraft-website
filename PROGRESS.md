@@ -2,14 +2,16 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U sesijama dorada poslali ste 18 skupina (dorade 1–56), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: dorade prije faze 3, vašim redoslijedom (20. 10. 2026.).** U sesijama dorada poslali ste 19 skupina (dorade 1–60), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
    - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019), kao opcija C s vašim rasporedom i tekstom
    - naslov u dva reda na širokim ekranima; hero točno kao na vašoj snimci
    - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023)
-   - tlocrt koji se iscrtava kao timelapse
+   - tlocrt koji se iscrtava kao timelapse, a zatim se podiže u 3D model: zakrene se i nagne u aksonometriju, a zidovi se podignu (dorada 58)
+   - okvir lista zadržava rub od 24 px i na 1920 px, pa se stranica više ne pomiče ustranu (dorada 57)
+   - nakon alata `inspect`: gustoća „Što radimo“ ostaje, dvije lokalne veličine slova rješavamo u fazi 3, mjera gustoće za `design-critic` se ne dodaje (dorada 59)
    - „Kako radimo“ s vaše tri obveze; tamnija siva za sporedni tekst (7,11:1)
    - završni poziv s vašim pitanjem, centriran
    - skice stižu e-mailom (ADR 0020); sve pripada klijentu (ADR 0021)
@@ -30,19 +32,17 @@
      - u fazi 3 svaka stranica počinje svojim argumentom: tvrdnja i provjerljiv dokaz po zoni
 
      Kod stranice se ne mijenja.
-2. **Otvoreno:**
-   - vaše daljnje dorade („još par detalja i popravka prije faze 3“)
-   - okvir lista na 1920 px (rekli ste da ćemo ga pogledati kasnije)
-   - 3D prikaz tlocrta, ako ga želite
-   - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
-   - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu, a odlučujete kasnije (dorada 51). Taste Skill ima pravilo da traka prati prvo polje stranice, što ide u prilog papirnatoj (dorada 55).
-   - alat `inspect` iz Taste Skilla pokrenut je jednom na `/lab/pocetna` (dorada 56, `docs/research/2026-10-20-taste-skill-inspect.md`). Većina nalaza su vaše odluke ili lažni nalazi, a okvir stranice je u redu. Tri opcije čekaju vašu riječ: gustoća „Što radimo“ na 1440 px, dvije lokalne veličine slova i mjera gustoće za `design-critic`
-   - ostali prijedlozi iz procjene Kowalskijevih skillova čekaju vašu riječ: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
-   - engleski tekst na kraju dorada
-   - usklađivanje Figme
-   - neovisna kritika dizajna: agent `design-critic` je napravljen (ADR 0024, `docs/design-critique.md`). Prvo pokretanje na početnoj čeka vašu riječ. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
-   - završne provjere i ažuriranje PR-a #2
-   - prije javne objave sami pregledavate i ispravljate sve tekstove
+2. **Otvoreno, vašim redoslijedom (dorada 60):**
+   1. neovisna kritika dizajna: agent `design-critic` (ADR 0024, `docs/design-critique.md`) pokrećem na početnoj kad potvrdite. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
+   2. vaše daljnje dorade („još par detalja i popravka prije faze 3“), na kraju
+   3. kasnije, na vašu riječ:
+      - prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
+      - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu (dorada 51). Taste Skill ima pravilo da traka prati prvo polje stranice, što ide u prilog papirnatoj (dorada 55).
+   4. bez odgovora: gumb „Pošaljite skicu“ na početnoj ostaje dok ne odlučite
+   5. engleski tekst na kraju dorada
+   6. usklađivanje Figme
+   7. završne provjere i ažuriranje PR-a #2
+   8. prije javne objave sami pregledavate i ispravljate sve tekstove
 
 Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 

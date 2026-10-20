@@ -79,6 +79,7 @@ The AI asistenti page is built in phase 4.
 
 ## Content specifics
 
+- **Home's two local type sizes** (the client's choice in the phase 2 review, #59): when "Što radimo" moves out of the lab, decide whether `--step-service` (19 px at 1440, `src/lab/home/services.css`) and `--step-heading` (25 px, `Steps.astro`) become steps of the type scale or merge into their neighbours; with `--step-title` at 22 px they are three sizes 3 px apart ([inspector's note](../research/2026-10-20-taste-skill-inspect.md#measured-and-real-but-not-defects)).
 - **Drafting page:** apply the guardrails in [compliance.md](../compliance.md#copy-guardrails); no projektiranje wording. Show the sample sheets in the layer viewer once the client delivers them.
 - **Impresum:** every field from ZTD Art. 21 and ZET Art. 6 (compliance items C1–C2).
 - **Alt text** for every meaningful image, in both languages. Decorative images get an empty `alt` (gap G28).

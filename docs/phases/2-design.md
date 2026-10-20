@@ -1,6 +1,6 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** Done and in review at the phase gate (2026-10-19). PR #2 is the phase report. The client is refining the design before phase 3: the first refinements session made six batches on `/lab/pocetna` and handed over; [2-design-review.md](2-design-review.md) is the brief for the next session.
+- **Status:** Done and in review at the phase gate (2026-10-19). PR #2 is the phase report. The client is refining the design before phase 3, on `/lab/pocetna`: three sessions so far, batches 1–19 (refinements 1–60); [2-design-review.md](2-design-review.md) has every refinement and the open items.
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
   - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md).
   - **The client chose** D with a paper header and hero ([ADR 0015](../decisions/0015-design-direction-model-i-list.md)) and Figma for quick iterations ([ADR 0016](../decisions/0016-figma-for-design-iterations.md)); the answers are in [2-design-system.md](2-design-system.md).
@@ -349,3 +349,13 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - an argument for the paper `theme-color`, recorded only
   - **Checked:** the `overflow: hidden` trap against MDN; browser support for scroll-driven animations and cross-document view transitions (Firefox lacked both in stable); the `animate` skill's front matter still loads after the edit.
   - **Kept outside the repository:** the client's general notes on the skill, for later projects.
+- **2026-10-20, third review refinements session** ([2-design-review.md](2-design-review.md), batch 19, refinements 57–60):
+  - **Start:** the documentation read and the open items put to the client in Croatian. The client answered them in order, and set the order of the rest of the review: the fixes first, then the critic on the client's word, the Kowalski proposals and `theme-color` later, the client's own refinements at the end.
+  - **Skills loaded:** `animate` for the 3D view.
+  - **The sheet at 1920 px** (#57, approved): `Sheet.astro` keeps its margin at every width, so at 1920 px the frame no longer touches the screen and the page no longer scrolls 4 px sideways; the hero's H1 stays in two lines (71.9 px).
+  - **The floor plan's 3D view** (#58, approved): after the timelapse the plan switches off its axes and dimensions, turns and tilts into an axonometric view, and its walls rise into a 3D model with sills, glass, lintels and door leaves; "3D model stana" in the title block. The model is built at build time from the plan's own data (`plan-model.ts`, `plan-projection.ts`, with 8 unit tests). Three views were compared first; the one from the south-west with full-height walls was kept.
+  - **The inspector's options** (#59): all as they are; the two local type sizes go to phase 3 ([3-pages.md](3-pages.md#content-specifics)).
+  - **Self-review along the way:**
+    - The shade of the sides facing along x lost to the base face rule on specificity; the selector was raised.
+    - The model sat right of centre; it was moved so it sits centred above the title block, and a unit test keeps it inside the sheet and above the title block.
+    - The lab check now covers the review's pages. On `/lab/crtanje` axe found the services of options A and B as `h4` right under the zone's `h2` (heading-order, moderate), from batch 6; they are `h3` now, as in option C, with no change in look.

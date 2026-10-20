@@ -78,27 +78,54 @@
     both;
 }
 
-/* The service icons (review batch 13) draw as the pen passes them
-   (icon-draw.ts): each ink stroke runs along its path, then the blue line,
-   then the grip snaps in. Before the pen starts they aren't there; once a
-   stroke is drawn it is plain again. Without JavaScript or with reduced
-   motion the icons are complete. */
+/* Option 3, the central axis: the line and the service icons follow the
+   scroll row by row (review batch 14; axis-line.ts). The text never waits.
+   Without JavaScript, or with reduced motion, the stages' rails draw the
+   line complete and the icons are complete. */
+.axis__line {
+  display: none;
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .js .svc-line:not(.is-drawing) [data-stroke] {
+  /* One line, set by the script, in place of the rails. */
+  .js [data-axis] .svc-rail {
+    display: none;
+  }
+
+  .js .axis__line {
+    display: block;
+    transform: scaleY(var(--progress, 0));
+    transition: transform var(--motion-follow) var(--ease-follow);
+  }
+
+  .js .axis__line.is-instant {
+    transition: none;
+  }
+
+  /* An icon isn't there until its row starts; then its strokes run along
+     their paths (icon-draw.ts) and the grip snaps in. Once drawn, a stroke
+     is plain again. */
+  .js [data-axis-item]:not(.is-drawn) [data-stroke] {
     opacity: 0;
   }
-}
 
-.svc-line.is-drawing :is([data-stroke="ink"], [data-stroke="line"]) {
-  animation: icon-stroke var(--for, 360ms) var(--ease-pen) var(--at, 0ms)
-    backwards;
-}
+  [data-axis-item].is-drawn:not(.is-instant)
+    :is([data-stroke="ink"], [data-stroke="line"]) {
+    animation: icon-stroke var(--for, 220ms) var(--ease-pen) var(--at, 0ms)
+      backwards;
+  }
 
-.svc-line.is-drawing [data-stroke="grip"] {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: icon-grip var(--motion-snap) var(--ease-snap) var(--at, 0ms)
-    backwards;
+  [data-axis-item].is-drawn:not(.is-instant) [data-stroke="grip"] {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: icon-grip var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      backwards;
+  }
 }
 
 /* Hidden at the very start, so a square cap never shows as a dot. */

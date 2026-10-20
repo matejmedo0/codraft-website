@@ -9,13 +9,15 @@
  * title. An odd last service is centred under its stage. On narrow screens
  * the line runs down the left, as in option 1.
  *
- * The process line joins the bubbles 01 → 02 → 03 and draws as one stroke
- * when the section reaches its trigger (process-line.ts).
+ * The process line joins the bubbles 01 → 02 → 03. It follows the scroll
+ * row by row, and each service's icon draws as the line reaches it, once
+ * and only forwards (review batch 14; axis-line.ts). Without JavaScript or
+ * with reduced motion the stages' rails draw it complete.
  *
  * With `icons` each service shows its icon on the side facing the line
  * (review batch 13, /lab/ikone): "above" the title, or "beside" the title
- * and its line, mirrored in the left column. The centred last service has
- * its icon centred above it. The icons draw as the pen passes them.
+ * and its line, mirrored in the left column (the client's choice, batch 14,
+ * ADR 0022). The centred last service has its icon centred above it.
  */
 import "./services.css";
 
@@ -48,20 +50,18 @@ const labelId = `${headingId}-opcija`;
   )}
   <h2 id={headingId}>{SERVICES.title}</h2>
   <div
-    class:list={[
-      "svc-line axis",
-      icons !== undefined && `axis--icons-${icons}`,
-    ]}
-    data-draw="late"
-    data-draw-wait
-    data-process-line
+    class:list={["axis", icons !== undefined && `axis--icons-${icons}`]}
+    data-axis
   >
+    <span class="axis__line" data-axis-line aria-hidden="true"></span>
     {CHAPTERS.map((chapter) => (
       <div class="axis-stage">
-        <span class="svc-rail axis-stage__rail" data-rail aria-hidden="true" />
+        <span class="svc-rail axis-stage__rail" aria-hidden="true" />
         <div class="axis-stage__head">
           <h3 class="svc-title axis-stage__title">
-            <span class="svc-bubble axis-stage__bubble">{chapter.number}</span>
+            <span class="svc-bubble axis-stage__bubble" data-axis-mark>
+              {chapter.number}
+            </span>
             {chapter.title}
           </h3>
           <p class="svc-tagline axis-stage__tagline">{chapter.tagline}</p>
@@ -74,6 +74,7 @@ const labelId = `${headingId}-opcija`;
               href={item.href}
               icon={icons === undefined ? undefined : item.icon}
               class="axis-stage__item"
+              data-axis-item
             />
           ))}
         </ul>
@@ -81,13 +82,20 @@ const labelId = `${headingId}-opcija`;
     ))}
   </div>
   <script>
-    import "../../components/ui/draw.ts";
-    import "./process-line.ts";
+    import "./axis-line.ts";
   </script>
 </Zone>
 
 <style>
+  .axis {
+    position: relative;
+  }
+
   /* Narrow screens: the line down the left, as in option 1. */
+  .axis__line {
+    left: calc((var(--bubble) - var(--rail)) / 2);
+  }
+
   .axis-stage {
     --stage-top: var(--space-5);
 
@@ -118,7 +126,7 @@ const labelId = `${headingId}-opcija`;
     left: calc((var(--bubble) - var(--rail)) / 2);
   }
 
-  .axis-stage:first-child .axis-stage__rail {
+  .axis-stage:first-of-type .axis-stage__rail {
     top: calc(var(--stage-top) + var(--bubble) / 2);
   }
 
@@ -201,7 +209,7 @@ const labelId = `${headingId}-opcija`;
       margin-top: var(--space-3);
     }
 
-    .axis-stage__rail {
+    :is(.axis__line, .axis-stage__rail) {
       left: calc(50% - var(--rail) / 2);
     }
 

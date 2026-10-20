@@ -6,12 +6,12 @@
  *
  * Each chapter holds one stretch of the line (`data-rail`). This script
  * times the stretches by their length, as --rail-at and --rail-for, so they
- * join into one movement, and times the service icons, if the line has any,
- * to the pen (icon-draw.ts; review batch 13). Without it the CSS falls back
- * to fixed timings; without JavaScript, or with reduced motion, the line and
- * the icons are complete.
+ * join into one movement. Without it the CSS falls back to fixed timings;
+ * without JavaScript, or with reduced motion, the line is complete.
+ *
+ * Options 1 and 2 of "Što radimo" keep this as their record; the chosen
+ * option 3 follows the scroll instead (axis-line.ts; review batch 14).
  */
-import { timeIcons } from "./icons/icon-draw.ts";
 
 /** The longest the whole line may take, so a phone's long line keeps pace. */
 const MAX_DURATION_MS = 2400;
@@ -32,16 +32,6 @@ function timeRails(line: HTMLElement): void {
     rail.style.setProperty("--rail-for", `${String(Math.round(duration))}ms`);
     at += duration;
   }
-
-  // The rails scale from their top edge while they wait, so their tops hold;
-  // their lengths come from the layout.
-  const first = rails[0];
-  const last = rails.at(-1);
-  if (first === undefined || last === undefined) return;
-  const top = window.scrollY + first.getBoundingClientRect().top;
-  const bottom =
-    window.scrollY + last.getBoundingClientRect().top + last.offsetHeight;
-  timeIcons(line, top, bottom, speed);
 }
 
 function timeAll(): void {

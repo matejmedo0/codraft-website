@@ -184,10 +184,18 @@ export const MOTION_TOKENS: MotionToken[] = [
   { token: "motion-snap", use: "Grip koji „sjedne“ na kraj crte" },
   { token: "motion-slow", use: "Kota; otpuštanje odabira crte zone" },
   { token: "motion-draw", use: "Crtačka linija: znak, crta zone, koraci" },
+  {
+    token: "motion-follow",
+    use: "Crta u „Što radimo“ koja prati skrol, red po red",
+  },
   { token: "motion-entrance-delay", use: "Stanka prije ulaza znaka" },
   { token: "motion-hold", use: "Koliko dugo crta zone ostaje odabrana" },
   { token: "ease-standard", use: "Većina prijelaza" },
   { token: "ease-pen", use: "Potez pera: spor početak, dugo klizanje" },
+  {
+    token: "ease-follow",
+    use: "Sustizanje skrola: brz početak, mekan kraj",
+  },
 ];
 
 export interface SpaceToken {

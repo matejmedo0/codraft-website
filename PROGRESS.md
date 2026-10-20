@@ -175,6 +175,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-19 | Tehničko crtanje nudi i 3D modele, uz 2D crteže i tehničku dokumentaciju | [ADR 0019](docs/decisions/0019-drafting-adds-3d-models.md) |
 | 2026-10-20 | Skice i crteži stižu e-mailom; stranica ne prima datoteke, a forma ostaje samo tekstualna | [ADR 0020](docs/decisions/0020-drawings-arrive-by-email.md) |
 | 2026-10-20 | Kod, crteži, domena i pristupi pripadaju klijentu, i kad ode drugdje („Sve ostaje vaše“) | [ADR 0021](docs/decisions/0021-the-customer-owns-the-work.md) |
+| 2026-10-20 | Vaše ikone usluga na početnoj (opcija B, uz tekst); crta i ikone iscrtavaju se red po red dok se skrola | [ADR 0022](docs/decisions/0022-service-icons-on-home.md) |
 
 ## Sitemap
 

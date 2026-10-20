@@ -12,6 +12,7 @@ export const DURATION_MS = {
   snap: 320,
   slow: 480,
   draw: 700,
+  follow: 280,
   entranceDelay: 250,
   hold: 1700,
 } as const;
@@ -22,6 +23,8 @@ export const EASING = {
   standard: [0.2, 0, 0, 1],
   /** A pen stroke: a slow start, a long glide, a gentle stop. */
   pen: [0.5, 0, 0.2, 1],
+  /** Catching up with the scroll: a quick start, a soft stop. */
+  follow: [0.2, 0.8, 0.2, 1],
 } as const satisfies Record<string, CubicBezier>;
 
 export interface SpringPreset {

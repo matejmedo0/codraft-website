@@ -27,8 +27,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0019](0019-drafting-adds-3d-models.md) | The drafting offer adds 3D models | Accepted | 2026-10-19 |
 | [0020](0020-drawings-arrive-by-email.md) | Drawings and sketches arrive by email, not through the site | Accepted | 2026-10-20 |
 | [0021](0021-the-customer-owns-the-work.md) | The customer owns the code, drawings, domain and access | Accepted | 2026-10-20 |
+| [0022](0022-service-icons-on-home.md) | Service icons on Home, drawn as the line reaches them | Accepted | 2026-10-20 |
 
-Next number: **0022**.
+Next number: **0023**.
 
 ## How to add one
 

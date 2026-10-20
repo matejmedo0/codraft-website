@@ -18,9 +18,14 @@ The client asked for animation that is high quality and **not generic**. The con
 | **Plot stamp** | Form success | The confirmation appears as a stamped title block: "Zaprimljeno · 18. 10. 2026." |
 | **Page change** | Navigation between pages | Cross-document View Transitions where supported: 200 ms crossfade (`--motion-base`); the header stays still. |
 
-**The process line through "Što radimo"** (the client's review, batch 3) is one stroke. It isn't there until the section reaches its trigger, then it runs from bubble 01 to bubble 03 at a constant speed, like a plotter's pen: about 1.3 s on a desktop, at most 2.4 s on a phone. A part like this, which must wait even when it starts in view, takes `data-draw-wait` (`draw.ts`) and is hidden from the first paint.
+**The process line and the service icons in "Što radimo" follow the scroll** (the client's review, batch 14; [ADR 0022](decisions/0022-service-icons-on-home.md); `axis-line.ts`):
+- An IntersectionObserver watches every service. When a row of services crosses 85 % of the screen's height, it starts, once, and is never watched again; services in one row start together.
+- **The line** is one element from bubble 01 to bubble 03, scaled from its top. Each row that starts moves the line to the row's icon (to its end for the services below it), over `--motion-follow` (280 ms) on `--ease-follow`, a quick start and a soft stop, so it never lags the scroll. It only ever grows; nothing runs backwards when you scroll up.
+- **The icon** starts 120 ms after its row, while the line is still moving: its strokes run along their paths in drawing order, at most 60 ms apart, the blue drafting line last, then the grip snaps in (`--motion-fast`, `--ease-spring`). An icon takes at most 450 ms, so a row is done within about 610 ms. The right icon of a row starts 40 ms after the left; when a fast scroll starts several rows at once, each further row starts 60 ms later.
+- Services already above the screen at load (a reload mid-page, a jump from a link) show their icons complete at once, and the line jumps to the furthest of them.
+- Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too, with no transitions. `will-change` is set only while the line moves.
 
-**The service icons follow the pen** (review batch 13; two placements on `/lab/ikone`, Home waits for the client's choice). As the process line passes an icon's middle, the icon draws itself: its navy strokes run along their paths in the source's drawing order (each 360 ms, starting within 420 ms), then its blue drafting line runs out (240 ms) and the grip snaps in (`--motion-snap`, `--ease-snap`). Icons below the line's end start when it arrives, and no two start less than 90 ms apart, so a row reads left to right. It is part of the pen's one movement and plays once; reduced motion and no JavaScript show the icons complete (`icons/icon-draw.ts`, `services.css`).
+Options 1 and 2 on `/lab/sto-radimo` keep the earlier behaviour as their record: one stroke at a constant speed once the section reaches its trigger (batch 3), hidden from the first paint with `data-draw-wait` (`draw.ts`).
 
 ## Principles
 
@@ -54,8 +59,10 @@ When `prefers-reduced-motion: reduce` is set:
 | `--motion-draw` | 700 ms | Drafting line reveal |
 | `--motion-entrance-delay` | 250 ms | The pause before the logo entrance |
 | `--motion-hold` | 1700 ms | How long a zone rule stays selected |
+| `--motion-follow` | 280 ms | A part catching up with the scroll: the process line (review batch 14) |
 | `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Most UI transitions |
 | `--ease-pen` | `cubic-bezier(0.5, 0, 0.2, 1)` | Drawing lines, like a pen stroke |
+| `--ease-follow` | `cubic-bezier(0.2, 0.8, 0.2, 1)` | Catching up with the scroll: a quick start, a soft stop |
 | `--ease-spring` | `linear()` of the "snappy" spring (300/30) | Grips |
 | `--ease-snap` | `linear()` of the "snap" spring (400/24) | A grip snapping in |
 

@@ -15,6 +15,7 @@
     --motion-snap: 320ms; /* a grip snapping in, after a line */
     --motion-slow: 480ms; /* dimension lines, a selection's release */
     --motion-draw: 700ms; /* a drafting line */
+    --motion-follow: 280ms; /* a part catching up with the scroll */
 
     /* The logo entrance waits a moment after load; a section's selection
        holds before it releases. */
@@ -24,6 +25,9 @@
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
     /* A pen stroke: a slow start, a long glide, a gentle stop. */
     --ease-pen: cubic-bezier(0.5, 0, 0.2, 1);
+    /* Catching up with the scroll: a quick start, so it never lags, and a
+       soft stop. */
+    --ease-follow: cubic-bezier(0.2, 0.8, 0.2, 1);
 
     /* Springs from motion-foundations (motion.ts), sampled into linear():
        "snappy" (stiffness 300, damping 30) for UI state, and "snap"

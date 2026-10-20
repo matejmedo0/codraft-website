@@ -56,6 +56,12 @@ export const MODEL_VIEW: View = {
  */
 export type PlanModel = "stay" | "return" | "roof";
 
+/**
+ * The house's colours with a roof (review #65): a navy roof, a navy
+ * facade, or blue tones. PlanDrawing's CSS holds the colours.
+ */
+export type HousePalette = "navy-roof" | "navy-walls" | "blue";
+
 /** With a roof, the model sits a little lower, so the roof fits the sheet. */
 export const ROOF_VIEW: View = { ...MODEL_VIEW, shift: [-8, 0] };
 

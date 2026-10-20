@@ -9,8 +9,9 @@
  * (ADR 0019) as rows like "Kako radimo". The button "Pošaljite skicu" of
  * batch 9 is gone (review #61): requests come through the contact form and
  * email (ADR 0020). The layer list and the replay button have their own row
- * under the drawing. The plan rises into its 3D view (review #58); the
- * comparison page of #63 passes the other options.
+ * under the drawing. The plan rises into its 3D view (review #58) and gets
+ * a roof (option 3 of #63, the client's choice in #64); the comparison
+ * pages pass the other options and the house's palettes (#65).
  *
  * The grid's areas are "drawing text" / "legend .". The plan spans the
  * drawing and legend rows as a subgrid, so its frame takes the first row and
@@ -23,7 +24,7 @@ import "../services.css";
 import Zone from "../../../components/ui/Zone.astro";
 import { DRAFTING } from "../../copy.ts";
 import PlanDrawing from "../PlanDrawing.astro";
-import type { PlanModel } from "../plan-projection.ts";
+import type { HousePalette, PlanModel } from "../plan-projection.ts";
 import ServiceItem from "../ServiceItem.astro";
 import { DRAFTING_SERVICES } from "./drafting.ts";
 
@@ -32,11 +33,13 @@ interface Props {
   headingId?: string;
   /** The option's name, on the comparison page. */
   label?: string;
-  /** How the plan's 3D view plays (review #63); Home has "stay". */
+  /** How the plan's 3D view plays (review #63); Home has the roof (#64). */
   model?: PlanModel;
+  /** The house's colours (review #65), on the comparison page. */
+  palette?: HousePalette;
 }
 
-const { headingId = "cad", label, model = "stay" } = Astro.props;
+const { headingId = "cad", label, model = "roof", palette } = Astro.props;
 const labelId = `${headingId}-opcija`;
 ---
 
@@ -65,7 +68,12 @@ const labelId = `${headingId}-opcija`;
         ))}
       </ul>
     </div>
-    <PlanDrawing idPrefix={headingId} class="legend__plan" model={model} />
+    <PlanDrawing
+      idPrefix={headingId}
+      class="legend__plan"
+      model={model}
+      palette={palette}
+    />
   </div>
 </Zone>
 

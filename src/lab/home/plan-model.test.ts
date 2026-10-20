@@ -111,6 +111,17 @@ describe("plan model", () => {
     expect(Math.max(...ys)).toBeLessThan(TITLE_BLOCK_TOP);
   });
 
+  it("puts only the walls' outer sides on the facade", () => {
+    const outer = faces.filter((face) => face.type === "side" && face.outer);
+    // Seen from the south-west: the west and south walls, their sills and
+    // lintels, between the openings.
+    expect(outer.length).toBeGreaterThan(8);
+    expect(outer.every((face) => face.kind !== "glass")).toBe(true);
+    expect(outer.length).toBeLessThan(
+      faces.filter((face) => face.type === "side").length / 2,
+    );
+  });
+
   it("gives the roof option its own view and the others the model's", () => {
     expect(modelView("roof")).toBe(ROOF_VIEW);
     expect(modelView("stay")).toBe(MODEL_VIEW);

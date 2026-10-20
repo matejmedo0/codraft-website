@@ -19,6 +19,7 @@ const LAB_PAGES = [
   "crtanje",
   "ikone",
   "tlocrt-3d",
+  "kuca-boje",
 ] as const;
 
 /**

@@ -2,7 +2,8 @@
 // The floor plan's 3D view in three options, for the client to compare
 // (the review, #63; docs/phases/2-design-review.md). Each option is the
 // drafting zone as on Home; only the end of the drawing's animation
-// differs. Option 1 is on /lab/pocetna until the client chooses. Noindex;
+// differs. The client chose option 3 (#64), now on /lab/pocetna; this page
+// stays as the record. Noindex;
 // only in `astro dev` and lab builds (astro.config.ts).
 import Footer from "../../components/site/Footer.astro";
 import Header from "../../components/site/Header.astro";
@@ -27,8 +28,7 @@ const OPTIONS: {
   {
     id: "tlocrt-3d-1",
     name: "Opcija 1: ostaje u 3D-u",
-    summary:
-      "Tlocrt se podigne u 3D model i tako ostane. Ovo je sada na početnoj.",
+    summary: "Tlocrt se podigne u 3D model i tako ostane.",
     model: "stay",
   },
   {
@@ -42,7 +42,7 @@ const OPTIONS: {
     id: "tlocrt-3d-3",
     name: "Opcija 3: s krovom",
     summary:
-      "Kad se zidovi podignu, odozgo se na njih spusti dvostrešni krov (35°), sa zabatima i crtama pokrova. Stan s krovom postaje kuća, pa zaglavlje kaže „Tlocrt kuće“ i „3D model kuće“.",
+      "Kad se zidovi podignu, odozgo se na njih spusti dvostrešni krov (35°), sa zabatima i crtama pokrova. Stan s krovom postaje kuća, pa zaglavlje kaže „Tlocrt kuće“ i „3D model kuće“. Ovo je vaš izbor; sada je na početnoj, a boje kuće imaju svoju usporedbu.",
     model: "roof",
   },
 ];
@@ -63,7 +63,10 @@ const OPTIONS: {
           U sve tri opcije tlocrt se iscrta kao timelapse, osi i kote se ugase,
           a crtež se zakrene i nagne u aksonometriju i iz njega se podignu
           zidovi. Razlika je u kraju. Svaki crtež se pokrene kad do njega
-          skrolate, a „Iscrtaj ponovno“ ga ponavlja.
+          skrolate, a „Iscrtaj ponovno“ ga ponavlja. Odabrali ste opciju 3 (21.
+          10. 2026.); ona je sada na početnoj, a boje kuće uspoređujete na
+          stranici <a href="/lab/kuca-boje">Kuća: boje</a>. Ova stranica ostaje
+          kao zapis usporedbe.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (

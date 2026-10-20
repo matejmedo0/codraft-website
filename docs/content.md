@@ -298,7 +298,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, title block in 3D | 3D model stana · Mjere u cm · Codraft · Ilustracija ("Tlocrt stana" while the plan is drawn) | `drafting.3d.title`; describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model. | The line above, plus the 3D view (G28) |
 
-**The 3D view's options** (review #63, 2026-10-20), on `/lab/tlocrt-3d` for the client to compare. Option 1 is the one above (Home). Drafts.
+**The 3D view's options** (review #63, 2026-10-20), on `/lab/tlocrt-3d` for the client to compare. Option 1 is the one above. The client chose option 3 (#64), so Home uses its lines. Drafts.
 
 | Where | HR (prototype) | Derived from |
 |---|---|---|
@@ -464,6 +464,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 10):** "'Kako radimo' on Home" added under "Prototype copy": the client's three commitments, verbatim, in place of the round 2 lines. G2 answered ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)). Files come by email, not through the site ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)). No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 11):** "The closing call to action on Home" added under "Prototype copy": the client's heading and lead in place of "Prvo jasnoća.". No copy block changed.
+- **2026-10-21 (phase 2, review refinements, #64):** Home uses option 3's lines (the house's title block, the "Krov" layer and its accessible name). No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #63):** "The 3D view's options" added under "Prototype copy": the accessible names of options 2 and 3 and the house's title block. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #61):** The button "Pošaljite skicu" removed from Home's drafting zone, at the client's request. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.

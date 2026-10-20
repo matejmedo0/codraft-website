@@ -16,6 +16,9 @@
  * #63): "stay" keeps the 3D view (Home), "return" lowers the walls and
  * goes back to the plan, and "roof" sets a pitched roof on the model.
  *
+ * With a roof, `palette` colours the house (review #65): the facade (the
+ * walls' outer sides and the gable) and the roof, from the brand's colours.
+ *
  * Without JavaScript, or with reduced motion, the drawing is complete: the
  * plan, or the 3D view where the option ends in it.
  *
@@ -38,7 +41,12 @@ import {
   WALLS,
   WINDOWS,
 } from "./plan-model.ts";
-import { modelView, type PlanModel, viewTransform } from "./plan-projection.ts";
+import {
+  type HousePalette,
+  modelView,
+  type PlanModel,
+  viewTransform,
+} from "./plan-projection.ts";
 
 type Wipe = "x" | "y";
 
@@ -73,11 +81,14 @@ interface Props extends HTMLAttributes<"div"> {
   idPrefix?: string;
   /** Raises the finished plan into its 3D view, and how it ends (#63). */
   model?: PlanModel;
+  /** The house's colours, with a roof (review #65). */
+  palette?: HousePalette | undefined;
 }
 
 const {
   idPrefix = "plan",
   model,
+  palette,
   class: className,
   ...attributes
 } = Astro.props;
@@ -119,6 +130,7 @@ const titles =
       "plan--returns": model === "return",
       "plan--roof": model === "roof",
     },
+    model === "roof" && palette !== undefined && `plan--palette-${palette}`,
     className,
   ]}
   data-draw="half"
@@ -273,6 +285,7 @@ const titles =
                     "model-side",
                     `model-side--${face.facing}`,
                     `model--${face.kind}`,
+                    { "model-side--outer": face.outer },
                   ]}
                   x="0"
                   y={face.z0}
@@ -420,13 +433,21 @@ const titles =
   /* The 3D view (review #58). The tops of the walls and lintels are where
      the model is cut, so they keep the plan's solid ink; every other face
      is paper, the sides facing along x a shade darker, and the glass a
-     tint of the accent. */
+     tint of the accent. The house's colours are variables, so a palette
+     (review #65) only sets them; without one the house is paper. */
   .plan--model {
     --model-shade: color-mix(
       in srgb,
       var(--drawing-ink) 9%,
       var(--drawing-fill)
     );
+    --facade: var(--drawing-fill);
+    --facade-shade: var(--model-shade);
+    --facade-line: var(--drawing-ink);
+    --roof: var(--drawing-fill);
+    --roof-shade: var(--model-shade);
+    --roof-line: var(--drawing-muted);
+    --glass: color-mix(in srgb, var(--accent) 16%, transparent);
   }
 
   .plan__drawing
@@ -442,14 +463,34 @@ const titles =
     vector-effect: non-scaling-stroke;
   }
 
-  .plan__drawing
-    :is(.plan__model .model-side--x, .plan__roof .roof-face--shade) {
+  .plan__drawing .plan__model .model-side--x {
     fill: var(--model-shade);
+  }
+
+  .plan__drawing .plan__model .model-side--outer {
+    fill: var(--facade);
+    stroke: var(--facade-line);
+  }
+
+  .plan__drawing .plan__model .model-side--outer.model-side--x,
+  .plan__drawing .plan__roof .roof-face--gable {
+    fill: var(--facade-shade);
+    stroke: var(--facade-line);
+  }
+
+  .plan__drawing .plan__roof :is(.roof-face--slope, .roof-face--edge) {
+    fill: var(--roof);
+  }
+
+  .plan__drawing
+    .plan__roof
+    .roof-face--shade:is(.roof-face--slope, .roof-face--edge) {
+    fill: var(--roof-shade);
   }
 
   /* The roofing: lines down the slopes, like a hatch. */
   .plan__drawing .roof-hatch {
-    stroke: var(--drawing-muted);
+    stroke: var(--roof-line);
     stroke-width: 1px;
   }
 
@@ -458,12 +499,63 @@ const titles =
   }
 
   .plan__drawing .plan__model .model--glass {
-    fill: color-mix(in srgb, var(--accent) 16%, transparent);
+    fill: var(--glass);
     stroke: var(--accent);
   }
 
   .plan__drawing .plan__model .model-top.model--glass {
     fill: var(--accent);
+  }
+
+  /* The house's palettes (review #65), all from the brand: navy, paper and
+     blue, mixed from the drawing's roles. */
+
+  /* 1: a paper facade under a navy roof, like slate, its lines lighter. */
+  .plan--palette-navy-roof {
+    --roof: color-mix(in srgb, var(--drawing-ink) 86%, var(--drawing-fill));
+    --roof-shade: var(--drawing-ink);
+    --roof-line: color-mix(
+      in srgb,
+      var(--drawing-fill) 38%,
+      var(--drawing-ink)
+    );
+  }
+
+  /* 2: a navy facade with lighter joints, under a pale metal roof. */
+  .plan--palette-navy-walls {
+    --facade: color-mix(in srgb, var(--drawing-ink) 80%, var(--drawing-fill));
+    --facade-shade: var(--drawing-ink);
+    --facade-line: color-mix(
+      in srgb,
+      var(--drawing-fill) 30%,
+      var(--drawing-ink)
+    );
+    --roof: color-mix(in srgb, var(--drawing-ink) 5%, var(--drawing-fill));
+    --roof-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 15%,
+      var(--drawing-fill)
+    );
+    --roof-line: color-mix(
+      in srgb,
+      var(--drawing-ink) 40%,
+      var(--drawing-fill)
+    );
+    --glass: color-mix(in srgb, var(--accent) 45%, var(--drawing-ink));
+  }
+
+  /* 3: blue tones: a facade tinted with the accent under a deep blue roof,
+     its lines in the accent. */
+  .plan--palette-blue {
+    --facade: color-mix(in srgb, var(--accent) 10%, var(--drawing-fill));
+    --facade-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 8%,
+      color-mix(in srgb, var(--accent) 18%, var(--drawing-fill))
+    );
+    --roof: color-mix(in srgb, var(--accent) 46%, var(--drawing-ink));
+    --roof-shade: color-mix(in srgb, var(--accent) 32%, var(--drawing-ink));
+    --roof-line: color-mix(in srgb, var(--accent) 50%, var(--drawing-fill));
   }
 
   .plan__drawing .plan-dim {

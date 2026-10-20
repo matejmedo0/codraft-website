@@ -17,6 +17,9 @@ import {
   type View,
 } from "./plan-projection.ts";
 
+/** The flat's outline: the outer faces of its walls. */
+export const FOOTPRINT = { width: 100, depth: 70 };
+
 /** A rectangle in the plan: x, y, width, depth. */
 export type Rect = [x: number, y: number, width: number, depth: number];
 
@@ -275,6 +278,8 @@ export interface SideFace {
   kind: SolidKind;
   /** The axis the side faces along, for its shade. */
   facing: "x" | "y";
+  /** Whether the side is on the outline: the facade (review #65). */
+  outer: boolean;
   /** The SVG transform from the side's frame to the sheet. */
   matrix: string;
   z0: number;
@@ -306,10 +311,13 @@ function sideFace(
   const [ax, ay] = project(from, 0, view);
   const [bx, by] = project(to, 0, view);
   const matrix = [bx - ax, by - ay, 0, -view.rise, ax, ay].map(round);
+  const at = axis === "x" ? from[0] : from[1];
+  const outline = axis === "x" ? FOOTPRINT.width : FOOTPRINT.depth;
   return {
     type: "side",
     kind: part.kind,
     facing: axis,
+    outer: Math.abs(at) < EPSILON || Math.abs(at - outline) < EPSILON,
     matrix: `matrix(${matrix.join(" ")})`,
     z0: part.z0,
     z1: part.z1,
@@ -421,8 +429,7 @@ export function roofDrawing(
   heights: Heights = HEIGHTS,
   roof: Roof = ROOF,
 ): RoofDrawing {
-  const width = 100;
-  const depth = 70;
+  const { width, depth } = FOOTPRINT;
   const ridge = depth / 2;
   const { overhang, thickness, pitch } = roof;
   const [x0, x1] = [-overhang, width + overhang];

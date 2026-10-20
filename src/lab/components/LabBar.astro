@@ -15,7 +15,8 @@ interface Props {
     | "sto-radimo"
     | "crtanje"
     | "ikone"
-    | "tlocrt-3d";
+    | "tlocrt-3d"
+    | "kuca-boje";
 }
 
 const { current } = Astro.props;
@@ -71,6 +72,13 @@ const ROUNDS = [
     aria-current={current === "tlocrt-3d" ? "page" : undefined}
   >
     3D tlocrt: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/kuca-boje"
+    aria-current={current === "kuca-boje" ? "page" : undefined}
+  >
+    Kuća: boje
   </a>
   {ROUNDS.map(({ round, label }) => (
     <div class="lab-bar__round">

@@ -78,10 +78,11 @@
     both;
 }
 
-/* Option 3, the central axis: the line and the service icons follow the
-   scroll row by row (review batch 14; axis-line.ts). The text never waits.
-   Without JavaScript, or with reduced motion, the stages' rails draw the
-   line complete and the icons are complete. */
+/* Option 3, the central axis: the line follows the screen and the service
+   icons draw as it reaches them (review batches 14 and 15; axis-line.ts
+   eases the line frame by frame). The text never waits. Without
+   JavaScript, or with reduced motion, the stages' rails draw the line
+   complete and the icons are complete. */
 .axis__line {
   display: none;
   position: absolute;
@@ -100,11 +101,6 @@
   .js .axis__line {
     display: block;
     transform: scaleY(var(--progress, 0));
-    transition: transform var(--motion-follow) var(--ease-follow);
-  }
-
-  .js .axis__line.is-instant {
-    transition: none;
   }
 
   /* An icon isn't there until its row starts; then its strokes run along

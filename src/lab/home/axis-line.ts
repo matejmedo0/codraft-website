@@ -1,41 +1,53 @@
 /**
  * "Što radimo", option 3 "Središnja os" (ServicesAxis.astro): the process
- * line and the service icons follow the scroll, row by row, once and only
- * forwards (the client's review, batch 14; docs/motion.md; ADR 0022).
+ * line follows the screen and the service icons draw as it reaches them,
+ * once and only forwards (the client's review, batches 14 and 15;
+ * docs/motion.md; ADR 0022 and 0023).
  *
- * - An IntersectionObserver watches every service (`data-axis-item`). When
- *   services cross 85 % of the screen they start and are never watched
- *   again. Those that start together form rows by their tops: one row of
- *   two on wide screens, one service per row on phones.
  * - The line (`data-axis-line`) runs from the first bubble to the last
- *   (`data-axis-mark`); this script sets its top and length. Each batch
- *   moves it to its furthest row's icon, or to its end, through
- *   --progress (CSS: scaleY, --motion-follow, --ease-follow). It only
- *   grows, and has `will-change` only while it moves.
- * - Each icon starts ICON_DELAY_MS after its row, while the line still
- *   moves (icons/icon-draw.ts times its strokes; services.css plays them).
- * - Services already above the screen at load are complete at once, and
- *   the line jumps to the furthest of them.
+ *   (`data-axis-mark`); this script sets its top and length. Its tip aims at
+ *   85 % of the screen's height and eases towards it frame by frame, so a
+ *   fast scroll is caught up in about --motion-follow and a slow one is
+ *   followed exactly. The aim only grows; the page scrolls as always.
+ * - A service (`data-axis-item`) starts when the tip reaches its icon (or,
+ *   below the line's end, when the aim does): its strokes are timed by
+ *   icons/icon-draw.ts and played by services.css. The right icon of a row
+ *   starts NEXT_IN_ROW_MS after the left; rows passed in one frame
+ *   NEXT_ROW_MS apart.
+ * - Services already above the screen are complete at once, and the tip
+ *   jumps past them.
+ * - An IntersectionObserver switches the scroll handling on only while the
+ *   section is near the screen.
  *
  * Only the line and the icons wait; the text never does. Without
  * JavaScript, or with reduced motion, the CSS shows them complete and this
  * script does nothing.
  */
-import { prefersReducedMotion } from "../../styles/motion.ts";
+import { DURATION_MS, prefersReducedMotion } from "../../styles/motion.ts";
 import { timeStrokes } from "./icons/icon-draw.ts";
 
-/** A row starts when its top crosses 85 % of the screen's height. */
-const ROW_TRIGGER: IntersectionObserverInit = {
-  rootMargin: "0px 0px -15% 0px",
-};
-/** An icon starts this long after its row, while the line still moves. */
-const ICON_DELAY_MS = 120;
+/** The tip aims at this share of the screen's height. */
+const AIM = 0.85;
+/** The easing's time constant: about 95 % of a gap closes in --motion-follow. */
+const TAU_MS = DURATION_MS.follow / 3;
+/** Closer than this, the tip is where it aims. */
+const SETTLED_PX = 0.5;
 /** The right icon of a row starts this long after the left. */
 const NEXT_IN_ROW_MS = 40;
-/** In a batch of several rows, each further row starts this much later. */
+/** Rows the tip passes in one frame start this far apart. */
 const NEXT_ROW_MS = 60;
-/** Services whose tops are this close share a row. */
+/** Services whose icons are this close in height share a row. */
 const ROW_TOLERANCE_PX = 4;
+/** The section counts as near the screen this far ahead. */
+const NEAR: IntersectionObserverInit = { rootMargin: "50% 0px" };
+
+interface Service {
+  item: HTMLElement;
+  icon: SVGSVGElement | null;
+  /** Where the tip starts the service, and its bottom, along the line. */
+  at: number;
+  bottom: number;
+}
 
 interface Axis {
   root: HTMLElement;
@@ -43,10 +55,10 @@ interface Axis {
   /** The line's top and length in the root, in pixels. */
   top: number;
   length: number;
-  /** How far the line is drawn, from 0 to 1. */
-  progress: number;
-  /** The furthest service the line has reached. */
-  reached: HTMLElement | undefined;
+  /** Where the tip aims and where it is, along the line, in pixels. */
+  aim: number;
+  tip: number;
+  waiting: Service[];
 }
 
 function middle(element: Element): number {
@@ -54,7 +66,7 @@ function middle(element: Element): number {
   return box.top + box.height / 2;
 }
 
-/** Places the line between the first and the last bubble. */
+/** Places the line between the first and last bubble; measures services. */
 function layout(axis: Axis): void {
   const marks = [
     ...axis.root.querySelectorAll<HTMLElement>("[data-axis-mark]"),
@@ -67,63 +79,52 @@ function layout(axis: Axis): void {
   axis.length = Math.max(middle(last) - origin - axis.top, 0);
   axis.line.style.top = `${String(axis.top)}px`;
   axis.line.style.height = `${String(axis.length)}px`;
-}
 
-/** How far down the line a service sits, from 0 to 1. */
-function positionOf(axis: Axis, item: HTMLElement): number {
-  if (axis.length === 0) return 1;
-  const target = item.querySelector("[data-icon]") ?? item;
-  const along =
-    middle(target) - axis.root.getBoundingClientRect().top - axis.top;
-  return Math.min(Math.max(along / axis.length, 0), 1);
-}
-
-/** Draws the line to `item`; it never runs back. */
-function reach(axis: Axis, item: HTMLElement, instant: boolean): void {
-  const progress = positionOf(axis, item);
-  if (progress <= axis.progress && !instant) return;
-  axis.progress = Math.max(progress, axis.progress);
-  axis.reached = item;
-  const { line } = axis;
-  if (instant) {
-    line.classList.add("is-instant");
-    line.style.setProperty("--progress", String(axis.progress));
-    line.getBoundingClientRect();
-    line.classList.remove("is-instant");
-    return;
+  const start = origin + axis.top;
+  for (const service of axis.waiting) {
+    service.at = middle(service.icon ?? service.item) - start;
+    service.bottom = service.item.getBoundingClientRect().bottom - start;
   }
-  line.style.willChange = "transform";
-  line.style.setProperty("--progress", String(axis.progress));
 }
 
-/** Starts a batch of services: rows by their tops, then left to right. */
-function start(axis: Axis, items: HTMLElement[]): void {
-  const placed = items
-    .map((item) => ({ item, box: item.getBoundingClientRect() }))
-    .sort((a, b) => a.box.top - b.box.top || a.box.left - b.box.left);
+/** Where the line starts on the screen. */
+function lineStart(axis: Axis): number {
+  return axis.root.getBoundingClientRect().top + axis.top;
+}
+
+function render(axis: Axis): void {
+  const share = axis.length === 0 ? 1 : axis.tip / axis.length;
+  axis.line.style.setProperty(
+    "--progress",
+    String(Math.min(Math.max(share, 0), 1)),
+  );
+}
+
+/** Starts the services the tip has passed, in rows. */
+function startPassed(axis: Axis, instantUpTo: number): void {
+  const passed = axis.waiting.filter((service) => service.at <= axis.tip);
+  if (passed.length === 0) return;
+  axis.waiting = axis.waiting.filter((service) => service.at > axis.tip);
 
   let row = -1;
-  let rowTop = Number.NEGATIVE_INFINITY;
+  let rowAt = Number.NEGATIVE_INFINITY;
   let inRow = 0;
-  for (const { item, box } of placed) {
-    if (box.top - rowTop > ROW_TOLERANCE_PX) {
+  for (const service of passed) {
+    if (service.bottom <= instantUpTo) {
+      service.item.classList.add("is-drawn", "is-instant");
+      continue;
+    }
+    if (service.at - rowAt > ROW_TOLERANCE_PX) {
       row += 1;
-      rowTop = box.top;
+      rowAt = service.at;
       inRow = 0;
     }
-    const icon = item.querySelector<SVGSVGElement>("[data-icon]");
-    if (icon !== null) {
-      timeStrokes(
-        icon,
-        row * NEXT_ROW_MS + ICON_DELAY_MS + inRow * NEXT_IN_ROW_MS,
-      );
+    if (service.icon !== null) {
+      timeStrokes(service.icon, row * NEXT_ROW_MS + inRow * NEXT_IN_ROW_MS);
     }
-    item.classList.add("is-drawn");
+    service.item.classList.add("is-drawn");
     inRow += 1;
   }
-
-  const furthest = placed.at(-1)?.item;
-  if (furthest !== undefined) reach(axis, furthest, false);
 }
 
 function init(root: HTMLElement): void {
@@ -134,43 +135,81 @@ function init(root: HTMLElement): void {
     line,
     top: 0,
     length: 0,
-    progress: 0,
-    reached: undefined,
+    aim: 0,
+    tip: 0,
+    waiting: [...root.querySelectorAll<HTMLElement>("[data-axis-item]")].map(
+      (item) => ({
+        item,
+        icon: item.querySelector<SVGSVGElement>("[data-icon]"),
+        at: 0,
+        bottom: 0,
+      }),
+    ),
   };
   layout(axis);
 
-  line.addEventListener("transitionend", () => {
+  let frame = 0;
+  let last = 0;
+
+  const step = (now: number): void => {
+    const elapsed = last === 0 ? 16 : now - last;
+    last = now;
+    const start = lineStart(axis);
+    axis.aim = Math.max(axis.aim, window.innerHeight * AIM - start);
+
+    // Services scrolled past entirely (a jump): complete at once.
+    const above = -start;
+    const skipped = axis.waiting.filter((service) => service.bottom <= above);
+    const furthest = skipped.at(-1);
+    if (furthest !== undefined) axis.tip = Math.max(axis.tip, furthest.at);
+
+    const gap = axis.aim - axis.tip;
+    axis.tip += gap * (1 - Math.exp(-elapsed / TAU_MS));
+    if (axis.aim - axis.tip < SETTLED_PX) axis.tip = axis.aim;
+
+    render(axis);
+    startPassed(axis, above);
+
+    if (axis.tip < axis.aim) {
+      frame = requestAnimationFrame(step);
+      return;
+    }
+    frame = 0;
+    last = 0;
     line.style.removeProperty("will-change");
-  });
+    if (axis.waiting.length === 0 && axis.tip >= axis.length) stop();
+  };
 
-  // Above the screen already: complete at once.
-  const items = [...root.querySelectorAll<HTMLElement>("[data-axis-item]")];
-  const above = items.filter(
-    (item) => item.getBoundingClientRect().bottom <= 0,
-  );
-  for (const item of above) item.classList.add("is-drawn", "is-instant");
-  const lastAbove = above.at(-1);
-  if (lastAbove !== undefined) reach(axis, lastAbove, true);
+  const wake = (): void => {
+    if (frame !== 0) return;
+    line.style.willChange = "transform";
+    frame = requestAnimationFrame(step);
+  };
 
-  const observer = new IntersectionObserver((entries) => {
-    const started = entries
-      .filter((entry) => entry.isIntersecting)
-      .map((entry) => entry.target as HTMLElement);
-    for (const item of started) observer.unobserve(item);
-    if (started.length > 0) start(axis, started);
-  }, ROW_TRIGGER);
-  for (const item of items) {
-    if (!item.classList.contains("is-drawn")) observer.observe(item);
-  }
+  const near = new IntersectionObserver((entries) => {
+    const isNear = entries.some((entry) => entry.isIntersecting);
+    if (isNear) {
+      window.addEventListener("scroll", wake, { passive: true });
+      wake();
+    } else {
+      window.removeEventListener("scroll", wake);
+    }
+  }, NEAR);
 
   // A new layout (a resize, the font arriving) moves the bubbles and rows.
-  new ResizeObserver(() => {
+  const resize = new ResizeObserver(() => {
     layout(axis);
-    if (axis.reached !== undefined) {
-      axis.progress = 0;
-      reach(axis, axis.reached, true);
-    }
-  }).observe(root);
+    wake();
+  });
+
+  function stop(): void {
+    near.disconnect();
+    resize.disconnect();
+    window.removeEventListener("scroll", wake);
+  }
+
+  near.observe(root);
+  resize.observe(root);
 }
 
 if (!prefersReducedMotion()) {

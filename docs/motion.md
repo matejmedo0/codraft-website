@@ -18,12 +18,11 @@ The client asked for animation that is high quality and **not generic**. The con
 | **Plot stamp** | Form success | The confirmation appears as a stamped title block: "Zaprimljeno · 18. 10. 2026." |
 | **Page change** | Navigation between pages | Cross-document View Transitions where supported: 200 ms crossfade (`--motion-base`); the header stays still. |
 
-**The process line and the service icons in "Što radimo" follow the scroll** (the client's review, batch 14; [ADR 0022](decisions/0022-service-icons-on-home.md); `axis-line.ts`):
-- An IntersectionObserver watches every service. When a row of services crosses 85 % of the screen's height, it starts, once, and is never watched again; services in one row start together.
-- **The line** is one element from bubble 01 to bubble 03, scaled from its top. Each row that starts moves the line to the row's icon (to its end for the services below it), over `--motion-follow` (280 ms) on `--ease-follow`, a quick start and a soft stop, so it never lags the scroll. It only ever grows; nothing runs backwards when you scroll up.
-- **The icon** starts 120 ms after its row, while the line is still moving: its strokes run along their paths in drawing order, at most 60 ms apart, the blue drafting line last, then the grip snaps in (`--motion-fast`, `--ease-spring`). An icon takes at most 450 ms, so a row is done within about 610 ms. The right icon of a row starts 40 ms after the left; when a fast scroll starts several rows at once, each further row starts 60 ms later.
-- Services already above the screen at load (a reload mid-page, a jump from a link) show their icons complete at once, and the line jumps to the furthest of them.
-- Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too, with no transitions. `will-change` is set only while the line moves.
+**The process line and the service icons in "Što radimo" follow the scroll** (the client's review, batches 14 and 15; [ADR 0022](decisions/0022-service-icons-on-home.md), [ADR 0023](decisions/0023-process-line-follows-the-screen.md); `axis-line.ts`):
+- **The line** is one element from bubble 01 to bubble 03, scaled from its top. Its tip follows the screen continuously (batch 15): it reaches down to 85 % of the screen's height as you scroll, eased so that a fast scroll is caught up in about `--motion-follow` (280 ms), smoothly and never in a jerk. It only ever grows; nothing runs backwards when you scroll up. No scroll-jacking: the page scrolls as always, and the line only follows.
+- **The icon** starts as the tip of the line reaches it: its strokes run along their paths in drawing order, at most 60 ms apart, the blue drafting line last, then the grip snaps in (`--motion-fast`, `--ease-spring`). An icon takes at most 450 ms. The right icon of a row starts 40 ms after the left; if the tip passes several rows in one frame, each further row starts 60 ms later. The services below the line's end start when the screen's 85 % mark reaches them.
+- Services already above the screen (a reload mid-page, a jump from a link) show their icons complete at once, and the line jumps past them.
+- Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too. An IntersectionObserver switches the scroll handling on only while the section is near the screen; `will-change` is set only while the line moves.
 
 Options 1 and 2 on `/lab/sto-radimo` keep the earlier behaviour as their record: one stroke at a constant speed once the section reaches its trigger (batch 3), hidden from the first paint with `data-draw-wait` (`draw.ts`).
 
@@ -59,11 +58,9 @@ When `prefers-reduced-motion: reduce` is set:
 | `--motion-draw` | 700 ms | Drafting line reveal |
 | `--motion-entrance-delay` | 250 ms | The pause before the logo entrance |
 | `--motion-hold` | 1700 ms | How long a zone rule stays selected |
-| `--motion-follow` | 280 ms | A part catching up with the scroll: the process line (review batch 14) |
+| `--motion-follow` | 280 ms | How soon a part following the scroll catches up: the process line (review batches 14–15) |
 | `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Most UI transitions |
-| `--ease-pen` | `cubic-bezier(0.5, 0, 0.2, 1)` | Drawing lines, like a pen stroke |
-| `--ease-follow` | `cubic-bezier(0.2, 0.8, 0.2, 1)` | Catching up with the scroll: a quick start, a soft stop |
-| `--ease-spring` | `linear()` of the "snappy" spring (300/30) | Grips |
+| `--ease-pen` | `cubic-bezier(0.5, 0, 0.2, 1)` | Drawing lines, like a pen stroke || `--ease-spring` | `linear()` of the "snappy" spring (300/30) | Grips |
 | `--ease-snap` | `linear()` of the "snap" spring (400/24) | A grip snapping in |
 
 The springs come from `motion-foundations`; CSS uses them sampled into `linear()`, and `motion.ts` keeps the spring parameters for islands.

@@ -30,8 +30,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0022](0022-service-icons-on-home.md) | Service icons on Home, drawn as the line reaches them | Accepted; point 3 superseded by 0023 | 2026-10-20 |
 | [0023](0023-process-line-follows-the-screen.md) | The process line follows the screen continuously | Accepted | 2026-10-20 |
 | [0024](0024-independent-design-critique.md) | Independent design critique by a project agent | Accepted | 2026-10-20 |
+| [0025](0025-browser-details-and-critique-re-check.md) | Browser-drawn details in brand colours, and a re-check for critiques | Accepted | 2026-10-20 |
 
-Next number: **0024**.
+Next number: **0026**.
 
 ## How to add one
 

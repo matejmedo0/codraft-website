@@ -322,3 +322,19 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - the motion frames hold the logo's entrance mid-draw
     - lint, format and the 7 new unit tests pass
   - **Not run yet:** the critique itself waits for the client's word.
+- **2026-10-20, the Impeccable skill** ([ADR 0025](../decisions/0025-browser-details-and-critique-re-check.md)):
+  - **The client's question:** a detailed, critical evaluation of the outside skill `pbakaus/impeccable` before adding it, then whether it is useful in general.
+  - **Read:**
+    - in full: the skill's text (`SKILL.md`, 44 references, four agents, the launchers)
+    - in part: its Rust engine, for network calls, telemetry and the detector rules that touch this design
+    
+    The findings are in [research/2026-10-20-impeccable-skill.md](../research/2026-10-20-impeccable-skill.md).
+  - **Not installed.** Four of its ideas were adopted on the client's word ("implementiraj točke 1-4"), as review batch 16 ([2-design-review.md](2-design-review.md#refinements)):
+    - selected text and the text cursor in brand colours
+    - three more critic checks: what the browser draws, the space around headings, reduced motion that keeps meaning
+    - a re-check of findings after approved changes
+  - **Checks:**
+    - the selection colours read per surface in Chromium 156: `#C4D3F5` with navy text on paper, `#1D3F8C` with off-white text on navy
+    - a capture at 375 and 1440 px wrote the new selection states and the blocks' heights
+    - `npm run verify` passed
+  - **Kept outside the repository:** the client's general notes on the skill, for later projects.

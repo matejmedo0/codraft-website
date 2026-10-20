@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U dvije sesije dorada poslali ste 15 skupina (dorade 1–45), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U tri sesije dorada poslali ste 16 skupina (dorade 1–49), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -13,6 +13,11 @@
    - „Kako radimo“ s vaše tri obveze; tamnija siva za sporedni tekst (7,11:1)
    - završni poziv s vašim pitanjem, centriran
    - skice stižu e-mailom (ADR 0020); sve pripada klijentu (ADR 0021)
+   - procjena vanjskog skilla Impeccable (`docs/research/2026-10-20-impeccable-skill.md`). Ne instaliramo ga, ali smo preuzeli četiri ideje (ADR 0025, dorade 46–49):
+     - označeni tekst u nijansi brand plave
+     - plavi kursor u poljima
+     - tri nove provjere za `design-critic`
+     - ponovna provjera nalaza nakon popravaka
 2. **Otvoreno:**
    - vaše daljnje dorade („još par detalja i popravka prije faze 3“)
    - okvir lista na 1920 px (rekli ste da ćemo ga pogledati kasnije)
@@ -185,6 +190,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Vaše ikone usluga na početnoj (opcija B, uz tekst); crta i ikone iscrtavaju se red po red dok se skrola | [ADR 0022](docs/decisions/0022-service-icons-on-home.md) |
 | 2026-10-20 | Plava crta u „Što radimo“ raste glatko i stalno prati ekran; ikona se iscrta kad crta stigne do nje | [ADR 0023](docs/decisions/0023-process-line-follows-the-screen.md) |
 | 2026-10-20 | Neovisna kritika dizajna: agent `design-critic` u projektu radi sa snimkama i mjerenjima (`npm run design:capture`) i samo izvještava; nalazi koji se kose s vašim odlukama dolaze kao pitanja, a promjene idu samo na vašu riječ | [ADR 0024](docs/decisions/0024-independent-design-critique.md) |
+| 2026-10-20 | Skill Impeccable ne instaliramo. Iz njega smo preuzeli četiri stvari:<br>- označeni tekst u nijansi brand plave i plavi kursor<br>- `design-critic` provjerava sitnice koje crta preglednik, razmak oko naslova i smanjeno kretanje<br>- nakon popravaka slijedi ponovna provjera: svaki nalaz je riješen, djelomično riješen ili neriješen | [ADR 0025](docs/decisions/0025-browser-details-and-critique-re-check.md) |
 
 ## Sitemap
 

@@ -9,7 +9,13 @@ import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
 
 interface Props {
   current?:
-    LabDirectionId | "style" | "pocetna" | "sto-radimo" | "crtanje" | "ikone";
+    | LabDirectionId
+    | "style"
+    | "pocetna"
+    | "sto-radimo"
+    | "crtanje"
+    | "ikone"
+    | "tlocrt-3d";
 }
 
 const { current } = Astro.props;
@@ -58,6 +64,13 @@ const ROUNDS = [
     aria-current={current === "ikone" ? "page" : undefined}
   >
     Ikone: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/tlocrt-3d"
+    aria-current={current === "tlocrt-3d" ? "page" : undefined}
+  >
+    3D tlocrt: opcije
   </a>
   {ROUNDS.map(({ round, label }) => (
     <div class="lab-bar__round">

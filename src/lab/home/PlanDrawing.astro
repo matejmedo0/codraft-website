@@ -8,14 +8,16 @@
  * were removed in review batch 6). The layer list switches on in step and
  * "Iscrtaj ponovno" replays it. plan-timelapse.ts times the steps.
  *
- * With `model` (Home's option C, review #58), the finished plan then rises
- * into a 3D view: the axes and dimensions switch off, the plan turns and
- * tilts back into an axonometric view, and the walls rise from it, with
- * the windows, lintels and door leaves (plan-model.ts, in the projection of
- * plan-projection.ts). The 3D view is the drawing's final state.
+ * With `model` (the drafting zone's option C, review #58), the finished plan
+ * then rises into a 3D view: the axes and dimensions switch off, the plan
+ * turns and tilts back into an axonometric view, and the walls rise from
+ * it, with the windows, lintels and door leaves (plan-model.ts, in the
+ * projection of plan-projection.ts). How it ends is the option (review
+ * #63): "stay" keeps the 3D view (Home), "return" lowers the walls and
+ * goes back to the plan, and "roof" sets a pitched roof on the model.
  *
  * Without JavaScript, or with reduced motion, the drawing is complete: the
- * plan, or with `model` the 3D view.
+ * plan, or the 3D view where the option ends in it.
  *
  * It is an illustration, not client work, and its title block says so
  * (ADR 0004). Units: 1 = 10 cm; the flat is 1000 × 700 cm. Colours come
@@ -28,8 +30,15 @@ import type { HTMLAttributes } from "astro/types";
 
 import Button from "../../components/ui/Button.astro";
 import { PLAN } from "../copy.ts";
-import { DOORS, modelFaces, type Rect, WALLS, WINDOWS } from "./plan-model.ts";
-import { MODEL_VIEW, viewTransform } from "./plan-projection.ts";
+import {
+  DOORS,
+  modelFaces,
+  type Rect,
+  roofDrawing,
+  WALLS,
+  WINDOWS,
+} from "./plan-model.ts";
+import { modelView, type PlanModel, viewTransform } from "./plan-projection.ts";
 
 type Wipe = "x" | "y";
 
@@ -62,13 +71,13 @@ const ROWS = [
 interface Props extends HTMLAttributes<"div"> {
   /** Prefixes the drawing's ids, so a page can show it more than once. */
   idPrefix?: string;
-  /** Raises the finished plan into its 3D view (review #58). */
-  model?: boolean;
+  /** Raises the finished plan into its 3D view, and how it ends (#63). */
+  model?: PlanModel;
 }
 
 const {
   idPrefix = "plan",
-  model = false,
+  model,
   class: className,
   ...attributes
 } = Astro.props;
@@ -76,14 +85,45 @@ const drawingId = `${idPrefix}-crtez`;
 const layersId = `${idPrefix}-slojevi`;
 
 const { titleBlock } = PLAN;
-const faces = model ? modelFaces() : [];
+const view = model === undefined ? undefined : modelView(model);
+const faces = view === undefined ? [] : modelFaces(view);
+const roof = model === "roof" ? roofDrawing(view) : undefined;
+// Where the 3D view is the final state, the plan's group is drawn turned.
+const endsIn3d = model === "stay" || model === "roof";
+const labels = {
+  stay: PLAN.modelLabel,
+  return: PLAN.returnLabel,
+  roof: PLAN.roof.label,
+};
+// With a roof, the layer list has the roof's layer before the title block.
+const layers =
+  model === "roof"
+    ? PLAN.layers.flatMap((layer) =>
+        layer.id === "zaglavlje"
+          ? [{ id: "krov" as const, label: PLAN.roof.layer }, layer]
+          : [layer],
+      )
+    : PLAN.layers;
+const titles =
+  model === "roof"
+    ? { plan: PLAN.roof.title, model: PLAN.roof.modelTitle }
+    : { plan: titleBlock.title, model: titleBlock.modelTitle };
 ---
 
 <div
-  class:list={["plan", { "plan--model": model }, className]}
+  class:list={[
+    "plan",
+    {
+      "plan--model": model !== undefined,
+      "plan--ends-3d": endsIn3d,
+      "plan--returns": model === "return",
+      "plan--roof": model === "roof",
+    },
+    className,
+  ]}
   data-draw="half"
   data-plan
-  data-plan-model={model ? "" : undefined}
+  data-plan-model={model}
   {...attributes}
 >
   <div class="plan__sheet graph-paper">
@@ -95,13 +135,17 @@ const faces = model ? modelFaces() : [];
       focusable="false"
     >
       <title id={drawingId}>
-        {model ? PLAN.modelLabel : PLAN.drawingLabel}
+        {model === undefined ? PLAN.drawingLabel : labels[model]}
       </title>
 
       <g
         class="plan__ground"
         data-plan-ground
-        transform={model ? viewTransform(MODEL_VIEW, "svg") : undefined}
+        transform={
+          endsIn3d && view !== undefined
+            ? viewTransform(view, "svg")
+            : undefined
+        }
       >
         {model && (
           <rect class="plan-floor" x="0" y="0" width="100" height="70" />
@@ -247,6 +291,22 @@ const faces = model ? modelFaces() : [];
         </g>
       )}
 
+      {roof !== undefined && (
+        <g class="plan__roof">
+          {roof.faces.map(({ kind, shade, points }) => (
+            <polygon
+              class:list={[
+                "roof-face",
+                `roof-face--${kind}`,
+                { "roof-face--shade": shade },
+              ]}
+              points={points}
+            />
+          ))}
+          <path class="roof-hatch" d={roof.hatch} />
+        </g>
+      )}
+
       <g data-layer="zaglavlje">
         <g data-wipe="fade">
           <path class="plan-frame" d="M54 75H100V87H54ZM54 81H100M84 75V87" />
@@ -255,7 +315,7 @@ const faces = model ? modelFaces() : [];
             x="55.5"
             y="79.2"
           >
-            {titleBlock.title}
+            {titles.plan}
           </text>
           {model && (
             <text
@@ -263,7 +323,7 @@ const faces = model ? modelFaces() : [];
               x="55.5"
               y="79.2"
             >
-              {titleBlock.modelTitle}
+              {titles.model}
             </text>
           )}
           <text class="plan-cell" x="85.5" y="79.2">
@@ -285,7 +345,7 @@ const faces = model ? modelFaces() : [];
       {PLAN.layersLabel}
     </p>
     <ol class="plan__layers" aria-labelledby={layersId}>
-      {PLAN.layers.map(({ id, label }) => (
+      {layers.map(({ id, label }) => (
         <li class="plan__layer" data-lamp={id}>
           <span class="plan__lamp" aria-hidden="true" />
           {label}
@@ -369,15 +429,28 @@ const faces = model ? modelFaces() : [];
     );
   }
 
-  .plan__drawing :is(.plan-floor, .plan__model rect, .plan__model polygon) {
+  .plan__drawing
+    :is(
+      .plan-floor,
+      .plan__model rect,
+      .plan__model polygon,
+      .plan__roof polygon
+    ) {
     fill: var(--drawing-fill);
     stroke: var(--drawing-ink);
     stroke-width: 1px;
     vector-effect: non-scaling-stroke;
   }
 
-  .plan__drawing .plan__model .model-side--x {
+  .plan__drawing
+    :is(.plan__model .model-side--x, .plan__roof .roof-face--shade) {
     fill: var(--model-shade);
+  }
+
+  /* The roofing: lines down the slopes, like a hatch. */
+  .plan__drawing .roof-hatch {
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
   }
 
   .plan__drawing .model-top:is(.model--wall, .model--lintel) {
@@ -550,9 +623,10 @@ const faces = model ? modelFaces() : [];
     }
   }
 
-  /* The 3D view is the final state: the axes, dimensions and the plan's
-     own walls, windows and leaves are off, and their lamps too. */
-  .plan--model
+  /* Where the 3D view is the final state, the axes, dimensions and the
+     plan's own walls, windows and leaves are off, and their lamps too.
+     Where the option returns to the plan, the model is the one that's off. */
+  .plan--ends-3d
     :is(
       [data-layer="osi"],
       [data-layer="zidovi"],
@@ -564,9 +638,13 @@ const faces = model ? modelFaces() : [];
     opacity: 0;
   }
 
-  .plan--model :is([data-lamp="osi"], [data-lamp="kote"]) .plan__lamp::after {
+  .plan--ends-3d :is([data-lamp="osi"], [data-lamp="kote"]) .plan__lamp::after {
     opacity: 0;
     scale: 0;
+  }
+
+  .plan--returns :is(.plan-floor, .plan__model, .plan-title--model) {
+    opacity: 0;
   }
 
   /* While the plan is drawn it lies flat and the model waits: the sides
@@ -584,7 +662,8 @@ const faces = model ? modelFaces() : [];
     opacity: 1;
   }
 
-  .plan--model.is-pending :is(.plan-floor, .plan__model, .plan-title--model) {
+  .plan--model.is-pending
+    :is(.plan-floor, .plan__model, .plan__roof, .plan-title--model) {
     opacity: 0;
   }
 
@@ -645,6 +724,69 @@ const faces = model ? modelFaces() : [];
       both;
   }
 
+  /* Option "roof": once the walls are up, the roof comes down onto them. */
+  .plan--roof.is-drawing .plan__roof {
+    animation: plan-roof var(--roof-for) var(--ease-standard) var(--roof-at)
+      both;
+  }
+
+  /* Option "return": after a hold, the walls go down, the plan turns back,
+     and the axes and dimensions switch on again. Each part's second
+     animation fills forwards only, so the first one holds until it starts. */
+  .plan--returns.is-drawing :is([data-layer="osi"], [data-layer="kote"]) {
+    animation:
+      plan-off var(--motion-base) var(--ease-standard) var(--off-at) both,
+      motion-fade-in var(--motion-base) var(--ease-standard) var(--on-at)
+        forwards;
+  }
+
+  .plan--returns.is-drawing
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    animation:
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms) both,
+      plan-lamp-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards,
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--on-at) forwards;
+  }
+
+  .plan--returns.is-drawing .plan__ground {
+    animation:
+      plan-tilt var(--tilt-for) var(--ease-pen) var(--tilt-at) both,
+      plan-untilt var(--untilt-for) var(--ease-pen) var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing .plan-floor {
+    animation:
+      motion-fade-in var(--motion-slow) var(--ease-standard) var(--tilt-at) both,
+      plan-off var(--motion-slow) var(--ease-standard) var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing
+    :is([data-layer="zidovi"], .plan-windows, .plan-door, .plan-title) {
+    animation:
+      plan-off var(--motion-instant) linear var(--rise-at) both,
+      motion-fade-in var(--motion-instant) linear var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing :is(.plan__model, .plan-title--model) {
+    animation:
+      motion-fade-in var(--motion-instant) linear var(--rise-at) both,
+      plan-off var(--motion-instant) linear var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing .model-side {
+    animation:
+      plan-rise-side var(--rise-for) var(--ease-standard) var(--rise-at) both,
+      plan-lower-side var(--lower-for) var(--ease-pen) var(--lower-at) forwards;
+  }
+
+  .plan--returns.is-drawing .model-top {
+    animation:
+      plan-rise-top var(--rise-for) var(--ease-standard) var(--rise-at) both,
+      plan-lower-top var(--lower-for) var(--ease-pen) var(--lower-at) forwards;
+  }
+
   @keyframes plan-off {
     from {
       opacity: 1;
@@ -674,6 +816,53 @@ const faces = model ? modelFaces() : [];
 
     to {
       transform: var(--plan-to);
+    }
+  }
+
+  @keyframes plan-untilt {
+    from {
+      transform: var(--plan-to);
+    }
+
+    to {
+      transform: var(--plan-from);
+    }
+  }
+
+  /* The roof comes down from above and settles on the walls. */
+  @keyframes plan-roof {
+    from {
+      opacity: 0;
+      translate: 0 -14px;
+    }
+
+    40% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes plan-lower-side {
+    from {
+      scale: 1;
+    }
+
+    to {
+      scale: 1 0;
+    }
+  }
+
+  @keyframes plan-lower-top {
+    from {
+      translate: 0 0;
+    }
+
+    to {
+      translate: 0 var(--rise, 0);
     }
   }
 

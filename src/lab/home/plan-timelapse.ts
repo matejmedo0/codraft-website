@@ -10,9 +10,16 @@
  *
  * A plan with a model (`data-plan-model`, review #58) then rises into its
  * 3D view: this script times the switch-off, the tilt and the rise, and
- * gives the CSS the two views and how far each top rises.
+ * gives the CSS the two views and how far each top rises. Then, by option
+ * (review #63), a roof comes down onto the walls, or after a hold the walls
+ * go down and the plan turns back.
  */
-import { MODEL_VIEW, PLAN_VIEW, viewTransform } from "./plan-projection.ts";
+import {
+  modelView,
+  PLAN_VIEW,
+  type PlanModel,
+  viewTransform,
+} from "./plan-projection.ts";
 
 interface LayerTiming {
   /** How long one step takes, in milliseconds. */
@@ -46,6 +53,20 @@ const TILT_MS = 1200;
 /** The walls rising, like a section reveal. */
 const RISE_MS = 900;
 
+/** Option "roof": the roof coming down onto the walls. */
+const ROOF_MS = 700;
+
+/** Option "return": how long the 3D view holds, then the way back. */
+const MODEL_HOLD_MS = 2400;
+const LOWER_MS = 700;
+const UNTILT_MS = 1000;
+
+const MODELS: readonly string[] = ["stay", "return", "roof"];
+
+function isPlanModel(value: string | undefined): value is PlanModel {
+  return value !== undefined && MODELS.includes(value);
+}
+
 function ms(value: number): string {
   return `${String(Math.round(value))}ms`;
 }
@@ -73,20 +94,46 @@ function timePlan(plan: HTMLElement): number {
   return at;
 }
 
-/** Times the rise into the 3D view, after the plan is done. */
-function timeModel(plan: HTMLElement, planDone: number): void {
+/** Times the rise into the 3D view, after the plan is done, and its end. */
+function timeModel(
+  plan: HTMLElement,
+  planDone: number,
+  model: PlanModel,
+): void {
   const offAt = planDone + HOLD_MS;
   const tiltAt = offAt + SWITCH_OFF_MS;
   const riseAt = tiltAt + TILT_MS;
-  plan.style.setProperty("--off-at", ms(offAt));
-  plan.style.setProperty("--tilt-at", ms(tiltAt));
-  plan.style.setProperty("--tilt-for", ms(TILT_MS));
-  plan.style.setProperty("--rise-at", ms(riseAt));
-  plan.style.setProperty("--rise-for", ms(RISE_MS));
+  const risen = riseAt + RISE_MS;
+  const lowerAt = risen + MODEL_HOLD_MS;
+  const untiltAt = lowerAt + LOWER_MS;
+  const times: Record<string, number> = {
+    "--off-at": offAt,
+    "--tilt-at": tiltAt,
+    "--tilt-for": TILT_MS,
+    "--rise-at": riseAt,
+    "--rise-for": RISE_MS,
+    "--roof-at": risen,
+    "--roof-for": ROOF_MS,
+    "--lower-at": lowerAt,
+    "--lower-for": LOWER_MS,
+    "--untilt-at": untiltAt,
+    "--untilt-for": UNTILT_MS,
+    "--on-at": untiltAt + UNTILT_MS,
+  };
+  for (const [name, value] of Object.entries(times)) {
+    plan.style.setProperty(name, ms(value));
+  }
+  // The roof's lamp switches on as the roof lands.
+  plan
+    .querySelector<HTMLElement>('[data-lamp="krov"]')
+    ?.style.setProperty("--at", ms(risen + ROOF_MS));
 
   const ground = plan.querySelector<SVGGElement>("[data-plan-ground]");
   ground?.style.setProperty("--plan-from", viewTransform(PLAN_VIEW, "css"));
-  ground?.style.setProperty("--plan-to", viewTransform(MODEL_VIEW, "css"));
+  ground?.style.setProperty(
+    "--plan-to",
+    viewTransform(modelView(model), "css"),
+  );
 
   for (const top of plan.querySelectorAll<SVGElement>("[data-rise]")) {
     top.style.setProperty("--rise", `${top.dataset.rise ?? "0"}px`);
@@ -95,5 +142,6 @@ function timeModel(plan: HTMLElement, planDone: number): void {
 
 for (const plan of document.querySelectorAll<HTMLElement>("[data-plan]")) {
   const planDone = timePlan(plan);
-  if (plan.dataset.planModel !== undefined) timeModel(plan, planDone);
+  const model = plan.dataset.planModel;
+  if (isPlanModel(model)) timeModel(plan, planDone, model);
 }

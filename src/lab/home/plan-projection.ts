@@ -50,6 +50,20 @@ export const MODEL_VIEW: View = {
   shift: [-8, -2],
 };
 
+/**
+ * How the 3D view plays (review #63): it stays (the final state is the
+ * model), it returns to the plan, or a roof is set on the model.
+ */
+export type PlanModel = "stay" | "return" | "roof";
+
+/** With a roof, the model sits a little lower, so the roof fits the sheet. */
+export const ROOF_VIEW: View = { ...MODEL_VIEW, shift: [-8, 0] };
+
+/** The 3D view of an option. */
+export function modelView(model: PlanModel): View {
+  return model === "roof" ? ROOF_VIEW : MODEL_VIEW;
+}
+
 /** Where a point of the floor lands on the sheet in a view. */
 export function ground([x, y]: Point, view: View): Point {
   const angle = (view.rotate * Math.PI) / 180;

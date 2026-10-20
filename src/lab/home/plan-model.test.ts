@@ -1,11 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { HEIGHTS, modelFaces, WALLS } from "./plan-model.ts";
+import { HEIGHTS, modelFaces, roofDrawing, WALLS } from "./plan-model.ts";
 import {
   ground,
   MODEL_VIEW,
+  modelView,
   PIVOT,
   PLAN_VIEW,
+  ROOF_VIEW,
+  type View,
   viewTransform,
 } from "./plan-projection.ts";
 
@@ -13,14 +16,16 @@ import {
 const VIEW_BOX = { left: -21, top: -21, right: 104, bottom: 89 };
 const TITLE_BLOCK_TOP = 75;
 
+function parsePoints(points: string): [number, number][] {
+  return points
+    .split(" ")
+    .map((pair) => pair.split(",").map(Number) as [number, number]);
+}
+
 /** Every corner of the model on the sheet: the tops and the sides' feet. */
-function modelPoints(): [number, number][] {
-  return modelFaces().flatMap((face): [number, number][] => {
-    if (face.type === "top") {
-      return face.points
-        .split(" ")
-        .map((pair) => pair.split(",").map(Number) as [number, number]);
-    }
+function modelPoints(view: View = MODEL_VIEW): [number, number][] {
+  return modelFaces(view).flatMap((face): [number, number][] => {
+    if (face.type === "top") return parsePoints(face.points);
     const [a, b, , , e, f] = face.matrix
       .slice("matrix(".length, -1)
       .split(" ")
@@ -87,13 +92,43 @@ describe("plan model", () => {
     expect(bottoms[0]).toBeLessThan(bottoms.at(-1) ?? 0);
   });
 
-  it("fits the sheet above the title block", () => {
-    const points = modelPoints();
+  it.each([
+    ["the model", (): [number, number][] => modelPoints()],
+    [
+      "the model with its roof",
+      (): [number, number][] => [
+        ...modelPoints(ROOF_VIEW),
+        ...roofDrawing().faces.flatMap((face) => parsePoints(face.points)),
+      ],
+    ],
+  ])("fits %s on the sheet above the title block", (_, corners) => {
+    const points = corners();
     const xs = points.map(([x]) => x);
     const ys = points.map(([, y]) => y);
     expect(Math.min(...xs)).toBeGreaterThan(VIEW_BOX.left);
     expect(Math.max(...xs)).toBeLessThan(VIEW_BOX.right);
     expect(Math.min(...ys)).toBeGreaterThan(VIEW_BOX.top);
     expect(Math.max(...ys)).toBeLessThan(TITLE_BLOCK_TOP);
+  });
+
+  it("gives the roof option its own view and the others the model's", () => {
+    expect(modelView("roof")).toBe(ROOF_VIEW);
+    expect(modelView("stay")).toBe(MODEL_VIEW);
+    expect(modelView("return")).toBe(MODEL_VIEW);
+  });
+});
+
+describe("plan roof", () => {
+  const { faces, hatch } = roofDrawing();
+
+  it("shows both slopes, one gable and the edges that face the viewer", () => {
+    const kinds = faces.map((face) => face.kind);
+    expect(kinds.filter((kind) => kind === "slope")).toHaveLength(2);
+    expect(kinds.filter((kind) => kind === "gable")).toHaveLength(1);
+    expect(kinds.filter((kind) => kind === "edge")).toHaveLength(2);
+  });
+
+  it("draws the roofing down the slopes", () => {
+    expect(hatch.match(/M/g)?.length).toBeGreaterThan(10);
   });
 });

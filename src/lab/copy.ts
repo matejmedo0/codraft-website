@@ -59,8 +59,8 @@ export interface DraftingCopy {
   title: string;
   tagline: string;
   audience: string;
-  /** Home's drafting zone: its lead and button (review batch 9). */
-  home: { lead: string; cta: string };
+  /** Home's drafting zone: its lead (review batch 9). */
+  home: { lead: string };
   /** Each with its one line for Home (review batches 6, 8 and 9). */
   items: DraftingService[];
   cta: string;
@@ -201,11 +201,10 @@ export const DRAFTING: DraftingCopy = {
   // drafting.audience
   audience:
     "Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.",
-  // The client's text for Home (review batch 9), verbatim. The drafting
-  // page keeps "Zatražite ponudu" (cta below).
+  // The client's text for Home (review batch 9), verbatim; no button since
+  // review #61. The drafting page keeps "Zatražite ponudu" (cta below).
   home: {
     lead: "Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem.",
-    cta: "Pošaljite skicu",
   },
   // The short lines are the client's (batch 9), verbatim.
   items: [
@@ -347,7 +346,8 @@ export const CAD: CadCopy = {
  * machined plate on /lab/pocetna; lab D and E keep the plate.
  */
 
-export type PlanLayerId = "osi" | "zidovi" | "otvori" | "kote" | "zaglavlje";
+export type PlanLayerId =
+  "osi" | "zidovi" | "otvori" | "kote" | "krov" | "zaglavlje";
 
 export interface PlanCopy {
   layersLabel: string;
@@ -357,6 +357,10 @@ export interface PlanCopy {
   drawingLabel: string;
   /** The same, where the plan rises into its 3D view (review #58). */
   modelLabel: string;
+  /** The same, where it goes back to the plan (option 2, review #63). */
+  returnLabel: string;
+  /** With a roof, the drawing is a house (option 3, review #63). */
+  roof: { label: string; title: string; modelTitle: string; layer: string };
   titleBlock: {
     title: string;
     /** The title once the plan is a 3D model. */
@@ -382,6 +386,15 @@ export const PLAN: PlanCopy = {
     "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima.",
   modelLabel:
     "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model.",
+  returnLabel:
+    "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima, nakratko podignut u 3D model.",
+  roof: {
+    label:
+      "Ilustracija: tlocrt prizemne kuće s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model s dvostrešnim krovom.",
+    title: "Tlocrt kuće",
+    modelTitle: "3D model kuće",
+    layer: "Krov",
+  },
   // The illustration says what it is (ADR 0004).
   titleBlock: {
     title: "Tlocrt stana",

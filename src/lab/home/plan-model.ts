@@ -13,6 +13,7 @@ import {
   ground,
   MODEL_VIEW,
   type Point,
+  ROOF_VIEW,
   type View,
 } from "./plan-projection.ts";
 
@@ -347,4 +348,154 @@ export function modelFaces(
       },
     ];
   });
+}
+
+/**
+ * The roof of the 3D view's option 3 (review #63): a pitched roof over the whole flat,
+ * its ridge along the long side, resting on the outer edges of the walls'
+ * tops and overhanging them. The west and east walls rise to it in gables.
+ */
+export interface Roof {
+  /** How far the roof runs past the walls. */
+  overhang: number;
+  /** The roof's thickness, drawn at its edges. */
+  thickness: number;
+  /** Rise per unit of run: 0.7 is a pitch of 35°. */
+  pitch: number;
+  /** The gap between two lines of the roofing, along the ridge. */
+  hatch: number;
+}
+
+export const ROOF: Roof = {
+  overhang: 3,
+  thickness: 1.2,
+  pitch: 0.7,
+  hatch: 6,
+};
+
+/** A face of the roof or a gable, on the sheet. */
+export interface RoofFace {
+  kind: "gable" | "slope" | "edge";
+  /** Faces turned from the light get the shade of the sides along x. */
+  shade: boolean;
+  points: string;
+}
+
+export interface RoofDrawing {
+  /** Back to front: the gable, the slopes, then the roof's edges. */
+  faces: RoofFace[];
+  /** The roofing's lines down each slope that faces the viewer. */
+  hatch: string;
+}
+
+type Point3 = [x: number, y: number, z: number];
+
+/** Whether a face with this outward normal faces the viewer. */
+function facesViewer([nx, ny, nz]: Point3, view: View): boolean {
+  const angle = (view.rotate * Math.PI) / 180;
+  // Towards the viewer: across the sheet the way the plan turns, and up.
+  const toViewer: Point3 = [
+    Math.sin(angle),
+    Math.cos(angle),
+    view.scaleY / view.rise,
+  ];
+  return nx * toViewer[0] + ny * toViewer[1] + nz * toViewer[2] > EPSILON;
+}
+
+function polygon(points: Point3[], view: View): string {
+  return points
+    .map(([x, y, z]) => project([x, y], z, view).map(round).join(","))
+    .join(" ");
+}
+
+interface RoofPart {
+  normal: Point3;
+  kind: RoofFace["kind"];
+  shade: boolean;
+  points: Point3[];
+}
+
+/** The roof over the flat's outline, seen in `view`. */
+export function roofDrawing(
+  view: View = ROOF_VIEW,
+  heights: Heights = HEIGHTS,
+  roof: Roof = ROOF,
+): RoofDrawing {
+  const width = 100;
+  const depth = 70;
+  const ridge = depth / 2;
+  const { overhang, thickness, pitch } = roof;
+  const [x0, x1] = [-overhang, width + overhang];
+  const [y0, y1] = [-overhang, depth + overhang];
+  // The underside rests on the walls' outer edges and rises to the ridge.
+  const under = (y: number): number =>
+    heights.wall + pitch * (ridge - Math.abs(y - ridge));
+  const top = (y: number): number => under(y) + thickness;
+
+  const gables: RoofPart[] = [0, width].map((x) => ({
+    normal: [x === 0 ? -1 : 1, 0, 0],
+    kind: "gable",
+    shade: true,
+    points: [
+      [x, 0, heights.wall],
+      [x, ridge, under(ridge)],
+      [x, depth, heights.wall],
+    ],
+  }));
+  const slopes: RoofPart[] = [y0, y1].map((eave) => ({
+    normal: [0, eave === y0 ? -pitch : pitch, 1],
+    kind: "slope",
+    shade: eave === y0,
+    points: [
+      [x0, eave, top(eave)],
+      [x1, eave, top(eave)],
+      [x1, ridge, top(ridge)],
+      [x0, ridge, top(ridge)],
+    ],
+  }));
+  const verges: RoofPart[] = [x0, x1].map((x) => ({
+    normal: [x === x0 ? -1 : 1, 0, 0],
+    kind: "edge",
+    shade: true,
+    points: [
+      [x, y0, under(y0)],
+      [x, ridge, under(ridge)],
+      [x, y1, under(y1)],
+      [x, y1, top(y1)],
+      [x, ridge, top(ridge)],
+      [x, y0, top(y0)],
+    ],
+  }));
+  const fascias: RoofPart[] = [y0, y1].map((y) => ({
+    normal: [0, y === y0 ? -1 : 1, 0],
+    kind: "edge",
+    shade: false,
+    points: [
+      [x0, y, under(y)],
+      [x1, y, under(y)],
+      [x1, y, top(y)],
+      [x0, y, top(y)],
+    ],
+  }));
+
+  const faces = [...gables, ...slopes, ...verges, ...fascias]
+    .filter(({ normal }) => facesViewer(normal, view))
+    .map(({ kind, shade, points }) => ({
+      kind,
+      shade,
+      points: polygon(points, view),
+    }));
+
+  // The roofing: a line down each slope the viewer sees, every `hatch`.
+  const lines: string[] = [];
+  for (const slope of slopes) {
+    if (!facesViewer(slope.normal, view)) continue;
+    const eave = slope.points[0]?.[1] ?? y0;
+    for (let x = x0 + roof.hatch; x < x1 - EPSILON; x += roof.hatch) {
+      const [ax, ay] = project([x, eave], top(eave), view).map(round);
+      const [bx, by] = project([x, ridge], top(ridge), view).map(round);
+      lines.push(`M${ax ?? ""} ${ay ?? ""}L${bx ?? ""} ${by ?? ""}`);
+    }
+  }
+  return { faces, hatch: lines.join("") };
 }

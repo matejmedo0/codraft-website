@@ -82,5 +82,7 @@ These all read as "template":
 ## Skills
 
 - `motion-foundations` for tokens, springs, reduced motion and SSR safety.
-- `motion-patterns` for buttons, stagger, page transitions and scroll reveals.
+- `animate` for motion in CSS and small TypeScript modules, which is most of this site: whether to animate, which tool, interruption, hover gating ([ADR 0026](decisions/0026-emil-kowalski-skills-in-the-setup.md)). This document's tokens and the client's decisions win over its default values (e.g. its 300 ms limit for UI does not apply to the drawing moments).
+- `animation-performance` when motion stutters.
+- `motion-patterns` for React islands: buttons, stagger, page transitions and scroll reveals.
 - `motion-advanced` only for complex pieces: the wordmark line draw, the layer viewer and SVG path work.

@@ -52,7 +52,9 @@ The client ended the second refinements session with: "Za sad je super , provjer
      - "Kako radimo"
      - the centred closing call to action
 8. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md), added 2026-10-20). The `design-critic` agent and `npm run design:capture` are ready; the first run waits for the client's word. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
-9. **The steps under [After the refinements](#after-the-refinements):**
+9. **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later: „samo zapišeš kao razmatranje obje opcije testirati … kasnije odlučujem“. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. Change nothing until the client decides.
+   - The other project proposals of that evaluation (a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay) wait as well: „ništa ne mijenjamo drugo za sad“. They are listed in the [research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client).
+10. **The steps under [After the refinements](#after-the-refinements):**
    - the checks on the lab build, with `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` added to `.playwright-mcp/check-lab-r3.mjs`; include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build
@@ -401,6 +403,15 @@ After a critical evaluation of the outside skill Impeccable ([research](../resea
 | 47 | Point 2: more space above a heading than below | A critic check (criterion 4). The capture's metrics now give each text block's height, so the critic can measure it. | `design-critic.md`, `scripts/design-capture/measure.mjs` | ADR 0025 | Done |
 | 48 | Point 3: re-checking fixes | After approved changes, the critic scores each addressed finding resolved, partial or unresolved from a new capture and names at most three regressions. The session's account of its fixes is not evidence. | `design-critic.md` ("Re-check"), [design-critique.md](../design-critique.md) step 7 | ADR 0025 | Done |
 | 49 | Point 4: reduced motion keeps meaning | Reduced motion removes movement, not meaning: states and feedback stay visible. Added to the motion rules and as a critic check (criterion 7). | [motion.md](../motion.md#reduced-motion), `design-critic.md` | ADR 0025 | Done |
+
+**Batch 17 (2026-10-20): Emil Kowalski's skills in the setup**
+
+After a critical evaluation of the outside collection emilkowalski/skills ([research](../research/2026-10-20-emil-kowalski-skills.md)), the client asked to add the recommended skills to the existing skills and rules, and to change nothing else for now: „samo htio da dodaš ovaj emil kowalski paket skilova koji treba … u postojeće skilove i pravila, ništa ne mijenjamo drugo za sad“.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 50 | Add the recommended skills, globally and to the rules | `animate`, `animation-performance`, `mobile-native` and `break-ui` added to `~/.claude/skills/`, adapted (project tokens and decisions first; content-site baseline; Croatian worst cases). `motion-patterns` points CSS-only motion to `animate`; three lines in the global `web-standards.md`; the skills named in phases 2–5 of the workflow and in motion.md. No site code changed. | `~/.claude/skills/`, `~/.claude/rules/web-standards.md`, `.claude/rules/codraft-workflow.md`, [motion.md](../motion.md#skills) | [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md) | Done |
+| 51 | „samo zapišeš kao razmatranje obje opcije testirati … kasnije odlučujem“ | The browser bar's colour (`theme-color`: navy or paper) recorded as an open consideration, with how to try both. | Open item 9 above | ADR 0026 | Open; the client decides |
 
 ## After the refinements
 

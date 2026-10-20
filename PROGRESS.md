@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U tri sesije dorada poslali ste 16 skupina (dorade 1–49), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U sesijama dorada poslali ste 17 skupina (dorade 1–51), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -18,11 +18,19 @@
      - plavi kursor u poljima
      - tri nove provjere za `design-critic`
      - ponovna provjera nalaza nakon popravaka
+   - procjena vanjskih skillova Emila Kowalskog (`docs/research/2026-10-20-emil-kowalski-skills.md`). U globalne skillove dodana su četiri, prilagođena (ADR 0026, dorada 50):
+     - `animate` i `animation-performance` za animacije u CSS-u
+     - `mobile-native` za mobitel
+     - `break-ui` za najgore podatke, s hrvatskim vrijednostima
+
+     Upisani su i u pravila faza 2–5. Kod stranice se ne mijenja.
 2. **Otvoreno:**
    - vaše daljnje dorade („još par detalja i popravka prije faze 3“)
    - okvir lista na 1920 px (rekli ste da ćemo ga pogledati kasnije)
    - 3D prikaz tlocrta, ako ga želite
    - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
+   - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu, a odlučujete kasnije (dorada 51).
+   - ostali prijedlozi iz procjene Kowalskijevih skillova čekaju vašu riječ: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
    - engleski tekst na kraju dorada
    - usklađivanje Figme
    - neovisna kritika dizajna: agent `design-critic` je napravljen (ADR 0024, `docs/design-critique.md`). Prvo pokretanje na početnoj čeka vašu riječ. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
@@ -191,6 +199,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Plava crta u „Što radimo“ raste glatko i stalno prati ekran; ikona se iscrta kad crta stigne do nje | [ADR 0023](docs/decisions/0023-process-line-follows-the-screen.md) |
 | 2026-10-20 | Neovisna kritika dizajna: agent `design-critic` u projektu radi sa snimkama i mjerenjima (`npm run design:capture`) i samo izvještava; nalazi koji se kose s vašim odlukama dolaze kao pitanja, a promjene idu samo na vašu riječ | [ADR 0024](docs/decisions/0024-independent-design-critique.md) |
 | 2026-10-20 | Skill Impeccable ne instaliramo. Iz njega smo preuzeli četiri stvari:<br>- označeni tekst u nijansi brand plave i plavi kursor<br>- `design-critic` provjerava sitnice koje crta preglednik, razmak oko naslova i smanjeno kretanje<br>- nakon popravaka slijedi ponovna provjera: svaki nalaz je riješen, djelomično riješen ili neriješen | [ADR 0025](docs/decisions/0025-browser-details-and-critique-re-check.md) |
+| 2026-10-20 | Od skillova Emila Kowalskog u globalne skillove i pravila faza dodana su četiri, prilagođena projektu: `animate`, `animation-performance`, `mobile-native` i `break-ui` (s hrvatskim vrijednostima). Kod stranice se zasad ne mijenja. | [ADR 0026](docs/decisions/0026-emil-kowalski-skills-in-the-setup.md) |
 
 ## Sitemap
 

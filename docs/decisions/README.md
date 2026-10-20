@@ -31,8 +31,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0023](0023-process-line-follows-the-screen.md) | The process line follows the screen continuously | Accepted | 2026-10-20 |
 | [0024](0024-independent-design-critique.md) | Independent design critique by a project agent | Accepted | 2026-10-20 |
 | [0025](0025-browser-details-and-critique-re-check.md) | Browser-drawn details in brand colours, and a re-check for critiques | Accepted | 2026-10-20 |
+| [0026](0026-emil-kowalski-skills-in-the-setup.md) | Four of Emil Kowalski's skills in the setup | Accepted | 2026-10-20 |
 
-Next number: **0026**.
+Next number: **0027**.
 
 ## How to add one
 

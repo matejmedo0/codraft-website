@@ -1,31 +1,36 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
+**Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U prvoj sesiji dorada (19. 10. 2026.) poslali ste šest skupina, a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover“):
+**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U dvije sesije dorada poslali ste 15 skupina (dorade 1–45), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
-   - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019)
-   - naslov u dva reda na širokim ekranima
-   - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i plavom crtom jednim potezom
+   - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019), kao opcija C s vašim rasporedom i tekstom
+   - naslov u dva reda na širokim ekranima; hero točno kao na vašoj snimci
+   - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023)
    - tlocrt koji se iscrtava kao timelapse
+   - „Kako radimo“ s vaše tri obveze; tamnija siva za sporedni tekst (7,11:1)
+   - završni poziv s vašim pitanjem, centriran
+   - skice stižu e-mailom (ADR 0020); sve pripada klijentu (ADR 0021)
 2. **Otvoreno:**
-   - potvrda opcije C za Tehničko crtanje (`/lab/crtanje`)
-   - vaše ikone usluga (prompt je u `docs/brand.md`)
+   - vaše daljnje dorade („još par detalja i popravka prije faze 3“)
+   - okvir lista na 1920 px (rekli ste da ćemo ga pogledati kasnije)
    - 3D prikaz tlocrta, ako ga želite
+   - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
    - engleski tekst na kraju dorada
    - usklađivanje Figme
    - završne provjere i ažuriranje PR-a #2
+   - prije javne objave sami pregledavate i ispravljate sve tekstove
 
 Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 
 **Što pregledati:**
-- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo` i `/lab/crtanje`.
+- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo`, `/lab/crtanje` i `/lab/ikone`.
 - **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja).
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
-- **Animacije:** na vašem računalu su Windowsovi „Animacijski efekti“ isključeni, pa ih Chrome ne prikazuje. Uključite ih ovdje: Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti. Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
+- **Animacije:** vidljive su samo kad su Windowsovi „Animacijski efekti“ uključeni (Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti). Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
 
 **Vaše konačne odluke** (19. 10. 2026., `docs/phases/2-design-system.md`, ADR 0015 i 0016):
 - **Smjer:** D „Model i list“ sa svijetlim (papirnatim) zaglavljem i herojem. U heroju je znak na milimetarskom papiru, a tamnoplava ostaje samo u završnom pozivu.
@@ -220,7 +225,7 @@ Pregled je u `docs/brand.md`.
 | C | **Tim:**<br>- ime, uloga, kratka biografija i LinkedIn za svaku osobu<br>- pisana privola za objavu<br>- fotografije prema specifikaciji u `docs/brand.md` | 3 |
 | D | **CAD:**<br>- smijemo li prikazati pojedine projekte<br>- softver i verzija<br>- formati i standardi<br>- rokovi isporuke<br>- 2–3 uzorka izrađena posebno za stranicu | 3 |
 | E | **Poslovno:**<br>- opseg besplatne analize i što klijent dobiva<br>- prikazujemo li cijene<br>- mjesečna naknada za održavanje<br>- ✓ vlasništvo domene i koda: sve pripada klijentu (ADR 0021)<br>- NDA | 3 |
-| F | **Odobrenja:**<br>- HR nacrt postojećeg teksta<br>- prijedlozi S1–S16<br>- terminologija i obraćanje (vi/ti), u `docs/content.md` | prije faze 3 |
+| F | **Odobrenja:**<br>- HR nacrt postojećeg teksta<br>- prijedlozi S1–S19<br>- terminologija i obraćanje (vi/ti), u `docs/content.md`<br>- prije javne objave sami pregledavate sve tekstove (vaša riječ, 20. 10. 2026.) | prije faze 3 |
 | G | **Domena:** kupnja codraft.hr i provjera žiga „CODRAFT“ | što prije; najkasnije u fazi 7 |
 
 ### Radimo mi
@@ -228,6 +233,7 @@ Pregled je u `docs/brand.md`.
 - ✓ optimizirane web kopije znakova i favicona, bez C2PA (faza 2)
 - ✓ web font: Archivo, na vlastitom serveru, s latin-ext u zasebnoj datoteci (faza 2)
 - ✓ CAD motivi u kodu (gripovi, kota, milimetarski papir, crte zona); nema generičkog paketa ikona (faza 2)
+- ✓ vaših devet ikona usluga u kodu, bez metapodataka; izvori su u `Assets/codraft-icons/` (dorade, ADR 0022)
 - OG slike, generirane pri izradi stranice (faza 3)
 - nacrti teksta za praznine koje su na nama (`docs/content.md` §4, faze 3–6)
 - nacrti pravnih tekstova (faza 3)
@@ -253,7 +259,7 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
    - ✓ „Tehničko crtanje“, samo za arhitekturu i građevinarstvo (vaša odluka, 19. 10. 2026., ADR 0018)
    - obraćanje „vi“ ili „ti“
    - engleski britanskim ili američkim pravopisom
-4. Koje prijedloge S1–S16 prihvaćate (`docs/content.md` §3)?
+4. Koje prijedloge S1–S19 prihvaćate (`docs/content.md` §3)?
 5. Želite li ponuditi 2–3 partnerska projekta po nižoj cijeni, u zamjenu za objavljenu studiju slučaja (`docs/information-architecture.md`)?
 6. Hoće li i ostali članovi tima raditi s Claudeom na svojim računalima? Skillovi i agenti (npr. `/architecture`) postoje samo u `~/.claude` na ovom računalu. Ako da, prebacujemo ih u projekt.
 7. Želite li GitHub organizaciju za tim? Repozitorij se može premjestiti, a stare adrese se same preusmjeravaju.

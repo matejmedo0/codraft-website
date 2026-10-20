@@ -1,59 +1,81 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-19, end of the first refinements session): open; the next session starts at [Handover](#handover-2026-10-19).** Phase 2 is done and in review (PR #2). In the first refinements session the client sent six batches (refinements 1–20 below), reviewed on `/lab/pocetna`, then asked for a handover.
-> - **Next:** the open items under [Handover](#handover-2026-10-19), in order, then the steps under [After the refinements](#after-the-refinements).
+> **Status (2026-10-20, end of the second refinements session): open; the next session starts at [Handover](#handover-2026-10-20).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–15 (refinements 21–45), all reviewed on `/lab/pocetna`. The client: "Za sad je super … mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini".
+> - **Next:** the open items under [Handover](#handover-2026-10-20), in order, then the steps under [After the refinements](#after-the-refinements).
 > - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
 > - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
 
-## Handover (2026-10-19)
+## Handover (2026-10-20)
 
-The client asked for a handover at the end of batch 7: "updateaj dokumentaciju za nastavak u drugoj sesiji i daj prompt za drugu sesiju".
+The client ended the second refinements session with: "Za sad je super , provjeri dokumentaciju ako nisi već i updataj je u drugoj sesiji nastavljamo rad , mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini". The first handover (2026-10-19) is in git history (`64854d2`).
 
 **Where things are**
-- **Branch:** `phase/2-design`, pushed; the last refinements commit is `564ceeb`, and CI was green on every push before it.
+- **Branch:** `phase/2-design`, pushed; the last refinements commit is `321287a`, and CI was green on every push of the session (`6710859` to `321287a`).
 - **Lab pages** (`npm run dev`, then http://localhost:4321):
-  - `/lab/pocetna`: Home in the chosen direction, on the production components. Every approved refinement is here.
-  - `/lab/sto-radimo`: the three "Što radimo" options; the client chose 3 „Središnja os“ (now on Home).
-  - `/lab/crtanje`: the three "Tehničko crtanje" options; the client leans to C „Legenda“, not yet confirmed. Home still shows A.
-  - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (navy hero, the plate, five audit buttons).
-- **Code of the refinements:** `src/lab/home/` (Home's zones, `ServiceItem`, `chapters.ts`, `process-line.ts`, `services.css`, `PlanDrawing.astro` with `plan-timelapse.ts`, `drafting/`), `src/lab/pages/{pocetna,sto-radimo,crtanje}.astro`, `src/lab/copy.ts`. Production code changed only in the header (no button), the route map (`/tehnicko-crtanje`), the locales and `draw.ts` (`data-draw-wait`).
-- **Decisions:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md) (one audit button per page), [ADR 0018](../decisions/0018-drafting-for-architecture-and-construction.md) („Tehničko crtanje“, architecture and construction only), [ADR 0019](../decisions/0019-drafting-adds-3d-models.md) (3D models). All accepted.
-- **Copy:** every new or changed line is in `docs/content.md` (§2 blocks, §3 suggestions S17–S19, "Prototype copy" tables for batches 1–6, changelog). All are HR drafts for the client to approve.
-- **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), from the dev server (the Astro toolbar shows in the full-page ones); `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
-- **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser was about 1920 px wide in the client's screenshot); the laptop is 2560 × 1600 at 150 % (1707 px).
-- **The dev server** still runs on port 4321 (`node` PID 29544 at the handover). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
+  - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
+  - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`: the comparisons, kept as the record; each says which option the client chose.
+  - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
+- **Code of the refinements:** `src/lab/home/`:
+  - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
+  - "Što radimo": `ServicesAxis.astro` (the chosen option), `ServiceItem.astro`, `chapters.ts`, `services.css`, and `axis-line.ts`, which drives the line and the icons
+  - the icons: `icons/service-icons.ts` (transcribed from `Assets/codraft-icons/svg/`), `icons/ServiceIcon.astro`, `icons/icon-draw.ts`
+  - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`
+  - "Tehničko crtanje": `drafting/DraftingLegend.astro` (the chosen option)
+
+  Also `src/lab/pages/{pocetna,sto-radimo,crtanje,ikone}.astro` and `src/lab/copy.ts`. Production code changed in:
+  - the header (no button)
+  - the route map (`/tehnicko-crtanje`)
+  - the locales
+  - `draw.ts` (`data-draw-wait`)
+  - the tokens: the paper grey `#4A5362` and `--motion-follow`
+- **Decisions of the review:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md)–[0023](../decisions/0023-process-line-follows-the-screen.md), all accepted (0022 point 3 superseded by 0023). See the list in `PROGRESS.md` under "Odluke".
+- **Copy:** every new or changed line is in `docs/content.md` ("Prototype copy", one table per batch, and the changelog). The client gave much of it verbatim and will proofread every text by hand before the public launch (batch 10).
+- **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), named by batch (`batch8-…` to `batch15-…`), from the dev server; `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
+- **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser about 1920 px wide); the laptop is 2560 × 1600 at 150 % (1707 px). The client now has Windows "Animation effects" on and reviews the motion.
+- **The dev server** runs on port 4321 (`node … astro dev`). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
 
 **Open items, in order**
-1. ✓ **Tehničko crtanje:** the client confirmed option C with a layout and text of their own (batch 8, #21–25); it is on `/lab/pocetna`.
-2. **The service icons:** the client is generating nine icons with the prompt in [brand.md](../brand.md#imagery). When they arrive (SVG or transparent PNG): redraw each as a stroke SVG on the 48 px grid (`currentColor`, 1.5 px, square caps), put them on the services in "Što radimo", and draw each stage's icons as the process line reaches the stage (`process-line.ts` knows when). Static with reduced motion. Then write the ADR that adopts them.
-3. **Proposed, not yet answered:** after the floor plan's timelapse, raise it into a 3D view (walls extruded), to show the 3D service. Do it only if the client says yes.
-4. **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Two lines on a laptop would need smaller letters (about 54 px instead of 70). The client rejected the other way (the H1 across the sheet). Don't change it unasked; if the client raises it, show both at 1440 px side by side first.
-5. **Further batches** from the client, if any.
-6. **English, at the end of the review** (the client's word, batch 5): S17–S19 and every Croatian change of this review, including the new `drafting.3d.*` blocks and the one-line services, then `src/locales/en.json` where a UI string changed.
-7. **Figma:** not yet synced with any refinement. Bring the library "Codraft sustav dizajna" in line with the code once the batches settle: the component Zaglavlje (no button; "Tehničko crtanje"), the example page Početna (hero copy and two lines, "Što radimo" as the central axis with one line per service, the drafting zone with the floor plan and 3D, the closing call to action with "Pošaljite upit"), and the text styles if a size changed. Load `figma:figma-use` and `figma:figma-generate-library` first.
-8. **The steps under [After the refinements](#after-the-refinements):** the checks on the lab build (add `/lab/pocetna`, `/lab/sto-radimo` and `/lab/crtanje` to `.playwright-mcp/check-lab-r3.mjs`), `npm run verify`, `npm run test:e2e`, report screenshots from the lab build, the phase log, `PROGRESS.md`, PR #2's "Review refinements" section, green CI, the report, and stop.
+1. **Further batches** from the client ("još par detalja i popravka prije faze 3"). Ask for them if the first message doesn't list them.
+2. **The sheet's margin at 1920 px** (#23): the client said "ne znam na što misliš ali provjerimo to kasnije". Show it again simply: the two screenshots (`batch8-sheet-now-1920.png`, `batch8-sheet-fix-1920.png`) and one sentence (at 1920 px the page's frame touches the screen's edges and the page scrolls 4 px sideways; the fix moves the hero 24 px in from each side). Change nothing until the client says yes.
+3. **Proposed, not yet answered:** after the floor plan's timelapse, raise it into a 3D view (walls extruded). Only on the client's yes.
+4. **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
+5. **"Pošaljite skicu"** on Home may go (ADR 0020); it stays until the client decides.
+6. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11), then `src/locales/en.json` where a UI string changed.
+7. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
+   - the variable for the paper grey (`#4A5362`)
+   - the component Zaglavlje (no button; "Tehničko crtanje")
+   - the nine service icons as components
+   - the example page Početna:
+     - the hero
+     - "Što radimo" as the central axis with the icons beside the services
+     - the drafting zone (option C as refined)
+     - "Kako radimo"
+     - the centred closing call to action
+8. **The steps under [After the refinements](#after-the-refinements):**
+   - the checks on the lab build, with `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` added to `.playwright-mcp/check-lab-r3.mjs`; include the scroll motion of "Što radimo" with the motion on
+   - `npm run verify` and `npm run test:e2e`
+   - report screenshots from the lab build
+   - the phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description
+   - green CI, then the report, and stop
 
-**Working notes from this session**
+**Working notes**
 - **A `<script>` between two zones breaks `.zone + .zone`** (the rule above a zone disappears), because Astro renders a component's script in place. Put a component's script inside its zone.
-- **A part that is in view at load and must still animate** takes `data-draw-wait` (draw.ts) and hides itself with CSS under `.js` and `prefers-reduced-motion: no-preference`, so it never flashes complete.
-- **Classes passed to `Zone`, `Button` and `ServiceItem` get the parent's scoped styles** (they spread their attributes); `Item` and `Steps` don't, so wrap them or use `:global()`.
-- **Playwright scripts** must live in the project (`.playwright-mcp/`, ignored by git) to find `@playwright/test`. In Git Bash, run them with `MSYS_NO_PATHCONV=1` when an argument starts with `/`.
-- **Editing files with Python on Windows:** write with `newline="\n"`, or the file gets CRLF line endings. For long edits, write the script to the scratchpad first; heredocs with Croatian quotes broke once.
-- **Lab copy is shared:** `src/lab/copy.ts` feeds A–E too, so a copy change shows there as well; that is accepted (the client's wording applies everywhere).
+- **A part that is in view at load and must still animate** hides itself with CSS under `.js` and `prefers-reduced-motion: no-preference`, so it never flashes complete (`data-draw-wait` in draw.ts; the axis line and icons in services.css).
+- **Classes passed to `Zone`, `Button`, `ServiceItem` and `PlanDrawing` get the parent's scoped styles** (they spread their attributes); `Item` and `Steps` don't, so wrap them or use `:global()`.
+- **The axis line** (`axis-line.ts`) is one element whose top and length the script measures from the bubbles (`data-axis-mark`); without JavaScript or with reduced motion the per-stage rails draw the line instead. The line is the first child of `.axis`, so the first stage is `.axis-stage:first-of-type`, not `:first-child`.
+- **The icons** are inline SVG with `pathLength="1"` on every stroke; on screen they are 40 px with `stroke-width="1.8"`, so the line stays 1.5 px. Their accent takes `--accent`.
+- **The sheet at 1920 px:** with motion on, the zone rules' end grips overflow by 4 px (#23). Checks for horizontal overflow at 1920 px fail until the client decides; note it, don't fix it unasked.
+- **Playwright scripts** must live in the project (`.playwright-mcp/`, ignored by git) to find `@playwright/test`. In Git Bash, run them with `MSYS_NO_PATHCONV=1` when an argument starts with `/`. Element screenshots of tall sections at 375 px can come out shifted; give the viewport the section's height.
+- **Node scripts on Windows** import project modules through `file:///C:/…` URLs.
+- **Editing files with Python on Windows:** write with `newline="\n"`, or the file gets CRLF line endings. For long edits, write the script to the scratchpad first.
+- **Lab copy is shared:** `src/lab/copy.ts` feeds A–E too, so a copy change shows there as well; that is accepted.
+- **Specifications the client pastes** (sometimes written by another AI agent) are the target for how it should look and behave; the implementation follows this project's rules, tokens and patterns (the client's words, batch 14).
 
 ## Where things stand
 
-- **The branch:** `phase/2-design`, pushed.
-  - PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is ready for review; its description is the phase report.
-  - CI was green on `cd6b148`.
-- **The decisions:**
-  - [ADR 0015](../decisions/0015-design-direction-model-i-list.md): direction D with a paper header and hero, navy only as the closing call to action, all four motion moments, two people in the team strip, Archivo only, a 2 px radius, and the lab keeps A–E
-  - [ADR 0016](../decisions/0016-figma-for-design-iterations.md): Figma for quick iterations; code is the source of truth
-- **What was built:** see the [phase log](2-design.md#log) (the design system session) and [2-design-system.md](2-design-system.md).
-- **The client's machine:** Windows "Animation effects" is off, so Chrome reports reduced motion and the site shows final states only. The client knows how to switch it on (Settings → Accessibility → Visual effects → Animation effects).
-- **The dev server:** this session started one on port 4321 so the client could review `/lab/style`. It may still run.
-  - Check port 4321 first: `netstat -ano | grep ":4321 .*LISTENING"`, then inspect the process.
-  - Stop it before `npm run test:e2e`, and tell the client.
+- **The branch:** `phase/2-design`, pushed. PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is open; its description is the phase report, and gets a "Review refinements" section at the end of the review. CI was green on `321287a`.
+- **The decisions:** [ADR 0015](../decisions/0015-design-direction-model-i-list.md) (direction D with a paper header and hero, navy only as the closing call to action, the motion, Archivo, a 2 px radius, the lab keeps A–E) and [ADR 0016](../decisions/0016-figma-for-design-iterations.md) (Figma for quick iterations; code is the source of truth), then the review's ADR 0017–0023.
+- **What was built before the review:** see the [phase log](2-design.md#log) and [2-design-system.md](2-design-system.md).
 
 ## Where each kind of change goes
 

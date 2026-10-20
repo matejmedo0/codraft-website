@@ -283,4 +283,25 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - With one line per service, the stages of the central axis sat too far apart, so they moved closer.
   - **Lesson:** batch 5 changed the hero's composition when the client had asked only for line breaks, and the client rejected it ("Počeo si raditi gluposti"). From now on a change goes only as far as the request; anything more is shown as options first.
   - **Checks after each batch:** lint, `astro check`, 138 unit tests, format and the copy guardrails passed; on the dev server, no console errors and no horizontal overflow at 375, 768 and 1440 px on every new lab page; CI green on every push. The checks on the lab build, E2E, the Figma sync and PR #2 wait for the end of the review.
-  - **Handover** at the client's request; the open items are in [2-design-review.md](2-design-review.md#handover-2026-10-19).
+  - **Handover** at the client's request; the open items were in the brief's first handover (git `64854d2`).
+- **2026-10-19 to 20, second review refinements session** ([2-design-review.md](2-design-review.md), refinements 21–45, verbatim and sorted):
+  - **Skills loaded:** `frontend-design:frontend-design`, `motion-foundations`, `frontend-a11y`. Figma skills weren't loaded: the library is synced at the end of the review.
+  - **The client's batches** (each recorded before the change):
+    8. Option C „Legenda“ for "Tehničko crtanje", with the client's layout and text.
+    9. The drafting zone at the full width of the sheet, its heading back, the services as rows like "Kako radimo", "Pošaljite skicu".
+    10. "Kako radimo" with the client's three commitments, and a darker paper grey (`#4A5362`, 7.11:1). Files come by email ([ADR 0020](../decisions/0020-drawings-arrive-by-email.md)); the customer owns the work ([ADR 0021](../decisions/0021-the-customer-owns-the-work.md)); the client proofreads every text before launch.
+    11. The closing call to action with the client's question and lead, at a zone heading's size. The client's nine icons arrived, cleared for use and free of metadata, and are committed as sources.
+    12. The closing call to action centred.
+    13. Two placements of the icons on `/lab/ikone`, drawn by the process line.
+    14. Option B on Home ([ADR 0022](../decisions/0022-service-icons-on-home.md)); the line and the icons follow the scroll row by row, from the client's specification.
+    15. The line follows the screen continuously instead of jumping from row to row ([ADR 0023](../decisions/0023-process-line-follows-the-screen.md)).
+  - **Built:** the refinements on `/lab/pocetna`; the icons in code (`src/lab/home/icons/`); `axis-line.ts` for the line and the icons; the comparison page `/lab/ikone`; the motion token `--motion-follow`; the style page follows the closing call to action and the tokens.
+  - **Found and left for the client:** at a 1920 px viewport the sheet loses its side margins, so its frame touches the screen and the zone rules' grips overflow by 4 px (#23). The fix would move the hero in by 24 px at that width, so it waits for the client, who will look at it later.
+  - **Self-review along the way:**
+    - The services in option B stretched with a taller neighbour, so their line sat apart from the title; `align-content: start` fixed it.
+    - The first scroll animation moved the line only when a row started, so it looked jerky to the client (batch 15). The line now eases towards the screen every frame: at most 11 px per frame in a wheel-scroll test, never backwards.
+  - **Checks after each batch:**
+    - lint, `astro check`, the unit tests (139, with the motion token sync), format and the copy guardrails passed
+    - on the dev server: no console errors, the layouts measured at 375–1920 px, the motion with reduced motion, without JavaScript, on a reload mid-page and on a jump past the section
+    - CI was green on every push
+  - **Handover** at the client's request ("Za sad je super … u drugoj sesiji nastavljamo rad"); the open items are in [2-design-review.md](2-design-review.md#handover-2026-10-20).

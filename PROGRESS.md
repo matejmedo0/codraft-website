@@ -2,14 +2,14 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: dorade prije faze 3, vašim redoslijedom (20. 10. 2026.).** U sesijama dorada poslali ste 20 skupina (dorade 1–63), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: dorade prije faze 3, vašim redoslijedom (20. 10. 2026.).** U sesijama dorada poslali ste 21 skupinu (dorade 1–65), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
    - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019), kao opcija C s vašim rasporedom i tekstom
    - naslov u dva reda na širokim ekranima; hero točno kao na vašoj snimci
    - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023)
-   - tlocrt koji se iscrtava kao timelapse, a zatim se podiže u 3D model: zakrene se i nagne u aksonometriju, a zidovi se podignu (dorada 58)
+   - tlocrt koji se iscrtava kao timelapse, a zatim se podiže u 3D model: zakrene se i nagne u aksonometriju, a zidovi se podignu (dorada 58). Odabrali ste kraj s krovom: na zidove se spusti dvostrešni krov, a crtež postaje kuća (dorade 63–64)
    - okvir lista zadržava rub od 24 px i na 1920 px, pa se stranica više ne pomiče ustranu (dorada 57)
    - bez gumba „Pošaljite skicu“ na početnoj: upiti i skice idu kroz kontakt formu i e-mail (dorada 61, ADR 0020)
    - nakon alata `inspect`: gustoća „Što radimo“ ostaje, dvije lokalne veličine slova rješavamo u fazi 3, mjera gustoće za `design-critic` se ne dodaje (dorada 59)
@@ -33,8 +33,8 @@
      - u fazi 3 svaka stranica počinje svojim argumentom: tvrdnja i provjerljiv dokaz po zoni
 
      Kod stranice se ne mijenja.
-2. **Otvoreno, vašim redoslijedom (dorade 60 i 63):**
-   1. tri 3D opcije čekaju vaš izbor na http://localhost:4321/lab/tlocrt-3d: 1 ostaje u 3D-u (sada na početnoj), 2 povratak na tlocrt, 3 s krovom (dorada 63)
+2. **Otvoreno, vašim redoslijedom (dorade 60 i 65):**
+   1. tri palete kuće čekaju vaš izbor na http://localhost:4321/lab/kuca-boje: 1 svijetla fasada i tamnoplavi krov, 2 tamnoplava fasada i svijetli krov, 3 plavi tonovi (dorada 65)
    2. neovisna kritika dizajna: agent `design-critic` (ADR 0024, `docs/design-critique.md`) pokrećem na početnoj kad potvrdite. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
    3. vaše daljnje dorade („još par detalja i popravka prije faze 3“), na kraju
    4. kasnije, na vašu riječ:

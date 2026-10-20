@@ -1,71 +1,68 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-20, third refinements session): open; the open items are under [Handover](#handover-2026-10-20).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third batch 19 (refinements 57–60), all reviewed on `/lab/pocetna`. The client: "Za sad je super … mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini".
-> - **Next:** the open items under [Handover](#handover-2026-10-20), in order, then the steps under [After the refinements](#after-the-refinements).
+> **Status (2026-10-21, end of the third refinements session): the refinements are done; three steps are left before the phase gate. The next session starts at [Handover](#handover-2026-10-21).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third (2026-10-20 to 21) batches 19–23 (refinements 57–74), all reviewed on `/lab/pocetna`. The client has no further refinements for now (#67).
+> - **Next:** the three steps under [Handover](#handover-2026-10-21), in order: the design critique, the Figma sync, the final checks and the report.
 > - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
 > - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
 
-## Handover (2026-10-20)
+## Handover (2026-10-21)
 
-The client ended the second refinements session with: "Za sad je super , provjeri dokumentaciju ako nisi već i updataj je u drugoj sesiji nastavljamo rad , mislim da će biti još par detalja i popravka prije faze 3 no već sada smo na približno zadovoljavajućoj razini". The first handover (2026-10-19) is in git history (`64854d2`).
+The client ended the third refinements session with: "Odlično ažuriraj dokumentaciju da u novoj sesij svježoj krenemo na design critica da pokreneš, i sve ostalo što ostaje do kraja faze 2." and answered the rest in batch 23 (below): no more refinements, the Figma sync after the critique, the final checks after Figma, and English and four other items moved to phase 3. Earlier handovers are in git history (`64854d2`, `9f6edf1`).
 
 **Where things are**
-- **Branch:** `phase/2-design`, pushed; the last refinements commit is `321287a`, and CI was green on every push of the session (`6710859` to `321287a`).
+- **Branch:** `phase/2-design`, pushed; the last code commit of the session is `7c0c26d`, and CI was green on every push of the session.
 - **Lab pages** (`npm run dev`, then http://localhost:4321):
-  - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
-  - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`: the comparisons, kept as the record; each says which option the client chose.
-  - `/lab/tlocrt-3d`: the 3D view's three endings (#63); the client chose the roof (#64).
-  - `/lab/kuca-boje`: the house's three palettes (#65); the client chose palette 1 (#66).
+  - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9, without a button since #61, its floor plan rising into a 3D house with a roof in palette 1: #58, #64, #66), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
+  - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje`: the comparisons, kept as the record; each says which option the client chose.
   - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
 - **Code of the refinements:** `src/lab/home/`:
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
   - "Što radimo": `ServicesAxis.astro` (the chosen option), `ServiceItem.astro`, `chapters.ts`, `services.css`, and `axis-line.ts`, which drives the line and the icons
   - the icons: `icons/service-icons.ts` (transcribed from `Assets/codraft-icons/svg/`), `icons/ServiceIcon.astro`, `icons/icon-draw.ts`
-  - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`, and its 3D view from `plan-model.ts` and `plan-projection.ts` (#58)
-  - "Tehničko crtanje": `drafting/DraftingLegend.astro` (the chosen option)
+  - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`; its 3D view, roof and palettes from `plan-model.ts` and `plan-projection.ts` (#58, #63–66), with `plan-model.test.ts`
+  - "Tehničko crtanje": `drafting/DraftingLegend.astro` (the chosen option; the roof and palette 1 are its defaults)
 
-  Also `src/lab/pages/{pocetna,sto-radimo,crtanje,ikone}.astro` and `src/lab/copy.ts`. Production code changed in:
+  Also `src/lab/pages/{pocetna,sto-radimo,crtanje,ikone,tlocrt-3d,kuca-boje}.astro` and `src/lab/copy.ts`. Production code changed in:
   - the header (no button)
   - the route map (`/tehnicko-crtanje`)
   - the locales
   - `draw.ts` (`data-draw-wait`)
   - the tokens: the paper grey `#4A5362` and `--motion-follow`
   - the sheet's margin at every width (`Sheet.astro`, #57)
-- **Decisions of the review:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md)–[0023](../decisions/0023-process-line-follows-the-screen.md), all accepted (0022 point 3 superseded by 0023). See the list in `PROGRESS.md` under "Odluke".
-- **Copy:** every new or changed line is in `docs/content.md` ("Prototype copy", one table per batch, and the changelog). The client gave much of it verbatim and will proofread every text by hand before the public launch (batch 10).
-- **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), named by batch (`batch8-…` to `batch15-…`), from the dev server; `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
-- **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser about 1920 px wide); the laptop is 2560 × 1600 at 150 % (1707 px). The client now has Windows "Animation effects" on and reviews the motion.
-- **The dev server** runs on port 4321 (`node … astro dev`). Check the port at the start of the next session; stop it before `npm run test:e2e`, and tell the client.
+- **Decisions of the review:** [ADR 0017](../decisions/0017-one-audit-call-to-action-per-page.md)–[0027](../decisions/0027-taste-skill-ideas-in-the-setup.md), all accepted (0022 point 3 superseded by 0023). See the list in `PROGRESS.md` under "Odluke".
+- **Copy:** every new or changed line is in `docs/content.md` ("Prototype copy", one table per batch, and the changelog). The client gave much of it verbatim and will proofread every text by hand at the end of phase 3 (#73).
+- **Screenshots of the review:** [screenshots/phase-2/review/](screenshots/phase-2/review/), named by batch (`batch8-…` to `batch22-…`), from the dev server or the lab build; `hero-reference-client.png` is the client's own screenshot of the hero as it must stay.
+- **The client's screens:** the main one is 2560 × 1440 at 100 % (the browser about 1920 px wide); the laptop is 2560 × 1600 at 150 % (1707 px). The client has Windows "Animation effects" on and reviews the motion.
+- **The dev server** runs on port 4321 (`node … astro dev`), usually started by the client. Check the port at the start of the session; stop it only before `npm run test:e2e`, and tell the client.
 
-**Open items, in order** (updated 2026-10-20 in the third refinements session, in the order the client set in batch 19)
+**The steps to the end of phase 2, in this order** (the client's order, batch 23)
 
-Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), the inspector's three options (#59: all left as they are, the two type sizes go to phase 3), no "Pošaljite skicu" on Home (#61), and the 3D view ending in a house with a roof (#64) in palette 1 (#66).
-
-1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
-2. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
-3. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
-   - **The Kowalski proposals:** a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
-   - **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. An argument for the paper option, from Taste Skill (#55): its rule is that the bar's colour follows the page's first field. It is the skill's rule, not a measurement.
-4. **Unanswered, unchanged:**
-   - **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
-   - **The 3D view's details**, if the client wants changes: the view's angle, the wall height, or a 2D/3D switch. None was asked for; change nothing unasked.
-5. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58, the options' lines of #63), then `src/locales/en.json` where a UI string changed.
-6. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
+   1. Make sure the dev server answers on port 4321 (start `npm run dev` if it doesn't).
+   2. Capture Home: `npm run design:capture -- lab/pocetna` (six widths, motion at 1440 px). `/lab/style` only if the client asks.
+   3. Launch four `design-critic` agents in one message, one per lens: `art-direction`, `craft`, `communication` and `motion`, each with the capture folder and the page.
+   4. Verify every finding yourself against the screenshots, `metrics.json` and the code before reporting it. A finding that goes against a recorded decision of the client is a question, not a defect.
+   5. Report to the client in Croatian: the findings by severity, each with options and a recommendation. Change nothing yet.
+   6. On the client's word: record the approved fixes as a batch under [Refinements](#refinements), make them, check them, then let the critic re-check (ADR 0025; design-critique.md, "Re-check").
+2. **The Figma sync** (#68), after the critique and its fixes. "Codraft sustav dizajna" has none of the review's refinements yet. Load `figma:figma-use` and `figma:figma-generate-library` before any `use_figma` call ([The Figma library](#the-figma-library) has the file and its nodes). Bring it in line with the code:
    - the variable for the paper grey (`#4A5362`)
    - the component Zaglavlje (no button; "Tehničko crtanje")
    - the nine service icons as components
    - the example page Početna:
      - the hero
      - "Što radimo" as the central axis with the icons beside the services
-     - the drafting zone (option C as refined), with the floor plan's 3D view
+     - the drafting zone (option C as refined, no button), with the house in palette 1 as its drawing (the final state of the 3D view)
      - "Kako radimo"
      - the centred closing call to action
-7. **The steps under [After the refinements](#after-the-refinements):**
-   - the checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` now covers `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` (2026-10-20); include the scroll motion of "Što radimo" with the motion on
-   - `npm run verify` and `npm run test:e2e`
-   - report screenshots from the lab build
-   - the phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description
-   - green CI, then the report, and stop
+   - anything the critique's approved fixes changed
+3. **The final checks and the report** (#69), after Figma: the steps under [After the refinements](#after-the-refinements).
+   - The checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` covers every lab page, the comparisons included (`/lab/tlocrt-3d` and `/lab/kuca-boje` since 2026-10-20 to 21); it is local and not in git, so if it is missing, rebuild it from [How to check a change](#how-to-check-a-change). Include the scroll motion of "Što radimo" and the floor plan's 3D view with the motion on.
+   - `npm run verify`, and `npm run test:e2e` with port 4321 free (CI runs E2E on every push as well).
+   - Report screenshots from the lab build.
+   - The phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description: batches 1–23, ADR 0017–0027, the screenshots.
+   - Green CI, then the report in Croatian, and stop. On "idemo dalje": merge PR #2 with a merge commit, create `phase/3-pages` from `main`, start phase 3.
+
+**Moved to phase 3** (the client's word, batch 23): the English copy (#70), the Kowalski proposals (#71), the browser bar's colour (#72), the client's proofreading of every text at the end of phase 3 (#73), the hero's line count on 1440 px laptops (#74), and the two local type sizes (#59). They are listed in [3-pages.md](3-pages.md#carried-over-from-phase-2).
 
 **Working notes**
 - **A `<script>` between two zones breaks `.zone + .zone`** (the rule above a zone disappears), because Astro renders a component's script in place. Put a component's script inside its zone.
@@ -83,8 +80,8 @@ Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor
 
 ## Where things stand
 
-- **The branch:** `phase/2-design`, pushed. PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is open; its description is the phase report, and gets a "Review refinements" section at the end of the review. CI was green on `321287a`.
-- **The decisions:** [ADR 0015](../decisions/0015-design-direction-model-i-list.md) (direction D with a paper header and hero, navy only as the closing call to action, the motion, Archivo, a 2 px radius, the lab keeps A–E) and [ADR 0016](../decisions/0016-figma-for-design-iterations.md) (Figma for quick iterations; code is the source of truth), then the review's ADR 0017–0023.
+- **The branch:** `phase/2-design`, pushed. PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is open; its description is the phase report, and gets a "Review refinements" section at the end of the review. CI was green on every push up to `7c0c26d`.
+- **The decisions:** [ADR 0015](../decisions/0015-design-direction-model-i-list.md) (direction D with a paper header and hero, navy only as the closing call to action, the motion, Archivo, a 2 px radius, the lab keeps A–E) and [ADR 0016](../decisions/0016-figma-for-design-iterations.md) (Figma for quick iterations; code is the source of truth), then the review's ADR 0017–0027.
 - **What was built before the review:** see the [phase log](2-design.md#log) and [2-design-system.md](2-design-system.md).
 
 ## Where each kind of change goes
@@ -454,7 +451,7 @@ The question about "Pošaljite skicu" on Home (open item 5) was not answered; it
 | 57 | "Odobravam popravak okvira lista na 1920px" | The fix proposed in #23 (closes it): the sheet is at most `min(--sheet-max, 100% - 2 × --sheet-margin)` wide with auto side margins, so it keeps its margin at every width and centres past 1920 px; the media query at 120rem is gone. Measured on the dev server: at 1920 px the margins went from 0/0 px (the page 1924 px wide, so it scrolled 4 px sideways) to 24/24 px with no overflow, the hero's H1 from 72 to 71.9 px and still two lines; 375–1707 px unchanged; 1983 and 2560 px centred as before. Every page on the sheet follows (Home, 404, the lab's Home and style page); lab A–E have their own sheets and stay the record. | `src/components/ui/Sheet.astro` | None | Done; in review |
 | 58 | "3D Prikaz tlocrta u sljedećem koraku može , bilo bi fora vidjeti 3d prikaz" | After the timelapse, the floor plan rises into a 3D model, on Home's option C (`model` on `PlanDrawing`; options A and B on `/lab/crtanje` keep the plan only). <br>- **The sequence** (about 2.9 s after the title block, 8 s in all): the finished plan holds 600 ms; the axes and dimensions switch off with their lamps (200 ms); the plan turns 45° and tilts back into an axonometric view (1200 ms, `--ease-pen`) as a paper floor fades in under it; then the walls rise from it (900 ms, `--ease-standard`), and the title block's "Tlocrt stana" becomes "3D model stana". "Iscrtaj ponovno" replays all of it. <br>- **The model:** the plan's own walls at 2.6 m, window sills at 0.9 m with the glass in a tint of the brand blue up to the 2.1 m head, lintels over every opening, and the four door leaves; seen from the south-west and about 53° above, so the living room is in front. The wall tops keep the plan's solid ink (the cut), the other faces are paper, those facing along x a 9 % shade darker. Built at build time from the same data as the plan (`plan-model.ts`, in the projection of `plan-projection.ts`), painted back to front; only `transform` and `opacity` animate (each side scales up from the floor, each top slides up with it). <br>- **The final state is the 3D view:** without JavaScript, with reduced motion, or when the drawing is already in view at load. The drawing's accessible name says the plan is raised into a 3D model. <br>Compared before choosing: walls cut at 1.2 m like the plan (less of a building) and a view from the south-east (the small rooms in front, harder to read). | `src/lab/home/PlanDrawing.astro`, `plan-timelapse.ts`, `plan-model.ts` (new; the plan's walls, windows and doors moved here), `plan-projection.ts` (new), `plan-model.test.ts` (new), `drafting/DraftingLegend.astro`, `src/lab/copy.ts`; `docs/content.md`, [motion.md](../motion.md) | None | Done; in review |
 | 59 | "gustoća ostaje kako je za sad / dvije veličine slova rješavamo u fazi 3 / automatska mjera gustoće nema potrebe sad dodavati" | No change. The three options of the inspector's run ([research note](../research/2026-10-20-taste-skill-inspect.md#proposed-for-the-client)): (1) "Što radimo" keeps its density at 1440 px; (2) `--step-service` and `--step-heading` are settled in phase 3, when "Što radimo" leaves the lab ([3-pages.md](3-pages.md#content-specifics)); (3) no density measure for the critic. | `docs/phases/3-pages.md` | None | Recorded |
-| 60 | "Dorade riješimo na kraju kad popraviš ostalo"; "Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu"; "To isto kasnije kowalskijeva provjera"; "Kasnije isto" | The order of the rest of the review: first #57 and #58; then the critic's first run on the client's word; the Kowalski proposals and `theme-color` later; the client's own further refinements at the end. | Open items under [Handover](#handover-2026-10-20) | None | Recorded |
+| 60 | "Dorade riješimo na kraju kad popraviš ostalo"; "Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu"; "To isto kasnije kowalskijeva provjera"; "Kasnije isto" | The order of the rest of the review: first #57 and #58; then the critic's first run on the client's word; the Kowalski proposals and `theme-color` later; the client's own further refinements at the end. | Open items under [Handover](#handover-2026-10-21) | None | Recorded |
 
 **Batch 20 (2026-10-20): the sketch button, and options for the 3D view**
 
@@ -490,15 +487,43 @@ The client's message, verbatim:
 |---|---|---|---|---|---|
 | 66 | "Biram paletu 1." | Palette 1 „Svijetla fasada, tamnoplavi krov“ is on Home: the paper facade under a navy roof with lighter roofing lines. `DraftingLegend` defaults to it, so the drafting zone on `/lab/crtanje` and option 3 on `/lab/tlocrt-3d` show it too; `/lab/kuca-boje` stays as the record and says which palette was chosen. | `src/lab/home/drafting/DraftingLegend.astro`, `src/lab/pages/kuca-boje.astro`; `docs/information-architecture.md` | The client chose palette 1 (closes #65) | Done; in review |
 
-The client then asked what is left of phase 2 („Nakon toga mi reci ostaje li još što u ovoj fazi 2 ?“); the answer follows the open items under [Handover](#handover-2026-10-20).
+The client then asked what is left of phase 2 („Nakon toga mi reci ostaje li još što u ovoj fazi 2 ?“). The answer: the client's own refinements if any, the critic's first run, the Figma sync, the final checks and the report; English proposed for phase 3; the "later" items not blocking the phase.
+
+**Batch 23 (2026-10-21): the rest of phase 2, and what moves to phase 3**
+
+The client's message, verbatim:
+
+> Odlično ažuriraj dokumentaciju da u novoj sesij svježoj krenemo na design critica da pokreneš, i sve ostalo što ostaje do kraja faze 2.
+> Neke stvari odmah mogu odgovoriti prije nego pređemo na novu sesiju .
+> Moje daljne dorade za sad ih nema.
+> Usklađivanje  figme nakon design critica
+> Završne provjere onda kronološki nakon figme
+> Engleski tekst u fazi 3 slažem se
+> Ovo što ide kasnije :
+> prijedlozi iz kowalskijevih skillova isto možemo u fazi 3 jer tkao i tako tad radimo sve stranice
+> boja trake preglednika probati ćemo kasnije isto u fazi 3
+> moje čitanje i ispravljanje generičkih tekstova isto kasnije ( na kraju faze 3 vjerovanto jer tkao i tako trebamo pregledati sve stranice zajedno )
+> naslov u heroju na laptopima provjerimo u fazi 3 isto kad sve stranice odradimo
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 67 | "Moje daljne dorade za sad ih nema." | No change. The refinements are closed unless the client sends more. | — | None | Recorded |
+| 68 | "Usklađivanje figme nakon design critica" + "u novoj sesij svježoj krenemo na design critica da pokreneš" | The order of the rest of phase 2: the critic's first run in the next session (the client's word for it), then the Figma sync. | [Handover](#handover-2026-10-21), steps 1–2 | None | Recorded |
+| 69 | "Završne provjere onda kronološki nakon figme" | The final checks and the report come last. | [Handover](#handover-2026-10-21), step 3 | None | Recorded |
+| 70 | "Engleski tekst u fazi 3 slažem se" | The English copy (S17–S19 and every Croatian change of this review) is aligned in phase 3, page by page, as each page is built in both languages. It replaces "at the end of the review" (#12). | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+| 71 | "prijedlozi iz kowalskijevih skillova isto možemo u fazi 3 jer tkao i tako tad radimo sve stranice" | The four proposals (a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay) are considered in phase 3. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+| 72 | "boja trake preglednika probati ćemo kasnije isto u fazi 3" | The browser bar's colour (navy or paper) is tried on a real Android phone in phase 3. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+| 73 | "moje čitanje i ispravljanje generičkih tekstova isto kasnije ( na kraju faze 3 vjerovanto … )" | The client reads and corrects every text at the end of phase 3, all pages together; it is now an exit criterion of phase 3. | [3-pages.md](3-pages.md#exit-criteria) | None | Moved to phase 3 |
+| 74 | "naslov u heroju na laptopima provjerimo u fazi 3 isto kad sve stranice odradimo" | The hero's three lines on 1440 px laptops are checked in phase 3, once every page is built. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
 
 ## After the refinements
 
-1. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.
-2. Add a "Review refinements" section to PR #2's description.
-3. Wait for green CI.
-4. Report to the client in Croatian, and stop.
-5. On the client's word:
+1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.
+2. Update this brief (the table above), the [phase log](2-design.md#log) and `PROGRESS.md`.
+3. Add a "Review refinements" section to PR #2's description.
+4. Wait for green CI.
+5. Report to the client in Croatian, and stop.
+6. On the client's word:
    1. Merge PR #2 into `main` with a merge commit.
    2. Create `phase/3-pages` from `main`.
    3. Start phase 3 ([3-pages.md](3-pages.md)).

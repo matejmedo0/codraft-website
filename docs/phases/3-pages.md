@@ -35,6 +35,17 @@ Build every launch page in Croatian and English, one page at a time in sitemap o
 
 The AI asistenti page is built in phase 4.
 
+## Carried over from phase 2
+
+The client moved these items from the phase 2 review to this phase (review batch 23, 2026-10-21, and #59; [2-design-review.md](2-design-review.md#refinements)):
+
+- **English copy** (#70): S17–S19 and every Croatian change of the review, aligned page by page as each page is built in both languages. The changes are listed in [content.md](../content.md) ("Prototype copy" and the changelog): the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the floor plan's title block and accessible names (#58, #63–64). The English changes only through suggestions the client approves.
+- **Home's two local type sizes** (#59): when "Što radimo" moves out of the lab, decide whether `--step-service` (19 px at 1440, `src/lab/home/services.css`) and `--step-heading` (25 px, `Steps.astro`) become steps of the type scale or merge into their neighbours; with `--step-title` at 22 px they are three sizes 3 px apart ([inspector's note](../research/2026-10-20-taste-skill-inspect.md#measured-and-real-but-not-defects)).
+- **The Kowalski proposals** (#71), for the client to choose from while the pages are built: a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
+- **The browser bar's colour** (#72): navy `#0F1B2D` from the brand package, or the header's paper `#F6F5F1`. Try both on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters; the client decides ([ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)).
+- **The hero's line count on 1440 px laptops** (#74): three lines there, two from about 1660 px. Check it with the client once every page is built; show both side by side before changing anything.
+- **The client's proofreading** (#73): at the end of this phase the client reads and corrects every text, all pages together (an exit criterion below).
+
 ## Steps for each page
 
 1. **The page's argument.** Before the copy and the build, list the page as claims, one line per zone, each with its proof: what the visitor should believe after that zone, and what makes it believable (ADR 0027, from Taste Skill's `copy.md`).
@@ -79,7 +90,6 @@ The AI asistenti page is built in phase 4.
 
 ## Content specifics
 
-- **Home's two local type sizes** (the client's choice in the phase 2 review, #59): when "Što radimo" moves out of the lab, decide whether `--step-service` (19 px at 1440, `src/lab/home/services.css`) and `--step-heading` (25 px, `Steps.astro`) become steps of the type scale or merge into their neighbours; with `--step-title` at 22 px they are three sizes 3 px apart ([inspector's note](../research/2026-10-20-taste-skill-inspect.md#measured-and-real-but-not-defects)).
 - **Drafting page:** apply the guardrails in [compliance.md](../compliance.md#copy-guardrails); no projektiranje wording. Show the sample sheets in the layer viewer once the client delivers them.
 - **Impresum:** every field from ZTD Art. 21 and ZET Art. 6 (compliance items C1–C2).
 - **Alt text** for every meaningful image, in both languages. Decorative images get an empty `alt` (gap G28).
@@ -95,6 +105,7 @@ The AI asistenti page is built in phase 4.
 - [ ] Every page in the sitemap is built in both languages.
 - [ ] No open CRITICAL or HIGH findings.
 - [ ] Screenshots at three widths for each page, with no console errors.
+- [ ] The client has read and corrected every page's text, all pages together (the client's word in the phase 2 review, #73).
 
 ## Log
 

@@ -18,11 +18,11 @@ Until now the design was reviewed only by the session that built it, using the s
 
 **Eleven criteria**, each tied to a published standard or to the project's own decisions:
 1. first impression and hierarchy
-2. art direction and brand (including the defaults of generated design, from `frontend-design`)
-3. typography (Bringhurst)
-4. layout, grid and spacing
+2. art direction and brand (including the defaults of generated design, from `frontend-design`; whether the idea reaches the last zone and every page; sameness of layouts)
+3. typography (Bringhurst; Croatian details, and the character budget of a heading that is too long)
+4. layout, grid and spacing (including the frame: equal margins, the header on the content's margins, text off the screen's edge, two or three left edges, rests and holes)
 5. colour and contrast (WCAG 2.2 AA)
-6. drawings, icons and the drafting language (ISO 128 and 129 conventions, for an audience of architects)
+6. drawings, icons and the drafting language (ISO 128 and 129 conventions, for an audience of architects; the costume test; three levels of detail)
 7. motion (`motion.md`)
 8. interaction states and details
 9. responsive behaviour
@@ -48,6 +48,8 @@ Until now the design was reviewed only by the session that built it, using the s
 6. Classify and report.
 
 **A re-check** after the client's approved changes skips the full review: it scores each earlier finding as resolved, partial or unresolved from a new capture, and names at most three regressions (ADR 0025).
+
+The additions to criteria 2, 3, 4 and 6 come from the evaluation of the outside skill Taste Skill (ADR 0027). The frame checks are computed from the capture's `metrics.json`; the capture itself is unchanged.
 
 **Findings have three severities** (Blocking, Major, Minor), at most 15 per run.
 

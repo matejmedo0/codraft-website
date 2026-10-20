@@ -120,6 +120,9 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 
   Codraft's paper ground, sheet frame and zone rules are the client's direction (ADR 0015). The question is whether they read as an engineering drawing sheet or as a generic editorial page.
 
+- **The idea reaches the last zone and every page.** The commonest failure on studied award sites is a distinctive first screen followed by stock blocks. Follow the drafting language (the sheet, the zones, the grips, the title block) down the page: does it still shape the last zones, and in phase 3 the plain pages too (Usluge, Kontakt, Privatnost, Impresum, 404)? Or does the page turn into a generic list or card layout after the hero?
+- **Sameness.** Write one word for each zone's layout (axis, rows, split, statement, strip, band, …). The same word in two neighbouring zones, or three times on a page (in phase 3, also across pages), is the template showing. Some repetition is the client's choice: the drafting services were set as rows like "Kako radimo" on request (review #28). Those go under "Questions for the client", never as defects (rule 3).
+
 **3. Typography** (Bringhurst, _The Elements of Typographic Style_)
 
 - **Scale:** a clear modular scale with few steps, each step used for one role. The index lists every size in use.
@@ -127,7 +130,8 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - **Leading:** about 1.4–1.6 for body text and tighter for display. Headings must not collide.
 - **Rag:** no deep holes or staircase shapes.
 - **Headings:** they break at sense boundaries, not one word alone on the last line.
-- **Croatian:** Croatian typesetting commonly avoids a one-letter word (i, u, s, k, o, a, z) at the end of a line; treat it as minor polish, fixed with a non-breaking space in the copy (the client's call). Quotation marks are „…“. Check that Đ and đ render well in Archivo.
+- **Croatian:** Croatian typesetting commonly avoids a one-letter word (i, u, s, k, o, a, z) at the end of a line; treat it as minor polish, fixed with a non-breaking space in the copy (the client's call). The same goes for a number and its unit or the parts of a date split across lines ("5,61 €", "36,5 KB", "20. 10. 2026."). Quotation marks are „…“. Check that Đ and đ render well in Archivo.
+- **When a heading is too long for its place,** give the client the budget instead of new words: count the characters per line the heading actually gets at that width (its `lines` in `metrics.json`), and say how many characters fit in one or two lines there. For another width, estimate characters per line ≈ line width ÷ (font size × 0.5); Archivo's narrower widths fit a little more. It stays a copy question (rule 6).
 - **Archivo:** its widths are used as roles (100 % text, 87.5 % headings, 75 % labels); look for consistency, and for tracking that is tight but never clotted.
 
 **4. Layout, grid and spacing**
@@ -138,6 +142,15 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - **A heading belongs to what follows it:** more space above it than below, so it never reads as the caption of the block above. Measure it in `metrics.json`: the gap above is the heading's `top` less the previous block's `top` + `height`; the gap below is the next block's `top` less the heading's `top` + `height`.
 - Density is balanced across the page, with no part left empty or cramped.
 - Margins at wide screens: the sheet's frame, and the measure in wide columns.
+- **The frame.** Readers name these first ("pushed to one side", "random empty space"), before any detail. Compute the leads from `metrics.json` at each width (each entry in `textBlocks` gives `zone`, `left`, `top`, `width` and `height`; the file's own top-level `width` and `height` are the viewport), then confirm each one in the screenshots:
+  - **Equal outer margins:** the smallest `left` of the content and the smallest gap from a block's right edge to the viewport's edge should match; a drift of 16 px or more is a lead.
+  - **The header sits on the content's margins:** compare the header's leftmost text with the zones'. A header on one inset and the page on another is the commonest small fault in studied pages.
+  - **Nothing pressed to the screen's edge:** no text closer than 16 px to either edge, phones included.
+  - **Two or three left edges:** cluster the `left` of left-aligned headings and paragraphs (within 8 px). Two or three anchor lines are a system; six or more mean things were placed one at a time.
+  - **No blank stretch over half a screen:** sort the blocks by `top` and look for a gap between one block's bottom and the next block's top larger than half the viewport's `height`. Drawings, icons and the graph paper are not text blocks, so a gap may be filled; the screenshot decides.
+  - **No half left empty:** a zone whose text sits in one half while the other half holds nothing.
+
+  Every large empty area is either a **rest**, which something closes (a drawing, the sheet's frame, a heading that spans it, the far column), or a **hole**, which nothing closes. Name what closes it; if nothing does, it is a finding.
 
 **5. Colour and contrast** (WCAG 2.2 AA: 1.4.3, 1.4.11)
 
@@ -151,6 +164,8 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - This audience includes architects and builders, who judge drawings professionally. Line weights must form a hierarchy (ISO 128 conventions), dimensions must read like real dimensions (ISO 129), and the floor plan must be plausible. Anything a draftsperson would find amateur costs credibility.
 - Icons: one stroke weight (1.5 px on screen), one optical size, square caps and mitred joins, at most one blue accent each, aligned to their text.
 - Grips, bubbles, dimension lines and the title block are used consistently and with meaning, not as decoration.
+- **The costume test.** Crosshairs, crop marks, selection handles, hairline grids, monospace labels and 01/02/03 markers are the devices generators copy first from today's award sites (taste-skill's study of 247 and 100 gallery sites, October 2026), so on many pages they read as costume. On Codraft they are the client's direction (ADR 0015), and they are earned when they carry something real: a dimension states a real measure, a number marks a real sequence (the three stages), the title block holds real data, a grip marks an end point or a selectable thing. Point to any instance that carries nothing, as a question for the client, never as a defect.
+- **Three levels of detail in a drawing:** big shapes that read at a glance, middle shapes that describe the thing (the door swing, the window frame, the stair), and small details that reward a second look (a dimension, a hatch, an axis bubble). A drawing that would pass as a placeholder icon at full size is not finished. This applies to the floor plan, the drawing of the mark and, at their own scale, the service icons.
 
 **7. Motion** (`docs/motion.md`)
 

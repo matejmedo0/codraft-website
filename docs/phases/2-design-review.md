@@ -14,6 +14,7 @@ The client ended the second refinements session with: "Za sad je super , provjer
 - **Lab pages** (`npm run dev`, then http://localhost:4321):
   - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
   - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`: the comparisons, kept as the record; each says which option the client chose.
+  - `/lab/tlocrt-3d`: the 3D view's three options (#63), waiting for the client's choice.
   - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
 - **Code of the refinements:** `src/lab/home/`:
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
@@ -37,19 +38,19 @@ The client ended the second refinements session with: "Za sad je super , provjer
 
 **Open items, in order** (updated 2026-10-20 in the third refinements session, in the order the client set in batch 19)
 
-Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), and the inspector's three options (#59: all left as they are, the two type sizes go to phase 3).
+Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), the inspector's three options (#59: all left as they are, the two type sizes go to phase 3), and no "Pošaljite skicu" on Home (#61).
 
-1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
-2. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
-3. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
+1. **The 3D view's option** (#63): the client compares 1, 2 and 3 on `/lab/tlocrt-3d` and chooses. Put the chosen one on Home (`DraftingLegend`'s `model`), keep the page as the record, and say which option was chosen there.
+2. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
+3. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
+4. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
    - **The Kowalski proposals:** a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
    - **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. An argument for the paper option, from Taste Skill (#55): its rule is that the bar's colour follows the page's first field. It is the skill's rule, not a measurement.
-4. **Unanswered, unchanged:**
-   - **"Pošaljite skicu"** on Home may go (ADR 0020); it stays until the client decides (asked again in batch 19, no answer).
+5. **Unanswered, unchanged:**
    - **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
-   - **The 3D view's details** (#58), if the client wants changes: the view's angle, the wall height, the floor plan coming back after the 3D view, or a 2D/3D switch. None was asked for; change nothing unasked.
-5. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58), then `src/locales/en.json` where a UI string changed.
-6. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
+   - **The 3D view's details**, if the client wants changes: the view's angle, the wall height, or a 2D/3D switch. None was asked for; change nothing unasked.
+6. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58, the options' lines of #63), then `src/locales/en.json` where a UI string changed.
+7. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
    - the variable for the paper grey (`#4A5362`)
    - the component Zaglavlje (no button; "Tehničko crtanje")
    - the nine service icons as components
@@ -59,7 +60,7 @@ Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor
      - the drafting zone (option C as refined), with the floor plan's 3D view
      - "Kako radimo"
      - the centred closing call to action
-7. **The steps under [After the refinements](#after-the-refinements):**
+8. **The steps under [After the refinements](#after-the-refinements):**
    - the checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` now covers `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` (2026-10-20); include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build
@@ -454,6 +455,23 @@ The question about "Pošaljite skicu" on Home (open item 5) was not answered; it
 | 58 | "3D Prikaz tlocrta u sljedećem koraku može , bilo bi fora vidjeti 3d prikaz" | After the timelapse, the floor plan rises into a 3D model, on Home's option C (`model` on `PlanDrawing`; options A and B on `/lab/crtanje` keep the plan only). <br>- **The sequence** (about 2.9 s after the title block, 8 s in all): the finished plan holds 600 ms; the axes and dimensions switch off with their lamps (200 ms); the plan turns 45° and tilts back into an axonometric view (1200 ms, `--ease-pen`) as a paper floor fades in under it; then the walls rise from it (900 ms, `--ease-standard`), and the title block's "Tlocrt stana" becomes "3D model stana". "Iscrtaj ponovno" replays all of it. <br>- **The model:** the plan's own walls at 2.6 m, window sills at 0.9 m with the glass in a tint of the brand blue up to the 2.1 m head, lintels over every opening, and the four door leaves; seen from the south-west and about 53° above, so the living room is in front. The wall tops keep the plan's solid ink (the cut), the other faces are paper, those facing along x a 9 % shade darker. Built at build time from the same data as the plan (`plan-model.ts`, in the projection of `plan-projection.ts`), painted back to front; only `transform` and `opacity` animate (each side scales up from the floor, each top slides up with it). <br>- **The final state is the 3D view:** without JavaScript, with reduced motion, or when the drawing is already in view at load. The drawing's accessible name says the plan is raised into a 3D model. <br>Compared before choosing: walls cut at 1.2 m like the plan (less of a building) and a view from the south-east (the small rooms in front, harder to read). | `src/lab/home/PlanDrawing.astro`, `plan-timelapse.ts`, `plan-model.ts` (new; the plan's walls, windows and doors moved here), `plan-projection.ts` (new), `plan-model.test.ts` (new), `drafting/DraftingLegend.astro`, `src/lab/copy.ts`; `docs/content.md`, [motion.md](../motion.md) | None | Done; in review |
 | 59 | "gustoća ostaje kako je za sad / dvije veličine slova rješavamo u fazi 3 / automatska mjera gustoće nema potrebe sad dodavati" | No change. The three options of the inspector's run ([research note](../research/2026-10-20-taste-skill-inspect.md#proposed-for-the-client)): (1) "Što radimo" keeps its density at 1440 px; (2) `--step-service` and `--step-heading` are settled in phase 3, when "Što radimo" leaves the lab ([3-pages.md](3-pages.md#content-specifics)); (3) no density measure for the critic. | `docs/phases/3-pages.md` | None | Recorded |
 | 60 | "Dorade riješimo na kraju kad popraviš ostalo"; "Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu"; "To isto kasnije kowalskijeva provjera"; "Kasnije isto" | The order of the rest of the review: first #57 and #58; then the critic's first run on the client's word; the Kowalski proposals and `theme-color` later; the client's own further refinements at the end. | Open items under [Handover](#handover-2026-10-20) | None | Recorded |
+
+**Batch 20 (2026-10-20): the sketch button, and options for the 3D view**
+
+The client's message, verbatim:
+
+> Pošaljite skicu gumb nije potreban jer postoji mail kontakt forma koja će biti logički smislena da svaki korisnik dobije što želi.
+> Defign critic kasnije smo rekli
+> Idemo ovako prikaži mi dvije tri 3d opcije ova za sad je ok no idemo isprobati još dvije tri opcije:
+> Ovu opciju za sad spremi ( ako ostanemo na njoj ) no prikaži mi i povratak na tlocrt opciju nakon 3d prikaza te možda ne znam ima li smisla kako prelazi u 3d da se i krov vidi kako se stavlja ako razumiješ što mislim .
+>
+> Te dvije mi opcije prikaži s ovom trenutnom pa usporedim i odlučim
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 61 | "Pošaljite skicu gumb nije potreban jer postoji mail kontakt forma koja će biti logički smislena da svaki korisnik dobije što želi." | The button is gone from the drafting zone (option C, on Home and on `/lab/crtanje`). Sketches and requests go through the contact form and email (ADR 0020). | `src/lab/home/drafting/DraftingLegend.astro`, `src/lab/copy.ts`; `docs/content.md`, `docs/information-architecture.md` | As [ADR 0020](../decisions/0020-drawings-arrive-by-email.md) point 3 allowed; no new ADR | Done; in review |
+| 62 | "Defign critic kasnije smo rekli" | No change: the critic's first run stays later, on the client's word (#60). | — | None | Recorded |
+| 63 | "prikaži mi dvije tri 3d opcije … Ovu opciju za sad spremi … prikaži mi i povratak na tlocrt opciju nakon 3d prikaza te … da se i krov vidi kako se stavlja … Te dvije mi opcije prikaži s ovom trenutnom pa usporedim i odlučim" | Three options on a new comparison page, `/lab/tlocrt-3d`, numbered so they don't mix with the drafting zone's A–C. Each is the drafting zone as on Home; the plan, the switch-off, the tilt and the rise are the same, the end differs: <br>- **1 „Ostaje u 3D-u“:** the current one (#58); it stays on Home until the client chooses. <br>- **2 „Povratak na tlocrt“:** the 3D view holds 2.4 s, the walls go down (700 ms), the plan turns back (1000 ms, `--ease-pen`) and the axes and dimensions switch on again with their lamps; the final state is the plan. <br>- **3 „S krovom“:** once the walls are up, a pitched roof (35°, the ridge along the long side, 30 cm overhang, gables, lines of roofing down the slopes) comes down onto them (700 ms, `--ease-standard`), and a "Krov" layer switches on in the list. A flat has no roof of its own, so the drawing becomes a house: "Tlocrt kuće" and "3D model kuće". The final state is the house with its roof. <br>The roof is built at build time like the model (`roofDrawing` in `plan-model.ts`: faces that face the viewer, from their normals); with the roof the model sits 2 units lower (`ROOF_VIEW`), so the roof fits the sheet; unit tests check it. Compared before choosing the pitch: 25°, 35° and denser roofing; 35° reads most clearly as a house and is a usual pitch in Croatia. | `src/lab/pages/tlocrt-3d.astro` (new), `src/lab/home/PlanDrawing.astro`, `plan-model.ts`, `plan-projection.ts`, `plan-timelapse.ts`, `plan-model.test.ts`, `drafting/DraftingLegend.astro`, `src/lab/copy.ts`, the lab bar, index and `astro.config.ts`; `docs/content.md`, [motion.md](../motion.md) | The client chooses an option | Options in review |
 
 ## After the refinements
 

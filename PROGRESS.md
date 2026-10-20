@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: dorade prije faze 3, vašim redoslijedom (20. 10. 2026.).** U sesijama dorada poslali ste 19 skupina (dorade 1–60), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: dorade prije faze 3, vašim redoslijedom (20. 10. 2026.).** U sesijama dorada poslali ste 20 skupina (dorade 1–63), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -11,6 +11,7 @@
    - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023)
    - tlocrt koji se iscrtava kao timelapse, a zatim se podiže u 3D model: zakrene se i nagne u aksonometriju, a zidovi se podignu (dorada 58)
    - okvir lista zadržava rub od 24 px i na 1920 px, pa se stranica više ne pomiče ustranu (dorada 57)
+   - bez gumba „Pošaljite skicu“ na početnoj: upiti i skice idu kroz kontakt formu i e-mail (dorada 61, ADR 0020)
    - nakon alata `inspect`: gustoća „Što radimo“ ostaje, dvije lokalne veličine slova rješavamo u fazi 3, mjera gustoće za `design-critic` se ne dodaje (dorada 59)
    - „Kako radimo“ s vaše tri obveze; tamnija siva za sporedni tekst (7,11:1)
    - završni poziv s vašim pitanjem, centriran
@@ -32,13 +33,13 @@
      - u fazi 3 svaka stranica počinje svojim argumentom: tvrdnja i provjerljiv dokaz po zoni
 
      Kod stranice se ne mijenja.
-2. **Otvoreno, vašim redoslijedom (dorada 60):**
-   1. neovisna kritika dizajna: agent `design-critic` (ADR 0024, `docs/design-critique.md`) pokrećem na početnoj kad potvrdite. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
-   2. vaše daljnje dorade („još par detalja i popravka prije faze 3“), na kraju
-   3. kasnije, na vašu riječ:
+2. **Otvoreno, vašim redoslijedom (dorade 60 i 63):**
+   1. tri 3D opcije čekaju vaš izbor na http://localhost:4321/lab/tlocrt-3d: 1 ostaje u 3D-u (sada na početnoj), 2 povratak na tlocrt, 3 s krovom (dorada 63)
+   2. neovisna kritika dizajna: agent `design-critic` (ADR 0024, `docs/design-critique.md`) pokrećem na početnoj kad potvrdite. Pokretanje nakon svake stranice u fazi 3 je moj prijedlog.
+   3. vaše daljnje dorade („još par detalja i popravka prije faze 3“), na kraju
+   4. kasnije, na vašu riječ:
       - prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
       - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu (dorada 51). Taste Skill ima pravilo da traka prati prvo polje stranice, što ide u prilog papirnatoj (dorada 55).
-   4. bez odgovora: gumb „Pošaljite skicu“ na početnoj ostaje dok ne odlučite
    5. engleski tekst na kraju dorada
    6. usklađivanje Figme
    7. završne provjere i ažuriranje PR-a #2

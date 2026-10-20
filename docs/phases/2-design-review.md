@@ -37,7 +37,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 
 **The steps to the end of phase 2, in this order** (the client's order, batch 23)
 
-1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). **Run on 2026-10-21:** capture `2026-10-21-0037` at `a28938e`, four critics, all "Ready after fixes"; 22 verified findings and questions in [research/2026-10-21-design-critique-home.md](../research/2026-10-21-design-critique-home.md), put to the client as options. Nothing changed yet; next is the client's answer (sub-step 6). The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). **Run on 2026-10-21:** capture `2026-10-21-0037` at `a28938e`, four critics, all "Ready after fixes"; 22 verified findings and questions in [research/2026-10-21-design-critique-home.md](../research/2026-10-21-design-critique-home.md), put to the client as options. The client answered group A in batch 24 and asked for the fixes one group at a time: 1, 2, 4 and 7 first, then the rest of A, then B and C (#83). The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
    1. Make sure the dev server answers on port 4321 (start `npm run dev` if it doesn't).
    2. Capture Home: `npm run design:capture -- lab/pocetna` (six widths, motion at 1440 px). `/lab/style` only if the client asks.
    3. Launch four `design-critic` agents in one message, one per lens: `art-direction`, `craft`, `communication` and `motion`, each with the capture folder and the page.
@@ -72,6 +72,8 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 - **The icons** are inline SVG with `pathLength="1"` on every stroke; on screen they are 40 px with `stroke-width="1.8"`, so the line stays 1.5 px. Their accent takes `--accent`.
 - **The sheet at 1920 px** keeps its margin since #57; the overflow of #23 is gone, so a check at 1920 px must find none.
 - **The floor plan's 3D view** (#58): the plan's walls, windows and doors live in `plan-model.ts`, which builds the model's faces at build time; the view is in `plan-projection.ts`, shared with `plan-timelapse.ts`, which gives the CSS the two views (`--plan-from`, `--plan-to`) and each top's rise. Each side is a unit rectangle in its own frame (an SVG `transform` attribute), so CSS `scale` raises it from the floor: SVG's default transform origin is the frame's origin. Inline `style` attributes are blocked by the CSP, so per-element values go in through the CSSOM. `plan-model.test.ts` checks that the model fits above the title block.
+- **A new lab page** needs `astro.config.ts` to reload after the page's file exists: the lab integration injects its routes when the dev server starts. Touch the config (`touch astro.config.ts`) and the dev server reloads it without a restart.
+- **The draw queue** (`draw.ts`, #78) counts every animation of a part, its pseudo-elements' included, plus the siblings marked `data-draw-with`; a part's CSS needs nothing else to take part.
 - **Playwright scripts** must live in the project (`.playwright-mcp/`, ignored by git) to find `@playwright/test`. In Git Bash, run them with `MSYS_NO_PATHCONV=1` when an argument starts with `/`. Element screenshots of tall sections at 375 px can come out shifted; give the viewport the section's height.
 - **Node scripts on Windows** import project modules through `file:///C:/…` URLs.
 - **Editing files with Python on Windows:** write with `newline="\n"`, or the file gets CRLF line endings. For long edits, write the script to the scratchpad first.
@@ -515,6 +517,41 @@ The client's message, verbatim:
 | 72 | "boja trake preglednika probati ćemo kasnije isto u fazi 3" | The browser bar's colour (navy or paper) is tried on a real Android phone in phase 3. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
 | 73 | "moje čitanje i ispravljanje generičkih tekstova isto kasnije ( na kraju faze 3 vjerovanto … )" | The client reads and corrects every text at the end of phase 3, all pages together; it is now an exit criterion of phase 3. | [3-pages.md](3-pages.md#exit-criteria) | None | Moved to phase 3 |
 | 74 | "naslov u heroju na laptopima provjerimo u fazi 3 isto kad sve stranice odradimo" | The hero's three lines on 1440 px laptops are checked in phase 3, once every page is built. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+
+**Batch 24 (2026-10-21, fourth session): the critique's findings, part A**
+
+The first critique ([research note](../research/2026-10-21-design-critique-home.md)) went to the client in three groups: A, fixes that touch no decision (1, 2, 4, 7, 8–11, 15–18); B, questions that touch the client's decisions (3, 5, 12, 13, 20, 21); C, proposed for phase 3 (6, 14, 19, 22). The numbers are the note's. The client answered A, verbatim:
+
+> A popravci - Odobravam popravak 1.blokirajućeg logotipa
+> 2. 10 linkova koji tako ne izgledaju , opcija A tanko podcratavanje za sad
+>
+> 4. Važno : Idemo opcijom A isto tako animacije čekaju jedna drugu , ako korisnik brže skrola brže su i animacije onda pretpostavljam ?
+>
+> 7. Važno isti elemnt u dva stila : Popravi i sekciju što radimo , predloži par opcija popravka te sekcije , možda i crtu lijevo premjestiti ili malo prerasporediti boxove dosta prazno i sitno sekcija sa središnjom crtom izglda iako je sama ideja središnje crte fora.
+>
+> 8. Odobravam ravnomjernu rasporedbu redova
+> 9. Odobravam jednoredni datum
+> 10. Slažem se da jke isti link kao u hero sekciji.
+> 11. Odobravam popravak skrivenih crtica
+> 15. Odobravam i taj popravak
+> 16. Odobravam i taj popravak nakon što mi skrinaš kako izgleda taj popravak da vidim o čemu točno pričamo
+> 17. Odobravam linkove kroz 200ms zbog mobitela kako predviđa motion.md
+> 18. Objasni što su prvo gripovi u zaglavlju
+>
+> Ovako sada sam napisao sve što se tičke točke A , zahtjevam ovako ne sve odjednom popravljamo cjelinu po cjelinu , B i C točke kasnije razrješavao prvo zapiši B i C koje treba rješiti poslje ovoga.
+> Što se tiče točke A na koju sam kompletno odgovorio - popravi sve do 8. znači 1. , 2. , 4. , 7. nakon toga stani i javi. Pa onda ako sam zadovoljan idemo dalje na ostale u točki A
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 75 | "ne sve odjednom popravljamo cjelinu po cjelinu"; "popravi sve do 8. znači 1. , 2. , 4. , 7. nakon toga stani i javi" | The order of the fixes: first 1, 2, 4 and 7, then a report and a stop; then the rest of A (8–11, 15–18) on the client's word; then B; then C. The critic's re-check follows the approved fixes (design-critique.md, step 7). | — | None | Recorded |
+| 76 | "Odobravam popravak 1.blokirajućeg logotipa" (critique 1) | The title block's wordmark gets its clear space: 24 px (`--space-5`) on every side of its cell, at least the height of its "c" (about 20.5 px). | `src/components/site/Footer.astro` | None | Done; in review. Measured: 24 px at 375–1024, 24 px left and 39 px above and below from 1440 (the cell is as tall as its row) |
+| 77 | "10 linkova koji tako ne izgledaju , opcija A tanko podcratavanje za sad" (critique 2) | The titles that link (7 in "Što radimo", 3 in "Tehničko crtanje") are underlined at rest with the base link style (1 px, 2 px on hover), in ink; the design system's `Item` gets the same. | `src/lab/home/ServiceItem.astro`, `src/components/ui/Item.astro` | None | Done; in review |
+| 78 | "Idemo opcijom A isto tako animacije čekaju jedna drugu , ako korisnik brže skrola brže su i animacije onda pretpostavljam ?" (critique 4) | One drawing moves on the screen at a time (motion.md principle 2). A part that reaches its trigger while another is moving on screen waits for it; meanwhile the moving part plays at double speed, and the waiting part plays at double speed when its turn comes, so a fast scroll gives faster drawings. A part that has left the screen by its turn shows its final state at once. A replay starts at once. A zone's letter moves with its selection (`data-draw-with`). Checked with motion on at 1440 px: the audit's selection hurries when its steps reach their trigger, the steps follow, and after a jump to the end no part passed is left hidden. | `src/components/ui/draw.ts`, `ZoneMark.astro`; [motion.md](../motion.md#principles) | None | Done; in review |
+| 79 | "Popravi i sekciju što radimo , predloži par opcija popravka te sekcije , možda i crtu lijevo premjestiti ili malo prerasporediti boxove dosta prazno i sitno sekcija sa središnjom crtom izglda iako je sama ideja središnje crte fora." (critique 7) | The service titles take the heading style everywhere (the heading width and weight, as in "Kako radimo"). Options for the layout of "Što radimo" on a new comparison page, `/lab/sto-radimo-2`, for the client to choose; Home keeps the central axis until then. Every option has the same copy and motion, with the icons at 48 px from 64rem (their grid's own size, the line at 1.5 px); phones keep the line down the left in all of them. The current layout comes first for comparison. <br>- **1 „Os lijevo“:** the line down the left, as on phones; the services in two columns, left-aligned, and from 80rem each stage's head beside its services. 1104 px tall at 1440 (now 1625). <br>- **2 „Središnja os, naizmjence“:** the line stays in the middle; each stage's head beside its bubble and its services on the other side, the sides alternating; from 80rem two services a row with the icon above the title. 1424 px at 1440. <br>- **3 „Tri stupca“:** from 80rem the three stages side by side, the line across through their bubbles; it draws once at a constant speed when it reaches 85 % of the screen, and a stage's icons draw once the pen has reached its bubble and they are on screen (`axis-row.ts`); narrower, as option 1. 995 px at 1440. | `ServiceItem.astro`, `drafting/DraftingLegend.astro`, the design system's `Item.astro`; `ServicesAxis.astro` (`layout`), `axis-row.ts` (new), `axis-line.ts`, `services.css`, `src/lab/pages/sto-radimo-2.astro` (new), the lab bar, index and `astro.config.ts` | The client chooses an option | Title style done; options in review |
+| 80 | Critique 8, 9, 10, 11, 15 and 17: "Odobravam …" | Approved; made after the first four, on the client's word. | — | None | Approved; next |
+| 81 | "16. Odobravam i taj popravak nakon što mi skrinaš kako izgleda" | The caption under the drawing on phones: a screenshot first, then the change. | — | None | Screenshot next |
+| 82 | "18. Objasni što su prvo gripovi u zaglavlju" | Explained in the report. | — | None | Answer next |
+| 83 | "B i C točke kasnije razrješavao prvo zapiši B i C koje treba rješiti poslje ovoga" | Open after A, for the client to resolve: **B** 3 (the layer list), 5 ("Što radimo" on phones), 12 (the plan's length), 13 (the second column's grid), 20 (the hero's drawing), 21 (the drafting zone's breakpoint); **C** 6 (the hero at 1024), 14 (the team strip), 19 (values off the token scale), 22 (copy). | [Research note](../research/2026-10-21-design-critique-home.md#verified-findings) | — | Open |
 
 ## After the refinements
 

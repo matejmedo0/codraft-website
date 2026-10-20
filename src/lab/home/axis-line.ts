@@ -24,6 +24,7 @@
  * script does nothing.
  */
 import { DURATION_MS, prefersReducedMotion } from "../../styles/motion.ts";
+import { initRow, ROW_FROM } from "./axis-row.ts";
 import { timeStrokes } from "./icons/icon-draw.ts";
 
 /** The tip aims at this share of the screen's height. */
@@ -213,7 +214,10 @@ function init(root: HTMLElement): void {
 }
 
 if (!prefersReducedMotion()) {
+  const isRow = window.matchMedia(ROW_FROM).matches;
   for (const root of document.querySelectorAll<HTMLElement>("[data-axis]")) {
-    init(root);
+    // The layout "columns" runs its line across on wide screens.
+    if (isRow && root.dataset.axisRow !== undefined) initRow(root);
+    else init(root);
   }
 }

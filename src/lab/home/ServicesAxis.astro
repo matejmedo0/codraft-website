@@ -18,6 +18,18 @@
  * (review batch 13, /lab/ikone): "above" the title, or "beside" the title
  * and its line, mirrored in the left column (the client's choice, batch 14,
  * ADR 0022). The centred last service has its icon centred above it.
+ *
+ * `layout` places the stages on wide screens; the options of review #79
+ * (/lab/sto-radimo-2), each with 48 px icons, the native size of their grid:
+ * - "centre": the central axis above (Home's).
+ * - "left": the line down the left, as on phones; the services in two
+ *   columns, and from 80rem each stage's head beside its services.
+ * - "alternate": the line down the middle; from 64rem each stage's head
+ *   beside its bubble and its services on the other side, the sides
+ *   alternating stage by stage.
+ * - "columns": from 80rem the three stages side by side, the line across
+ *   through their bubbles (axis-row.ts); narrower, as "left".
+ * Phones show the line down the left in every layout.
  */
 import "./services.css";
 
@@ -33,9 +45,11 @@ interface Props {
   label?: string;
   /** Where the service icons go; without it there are none. */
   icons?: "above" | "beside";
+  /** How the stages are placed on wide screens. */
+  layout?: "centre" | "left" | "alternate" | "columns";
 }
 
-const { headingId = "usluge", label, icons } = Astro.props;
+const { headingId = "usluge", label, icons, layout = "centre" } = Astro.props;
 const labelId = `${headingId}-opcija`;
 ---
 
@@ -50,12 +64,20 @@ const labelId = `${headingId}-opcija`;
   )}
   <h2 id={headingId}>{SERVICES.title}</h2>
   <div
-    class:list={["axis", icons !== undefined && `axis--icons-${icons}`]}
+    class:list={[
+      "axis",
+      `axis--${layout}`,
+      icons !== undefined && `axis--icons-${icons}`,
+    ]}
     data-axis
+    data-axis-row={layout === "columns" ? "" : undefined}
   >
     <span class="axis__line" data-axis-line aria-hidden="true"></span>
+    {layout === "columns" && (
+      <span class="axis__row" data-axis-row-line aria-hidden="true" />
+    )}
     {CHAPTERS.map((chapter) => (
-      <div class="axis-stage">
+      <div class="axis-stage" data-axis-stage>
         <span class="svc-rail axis-stage__rail" aria-hidden="true" />
         <div class="axis-stage__head">
           <h3 class="svc-title axis-stage__title">
@@ -88,12 +110,34 @@ const labelId = `${headingId}-opcija`;
 
 <style>
   .axis {
+    --icon: 2.5rem;
+    --axis-gap: var(--space-7);
+
     position: relative;
+  }
+
+  /* The options of review #79, on wide screens: the icons at their grid's
+     own size, with the line at 1.5 px. Phones keep 40 px, so the text keeps
+     its width there. */
+  @media (min-width: 64rem) {
+    .axis:not(.axis--centre) {
+      --icon: 3rem;
+    }
+
+    .axis:not(.axis--centre) .axis-stage__item :global(.service-icon) {
+      width: var(--icon);
+      height: var(--icon);
+      stroke-width: 1.5;
+    }
   }
 
   /* Narrow screens: the line down the left, as in option 1. */
   .axis__line {
     left: calc((var(--bubble) - var(--rail)) / 2);
+  }
+
+  .axis__row {
+    display: none;
   }
 
   .axis-stage {
@@ -152,7 +196,7 @@ const labelId = `${headingId}-opcija`;
   /* B: beside the title and its line, in a column of its own. */
   .axis--icons-beside .axis-stage__item {
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
+    grid-template-columns: var(--icon) minmax(0, 1fr);
     column-gap: var(--space-4);
     align-content: start;
     align-items: start;
@@ -168,20 +212,20 @@ const labelId = `${headingId}-opcija`;
     grid-column: 2;
   }
 
-  /* Wide screens: the line down the middle. */
   @media (min-width: 64rem) {
-    .axis-stage {
+    /* "centre": the line down the middle. */
+    .axis--centre .axis-stage {
       --stage-top: var(--space-5);
 
       padding: var(--stage-top) 0 var(--space-5);
     }
 
-    .axis-stage:last-child {
+    .axis--centre .axis-stage:last-child {
       padding-bottom: 0;
     }
 
     /* The head covers the line where it passes behind the title. */
-    .axis-stage__head {
+    .axis--centre .axis-stage__head {
       position: relative;
       z-index: 1;
       display: grid;
@@ -194,83 +238,218 @@ const labelId = `${headingId}-opcija`;
       text-align: center;
     }
 
-    .axis-stage__title {
+    .axis--centre .axis-stage__title {
       display: grid;
       gap: var(--space-3);
       justify-items: center;
       padding-top: 0;
     }
 
-    .axis-stage__bubble {
+    .axis--centre .axis-stage__bubble {
       position: static;
     }
 
-    .axis-stage__tagline {
+    .axis--centre .axis-stage__tagline {
       margin-top: var(--space-3);
     }
 
-    :is(.axis__line, .axis-stage__rail) {
+    .axis--centre :is(.axis__line, .axis-stage__rail) {
       left: calc(50% - var(--rail) / 2);
     }
 
-    .axis-stage__items {
+    .axis--centre .axis-stage__items {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: var(--space-10);
       margin-top: var(--space-6);
     }
 
     /* The left column leans on the line. */
-    .axis-stage__item:nth-child(odd) {
+    .axis--centre .axis-stage__item:nth-child(odd) {
       text-align: right;
     }
 
-    .axis-stage__item:nth-child(odd) :global(.service__body) {
+    .axis--centre .axis-stage__item:nth-child(odd) :global(.service__body) {
       margin-left: auto;
     }
 
-    .axis-stage__item:last-child:nth-child(odd) {
+    .axis--centre .axis-stage__item:last-child:nth-child(odd) {
       grid-column: 1 / -1;
       justify-self: center;
       width: min(100%, 36rem);
       text-align: center;
     }
 
-    .axis-stage__item:last-child:nth-child(odd) :global(.service__body) {
+    .axis--centre
+      .axis-stage__item:last-child:nth-child(odd)
+      :global(.service__body) {
       margin-inline: auto;
     }
 
     /* The icons face the line: the left column's lean on it too, and the
        centred last service has its icon centred above it. */
-    .axis--icons-above
+    .axis--centre.axis--icons-above
       .axis-stage__item:nth-child(odd)
       :global(.service__icon) {
       margin-left: auto;
     }
 
-    .axis--icons-beside .axis-stage__item:nth-child(odd) {
-      grid-template-columns: minmax(0, 1fr) 2.5rem;
+    .axis--centre.axis--icons-beside .axis-stage__item:nth-child(odd) {
+      grid-template-columns: minmax(0, 1fr) var(--icon);
     }
 
-    .axis--icons-beside
+    .axis--centre.axis--icons-beside
       .axis-stage__item:nth-child(odd)
       :global(.service__icon) {
       grid-column: 2;
     }
 
-    .axis--icons-beside
+    .axis--centre.axis--icons-beside
       .axis-stage__item:nth-child(odd)
       :global(:is(.service__title, .service__body)) {
       grid-column: 1;
     }
 
-    .axis--icons-beside .axis-stage__item:last-child:nth-child(odd) {
+    .axis--centre.axis--icons-beside
+      .axis-stage__item:last-child:nth-child(odd) {
       display: block;
     }
 
-    .axis:is(.axis--icons-above, .axis--icons-beside)
+    .axis--centre:is(.axis--icons-above, .axis--icons-beside)
       .axis-stage__item:last-child:nth-child(odd)
       :global(.service__icon) {
       margin: 0 auto var(--space-3);
+    }
+
+    /* "left" (and "columns" below 80rem): the line stays on the left, the
+       services take two columns. */
+    .axis:is(.axis--left, .axis--columns) .axis-stage__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--axis-gap);
+    }
+
+    /* "alternate": the line down the middle, each head beside its bubble,
+       the services on the other side. */
+    .axis--alternate :is(.axis__line, .axis-stage__rail) {
+      left: calc(50% - var(--rail) / 2);
+    }
+
+    .axis--alternate .axis-stage {
+      --stage-top: var(--space-6);
+
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: calc(var(--bubble) + var(--space-5) * 2);
+      align-items: start;
+      padding: var(--stage-top) 0 var(--space-6);
+    }
+
+    .axis--alternate .axis-stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .axis--alternate .axis-stage__bubble {
+      left: calc(50% - var(--bubble) / 2);
+    }
+
+    .axis--alternate .axis-stage__items {
+      margin-top: 0;
+    }
+
+    .axis--alternate .axis-stage:nth-of-type(odd) .axis-stage__head {
+      grid-column: 1;
+      text-align: right;
+    }
+
+    .axis--alternate .axis-stage:nth-of-type(odd) .axis-stage__tagline {
+      margin-left: auto;
+    }
+
+    .axis--alternate .axis-stage:nth-of-type(odd) .axis-stage__items {
+      grid-column: 2;
+    }
+
+    .axis--alternate .axis-stage:nth-of-type(even) .axis-stage__head {
+      grid-column: 2;
+    }
+
+    .axis--alternate .axis-stage:nth-of-type(even) .axis-stage__items {
+      grid-row: 1;
+      grid-column: 1;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    /* "left": each stage's head beside its services. */
+    .axis--left .axis-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      column-gap: var(--axis-gap);
+      align-items: start;
+    }
+
+    .axis--left .axis-stage__items {
+      margin-top: 0;
+    }
+
+    /* "alternate": two services a row on each side, the icon above. */
+    .axis--alternate .axis-stage__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--axis-gap);
+    }
+
+    .axis--alternate.axis--icons-beside .axis-stage__item {
+      display: block;
+    }
+
+    .axis--alternate.axis--icons-beside
+      .axis-stage__item
+      :global(.service__icon) {
+      margin-bottom: var(--space-3);
+    }
+
+    /* "columns": the stages side by side, the line across their bubbles. */
+    .axis--columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--axis-gap);
+      align-items: start;
+    }
+
+    .axis.axis--columns :is(.axis__line, .axis-stage__rail) {
+      display: none;
+    }
+
+    .axis--columns .axis__row {
+      position: absolute;
+      top: calc((var(--bubble) - var(--rail)) / 2);
+      right: calc((100% - var(--axis-gap) * 2) / 3 - var(--bubble) / 2);
+      left: calc(var(--bubble) / 2);
+      display: block;
+      height: var(--rail);
+      background: var(--accent);
+      transform-origin: 0 50%;
+      pointer-events: none;
+    }
+
+    .axis--columns .axis-stage {
+      padding: 0;
+    }
+
+    .axis--columns .axis-stage__title {
+      display: grid;
+      gap: var(--space-4);
+      justify-items: start;
+      padding-top: 0;
+    }
+
+    .axis--columns .axis-stage__bubble {
+      position: relative;
+      top: auto;
+    }
+
+    .axis.axis--columns .axis-stage__items {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: var(--space-5);
     }
   }
 </style>

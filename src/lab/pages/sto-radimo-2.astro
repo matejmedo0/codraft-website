@@ -1,0 +1,127 @@
+---
+// "Što radimo" in three new layouts, for the client to compare (the
+// critique of 2026-10-21, finding 7; review #79 in
+// docs/phases/2-design-review.md). Each option is the section as on Home,
+// with the same copy, icons and motion; the current one comes first for
+// comparison, and the chosen one goes into /lab/pocetna. Noindex; only in
+// `astro dev` and lab builds (astro.config.ts).
+import Footer from "../../components/site/Footer.astro";
+import Header from "../../components/site/Header.astro";
+import Sheet from "../../components/ui/Sheet.astro";
+import SkipLink from "../../components/ui/SkipLink.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { t } from "../../features/i18n/ui.ts";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabBar from "../components/LabBar.astro";
+import ServicesAxis from "../home/ServicesAxis.astro";
+
+const locale = "hr";
+const MAIN_ID = "main";
+
+const OPTIONS = [
+  {
+    id: "raspored-sada",
+    layout: "centre",
+    name: "Sada: središnja os",
+    summary:
+      "Kao na početnoj: crta u sredini, faze centrirane iznad usluga, a usluge lijevo i desno od crte. Naslovi usluga sada su u stilu naslova, a oni koji vode dalje podcrtani su.",
+  },
+  {
+    id: "raspored-1",
+    layout: "left",
+    name: "Opcija 1: os lijevo",
+    summary:
+      "Crta se seli na lijevi rub, kao na mobitelu. Od 1280 px naslov faze stoji uz njezine usluge, a usluge su u dva stupca, poravnate lijevo. Odjeljak je najkraći i najlakše se čita, ali crta više nije u sredini.",
+  },
+  {
+    id: "raspored-2",
+    layout: "alternate",
+    name: "Opcija 2: središnja os, naizmjence",
+    summary:
+      "Crta ostaje u sredini. Naslov faze stoji uz svoj kružić, a usluge na drugoj strani crte, i strane se izmjenjuju od faze do faze. Od 1280 px dvije su usluge u redu, s ikonom iznad naslova. Zadržava ideju središnje crte i puni obje strane.",
+  },
+  {
+    id: "raspored-3",
+    layout: "columns",
+    name: "Opcija 3: tri stupca",
+    summary:
+      "Od 1280 px tri faze stoje jedna uz drugu, a crta ide vodoravno kroz njihove kružiće, od 01 do 03, kao proces slijeva nadesno. Kad dođe u ekran, crta se iscrta jednim potezom, a ikone svake faze kad pero stigne do njezina kružića. Najzbijenija opcija; na užim ekranima ista je kao opcija 1.",
+  },
+] as const;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Što radimo: nove opcije | Laboratorij dizajna"
+>
+  <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
+  <LabBar current="sto-radimo-2" />
+  <Sheet>
+    <Header locale={locale} />
+    <main id={MAIN_ID}>
+      <Zone labelledby="opcije" select={false} class="options">
+        <h1 id="opcije">Što radimo: nove opcije rasporeda</h1>
+        <p class="options__lead">
+          Nakon kritike dizajna (21. 10. 2026.) tražili ste nekoliko opcija za
+          „Što radimo“: odjeljak sa središnjom crtom djeluje prazno i sitno,
+          iako je ideja crte dobra. Sve opcije imaju isti tekst i iste ikone, u
+          novim opcijama na 48 px, njihovoj prirodnoj veličini. Prva je sadašnja
+          verzija s početne, za usporedbu.
+        </p>
+        <p class="options__lead">
+          Animacija je ista kao dosad: crta raste dok skrolate, a ikona se
+          iscrta kad crta stigne do nje (u opciji 3 crta ide vodoravno). Na
+          mobitelu je crta u svim opcijama na lijevom rubu, kao sada. Razlike se
+          najbolje vide na širokom ekranu, od 1280 px naviše.
+        </p>
+        <ol class="options__list">
+          {OPTIONS.map(({ id, name, summary }) => (
+            <li>
+              <a href={`#${id}`}>{name}</a>
+              <p>{summary}</p>
+            </li>
+          ))}
+        </ol>
+      </Zone>
+      {OPTIONS.map(({ id, name, layout }) => (
+        <ServicesAxis
+          headingId={id}
+          label={name}
+          icons="beside"
+          layout={layout}
+        />
+      ))}
+    </main>
+    <Footer locale={locale} />
+  </Sheet>
+</BaseLayout>
+
+<style>
+  .options {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .options__lead {
+    max-width: var(--measure);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .options__list {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure);
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .options__list a {
+    font-weight: var(--weight-strong);
+  }
+
+  .options__list p {
+    margin-top: var(--space-1);
+    color: var(--ink-muted);
+  }
+</style>

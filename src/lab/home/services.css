@@ -124,6 +124,20 @@
   }
 }
 
+/* The layout "columns" (review #79): on wide screens the line runs across
+   the stages' bubbles and draws once at a constant speed (axis-row.ts).
+   Before that it isn't there; without JavaScript, or with reduced motion,
+   it is complete. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .axis__row:not(.is-drawing) {
+    transform: scaleX(0);
+  }
+
+  .axis__row.is-drawing:not(.is-instant) {
+    animation: motion-draw-x var(--row-for, 1200ms) linear both;
+  }
+}
+
 /* Hidden at the very start, so a square cap never shows as a dot. */
 @keyframes icon-stroke {
   0% {

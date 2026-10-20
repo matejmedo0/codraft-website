@@ -15,7 +15,7 @@ The client ended the second refinements session with: "Za sad je super , provjer
   - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
   - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`: the comparisons, kept as the record; each says which option the client chose.
   - `/lab/tlocrt-3d`: the 3D view's three endings (#63); the client chose the roof (#64).
-  - `/lab/kuca-boje`: the house's three palettes (#65), waiting for the client's choice.
+  - `/lab/kuca-boje`: the house's three palettes (#65); the client chose palette 1 (#66).
   - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
 - **Code of the refinements:** `src/lab/home/`:
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
@@ -39,19 +39,18 @@ The client ended the second refinements session with: "Za sad je super , provjer
 
 **Open items, in order** (updated 2026-10-20 in the third refinements session, in the order the client set in batch 19)
 
-Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), the inspector's three options (#59: all left as they are, the two type sizes go to phase 3), and no "Pošaljite skicu" on Home (#61).
+Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor plan's 3D view (#58), the inspector's three options (#59: all left as they are, the two type sizes go to phase 3), no "Pošaljite skicu" on Home (#61), and the 3D view ending in a house with a roof (#64) in palette 1 (#66).
 
-1. **The house's palette** (#65): the client compares 1, 2 and 3 on `/lab/kuca-boje` and chooses. Put the chosen one on Home (`DraftingLegend`'s `palette`, default it there), keep the page as the record, and say which palette was chosen there. The 3D view's ending is settled: the roof (#64).
-2. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
-3. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
-4. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)), next, on the client's word: „Kasnije nakon što ovo popraviš ide design-critic na moju potvrdu“. The `design-critic` agent and `npm run design:capture` are ready. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
+2. **The client's further refinements** („Dorade riješimo na kraju kad popraviš ostalo“): "još par detalja i popravka prije faze 3". Ask for them when the items above are done.
+3. **Later, on the client's word** („To isto kasnije“, „Kasnije isto“):
    - **The Kowalski proposals:** a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
    - **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. An argument for the paper option, from Taste Skill (#55): its rule is that the bar's colour follows the page's first field. It is the skill's rule, not a measurement.
-5. **Unanswered, unchanged:**
+4. **Unanswered, unchanged:**
    - **The hero on 1440 px laptops:** three lines there, two from about 1660 px. Don't change it unasked; if raised, show both at 1440 px side by side first.
    - **The 3D view's details**, if the client wants changes: the view's angle, the wall height, or a 2D/3D switch. None was asked for; change nothing unasked.
-6. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58, the options' lines of #63), then `src/locales/en.json` where a UI string changed.
-7. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
+5. **English, at the end of the review** (batch 5): S17–S19 and every Croatian change of the review (`docs/content.md`: the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the 3D view's title block and accessible name of #58, the options' lines of #63), then `src/locales/en.json` where a UI string changed.
+6. **Figma:** not yet synced with any refinement. Bring "Codraft sustav dizajna" in line with the code once the batches settle (load `figma:figma-use` and `figma:figma-generate-library` first):
    - the variable for the paper grey (`#4A5362`)
    - the component Zaglavlje (no button; "Tehničko crtanje")
    - the nine service icons as components
@@ -61,7 +60,7 @@ Done in that session: the sheet's margin at 1920 px (#57, closes #23), the floor
      - the drafting zone (option C as refined), with the floor plan's 3D view
      - "Kako radimo"
      - the centred closing call to action
-8. **The steps under [After the refinements](#after-the-refinements):**
+7. **The steps under [After the refinements](#after-the-refinements):**
    - the checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` now covers `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` (2026-10-20); include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build
@@ -483,7 +482,15 @@ The client's message, verbatim:
 | # | The client's request | Change | Where | Decision | Status |
 |---|---|---|---|---|---|
 | 64 | "Odabirem opciju s krovom" | Option 3 „S krovom“ of #63 is on Home: the drawing is a house, and a roof comes down onto the walls. `/lab/tlocrt-3d` stays as the record and says which option was chosen. | `src/lab/home/drafting/DraftingLegend.astro` (`model` is "roof" by default), `src/lab/pages/tlocrt-3d.astro`; `docs/content.md`, `docs/information-architecture.md`, [motion.md](../motion.md) | The client chose option 3 (closes #63) | Done; in review |
-| 65 | "ponuditi mi 2 3 opcije max … različitih boja koje pašu uz naš brending da ima fasadu ( može i boja samo zidova neka ) i krov obojan ili neka jednostavna tekstura u boji" | Three palettes for the house on a new comparison page, from the brand's own colours only (navy, paper and blue, mixed from the drawing's role tokens): the facade (the walls' outer faces and the gable) and the roof in colour, the roof keeping its lines as a simple texture. The rooms inside stay paper, so the interior reads while the walls rise. <br>- **1 „Svijetla fasada, tamnoplavi krov“:** the paper facade under a navy roof, like slate, its lines lighter. <br>- **2 „Tamnoplava fasada, svijetli krov“:** a navy facade with lighter joints under a pale metal roof with dark lines; the glass a stronger blue so it reads on navy. <br>- **3 „Plavi tonovi“:** a facade tinted with the accent under a deep blue roof, its lines in the accent; the roof was toned down from a brighter first try. <br>The colours are CSS variables on the drawing (`--facade`, `--facade-shade`, `--facade-line`, `--roof`, `--roof-shade`, `--roof-line`, `--glass`), mixed from `--drawing-ink`, `--drawing-fill` and `--accent`; a palette class only sets them, and without one the house stays paper (Home until the client chooses). The model marks the walls' outer sides (`outer` in `plan-model.ts`, on the flat's outline; a unit test). | `src/lab/pages/kuca-boje.astro` (new), `src/lab/home/PlanDrawing.astro`, `plan-model.ts`, `plan-projection.ts`, `plan-model.test.ts`, `drafting/DraftingLegend.astro`, the lab bar, index and `astro.config.ts` | The client chooses a palette | Options in review |
+| 65 | "ponuditi mi 2 3 opcije max … različitih boja koje pašu uz naš brending da ima fasadu ( može i boja samo zidova neka ) i krov obojan ili neka jednostavna tekstura u boji" | Three palettes for the house on a new comparison page, from the brand's own colours only (navy, paper and blue, mixed from the drawing's role tokens): the facade (the walls' outer faces and the gable) and the roof in colour, the roof keeping its lines as a simple texture. The rooms inside stay paper, so the interior reads while the walls rise. <br>- **1 „Svijetla fasada, tamnoplavi krov“:** the paper facade under a navy roof, like slate, its lines lighter. <br>- **2 „Tamnoplava fasada, svijetli krov“:** a navy facade with lighter joints under a pale metal roof with dark lines; the glass a stronger blue so it reads on navy. <br>- **3 „Plavi tonovi“:** a facade tinted with the accent under a deep blue roof, its lines in the accent; the roof was toned down from a brighter first try. <br>The colours are CSS variables on the drawing (`--facade`, `--facade-shade`, `--facade-line`, `--roof`, `--roof-shade`, `--roof-line`, `--glass`), mixed from `--drawing-ink`, `--drawing-fill` and `--accent`; a palette class only sets them, and without one the house stays paper (Home until the client chooses). The model marks the walls' outer sides (`outer` in `plan-model.ts`, on the flat's outline; a unit test). | `src/lab/pages/kuca-boje.astro` (new), `src/lab/home/PlanDrawing.astro`, `plan-model.ts`, `plan-projection.ts`, `plan-model.test.ts`, `drafting/DraftingLegend.astro`, the lab bar, index and `astro.config.ts` | The client chose palette 1 in #66 | Done; palette 1 chosen |
+
+**Batch 22 (2026-10-21): the palette**
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 66 | "Biram paletu 1." | Palette 1 „Svijetla fasada, tamnoplavi krov“ is on Home: the paper facade under a navy roof with lighter roofing lines. `DraftingLegend` defaults to it, so the drafting zone on `/lab/crtanje` and option 3 on `/lab/tlocrt-3d` show it too; `/lab/kuca-boje` stays as the record and says which palette was chosen. | `src/lab/home/drafting/DraftingLegend.astro`, `src/lab/pages/kuca-boje.astro`; `docs/information-architecture.md` | The client chose palette 1 (closes #65) | Done; in review |
+
+The client then asked what is left of phase 2 („Nakon toga mi reci ostaje li još što u ovoj fazi 2 ?“); the answer follows the open items under [Handover](#handover-2026-10-20).
 
 ## After the refinements
 

@@ -10,8 +10,8 @@
  * batch 9 is gone (review #61): requests come through the contact form and
  * email (ADR 0020). The layer list and the replay button have their own row
  * under the drawing. The plan rises into its 3D view (review #58) and gets
- * a roof (option 3 of #63, the client's choice in #64); the comparison
- * pages pass the other options and the house's palettes (#65).
+ * a roof (option 3 of #63, the client's choice in #64), in palette 1 (#66);
+ * the comparison pages pass the other options and palettes (#63, #65).
  *
  * The grid's areas are "drawing text" / "legend .". The plan spans the
  * drawing and legend rows as a subgrid, so its frame takes the first row and
@@ -35,11 +35,16 @@ interface Props {
   label?: string;
   /** How the plan's 3D view plays (review #63); Home has the roof (#64). */
   model?: PlanModel;
-  /** The house's colours (review #65), on the comparison page. */
+  /** The house's colours: Home has palette 1 (#66), the comparison #65. */
   palette?: HousePalette;
 }
 
-const { headingId = "cad", label, model = "roof", palette } = Astro.props;
+const {
+  headingId = "cad",
+  label,
+  model = "roof",
+  palette = "navy-roof",
+} = Astro.props;
 const labelId = `${headingId}-opcija`;
 ---
 

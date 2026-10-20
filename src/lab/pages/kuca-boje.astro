@@ -2,8 +2,9 @@
 // The house with its roof in three palettes, for the client to compare (the
 // review, #65; docs/phases/2-design-review.md). Each palette is the
 // drafting zone as on Home, with the roof the client chose (#64); only the
-// colours of the facade and the roof differ. Noindex; only in `astro dev`
-// and lab builds (astro.config.ts).
+// colours of the facade and the roof differ. The client chose palette 1
+// (#66), now on /lab/pocetna; this page stays as the record. Noindex; only
+// in `astro dev` and lab builds (astro.config.ts).
 import Footer from "../../components/site/Footer.astro";
 import Header from "../../components/site/Header.astro";
 import Sheet from "../../components/ui/Sheet.astro";
@@ -28,7 +29,7 @@ const OPTIONS: {
     id: "kuca-boje-1",
     name: "Paleta 1: svijetla fasada, tamnoplavi krov",
     summary:
-      "Fasada u papirnatoj boji lista i krov u tamnoplavoj boji znaka, kao škriljevac, sa svjetlijim crtama pokrova. Najmirnija i najbliža znaku.",
+      "Fasada u papirnatoj boji lista i krov u tamnoplavoj boji znaka, kao škriljevac, sa svjetlijim crtama pokrova. Najmirnija i najbliža znaku. Ovo je vaš izbor, sada na početnoj.",
     palette: "navy-roof",
   },
   {
@@ -62,7 +63,8 @@ const OPTIONS: {
           zidova i zabat) i krov, a krov zadržava crte pokrova kao jednostavnu
           teksturu. Prostorije iznutra ostaju papirnate, pa se raspored vidi dok
           se zidovi dižu. Svaki crtež se pokrene kad do njega skrolate, a
-          „Iscrtaj ponovno“ ga ponavlja.
+          „Iscrtaj ponovno“ ga ponavlja. Odabrali ste paletu 1 (21. 10. 2026.);
+          ona je sada na početnoj, a ova stranica ostaje kao zapis usporedbe.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (

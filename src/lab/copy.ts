@@ -355,7 +355,16 @@ export interface PlanCopy {
   layers: { id: PlanLayerId; label: string }[];
   replay: string;
   drawingLabel: string;
-  titleBlock: { title: string; units: string; studio: string; note: string };
+  /** The same, where the plan rises into its 3D view (review #58). */
+  modelLabel: string;
+  titleBlock: {
+    title: string;
+    /** The title once the plan is a 3D model. */
+    modelTitle: string;
+    units: string;
+    studio: string;
+    note: string;
+  };
 }
 
 export const PLAN: PlanCopy = {
@@ -371,9 +380,12 @@ export const PLAN: PlanCopy = {
   // Without the room names, at the client's request (review batch 6).
   drawingLabel:
     "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima.",
+  modelLabel:
+    "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model.",
   // The illustration says what it is (ADR 0004).
   titleBlock: {
     title: "Tlocrt stana",
+    modelTitle: "3D model stana",
     units: "Mjere u cm",
     studio: "Codraft",
     note: "Ilustracija",

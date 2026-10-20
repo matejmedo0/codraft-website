@@ -5,10 +5,17 @@
  * timelapse of drafting: once half of it is in view (draw.ts), its elements
  * appear one by one, each wiped in along its own direction, layer after
  * layer: axes, walls, openings, dimensions, title block (the room names
- * were removed in review batch 6). The layer
- * list switches on in step and "Iscrtaj ponovno" replays it.
- * plan-timelapse.ts times the steps. Without JavaScript, or with reduced
- * motion, the plan is complete.
+ * were removed in review batch 6). The layer list switches on in step and
+ * "Iscrtaj ponovno" replays it. plan-timelapse.ts times the steps.
+ *
+ * With `model` (Home's option C, review #58), the finished plan then rises
+ * into a 3D view: the axes and dimensions switch off, the plan turns and
+ * tilts back into an axonometric view, and the walls rise from it, with
+ * the windows, lintels and door leaves (plan-model.ts, in the projection of
+ * plan-projection.ts). The 3D view is the drawing's final state.
+ *
+ * Without JavaScript, or with reduced motion, the drawing is complete: the
+ * plan, or with `model` the 3D view.
  *
  * It is an illustration, not client work, and its title block says so
  * (ADR 0004). Units: 1 = 10 cm; the flat is 1000 × 700 cm. Colours come
@@ -21,49 +28,24 @@ import type { HTMLAttributes } from "astro/types";
 
 import Button from "../../components/ui/Button.astro";
 import { PLAN } from "../copy.ts";
+import { DOORS, modelFaces, type Rect, WALLS, WINDOWS } from "./plan-model.ts";
+import { MODEL_VIEW, viewTransform } from "./plan-projection.ts";
 
 type Wipe = "x" | "y";
 
-/** Exterior walls are 30 cm thick, interior walls 12 cm. */
-const WALLS: [x: number, y: number, width: number, height: number][] = [
-  // Exterior, clockwise from the top left, with the openings left out.
-  [0, 0, 10, 3],
-  [24, 0, 10, 3],
-  [48, 0, 22, 3],
-  [86, 0, 14, 3],
-  [97, 3, 3, 47],
-  [97, 56, 3, 11],
-  [73, 67, 27, 3],
-  [38, 67, 26, 3],
-  [0, 67, 18, 3],
-  [0, 44, 3, 23],
-  [0, 3, 3, 21],
-  // Interior: living room | the rest, bedroom | entrance, entrance | bath.
-  [59.4, 3, 1.2, 49],
-  [59.4, 61, 1.2, 6],
-  [60.6, 39.4, 5.4, 1.2],
-  [74, 39.4, 23, 1.2],
-  [79.4, 40.6, 1.2, 3.4],
-  [79.4, 51, 1.2, 16],
-];
+/** A step wipes in along the longer side of its rectangle. */
+function wipeOf([, , width, depth]: Rect): Wipe {
+  return width >= depth ? "x" : "y";
+}
 
-/** Windows: the wall's two faces and the glass between them. */
-const WINDOWS: { d: string; wipe: Wipe }[] = [
-  { d: "M10 0H24M10 1.5H24M10 3H24M10 0V3M24 0V3", wipe: "x" },
-  { d: "M34 0H48M34 1.5H48M34 3H48M34 0V3M48 0V3", wipe: "x" },
-  { d: "M70 0H86M70 1.5H86M70 3H86M70 0V3M86 0V3", wipe: "x" },
-  { d: "M97 50V56M98.5 50V56M100 50V56M97 50H100M97 56H100", wipe: "y" },
-  { d: "M18 67H38M18 68.5H38M18 70H38M18 67V70M38 67V70", wipe: "x" },
-  { d: "M0 24V44M1.5 24V44M3 24V44M0 24H3M0 44H3", wipe: "y" },
-];
-
-/** Doors: the open leaf and its swing. */
-const DOORS: { leaf: string; swing: string }[] = [
-  { leaf: "M64 67V58", swing: "M73 67A9 9 0 0 0 64 58" },
-  { leaf: "M59.4 61H50.4", swing: "M59.4 52A9 9 0 0 0 50.4 61" },
-  { leaf: "M66 39.4V31.4", swing: "M74 39.4A8 8 0 0 0 66 31.4" },
-  { leaf: "M80.6 44H87.6", swing: "M80.6 51A7 7 0 0 0 87.6 44" },
-];
+/** A window in the plan: the wall's two faces and the glass between. */
+function windowPath([x, y, width, depth]: Rect): string {
+  const n = (value: number): string => String(value);
+  const [x1, y1] = [x + width, y + depth];
+  return width >= depth
+    ? `M${n(x)} ${n(y)}H${n(x1)}M${n(x)} ${n(y + depth / 2)}H${n(x1)}M${n(x)} ${n(y1)}H${n(x1)}M${n(x)} ${n(y)}V${n(y1)}M${n(x1)} ${n(y)}V${n(y1)}`
+    : `M${n(x)} ${n(y)}V${n(y1)}M${n(x + width / 2)} ${n(y)}V${n(y1)}M${n(x1)} ${n(y)}V${n(y1)}M${n(x)} ${n(y)}H${n(x1)}M${n(x)} ${n(y1)}H${n(x1)}`;
+}
 
 /** Grid axes on the walls' centre lines, with their bubbles. */
 const COLUMNS = [
@@ -80,19 +62,28 @@ const ROWS = [
 interface Props extends HTMLAttributes<"div"> {
   /** Prefixes the drawing's ids, so a page can show it more than once. */
   idPrefix?: string;
+  /** Raises the finished plan into its 3D view (review #58). */
+  model?: boolean;
 }
 
-const { idPrefix = "plan", class: className, ...attributes } = Astro.props;
+const {
+  idPrefix = "plan",
+  model = false,
+  class: className,
+  ...attributes
+} = Astro.props;
 const drawingId = `${idPrefix}-crtez`;
 const layersId = `${idPrefix}-slojevi`;
 
 const { titleBlock } = PLAN;
+const faces = model ? modelFaces() : [];
 ---
 
 <div
-  class:list={["plan", className]}
+  class:list={["plan", { "plan--model": model }, className]}
   data-draw="half"
   data-plan
+  data-plan-model={model ? "" : undefined}
   {...attributes}
 >
   <div class="plan__sheet graph-paper">
@@ -103,110 +94,178 @@ const { titleBlock } = PLAN;
       aria-labelledby={drawingId}
       focusable="false"
     >
-      <title id={drawingId}>{PLAN.drawingLabel}</title>
+      <title id={drawingId}>
+        {model ? PLAN.modelLabel : PLAN.drawingLabel}
+      </title>
 
-      <g data-layer="osi">
-        {COLUMNS.map(({ at, label }) => (
-          <g data-wipe="y">
-            <path class="plan-axis" d={`M${String(at)} -14V73`} />
-            <circle class="plan-bubble" cx={at} cy="-17" r="3" />
-            <text class="plan-bubble__label" x={at} y="-17">
-              {label}
-            </text>
+      <g
+        class="plan__ground"
+        data-plan-ground
+        transform={model ? viewTransform(MODEL_VIEW, "svg") : undefined}
+      >
+        {model && (
+          <rect class="plan-floor" x="0" y="0" width="100" height="70" />
+        )}
+
+        <g data-layer="osi">
+          {COLUMNS.map(({ at, label }) => (
+            <g data-wipe="y">
+              <path class="plan-axis" d={`M${String(at)} -14V73`} />
+              <circle class="plan-bubble" cx={at} cy="-17" r="3" />
+              <text class="plan-bubble__label" x={at} y="-17">
+                {label}
+              </text>
+            </g>
+          ))}
+          {ROWS.map(({ at, label }) => (
+            <g data-wipe="x">
+              <path class="plan-axis" d={`M-14 ${String(at)}H103`} />
+              <circle class="plan-bubble" cx="-17" cy={at} r="3" />
+              <text class="plan-bubble__label" x="-17" y={at}>
+                {label}
+              </text>
+            </g>
+          ))}
+        </g>
+
+        <g data-layer="zidovi">
+          {WALLS.map((wall) => {
+            const [x, y, width, depth] = wall;
+            return (
+              <rect
+                class="plan-wall"
+                x={x}
+                y={y}
+                width={width}
+                height={depth}
+                data-wipe={wipeOf(wall)}
+              />
+            );
+          })}
+        </g>
+
+        <g data-layer="otvori">
+          <g class="plan-windows">
+            {WINDOWS.map((opening) => (
+              <path
+                class="plan-window"
+                d={windowPath(opening)}
+                data-wipe={wipeOf(opening)}
+              />
+            ))}
           </g>
-        ))}
-        {ROWS.map(({ at, label }) => (
+          {DOORS.map(({ leaf, swing }) => (
+            <g data-wipe="fade">
+              <path
+                class="plan-door"
+                d={`M${leaf.from.join(" ")}L${leaf.to.join(" ")}`}
+              />
+              <path class="plan-swing" d={swing} />
+            </g>
+          ))}
+        </g>
+
+        <g data-layer="kote">
           <g data-wipe="x">
-            <path class="plan-axis" d={`M-14 ${String(at)}H103`} />
-            <circle class="plan-bubble" cx="-17" cy={at} r="3" />
-            <text class="plan-bubble__label" x="-17" y={at}>
-              {label}
+            <path
+              class="plan-dim"
+              d="M0 -1V-11M60 -1V-11M100 -1V-11M0 -5H100"
+            />
+            <path class="plan-dim" d="M-1 -4L1 -6M59 -4L61 -6M99 -4L101 -6" />
+            <text class="plan-dim__text" x="30" y="-6">
+              600
+            </text>
+            <text class="plan-dim__text" x="80" y="-6">
+              400
             </text>
           </g>
-        ))}
-      </g>
-
-      <g data-layer="zidovi">
-        {WALLS.map(([x, y, width, height]) => (
-          <rect
-            class="plan-wall"
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            data-wipe={width >= height ? "x" : "y"}
-          />
-        ))}
-      </g>
-
-      <g data-layer="otvori">
-        {WINDOWS.map(({ d, wipe }) => (
-          <path class="plan-window" d={d} data-wipe={wipe} />
-        ))}
-        {DOORS.map(({ leaf, swing }) => (
-          <g data-wipe="fade">
-            <path class="plan-door" d={leaf} />
-            <path class="plan-swing" d={swing} />
+          <g data-wipe="x">
+            <path class="plan-dim" d="M0 -10H100M-1 -9L1 -11M99 -9L101 -11" />
+            <text class="plan-dim__text" x="50" y="-11">
+              1000
+            </text>
           </g>
-        ))}
+          <g data-wipe="y">
+            <path class="plan-dim" d="M-1 0H-11M-1 40H-11M-1 70H-11M-5 0V70" />
+            <path class="plan-dim" d="M-6 1L-4 -1M-6 41L-4 39M-6 71L-4 69" />
+            <text
+              class="plan-dim__text"
+              x="-6"
+              y="20"
+              transform="rotate(-90 -6 20)"
+            >
+              400
+            </text>
+            <text
+              class="plan-dim__text"
+              x="-6"
+              y="55"
+              transform="rotate(-90 -6 55)"
+            >
+              300
+            </text>
+          </g>
+          <g data-wipe="y">
+            <path class="plan-dim" d="M-10 0V70M-11 1L-9 -1M-11 71L-9 69" />
+            <text
+              class="plan-dim__text"
+              x="-11"
+              y="35"
+              transform="rotate(-90 -11 35)"
+            >
+              700
+            </text>
+          </g>
+        </g>
       </g>
 
-      <g data-layer="kote">
-        <g data-wipe="x">
-          <path class="plan-dim" d="M0 -1V-11M60 -1V-11M100 -1V-11M0 -5H100" />
-          <path class="plan-dim" d="M-1 -4L1 -6M59 -4L61 -6M99 -4L101 -6" />
-          <text class="plan-dim__text" x="30" y="-6">
-            600
-          </text>
-          <text class="plan-dim__text" x="80" y="-6">
-            400
-          </text>
+      {model && (
+        <g class="plan__model">
+          {faces.map((face) =>
+            face.type === "side" ? (
+              <g transform={face.matrix}>
+                <rect
+                  class:list={[
+                    "model-side",
+                    `model-side--${face.facing}`,
+                    `model--${face.kind}`,
+                  ]}
+                  x="0"
+                  y={face.z0}
+                  width="1"
+                  height={face.z1 - face.z0}
+                />
+              </g>
+            ) : (
+              <polygon
+                class:list={["model-top", `model--${face.kind}`]}
+                points={face.points}
+                data-rise={face.rise}
+              />
+            ),
+          )}
         </g>
-        <g data-wipe="x">
-          <path class="plan-dim" d="M0 -10H100M-1 -9L1 -11M99 -9L101 -11" />
-          <text class="plan-dim__text" x="50" y="-11">
-            1000
-          </text>
-        </g>
-        <g data-wipe="y">
-          <path class="plan-dim" d="M-1 0H-11M-1 40H-11M-1 70H-11M-5 0V70" />
-          <path class="plan-dim" d="M-6 1L-4 -1M-6 41L-4 39M-6 71L-4 69" />
-          <text
-            class="plan-dim__text"
-            x="-6"
-            y="20"
-            transform="rotate(-90 -6 20)"
-          >
-            400
-          </text>
-          <text
-            class="plan-dim__text"
-            x="-6"
-            y="55"
-            transform="rotate(-90 -6 55)"
-          >
-            300
-          </text>
-        </g>
-        <g data-wipe="y">
-          <path class="plan-dim" d="M-10 0V70M-11 1L-9 -1M-11 71L-9 69" />
-          <text
-            class="plan-dim__text"
-            x="-11"
-            y="35"
-            transform="rotate(-90 -11 35)"
-          >
-            700
-          </text>
-        </g>
-      </g>
+      )}
 
       <g data-layer="zaglavlje">
         <g data-wipe="fade">
           <path class="plan-frame" d="M54 75H100V87H54ZM54 81H100M84 75V87" />
-          <text class="plan-cell plan-cell--strong" x="55.5" y="79.2">
+          <text
+            class="plan-cell plan-cell--strong plan-title"
+            x="55.5"
+            y="79.2"
+          >
             {titleBlock.title}
           </text>
+          {model && (
+            <text
+              class="plan-cell plan-cell--strong plan-title--model"
+              x="55.5"
+              y="79.2"
+            >
+              {titleBlock.modelTitle}
+            </text>
+          )}
           <text class="plan-cell" x="85.5" y="79.2">
             {titleBlock.units}
           </text>
@@ -296,6 +355,42 @@ const { titleBlock } = PLAN;
   .plan__drawing .plan-swing {
     stroke: var(--drawing-muted);
     stroke-width: 1px;
+  }
+
+  /* The 3D view (review #58). The tops of the walls and lintels are where
+     the model is cut, so they keep the plan's solid ink; every other face
+     is paper, the sides facing along x a shade darker, and the glass a
+     tint of the accent. */
+  .plan--model {
+    --model-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 9%,
+      var(--drawing-fill)
+    );
+  }
+
+  .plan__drawing :is(.plan-floor, .plan__model rect, .plan__model polygon) {
+    fill: var(--drawing-fill);
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .plan__drawing .plan__model .model-side--x {
+    fill: var(--model-shade);
+  }
+
+  .plan__drawing .model-top:is(.model--wall, .model--lintel) {
+    fill: var(--drawing-ink);
+  }
+
+  .plan__drawing .plan__model .model--glass {
+    fill: color-mix(in srgb, var(--accent) 16%, transparent);
+    stroke: var(--accent);
+  }
+
+  .plan__drawing .plan__model .model-top.model--glass {
+    fill: var(--accent);
   }
 
   .plan__drawing .plan-dim {
@@ -452,6 +547,154 @@ const { titleBlock } = PLAN;
     to {
       opacity: 1;
       scale: 1;
+    }
+  }
+
+  /* The 3D view is the final state: the axes, dimensions and the plan's
+     own walls, windows and leaves are off, and their lamps too. */
+  .plan--model
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 0;
+  }
+
+  .plan--model :is([data-lamp="osi"], [data-lamp="kote"]) .plan__lamp::after {
+    opacity: 0;
+    scale: 0;
+  }
+
+  /* While the plan is drawn it lies flat and the model waits: the sides
+     at no height, the tops on the floor (plan-timelapse.ts sets --rise and
+     the two views). */
+  .plan--model.is-pending
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 1;
+  }
+
+  .plan--model.is-pending :is(.plan-floor, .plan__model, .plan-title--model) {
+    opacity: 0;
+  }
+
+  .plan--model.is-pending .plan__ground {
+    transform: var(--plan-from);
+  }
+
+  .plan--model.is-pending .model-side {
+    scale: 1 0;
+  }
+
+  .plan--model.is-pending .model-top {
+    translate: 0 var(--rise, 0);
+  }
+
+  /* Then, after the title block (plan-timelapse.ts sets the times): the
+     axes and dimensions switch off, the plan turns and tilts back, and the
+     walls rise from it as the plan's own walls give way. */
+  .plan--model.is-drawing :is([data-layer="osi"], [data-layer="kote"]) {
+    animation: plan-off var(--motion-base) var(--ease-standard) var(--off-at)
+      both;
+  }
+
+  .plan--model.is-drawing
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    animation:
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms) both,
+      plan-lamp-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards;
+  }
+
+  .plan--model.is-drawing .plan__ground {
+    animation: plan-tilt var(--tilt-for) var(--ease-pen) var(--tilt-at) both;
+  }
+
+  .plan--model.is-drawing .plan-floor {
+    animation: motion-fade-in var(--motion-slow) var(--ease-standard)
+      var(--tilt-at) both;
+  }
+
+  .plan--model.is-drawing
+    :is([data-layer="zidovi"], .plan-windows, .plan-door, .plan-title) {
+    animation: plan-off var(--motion-instant) linear var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing :is(.plan__model, .plan-title--model) {
+    animation: motion-fade-in var(--motion-instant) linear var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing .model-side {
+    animation: plan-rise-side var(--rise-for) var(--ease-standard)
+      var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing .model-top {
+    animation: plan-rise-top var(--rise-for) var(--ease-standard) var(--rise-at)
+      both;
+  }
+
+  @keyframes plan-off {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes plan-lamp-off {
+    from {
+      opacity: 1;
+      scale: 1;
+    }
+
+    to {
+      opacity: 0;
+      scale: 0;
+    }
+  }
+
+  @keyframes plan-tilt {
+    from {
+      transform: var(--plan-from);
+    }
+
+    to {
+      transform: var(--plan-to);
+    }
+  }
+
+  /* A side rises from the floor: its frame's origin (plan-model.ts). */
+  @keyframes plan-rise-side {
+    from {
+      scale: 1 0;
+    }
+
+    to {
+      scale: 1;
+    }
+  }
+
+  @keyframes plan-rise-top {
+    from {
+      translate: 0 var(--rise, 0);
+    }
+
+    to {
+      translate: 0 0;
     }
   }
 

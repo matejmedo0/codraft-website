@@ -291,6 +291,13 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Floor plan, title block | Tlocrt stana · Mjere u cm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
 | Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima. | Describes the illustration (a first draft for G28) |
 
+**The floor plan's 3D view on Home** (review #58, 2026-10-20). After the timelapse the plan rises into a 3D model, so on Home (option C) the title block and the accessible name say so. The comparison options A and B on `/lab/crtanje` keep the lines above. Drafts.
+
+| Where | HR (prototype) | Derived from |
+|---|---|---|
+| Floor plan, title block in 3D | 3D model stana · Mjere u cm · Codraft · Ilustracija ("Tlocrt stana" while the plan is drawn) | `drafting.3d.title`; describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
+| Floor plan, accessible name | Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model. | The line above, plus the 3D view (G28) |
+
 **The closing call to action on Home** (review batch 11, 2026-10-20). The client's text, verbatim; it replaces "Prvo jasnoća." (`plan.tagline`, which stays in "Što radimo").
 
 | Where | HR (Home) | Source |
@@ -448,6 +455,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 10):** "'Kako radimo' on Home" added under "Prototype copy": the client's three commitments, verbatim, in place of the round 2 lines. G2 answered ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)). Files come by email, not through the site ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)). No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 11):** "The closing call to action on Home" added under "Prototype copy": the client's heading and lead in place of "Prvo jasnoća.". No copy block changed.
+- **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

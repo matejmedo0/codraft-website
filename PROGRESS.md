@@ -36,7 +36,7 @@
    - 3D prikaz tlocrta, ako ga želite
    - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
    - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu, a odlučujete kasnije (dorada 51). Taste Skill ima pravilo da traka prati prvo polje stranice, što ide u prilog papirnatoj (dorada 55).
-   - jednokratno pokretanje alata `inspect` iz Taste Skilla na `/lab/pocetna` čeka vašu riječ (dorada 56)
+   - jednokratno pokretanje alata `inspect` iz Taste Skilla na `/lab/pocetna`: odobreno, pokreće se u sljedećoj sesiji (dorada 56)
    - ostali prijedlozi iz procjene Kowalskijevih skillova čekaju vašu riječ: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
    - engleski tekst na kraju dorada
    - usklađivanje Figme

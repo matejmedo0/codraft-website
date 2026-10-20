@@ -32,8 +32,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0024](0024-independent-design-critique.md) | Independent design critique by a project agent | Accepted | 2026-10-20 |
 | [0025](0025-browser-details-and-critique-re-check.md) | Browser-drawn details in brand colours, and a re-check for critiques | Accepted | 2026-10-20 |
 | [0026](0026-emil-kowalski-skills-in-the-setup.md) | Four of Emil Kowalski's skills in the setup | Accepted | 2026-10-20 |
+| [0027](0027-taste-skill-ideas-in-the-setup.md) | Ideas from Taste Skill in the critic, the animate skill and phase 3 | Accepted | 2026-10-20 |
 
-Next number: **0027**.
+Next number: **0028**.
 
 ## How to add one
 

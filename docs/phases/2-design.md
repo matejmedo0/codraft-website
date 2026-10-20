@@ -338,3 +338,14 @@ Load `frontend-a11y` for the menu, focus states and skip link.
     - a capture at 375 and 1440 px wrote the new selection states and the blocks' heights
     - `npm run verify` passed
   - **Kept outside the repository:** the client's general notes on the skill, for later projects.
+- **2026-10-20, Taste Skill** ([ADR 0027](../decisions/0027-taste-skill-ideas-in-the-setup.md)):
+  - **The client's question:** a critical evaluation of the outside skill `Leonxlnx/taste-skill`, under the client's five standing rules (don't touch the site; check the overlap; only what is useful here; merge partial overlaps; general ideas to the notes).
+  - **Read:** in full, the skill's text and every script; the JSON library in part, through a script of our own. The findings are in [research/2026-10-20-taste-skill.md](../research/2026-10-20-taste-skill.md).
+  - **Measured:** its `lint.mjs` over `src/`, read-only: 40 FAILs, 35 of them in the lab, the rest the graph paper and a false positive in the title block. Its browser inspector was not run: the permission system blocked outside code launching a browser, and the client asked what it does before deciding.
+  - **Not installed.** On the client's word („Odobravam“), review batch 18 ([2-design-review.md](2-design-review.md#refinements)):
+    - five checks in `design-critic`
+    - scroll-driven motion, page transitions and measured values in the global `animate` skill
+    - the page's argument as the first step of every page in phase 3
+    - an argument for the paper `theme-color`, recorded only
+  - **Checked:** the `overflow: hidden` trap against MDN; browser support for scroll-driven animations and cross-document view transitions (Firefox lacked both in stable); the `animate` skill's front matter still loads after the edit.
+  - **Kept outside the repository:** the client's general notes on the skill, for later projects.

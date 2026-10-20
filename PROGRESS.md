@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; u tijeku su vaše dorade** (19.–20. 10. 2026.) na grani `phase/2-design`. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U sesijama dorada poslali ste 17 skupina (dorade 1–51), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
+**Sljedeći korak: nastavak dorada u novoj sesiji, prije faze 3.** U sesijama dorada poslali ste 18 skupina (dorade 1–56), a ja sam ih napravio na `/lab/pocetna`. Vaša ocjena: „Za sad je super … već sada smo na približno zadovoljavajućoj razini“. Sve je zapisano u `docs/phases/2-design-review.md` (odjeljak „Handover (2026-10-20)“):
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -24,12 +24,19 @@
      - `break-ui` za najgore podatke, s hrvatskim vrijednostima
 
      Upisani su i u pravila faza 2–5. Kod stranice se ne mijenja.
+   - procjena vanjskog skilla Taste Skill (`docs/research/2026-10-20-taste-skill.md`). Ne instaliramo ga: njegova pravila zabranjuju naš smjer, a u autorovim testovima nije bio bolji od rada bez skilla. Preuzeto je, na vašu riječ (ADR 0027, dorade 52–56):
+     - pet novih provjera za `design-critic`: okvir stranice, ideja do zadnje zone, test „kostima“ za crtački jezik, tri razine detalja u crtežima, hrvatske tipografske sitnice
+     - animacije vezane uz skrol i prijelazi između stranica u globalnom skillu `animate`
+     - u fazi 3 svaka stranica počinje svojim argumentom: tvrdnja i provjerljiv dokaz po zoni
+
+     Kod stranice se ne mijenja.
 2. **Otvoreno:**
    - vaše daljnje dorade („još par detalja i popravka prije faze 3“)
    - okvir lista na 1920 px (rekli ste da ćemo ga pogledati kasnije)
    - 3D prikaz tlocrta, ako ga želite
    - gumb „Pošaljite skicu“ na početnoj: ostaje ili ide
-   - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu, a odlučujete kasnije (dorada 51).
+   - boja trake preglednika na mobitelu (`theme-color`): tamnoplava iz brand paketa ili papirnata kao zaglavlje. Obje opcije treba isprobati na mobitelu, a odlučujete kasnije (dorada 51). Taste Skill ima pravilo da traka prati prvo polje stranice, što ide u prilog papirnatoj (dorada 55).
+   - jednokratno pokretanje alata `inspect` iz Taste Skilla na `/lab/pocetna` čeka vašu riječ (dorada 56)
    - ostali prijedlozi iz procjene Kowalskijevih skillova čekaju vašu riječ: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
    - engleski tekst na kraju dorada
    - usklađivanje Figme
@@ -200,6 +207,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Neovisna kritika dizajna: agent `design-critic` u projektu radi sa snimkama i mjerenjima (`npm run design:capture`) i samo izvještava; nalazi koji se kose s vašim odlukama dolaze kao pitanja, a promjene idu samo na vašu riječ | [ADR 0024](docs/decisions/0024-independent-design-critique.md) |
 | 2026-10-20 | Skill Impeccable ne instaliramo. Iz njega smo preuzeli četiri stvari:<br>- označeni tekst u nijansi brand plave i plavi kursor<br>- `design-critic` provjerava sitnice koje crta preglednik, razmak oko naslova i smanjeno kretanje<br>- nakon popravaka slijedi ponovna provjera: svaki nalaz je riješen, djelomično riješen ili neriješen | [ADR 0025](docs/decisions/0025-browser-details-and-critique-re-check.md) |
 | 2026-10-20 | Od skillova Emila Kowalskog u globalne skillove i pravila faza dodana su četiri, prilagođena projektu: `animate`, `animation-performance`, `mobile-native` i `break-ui` (s hrvatskim vrijednostima). Kod stranice se zasad ne mijenja. | [ADR 0026](docs/decisions/0026-emil-kowalski-skills-in-the-setup.md) |
+| 2026-10-20 | Taste Skill ne instaliramo. Iz njega smo preuzeli:<br>- pet provjera za `design-critic` (okvir stranice, ideja do zadnje zone, test „kostima“, tri razine detalja u crtežima, hrvatske tipografske sitnice)<br>- animacije vezane uz skrol i prijelaze između stranica u skillu `animate`<br>- argument stranice (tvrdnja i dokaz po zoni) kao prvi korak svake stranice u fazi 3<br>Kod stranice se ne mijenja. | [ADR 0027](docs/decisions/0027-taste-skill-ideas-in-the-setup.md) |
 
 ## Sitemap
 

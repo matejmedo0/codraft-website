@@ -37,16 +37,25 @@ The AI asistenti page is built in phase 4.
 
 ## Steps for each page
 
-1. Draft the page's gap copy in HR and EN in [content.md](../content.md). The client approves it.
-2. Build the page in both locales. Use:
+1. **The page's argument.** Before the copy and the build, list the page as claims, one line per zone, each with its proof: what the visitor should believe after that zone, and what makes it believable (ADR 0027, from Taste Skill's `copy.md`).
+   - Proof is only what is true by construction ([ADR 0004](../decisions/0004-verifiable-proof-only.md)): the work itself, shown large (the floor plan, the sample drawings, the AI demo); how the work is done, stated specifically; and facts the client gives (terms, prices, the team, the place).
+   - A zone with no claim is cut or merged into another. A claim with no verifiable proof is reworded or dropped.
+   - The table goes into the page's outline in [information-architecture.md](../information-architecture.md#page-outlines). The client approves it with the copy; the words stay the client's.
+
+   | Zone | Claim | Proof |
+   |---|---|---|
+   | Hero | … | … |
+
+2. Draft the page's gap copy in HR and EN in [content.md](../content.md). The client approves it.
+3. Build the page in both locales. Use:
    - `react-patterns`
    - `seo`: metadata, heading order, JSON-LD
    - `frontend-a11y` for interactive parts
    - `motion-patterns`, plus `motion-advanced` only for complex animation (wordmark draw, layer viewer)
    - `i18n-sync` for the locale files
-3. Run the `/check` procedure. Fix CRITICAL and HIGH findings; list MEDIUM in the report.
-4. Take Playwright screenshots at 375, 768 and 1440 px, with no console errors.
-5. If a build or type error appears, run the `/fix` procedure (`build-error-resolver` or `react-build-resolver`).
+4. Run the `/check` procedure. Fix CRITICAL and HIGH findings; list MEDIUM in the report.
+5. Take Playwright screenshots at 375, 768 and 1440 px, with no console errors.
+6. If a build or type error appears, run the `/fix` procedure (`build-error-resolver` or `react-build-resolver`).
 
 ## SEO specifics
 

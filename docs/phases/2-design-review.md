@@ -54,7 +54,9 @@ The client ended the second refinements session with: "Za sad je super , provjer
 8. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md), added 2026-10-20). The `design-critic` agent and `npm run design:capture` are ready; the first run waits for the client's word. Run it as [design-critique.md](../design-critique.md) describes: one capture of `/lab/pocetna` (and `/lab/style` if the client wants it), then the lenses `art-direction`, `craft`, `communication` and `motion` in parallel. Verify the findings, then put them to the client in Croatian as options; change nothing unasked.
 9. **The browser bar's colour (`theme-color`), a consideration only** (batch 17, [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)). The brand package sets navy `#0F1B2D`, so Chrome on Android shows a navy bar above the paper header; the alternative is the header's paper `#F6F5F1`. The client wants both tried and decides later: „samo zapišeš kao razmatranje obje opcije testirati … kasnije odlučujem“. Try them on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters. Change nothing until the client decides.
    - The other project proposals of that evaluation (a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay) wait as well: „ništa ne mijenjamo drugo za sad“. They are listed in the [research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client).
-10. **The steps under [After the refinements](#after-the-refinements):**
+   - An argument for the paper option, from Taste Skill (#55): its rule is that the browser bar's colour follows the page's first field, and the header is paper. It is the skill's rule, not a measurement.
+10. **Taste Skill's browser inspector** (#56, [ADR 0027](../decisions/0027-taste-skill-ideas-in-the-setup.md)): a one-off run on `/lab/pocetna` waits for the client's word. Output and Chrome's temporary profile go to the scratchpad; most of its failures will be the client's direction, its frame checks cross-check the critic's.
+11. **The steps under [After the refinements](#after-the-refinements):**
    - the checks on the lab build, with `/lab/pocetna`, `/lab/sto-radimo`, `/lab/crtanje` and `/lab/ikone` added to `.playwright-mcp/check-lab-r3.mjs`; include the scroll motion of "Što radimo" with the motion on
    - `npm run verify` and `npm run test:e2e`
    - report screenshots from the lab build
@@ -412,6 +414,18 @@ After a critical evaluation of the outside collection emilkowalski/skills ([rese
 |---|---|---|---|---|---|
 | 50 | Add the recommended skills, globally and to the rules | `animate`, `animation-performance`, `mobile-native` and `break-ui` added to `~/.claude/skills/`, adapted (project tokens and decisions first; content-site baseline; Croatian worst cases). `motion-patterns` points CSS-only motion to `animate`; three lines in the global `web-standards.md`; the skills named in phases 2–5 of the workflow and in motion.md. No site code changed. | `~/.claude/skills/`, `~/.claude/rules/web-standards.md`, `.claude/rules/codraft-workflow.md`, [motion.md](../motion.md#skills) | [ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md) | Done |
 | 51 | „samo zapišeš kao razmatranje obje opcije testirati … kasnije odlučujem“ | The browser bar's colour (`theme-color`: navy or paper) recorded as an open consideration, with how to try both. | Open item 9 above | ADR 0026 | Open; the client decides |
+
+**Batch 18 (2026-10-20): ideas from Taste Skill**
+
+After a critical evaluation of the outside skill Leonxlnx/taste-skill ([research](../research/2026-10-20-taste-skill.md)), the client approved the proposal: „Odobravam“. The skill itself is not installed, and no site code changed. Before approving the last part, the client asked what the skill's browser inspector does exactly; running it waits for the client's word.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 52 | A1–A5: five critic checks | The frame of a page, computed from `metrics.json` (criterion 4); the idea reaching the last zone and every page, and sameness of layouts (criterion 2); the costume test for the drafting language and three levels of detail in drawings (criterion 6); Croatian number-and-unit details and the character budget of a long heading (criterion 3). | `.claude/agents/design-critic.md`, [design-critique.md](../design-critique.md) | [ADR 0027](../decisions/0027-taste-skill-ideas-in-the-setup.md) | Done |
+| 53 | B1–B3: the `animate` skill | Scroll-driven CSS animation and cross-document view transitions, with recipes; the values measured on award sites; readable-text limits; three "never ship" rows; the scroll-reveal recipe gated under `.js` and `no-preference`. | `~/.claude/skills/animate/` (backup in `~/.claude/backups/2026-10-20-taste-skill/`) | ADR 0027 | Done |
+| 54 | C1: phase 3 | Each page starts with its argument: one claim and its verifiable proof per zone (ADR 0004). | [3-pages.md](3-pages.md#steps-for-each-page) | ADR 0027 | Done |
+| 55 | D: `theme-color` | Taste Skill's rule, "the meta theme colour follows the first field", recorded as an argument for the paper option of open item 9. Nothing changes. | Open item 9 above, the research note | — | Open; the client decides |
+| 56 | „njihov inspect radi što točno prije nego odobrim“ | Explained to the client: what it opens, measures, writes and deletes. Run once on `/lab/pocetna` only on the client's word. | The research note, "For later" | — | Waiting for the client |
 
 ## After the refinements
 

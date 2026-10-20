@@ -142,11 +142,14 @@ const pending = t(locale, "footer.pending");
       0 var(--rule) 0 0 var(--frame);
   }
 
+  /* The mark keeps its clear space, at least the height of its "c" (about
+     21 px at this width) on every side (Assets/codraft-brand/README.md). */
   .title-block__cell--mark {
     --wordmark-width: 8.5rem;
 
     flex: 1 1 100%;
     align-content: center;
+    padding: var(--space-5);
     color: var(--ink);
   }
 

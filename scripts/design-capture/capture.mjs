@@ -360,6 +360,41 @@ async function captureStates(page, pagePath, viewport, dir) {
     await page.keyboard.press("Escape");
   }
 
+  // Selected text: the first paragraph of the content on paper and, where
+  // the page has one, the first on the navy surface.
+  if (FOCUS_WIDTHS.includes(viewport.width)) {
+    for (const [name, selector] of [
+      ["paper", "main p"],
+      ["navy", "main .surface-navy p"],
+    ]) {
+      const box = await page.evaluate((css) => {
+        const element = document.querySelector(css);
+        if (!element) return null;
+        element.scrollIntoView({ block: "center", behavior: "instant" });
+        const rect = element.getBoundingClientRect();
+        if (rect.width <= 1 || rect.height <= 1) return null;
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+      }, selector);
+      if (!box) continue;
+      await page.waitForTimeout(100);
+      const file = `${dir}/state-selection-${name}.png`;
+      await shot(page, file, { clip: around(box, 24, viewport) });
+      record(
+        pagePath,
+        viewport.width,
+        "state",
+        file,
+        `text selected in the first paragraph on ${name === "navy" ? "the navy surface" : "paper"}`,
+      );
+    }
+    await page.evaluate(() => window.getSelection()?.removeAllRanges());
+  }
+
   // Keyboard focus: the first stops from the top of a fresh page.
   if (FOCUS_WIDTHS.includes(viewport.width)) {
     await page.goto(base + pagePath, { waitUntil: "load" });

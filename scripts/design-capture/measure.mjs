@@ -194,6 +194,7 @@ export function measurePage(notTheSite) {
       left: Math.round(rect.left),
       top: Math.round(rect.top + window.scrollY),
       width: Math.round(rect.width),
+      height: Math.round(rect.height),
       lineCount: text.length,
       // The measure: average characters per line, without the last line,
       // for blocks of three lines or more.

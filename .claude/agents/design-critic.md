@@ -33,6 +33,7 @@ The brief names:
   - `communication`: criteria 1 and 10, and the readability side of 3
   - `motion`: criteria 7 and 8
 - **Focus** (optional): the zones or changes to look at hardest. Still look at the whole page; a change can break what is around it.
+- **Previous critique** (only for a re-check): the recorded critique (`docs/research/…-design-critique-….md`) and the IDs of the findings the client's approved changes addressed. Then follow "Re-check" below instead of the full process.
 
 ## The capture
 
@@ -41,10 +42,10 @@ Start with the capture's `index.md`. It says how the capture was taken, lists ev
 - `frame-NN.png`: one screen at a time, top to bottom, as a visitor reads it, in the final state
 - `full.png`: the whole page. It is shrunk when you read it, so use it for rhythm and proportion only.
 - `part-NN-<name>.png`: each part of the sheet (header, every zone, the title block) at full size
-- `state-*.png`: the open menu, the first keyboard focus stops (375 and 1440 px) and hover (from 1024 px)
+- `state-*.png`: the open menu, selected text on paper and on navy and the first keyboard focus stops (375 and 1440 px), and hover (from 1024 px)
 - `motion/entrance-*.png`: the first screen with every animation held at a moment after it starts
 - `motion/scroll-*.png`: the page scrolled at reading pace in real time, about 250 ms (a) and 1 s (b) after each scroll, plus `scroll-end.png`
-- `metrics.json`: per text block, the words on each rendered line, size, line height, weight, width axis, letter spacing, colour, the colour behind it, contrast, the measure in characters per line and position; per control, its size; the parts of the sheet; axe; console errors; horizontal overflow
+- `metrics.json`: per text block, the words on each rendered line, size, line height, weight, width axis, letter spacing, colour, the colour behind it, contrast, the measure in characters per line, position (`left`, `top`) and size (`width`, `height`); per control, its size; the parts of the sheet; axe; console errors; horizontal overflow
 
 The index's measurement list (long or short lines, a single word on a last line, a one-letter word at a line's end, low contrast, small controls) gives leads, not findings. Look at each one in the screenshots before you report it.
 
@@ -134,6 +135,7 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - Alignment to the sheet's grid and to common edges; optical alignment of icons, bubbles and numbers.
 - Spacing from one scale, with a consistent rhythm between and inside zones.
 - Proximity groups what belongs together (Gestalt: proximity, similarity, alignment, common region).
+- **A heading belongs to what follows it:** more space above it than below, so it never reads as the caption of the block above. Measure it in `metrics.json`: the gap above is the heading's `top` less the previous block's `top` + `height`; the gap below is the next block's `top` less the heading's `top` + `height`.
 - Density is balanced across the page, with no part left empty or cramped.
 - Margins at wide screens: the sheet's frame, and the measure in wide columns.
 
@@ -157,6 +159,7 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - Timing and easing feel like a pen and a CAD action, never bouncy or slow to read.
 - The total amount across the page: does it add up to one orchestrated idea or to scattered effects? The client asked for the four moments (ADR 0015) and for the line that follows the scroll (ADR 0022, 0023), so too much motion overall is a question for the client, not a defect.
 - The end state of the motion equals the reduced-motion state (`scroll-end.png` against the frames).
+- **Reduced motion removes movement, not meaning** (`docs/motion.md`): focus, hover, the open menu and every other change of state stay visible, at once or with a short fade, and nothing waits hidden for an animation that never runs. A reduced-motion path that hides a state, or switches off feedback along with the movement, is a defect.
 
 **8. Interaction states and details** (WCAG 2.2: 2.4.7, 2.4.11, 2.5.8)
 
@@ -164,6 +167,7 @@ This is a stranger's view. Keep it in the report as it is, even when you later l
 - Hover is consistent across links, buttons and navigation; links are underlined.
 - The menu: open, close, and layering over the content.
 - Targets of at least 24 × 24 px, or enough space around them.
+- **What the browser draws itself carries the design too**, not the browser's defaults: selected text (a tint of the brand blue in the surface's ink, `--selection`, in `state-selection-*.png`), the text cursor (`caret-color`, blue), the focus outline, the links' underline (thickness and offset), and tabular figures where numbers line up. From phase 4, the form controls too: checkboxes and radios (`accent-color`), placeholders, autofill. Check the code (`src/styles/base.css`) where the capture can't show it. A default left where the system has a value is Minor.
 
 **9. Responsive behaviour** (WCAG 2.2: 1.4.10)
 
@@ -261,3 +265,40 @@ What this critique could not judge, for example colour on a calibrated screen, S
 ```
 
 Number the findings DC-01, DC-02, …, most severe first.
+
+## Re-check
+
+After the client's approved changes, the brief gives the previous critique and a new capture. Now you score; you don't hunt.
+
+1. Read the previous critique, then the new capture. Skip the blind first look and the full review: they are in the previous critique.
+2. **What the session says it fixed is not evidence.** Only what you see in the new screenshots and measure in the new `metrics.json` counts. A fix you can't see is unresolved.
+3. Score each finding the brief names:
+   - **resolved:** the problem is gone, at every width where it occurred
+   - **partial:** something moved, but the quality the finding named is still missing, or it is fixed at some widths only
+   - **unresolved:** nothing visible changed
+4. Name at most three **regressions** the changes caused, by the same criteria, and nothing else: no new hunt, no new checks.
+5. The verdict follows from the table: a Blocking or Major finding that is partial or unresolved keeps it at "Ready after fixes" or below. "Ready" covers the scored findings and the regressions, not the whole page; say so.
+
+Report:
+
+```markdown
+# Design re-check: <pages> (lens: <lens>)
+
+- **Capture:** <folder>, commit <hash>
+- **Previous critique:** <path>
+- **Verdict:** Ready | Ready after fixes | Needs rework
+
+## Scored findings
+
+| Finding | Severity | Now      | Evidence                                                      |
+| ------- | -------- | -------- | ------------------------------------------------------------- |
+| DC-01   | Major    | resolved | `lab-pocetna/1440/frame-02.png`; gap 48 px above, 16 px below |
+
+## Regressions
+
+At most three, in the finding format above, numbered R-01, R-02, …; or "None".
+
+## Still open
+
+The partial and unresolved findings, one line each, with what is missing.
+```

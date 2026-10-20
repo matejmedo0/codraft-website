@@ -45,6 +45,7 @@ When `prefers-reduced-motion: reduce` is set:
 - Only fades of 200 ms or less, or no animation at all.
 - Final states are shown immediately. The logo appears complete and the layers appear all on.
 - Grips still appear on focus, but without the scale animation.
+- Movement goes; meaning stays. Focus, hover, the open menu and every other change of state stay visible, at once or with a short fade, and nothing waits hidden for an animation that never runs ([ADR 0025](decisions/0025-browser-details-and-critique-re-check.md)).
 
 ## Tokens (built in phase 2, `src/styles/motion.css`)
 

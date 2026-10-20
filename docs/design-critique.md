@@ -47,6 +47,8 @@ Until now the design was reviewed only by the session that built it, using the s
 5. Verify each finding against the screenshots, the metrics and the code.
 6. Classify and report.
 
+**A re-check** after the client's approved changes skips the full review: it scores each earlier finding as resolved, partial or unresolved from a new capture, and names at most three regressions (ADR 0025).
+
 **Findings have three severities** (Blocking, Major, Minor), at most 15 per run.
 
 **Anything that conflicts with a client decision is a question, not a defect.** The client's words win (`.claude/agents/design-critic.md`, rule 3).
@@ -65,9 +67,9 @@ Until now the design was reviewed only by the session that built it, using the s
 
 For each page and width it writes:
 - one screen at a time, the whole page, and each part of the sheet, in the final state (reduced motion)
-- the open menu, the first six keyboard focus stops (at 375 and 1440 px) and hover (from 1024 px)
+- the open menu, selected text on paper and on navy and the first six keyboard focus stops (at 375 and 1440 px), and hover (from 1024 px)
 - motion: the first screen held at seven moments, and the page scrolled at reading pace in real time
-- `metrics.json`: the words on every rendered line of every text block, type, colour, contrast against the colour behind, the measure, control sizes, the parts of the sheet, axe, console errors and overflow
+- `metrics.json`: the words on every rendered line of every text block, type, colour, contrast against the colour behind, the measure, each block's position and size, control sizes, the parts of the sheet, axe, console errors and overflow
 
 `index.md` lists every file with what it shows, and the leads the measurements give:
 - long or short lines
@@ -110,7 +112,17 @@ npm run design:capture -- --base http://127.0.0.1:4322 lab/pocetna
    - The verified critique goes to `docs/research/YYYY-MM-DD-design-critique-<scope>.md`, with the critics' verdicts as they gave them.
    - The screenshots it cites are copied to `docs/phases/screenshots/phase-<n>/critique/`.
    - The client's answers go into the current phase's document.
-7. **After the approved changes,** capture again. If the client wants, run once more only the lens that raised them.
+7. **After the approved changes,** capture again and run a **re-check** with the lens that raised them (`.claude/agents/design-critic.md`, "Re-check"), when the client wants one.
+   - The critic scores each addressed finding resolved, partial or unresolved from the new capture, and names at most three regressions; it doesn't hunt for new findings.
+   - The brief names the previous critique and the finding IDs, and nothing about how the fixes went: the session's own account of its fixes is not evidence.
+
+   ```text
+   Re-check /lab/pocetna with the lens craft.
+   Capture: .playwright-mcp/design-review/2026-10-21-1000/ (commit def5678).
+   Previous critique: docs/research/2026-10-20-design-critique-home.md, findings DC-02, DC-05, DC-07.
+   ```
+
+   - Partial and unresolved findings go back to the client with the table; the client decides whether another round is worth it.
 
 ## Limits
 

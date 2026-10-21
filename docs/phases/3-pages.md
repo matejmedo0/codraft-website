@@ -1,6 +1,6 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: the argument approved (M2), the page built in both languages and critique 19 done; the `/check` procedure next, then the client's review.
+- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: built in both languages, critique 19 done, `/check` with no CRITICAL or HIGH findings; waiting for the client's review and the decision on the two local type sizes (#59).
 - **Branch:** `phase/3-pages`, created from `main` after the merge of PR #2. Draft PR #3 is the phase report.
 
 ## Start here (2026-10-21)
@@ -227,3 +227,13 @@ Each of the client's messages is recorded here verbatim before anything changes.
     - Kept: the hero's 72 px above the H1, from the client's reference screenshot (#19), now commented; the closing band's two-thirds padding (#37).
     - Measured on `/` at 375–1920 px: each zone within 13 px of its height before (the services 9–13 px shorter, "Kako radimo" 12 px either way, the title block 2–12 px shorter, the header 1.3 px taller from 64rem). The lab pages share the header, the title block, the steps and `h4`, so they follow.
     - Checked: the dev server at 375–1920 px and the build under the CSP at 375, 768 and 1440 px (console, axe, overflow, slow scroll, no JavaScript); `npm run verify`.
+  - **Početna, steps 4–5, `/check` and screenshots:**
+    - The `/check` procedure routed the changes (TypeScript and Astro, no React, no forms, API or third-party scripts) to `typescript-reviewer` only; `security-reviewer` and `silent-failure-hunter` had nothing in scope. **No CRITICAL or HIGH findings.**
+    - **MEDIUM, for the client** (none is fixed without the client's word):
+      1. "Što radimo" hides its line and icons in CSS before `axis-line.ts` runs, under the live `prefers-reduced-motion: no-preference` query, while the script checks reduced motion once at load. If the script fails to load, or the visitor turns animations on after the page has loaded, the line and the icons stay hidden. Inherited from the lab. The fix doesn't change the look: the script marks the axis as its own (`is-live`) and only then does the CSS hide what it draws.
+      2. Placeholders on the page (the team's photos, the title block's company data) and links to pages that don't exist yet: known; they are filled page by page, and nothing reaches `main` before the phase gate.
+      3. The token mapping (critique 19) changes a few values by 1–4 px, `h4` everywhere included: as approved, and measured above.
+      4. Printing before scrolling leaves out the process line, the icons and the plan's steps; a print rule would show the final state.
+    - **LOW**, noted for the coming pages: the stages' anchors in `services.ts` are for `/usluge`; the view registry's type widens with the second view; the JSON-LD keeps one `@id` for both languages on purpose.
+    - Screenshots from the build, final states: [screenshots/phase-3/](screenshots/phase-3/) (`pocetna-{hr,en}-{375,768,1440}.png`).
+  - **Open for the client** (put to the client with the page): the two local type sizes (#59); the MEDIUM findings above. The English footer's placeholder "Arrives before launch" takes two lines in the title block's narrow cells; it goes away with the company data.

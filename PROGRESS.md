@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 3 — Izrada stranica, od 22. 10. 2026., na grani `phase/3-pages`. Izvještaj faze je draft PR #3: https://github.com/matejmedo0/codraft-website/pull/3. Faza 2 (Dizajn) je gotova i odobrena: na vaše „idemo dalje“ 22. 10. 2026. spojena je u `main` (PR #2, merge commit).
 
-**Sljedeći korak:** Početna je izrađena na `/` i `/en` po odobrenom argumentu (vaš OK, 22. 10. 2026.). Slijede vrijednosti izvan skale tokena (nalaz 19, odobren), postupak `/check` i vaš pregled. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
+**Sljedeći korak:** vaš pregled početne. Izrađena je na `/` i `/en` po odobrenom argumentu (vaš OK, 22. 10. 2026.), s vrijednostima na skali tokena (nalaz 19); `/check` nema CRITICAL ni HIGH nalaza. Čekam vaš pregled i odluku o dvije lokalne veličine slova (#59). Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
 
 Redoslijed stranica u fazi 3, svaka na hrvatskom i engleskom:
 1. Početna ← sada

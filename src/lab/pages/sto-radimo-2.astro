@@ -47,6 +47,27 @@ const OPTIONS = [
     summary:
       "Od 1280 px tri faze stoje jedna uz drugu, a crta ide vodoravno kroz njihove kružiće, od 01 do 03, kao proces slijeva nadesno. Kad dođe u ekran, crta se iscrta jednim potezom, a ikone svake faze kad pero stigne do njezina kružića. Najzbijenija opcija; na užim ekranima ista je kao opcija 1.",
   },
+  {
+    id: "raspored-4",
+    layout: "frames",
+    name: "Opcija 4: središnja os s okvirima",
+    summary:
+      "Raspored kao sada, ali svaka usluga stoji u tankom okviru, kao ćelija na nacrtu, i okviri ispunjavaju svoju stranu crte. Slova su krupnija: naslov usluge oko 24 px, opis oko 21 px (na 1440 px). Kad prijeđete mišem preko usluge, gripovi sjednu točno na kutove okvira.",
+  },
+  {
+    id: "raspored-5",
+    layout: "branches",
+    name: "Opcija 5: središnja os s granama",
+    summary:
+      "Usluge su odmaknute od crte, a iz glavne crte prema svakoj usluzi raste plava grana koja završava gripom, kao crta u vašem logotipu. Grana izraste kad crta stigne do usluge, a zatim se iscrta ikona. Crta sada ide kroz sve usluge do kraja zadnje faze. Slova su krupnija, kao u opciji 4.",
+  },
+  {
+    id: "raspored-6",
+    layout: "framed",
+    name: "Opcija 6: okviri i grane",
+    summary:
+      "Opcije 4 i 5 zajedno: usluge u okvirima, odmaknute od crte, a grane iz glavne crte dolaze do okvira i završavaju gripom na njegovu rubu. Najpopunjenija verzija središnje osi.",
+  },
 ] as const;
 ---
 
@@ -73,6 +94,11 @@ const OPTIONS = [
           iscrta kad crta stigne do nje (u opciji 3 crta ide vodoravno). Na
           mobitelu je crta u svim opcijama na lijevom rubu, kao sada. Razlike se
           najbolje vide na širokom ekranu, od 1280 px naviše.
+        </p>
+        <p class="options__lead">
+          Opcije 4, 5 i 6 (21. 10. 2026.) zadržavaju središnju os, prema vašim
+          idejama: okviri oko usluga, veći razmak od crte, grane iz glavne crte
+          koje se granaju dok skrolate, i krupnija slova.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (

@@ -29,6 +29,12 @@
  *   alternating stage by stage.
  * - "columns": from 80rem the three stages side by side, the line across
  *   through their bubbles (axis-row.ts); narrower, as "left".
+ * And three more with the central axis (review #90), with larger type:
+ * - "frames": each service in a thin frame, like a cell of a drawing.
+ * - "branches": the services set apart from the line, and a branch of the
+ *   line grows out to each one as the line reaches it, ending in a grip; the
+ *   line runs on through the last stage's services.
+ * - "framed": the frames and the branches together.
  * Phones show the line down the left in every layout.
  */
 import "./services.css";
@@ -46,11 +52,22 @@ interface Props {
   /** Where the service icons go; without it there are none. */
   icons?: "above" | "beside";
   /** How the stages are placed on wide screens. */
-  layout?: "centre" | "left" | "alternate" | "columns";
+  layout?:
+    | "centre"
+    | "left"
+    | "alternate"
+    | "columns"
+    | "frames"
+    | "branches"
+    | "framed";
 }
 
 const { headingId = "usluge", label, icons, layout = "centre" } = Astro.props;
 const labelId = `${headingId}-opcija`;
+/** The layouts with the line down the middle. */
+const central = ["centre", "frames", "branches", "framed"].includes(layout);
+/** The layouts whose services hang on branches of the line. */
+const branches = layout === "branches" || layout === "framed";
 ---
 
 <Zone
@@ -67,10 +84,12 @@ const labelId = `${headingId}-opcija`;
     class:list={[
       "axis",
       `axis--${layout}`,
+      central && "axis--central",
       icons !== undefined && `axis--icons-${icons}`,
     ]}
     data-axis
     data-axis-row={layout === "columns" ? "" : undefined}
+    data-axis-branches={branches ? "" : undefined}
   >
     <span class="axis__line" data-axis-line aria-hidden="true"></span>
     {layout === "columns" && (
@@ -96,6 +115,7 @@ const labelId = `${headingId}-opcija`;
               href={item.href}
               icon={icons === undefined ? undefined : item.icon}
               class="axis-stage__item"
+              branch={branches}
               data-axis-item
             />
           ))}
@@ -112,6 +132,7 @@ const labelId = `${headingId}-opcija`;
   .axis {
     --icon: 2.5rem;
     --axis-gap: var(--space-7);
+    --item-pad: var(--space-4);
 
     position: relative;
   }
@@ -184,8 +205,13 @@ const labelId = `${headingId}-opcija`;
   }
 
   .axis-stage__item {
-    padding: var(--space-4) 0 var(--space-5);
+    padding: var(--item-pad) 0 var(--space-5);
     border-top: var(--rule) solid var(--line);
+  }
+
+  /* A branch shows only where the line runs down the middle. */
+  .axis-stage__item :global(.service__branch) {
+    display: none;
   }
 
   /* The icons (review batch 13). A: above the title. */
@@ -213,19 +239,19 @@ const labelId = `${headingId}-opcija`;
   }
 
   @media (min-width: 64rem) {
-    /* "centre": the line down the middle. */
-    .axis--centre .axis-stage {
+    /* "centre" and the other central layouts: the line down the middle. */
+    .axis--central .axis-stage {
       --stage-top: var(--space-5);
 
       padding: var(--stage-top) 0 var(--space-5);
     }
 
-    .axis--centre .axis-stage:last-child {
+    .axis--central .axis-stage:last-child {
       padding-bottom: 0;
     }
 
     /* The head covers the line where it passes behind the title. */
-    .axis--centre .axis-stage__head {
+    .axis--central .axis-stage__head {
       position: relative;
       z-index: 1;
       display: grid;
@@ -238,48 +264,48 @@ const labelId = `${headingId}-opcija`;
       text-align: center;
     }
 
-    .axis--centre .axis-stage__title {
+    .axis--central .axis-stage__title {
       display: grid;
       gap: var(--space-3);
       justify-items: center;
       padding-top: 0;
     }
 
-    .axis--centre .axis-stage__bubble {
+    .axis--central .axis-stage__bubble {
       position: static;
     }
 
-    .axis--centre .axis-stage__tagline {
+    .axis--central .axis-stage__tagline {
       margin-top: var(--space-3);
     }
 
-    .axis--centre :is(.axis__line, .axis-stage__rail) {
+    .axis--central :is(.axis__line, .axis-stage__rail) {
       left: calc(50% - var(--rail) / 2);
     }
 
-    .axis--centre .axis-stage__items {
+    .axis--central .axis-stage__items {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: var(--space-10);
       margin-top: var(--space-6);
     }
 
     /* The left column leans on the line. */
-    .axis--centre .axis-stage__item:nth-child(odd) {
+    .axis--central .axis-stage__item:nth-child(odd) {
       text-align: right;
     }
 
-    .axis--centre .axis-stage__item:nth-child(odd) :global(.service__body) {
+    .axis--central .axis-stage__item:nth-child(odd) :global(.service__body) {
       margin-left: auto;
     }
 
-    .axis--centre .axis-stage__item:last-child:nth-child(odd) {
+    .axis--central .axis-stage__item:last-child:nth-child(odd) {
       grid-column: 1 / -1;
       justify-self: center;
       width: min(100%, 36rem);
       text-align: center;
     }
 
-    .axis--centre
+    .axis--central
       .axis-stage__item:last-child:nth-child(odd)
       :global(.service__body) {
       margin-inline: auto;
@@ -287,37 +313,167 @@ const labelId = `${headingId}-opcija`;
 
     /* The icons face the line: the left column's lean on it too, and the
        centred last service has its icon centred above it. */
-    .axis--centre.axis--icons-above
+    .axis--central.axis--icons-above
       .axis-stage__item:nth-child(odd)
       :global(.service__icon) {
       margin-left: auto;
     }
 
-    .axis--centre.axis--icons-beside .axis-stage__item:nth-child(odd) {
+    .axis--central.axis--icons-beside .axis-stage__item:nth-child(odd) {
       grid-template-columns: minmax(0, 1fr) var(--icon);
     }
 
-    .axis--centre.axis--icons-beside
+    .axis--central.axis--icons-beside
       .axis-stage__item:nth-child(odd)
       :global(.service__icon) {
       grid-column: 2;
     }
 
-    .axis--centre.axis--icons-beside
+    .axis--central.axis--icons-beside
       .axis-stage__item:nth-child(odd)
       :global(:is(.service__title, .service__body)) {
       grid-column: 1;
     }
 
-    .axis--centre.axis--icons-beside
+    .axis--central.axis--icons-beside
       .axis-stage__item:last-child:nth-child(odd) {
       display: block;
     }
 
-    .axis--centre:is(.axis--icons-above, .axis--icons-beside)
+    .axis--central:is(.axis--icons-above, .axis--icons-beside)
       .axis-stage__item:last-child:nth-child(odd)
       :global(.service__icon) {
       margin: 0 auto var(--space-3);
+    }
+
+    /* "frames", "branches" and "framed" (review #90): larger type. */
+    .axis:is(.axis--frames, .axis--branches, .axis--framed) {
+      --step-title: clamp(1.25rem, 1.1rem + 0.45vw, 1.625rem);
+      --step-service: var(--step-lead);
+    }
+
+    /* "frames" and "framed": each service in a thin frame, like a cell of
+       a drawing; the cells of a row share their height. */
+    .axis:is(.axis--frames, .axis--framed) .axis-stage__items {
+      row-gap: var(--space-5);
+    }
+
+    .axis:is(.axis--frames, .axis--framed) .axis-stage__item {
+      --item-pad: var(--space-5);
+
+      padding: var(--item-pad) var(--space-6) var(--space-6);
+      border: var(--rule) solid var(--line);
+    }
+
+    /* The centred last cell is as wide as the others. */
+    .axis--frames .axis-stage__item:last-child:nth-child(odd) {
+      width: calc((100% - var(--space-10)) / 2);
+    }
+
+    /* "branches" and "framed": the services stand a branch's length from
+       the line, and the line runs on through the last stage's services. */
+    .axis:is(.axis--branches, .axis--framed) {
+      --branch: clamp(4rem, 9vw, 11rem);
+    }
+
+    .axis:is(.axis--branches, .axis--framed) .axis-stage__items {
+      column-gap: calc(var(--branch) * 2);
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage:last-child
+      .axis-stage__rail {
+      bottom: 0;
+      height: auto;
+    }
+
+    /* Every service hangs on a branch, the last one of a stage too. */
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:last-child:nth-child(odd) {
+      grid-column: auto;
+      justify-self: stretch;
+      width: auto;
+      text-align: right;
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:last-child:nth-child(odd)
+      :global(.service__body) {
+      margin-right: 0;
+      margin-left: auto;
+    }
+
+    .axis:is(.axis--branches, .axis--framed).axis--icons-beside
+      .axis-stage__item:last-child:nth-child(odd) {
+      display: grid;
+    }
+
+    .axis:is(.axis--branches, .axis--framed).axis--icons-beside
+      .axis-stage__item:last-child:nth-child(odd)
+      :global(.service__icon) {
+      margin: 0;
+    }
+
+    /* Room between an unframed service and its branch's grip. */
+    .axis--branches .axis-stage__item:nth-child(odd) {
+      padding-right: var(--space-4);
+    }
+
+    .axis--branches .axis-stage__item:nth-child(even) {
+      padding-left: var(--space-4);
+    }
+
+    /* The branch: from the line to the service, at its icon's middle. */
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item
+      :global(.service__branch) {
+      position: absolute;
+      top: calc(var(--item-pad) + var(--icon) / 2 - var(--rail) / 2);
+      display: block;
+      width: var(--branch);
+      height: var(--rail);
+      background: var(--accent);
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:nth-child(odd)
+      :global(.service__branch) {
+      left: calc(100% + var(--rule));
+      transform-origin: 100% 50%;
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:nth-child(even)
+      :global(.service__branch) {
+      right: calc(100% + var(--rule));
+      transform-origin: 0 50%;
+    }
+
+    /* The grip, where the branch meets the service. */
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item
+      :global(.service__branch)::after {
+      position: absolute;
+      top: 50%;
+      width: var(--grip-size);
+      height: var(--grip-size);
+      border: var(--grip-stroke) solid var(--accent);
+      background: var(--grip-fill);
+      content: "";
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:nth-child(odd)
+      :global(.service__branch)::after {
+      left: 0;
+      translate: -50% -50%;
+    }
+
+    .axis:is(.axis--branches, .axis--framed)
+      .axis-stage__item:nth-child(even)
+      :global(.service__branch)::after {
+      right: 0;
+      translate: 50% -50%;
     }
 
     /* "left" (and "columns" below 80rem): the line stays on the left, the

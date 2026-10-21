@@ -16,6 +16,10 @@
  *   NEXT_ROW_MS apart.
  * - Services already above the screen are complete at once, and the tip
  *   jumps past them.
+ * - With branches (`data-axis-branches`, review #90) the line runs on to the
+ *   last service's branch, and each service's branch grows out from the
+ *   line in BRANCH_MS before its icon draws. (Without JavaScript or with
+ *   reduced motion the last stage's rail runs to the end of its services.)
  * - An IntersectionObserver switches the scroll handling on only while the
  *   section is near the screen.
  *
@@ -41,6 +45,8 @@ const NEXT_ROW_MS = 60;
 const ROW_TOLERANCE_PX = 4;
 /** The section counts as near the screen this far ahead. */
 const NEAR: IntersectionObserverInit = { rootMargin: "50% 0px" };
+/** A branch grows from the line to its service in this time. */
+const BRANCH_MS = 240;
 
 interface Service {
   item: HTMLElement;
@@ -53,6 +59,8 @@ interface Service {
 interface Axis {
   root: HTMLElement;
   line: HTMLElement;
+  /** The services hang on branches, and the line runs through them all. */
+  branches: boolean;
   /** The line's top and length in the root, in pixels. */
   top: number;
   length: number;
@@ -67,6 +75,10 @@ function middle(element: Element): number {
   return box.top + box.height / 2;
 }
 
+function ms(value: number): string {
+  return `${String(Math.round(value))}ms`;
+}
+
 /** Places the line between the first and last bubble; measures services. */
 function layout(axis: Axis): void {
   const marks = [
@@ -76,8 +88,15 @@ function layout(axis: Axis): void {
   const last = marks.at(-1);
   if (first === undefined || last === undefined) return;
   const origin = axis.root.getBoundingClientRect().top;
+  const items = axis.root.querySelectorAll("[data-axis-item]");
+  const lastItem = items[items.length - 1];
+  // With branches the line ends on the last service's branch, at its icon.
+  const end =
+    axis.branches && lastItem !== undefined
+      ? middle(lastItem.querySelector("[data-icon]") ?? lastItem)
+      : middle(last);
   axis.top = middle(first) - origin;
-  axis.length = Math.max(middle(last) - origin - axis.top, 0);
+  axis.length = Math.max(end - origin - axis.top, 0);
   axis.line.style.top = `${String(axis.top)}px`;
   axis.line.style.height = `${String(axis.length)}px`;
 
@@ -120,8 +139,13 @@ function startPassed(axis: Axis, instantUpTo: number): void {
       rowAt = service.at;
       inRow = 0;
     }
+    const delay = row * NEXT_ROW_MS + inRow * NEXT_IN_ROW_MS;
+    if (axis.branches) {
+      service.item.style.setProperty("--branch-at", ms(delay));
+      service.item.style.setProperty("--branch-for", ms(BRANCH_MS));
+    }
     if (service.icon !== null) {
-      timeStrokes(service.icon, row * NEXT_ROW_MS + inRow * NEXT_IN_ROW_MS);
+      timeStrokes(service.icon, delay + (axis.branches ? BRANCH_MS : 0));
     }
     service.item.classList.add("is-drawn");
     inRow += 1;
@@ -134,6 +158,7 @@ function init(root: HTMLElement): void {
   const axis: Axis = {
     root,
     line,
+    branches: root.dataset.axisBranches !== undefined,
     top: 0,
     length: 0,
     aim: 0,

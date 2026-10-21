@@ -138,6 +138,29 @@
   }
 }
 
+/* The branches (review #90): once the line reaches a service, its branch
+   grows out from the line, then the grip snaps in where it meets the
+   service; axis-line.ts sets --branch-at and --branch-for. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-axis-item]:not(.is-drawn) .service__branch {
+    transform: scaleX(0);
+  }
+
+  .js [data-axis-item]:not(.is-drawn) .service__branch::after {
+    opacity: 0;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant) .service__branch {
+    animation: motion-draw-x var(--branch-for, 240ms) var(--ease-pen)
+      var(--branch-at, 0ms) backwards;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant) .service__branch::after {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      calc(var(--branch-at, 0ms) + var(--branch-for, 240ms)) backwards;
+  }
+}
+
 /* Hidden at the very start, so a square cap never shows as a dot. */
 @keyframes icon-stroke {
   0% {

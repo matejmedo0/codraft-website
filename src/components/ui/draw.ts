@@ -20,6 +20,11 @@
  * element that moves with a part but sits beside it, such as a zone's
  * letter, has `data-draw-with`.
  *
+ * Parts that reach their trigger in the same frame, as after a jump down
+ * the page, take their turns in reading order (the critique's re-check,
+ * R2). A part with `data-draw-steady` keeps its own pace: it never hurries,
+ * so a part behind it waits for the whole of it (the floor plan, R3).
+ *
  * Imported by the components' scripts; a module runs once per page however
  * many components import it.
  */
@@ -51,6 +56,9 @@ const moving = new Map<Element, number>();
 
 /** The parts waiting for their turn, in the order they reached their trigger. */
 const waiting: Element[] = [];
+
+/** The parts that reached their trigger in this frame. */
+const requested = new Set<Element>();
 
 function isBelowFold(element: Element): boolean {
   return element.getBoundingClientRect().top > window.innerHeight;
@@ -129,8 +137,13 @@ function blockers(): Element[] {
   return [...moving.keys()].filter(isOnScreen);
 }
 
+/** How fast a part plays when it hurries: a steady part never does. */
+function hurried(part: Element): number {
+  return part.hasAttribute("data-draw-steady") ? 1 : HURRY;
+}
+
 function hurry(part: Element): void {
-  if (moving.get(part) === HURRY) return;
+  if (moving.get(part) === HURRY || hurried(part) !== HURRY) return;
   moving.set(part, HURRY);
   for (const animation of animationsOf(part)) {
     animation.updatePlaybackRate(HURRY);
@@ -143,7 +156,7 @@ function next(): void {
     const part = waiting.shift();
     if (part === undefined) return;
     if (isOnScreen(part)) {
-      run(part, HURRY);
+      run(part, hurried(part));
       return;
     }
     startDrawing(part, () => {
@@ -183,8 +196,8 @@ function run(part: Element, rate: number): void {
   }
 }
 
-/** A part reached its trigger: it draws now, or waits for the moving one. */
-function request(part: Element): void {
+/** A part takes its turn: it draws now, or waits for the moving one. */
+function admit(part: Element): void {
   if (!part.classList.contains("is-pending") || moving.has(part)) return;
   const busy = blockers();
   if (busy.length === 0) {
@@ -193,6 +206,29 @@ function request(part: Element): void {
   }
   if (!waiting.includes(part)) waiting.push(part);
   for (const blocker of busy) hurry(blocker);
+}
+
+function inReadingOrder(a: Element, b: Element): number {
+  return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING
+    ? -1
+    : 1;
+}
+
+/** The parts of one frame take their turns from the top of the page down. */
+function admitRequested(): void {
+  const parts = [...requested].sort(inReadingOrder);
+  requested.clear();
+  for (const part of parts) admit(part);
+}
+
+/**
+ * A part reached its trigger. It takes its turn in the next frame, with
+ * every part that reached its trigger in this one.
+ */
+function request(part: Element): void {
+  if (!part.classList.contains("is-pending") || moving.has(part)) return;
+  if (requested.size === 0) requestAnimationFrame(admitRequested);
+  requested.add(part);
 }
 
 function initDraws(): void {

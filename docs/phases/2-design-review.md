@@ -770,6 +770,21 @@ The client's message, verbatim:
 | 123 | "Skupina C - neka onda budu za fazu 3" | Critique 6 (the hero at 1024, decided with #74, both versions side by side), 14 (the team strip, decided with the real photos, A by default), 19 (values off the token scale, mapped to tokens as the zones leave the lab) and 22 (the copy observations, with the client's proofreading, #73, and the audit's scope, G4 and G19) move to phase 3. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
 | 124 | "Ostaje li nam još što u ovoj fazi ?" | Answered: the critic's re-check of the fixes (ADR 0025, the order of #106), then the Figma sync (#68), then the final checks, the report and PR #2 (#69), and the wait for "idemo dalje". The re-check starts now, in that order. | [Handover](#handover-2026-10-21) | None | Answered |
 
+**Batch 37 (2026-10-21): the re-check's regressions, as recommended**
+
+The client's answer to the re-check's options ([research note](../research/2026-10-21-design-critique-home.md#re-check-2026-10-21)), verbatim:
+
+> Odradi po preporukama
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 125 | "Odradi po preporukama" (R1, option A) | Every cell of the title block takes 24 px at its sides (`--space-5`, was 16 px), the mark's clear space, so the mark and the cells' text share one edge again (within 1 px at 375–1920). The text still fits: "Stiže prije objave" in the two-column cells at 375. Screenshot: `batch37-footer-375.png`. | `Footer.astro` | None | Done; in review |
+| 126 | As above (R2, option A) | Parts that reach their trigger in the same frame start in reading order, top to bottom, whatever order the browser reports them in: they are gathered for one frame and admitted from the top of the page down. Checked: the capture's scroll steps with the lab bar removed, which gave the wrong order in two runs out of two before, gave the audit's selection, its steps, the drafting zone's selection and the plan, in that order, in three runs out of three. | `draw.ts` | None | Done; in review |
+| 127 | As above (R3, option B) | The floor plan keeps its own pace (`data-draw-steady`): it never hurries, even after waiting for its zone's selection or while another part waits for it; a part behind it waits, and shows its final state if it has left the screen by its turn. The rule of #78 holds for every other part. Checked at 1440: after a quick scroll to the plan and on to the next zone, the plan played at its own speed throughout (playback rate 1) and the roof landed 8.4 s after it started, while the next zone's selection waited. | `draw.ts`, `PlanDrawing.astro`; [motion.md](../motion.md) | None | Done; in review |
+| 128 | As above (R4) | The one-letter line end "mobitelu i" goes to the client's proofreading in phase 3 (#73): a no-break space. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+| 129 | As above (DC-07, partial) | Accepted: a three-word step in a narrow column keeps one word on its first line ("Dobivate / potvrdu termina."); a copy change, if any, comes with #73. | — | None | Accepted |
+| 130 | As above (the drawn title block where the drawing is narrow) | The readable title block under the drawing (#109) follows the drawing's own width, not the screen's: wherever the drawing is under 37.5rem wide, where its drawn letters would be under about 11 px (phones, and the two-column layout from 900 to about 1300 px), and the drawn one is off there. The sheet is a container (`plan-sheet`); the comparison pages follow the same rule. Checked on the four lab pages with the plan at 375–1920: the HTML block at 375, 960, 1024 and 1280 on Home, the drawn one at 768 (about 10 px letters, as before), 1440 and 1920; no overflow. | `PlanDrawing.astro` | None | Done; in review |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

@@ -32,6 +32,8 @@ The earlier behaviour of batch 3 (one stroke at a constant speed once the sectio
 2. **One moving thing per viewport at a time.** Body text appears instantly; motion is for key moments only, not fade-up-on-everything.
    - `draw.ts` enforces it for the parts that draw once (review #78, after the critique of 2026-10-21). A part that reaches its trigger while another part is moving on screen waits for it.
    - Meanwhile the moving part plays at double speed, and the waiting part does too when its turn comes, so a fast scroll gives quicker drawings and a slow one the full motion.
+   - The floor plan on Home is the exception (`data-draw-steady`, review #127): it keeps its own pace, about 8.3 s to the roof, after waiting and while others wait for it. A part behind it waits for the whole of it, or shows its final state if it has left the screen by its turn.
+   - Parts that reach their trigger in the same frame, as after a jump down the page, take their turns in reading order, top to bottom (review #126).
    - A part that is off the screen by its turn shows its final state at once, and so does a moving part that leaves the screen.
    - A selection's release (the fade after its hold) doesn't count as movement.
    - An element that moves with a part but sits beside it, such as a zone's letter, has `data-draw-with`.

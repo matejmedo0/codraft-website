@@ -50,6 +50,7 @@ The client moved these items from the phase 2 review to this phase (review batch
   - **14, the team strip:** the portraits end 220–300 px short of the content's right edge at 1440–1920 px. Decide with the real photos (G3); by default the list runs to the right edge (`5 / -1`).
   - **19, values off the token scale:** when Home's zones leave the lab, map each value to its nearest token or name it as a token; the client's own numbers (such as the closing band's padding, #37) stay.
   - **22, copy:** the audit lead speaks only to visitors with a site; adjacent zones repeat the same promises; the audit's steps describe booking, not the audit. With the client's proofreading (#73) and the audit's scope (G4, G19); the words stay the client's.
+  - **From the re-check** (#128–129): in the proofreading, a no-break space after "mobitelu i" ("Brze, prilagođene mobitelu i usmjerene na upite i narudžbe."), so the one-letter word never ends a line; the audit's three-word steps keep one word on a line in a narrow column ("Dobivate / potvrdu termina."), accepted unless the copy changes.
 - **Real layer switches on the drafting page** (critique 3, #115): on `/tehnicko-crtanje` the layer viewer's lamps are toggle buttons (`aria-pressed`), as docs/motion.md ("Layers") plans. On Home the layer list only shows the layers' state, each lamp a sample of its layer's line (#115).
 
 ## Steps for each page

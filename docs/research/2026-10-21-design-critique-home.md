@@ -89,7 +89,7 @@ The two items the capture can't show were checked by the session with motion: th
 
 **Noted by the critics, not scored:** the drawn title block where the drafting zone is two columns and the drawing narrow (letters about 6 px at 1024, 900–1023 px not captured); DC-05's weights at 1 : 1.5 rather than ISO's 1 : 2, with the roof's outer edge lost against the navy fill.
 
-Put to the client as options; the answers go to [2-design-review.md](../phases/2-design-review.md).
+Put to the client as options. The client's answer, "Odradi po preporukama" (batch 37, #125–130): R1 option A (every title-block cell 24 px at its sides), R2 option A (one frame's parts in reading order), R3 option B (the plan keeps its pace, `data-draw-steady`), R4 to the proofreading in phase 3, DC-07's remainder accepted, and the readable title block wherever the drawing is narrow.
 
 ## Appendix: the four reports
 

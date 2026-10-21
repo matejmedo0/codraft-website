@@ -134,6 +134,7 @@ const titles =
     className,
   ]}
   data-draw="half"
+  data-draw-steady
   data-plan
   data-plan-model={model}
   {...attributes}
@@ -408,8 +409,10 @@ const titles =
 </div>
 
 <style>
+  /* The sheet is a container: the title block follows its width. */
   .plan__sheet {
     padding: var(--space-5) var(--space-4);
+    container: plan-sheet / inline-size;
   }
 
   .plan__drawing {
@@ -629,15 +632,17 @@ const titles =
     font-weight: var(--weight-strong);
   }
 
-  /* On phones the drawn title block shrinks with the drawing to about
-     5 px letters (critique 16), so below 48rem it is set under the drawing
-     at the label size, in the same cells, and the drawn one is off. It is
-     the same layer: the timelapse fades it in with the drawn one. */
+  /* The drawn title block shrinks with the drawing: about 5 px letters on
+     phones (critique 16), about 8 px where the drafting zone is two narrow
+     columns (the re-check, #130). Where the drawing is under 37.5rem wide
+     (its letters under about 11 px) it is set under the drawing at the
+     label size, in the same cells, and the drawn one is off. It is the same layer: the timelapse fades it in with the
+     drawn one. */
   .plan__title-block {
     display: none;
   }
 
-  @media (max-width: 47.99rem) {
+  @container plan-sheet (max-width: 37.49rem) {
     .plan__drawing [data-layer="zaglavlje"] {
       display: none;
     }

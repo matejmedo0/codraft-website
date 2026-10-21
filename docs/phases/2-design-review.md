@@ -707,6 +707,16 @@ The client's answer to #105 ("Smijem li obrisati stariju usporedbu /lab/sto-radi
 | 110 | Critique 17, "Odobravam linkove kroz 200ms zbog mobitela kako predviđa motion.md" (#80) | When the menu opens on a phone or tablet, its links fade in over 200 ms (`--motion-base`, `--ease-standard`, opacity only); the page moves down at once, as before, and closing is immediate. The fade stays with reduced motion, which motion.md allows for a fade of 200 ms or less. | `Header.astro` | None | Done; in review |
 | 111 | Critique 18, "probati ćemo i sa gripovima u animaciji kada dođemo do tog dijela" (#91) | Tried: the header's links (Usluge, Tehničko crtanje, O nama, Kontakt, EN) take the four grips on hover and keyboard focus, as the buttons and the service items do (`Grips.astro`, 140 ms); the hover underline and the current page's blue line stay. In the open menu a focused link's grips mark its whole row. The footer's language link is unchanged. Screenshots: `batch32-header-grips-hover-1440.png`, `-focus-1024`, `batch32-menu-grips-focus-375.png`. | `Header.astro`, `LanguageSwitcher.astro` (`grips`) | The client keeps it or not | Tried; the client decides |
 
+**Batch 33 (2026-10-21): what is left to answer**
+
+The client's message, verbatim:
+
+> Dobro , što sada od mene trebaš , koja pitanja razrješiti.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 112 | "što sada od mene trebaš , koja pitanja razrješiti" | Put to the client: the two open points of group A (16's look, #109; 18's grips, #111), then group B's six questions (3, 5, 12, 13, 20, 21), each with options and a recommendation, checked again against the code as it is now. Group C (6, 14, 19, 22) follows B. Nothing changed. | [Research note](../research/2026-10-21-design-critique-home.md#verified-findings) | The client's answers | Asked |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

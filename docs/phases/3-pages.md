@@ -8,7 +8,7 @@
 The handover from phase 2. Phase 2 ended with the client's review refinements, the design critique and its re-check, the Figma sync and the final checks ([2-design-review.md](2-design-review.md), batches 1–40). The client asked for this handover with: „sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)“ (#134).
 
 **1. The phase gate, first** ([codraft-workflow.md](../../.claude/rules/codraft-workflow.md#phase-gate), step 7). The prompt that opens the session carries the client's „idemo dalje“. Then:
-1. Check that `phase/2-design` is clean and pushed, and that CI on PR #2 is green (last: `64437d7`, green).
+1. Check that `phase/2-design` is clean and pushed, and that CI on PR #2 is green for its last commit, the handover (`docs: hand over to phase 3`).
 2. Merge PR #2 into `main` with a merge commit (`gh pr merge 2 --merge`), then `git checkout main && git pull`.
 3. Create `phase/3-pages` from `main` and push it.
 4. Update the docs:

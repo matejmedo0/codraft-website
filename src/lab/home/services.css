@@ -217,36 +217,33 @@
   }
 }
 
-/* Option 12, the schedule (review #101): a service's bar draws from its
-   grid line, then its grip or arrow snaps in; the milestone has no bar and
-   snaps in at once. plan-schedule.ts sets --mark-at and --mark-for. */
+/* Option 12, the schedule (review #101): a stage's bar draws from its
+   bubble, then its grip or arrow snaps in; a service's grip snaps in on its
+   stage's grid line; on phones, the milestone in stage 01's small schedule
+   snaps in after the bar. plan-schedule.ts sets --mark-at and --mark-for. */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-plan] [data-axis-item]:not(.is-drawn) .plan-mark {
+  .js [data-plan] [data-plan-row]:not(.is-drawn) .plan-mark--stage {
     transform: scaleX(0);
   }
 
-  .js [data-plan] [data-axis-item]:not(.is-drawn) .plan-mark::after {
+  .js [data-plan] [data-plan-row]:not(.is-drawn) .plan-mark::after {
     opacity: 0;
   }
 
-  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark {
+  [data-plan] [data-plan-row].is-drawn:not(.is-instant) .plan-mark--stage {
     animation: motion-draw-x var(--mark-for, 360ms) var(--ease-pen)
       var(--mark-at, 0ms) backwards;
   }
 
-  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark::after {
+  [data-plan] [data-plan-row].is-drawn:not(.is-instant) .plan-mark::after {
     animation: motion-snap-in var(--motion-snap) var(--ease-snap)
-      calc(var(--mark-at, 0ms) + var(--mark-for, 360ms)) backwards;
-  }
-
-  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark--milestone {
-    animation: none;
+      var(--mark-at, 0ms) backwards;
   }
 
   [data-plan]
-    [data-axis-item].is-drawn:not(.is-instant)
-    .plan-mark--milestone::after {
-    animation-delay: var(--mark-at, 0ms);
+    [data-plan-row].is-drawn:not(.is-instant)
+    :is(.plan-mark--stage, .plan-mark--narrow)::after {
+    animation-delay: calc(var(--mark-at, 0ms) + var(--mark-for, 360ms));
   }
 }
 
@@ -262,34 +259,44 @@
     opacity: 0;
   }
 
-  [data-cycle] .cycle__tick.is-reached {
+  [data-cycle] .cycle__tick.is-reached:not(.is-instant) {
     animation: motion-snap-in var(--motion-snap) var(--ease-snap) backwards;
   }
 
-  [data-cycle] .cycle__arrow.is-reached {
+  [data-cycle] .cycle__arrow.is-reached:not(.is-instant) {
     animation: motion-fade-in var(--motion-fast) var(--ease-standard) backwards;
   }
 }
 
 /* Option 14, the tabs (review #101): the chosen tab's line draws from the
-   left and its grip snaps in; stage-tabs.ts sets `is-drawing` once the
-   section is in view and on every choice. */
+   left in --motion-base and its grip snaps in as the line ends; the line of
+   the tab left behind fades, as a selection releases. stage-tabs.ts sets
+   `is-drawing` once the section is in view and on every choice, and
+   `is-releasing` for --motion-fast. */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-tabs] .tabs__tab:not(.is-drawing) .tabs__line {
+  .js [data-tabs] .tabs__tab:not(.is-drawing, .is-releasing) .tabs__line {
     transform: scaleX(0);
   }
 
-  .js [data-tabs] .tabs__tab:not(.is-drawing) .tabs__line::after {
+  .js
+    [data-tabs]
+    .tabs__tab:not(.is-drawing, .is-releasing)
+    .tabs__line::after {
     opacity: 0;
   }
 
   [data-tabs] .tabs__tab.is-drawing .tabs__line {
-    animation: motion-draw-x var(--motion-snap) var(--ease-pen) backwards;
+    animation: motion-draw-x var(--motion-base) var(--ease-pen) backwards;
   }
 
   [data-tabs] .tabs__tab.is-drawing .tabs__line::after {
     animation: motion-snap-in var(--motion-snap) var(--ease-snap)
-      var(--motion-snap) backwards;
+      calc(var(--motion-base) - var(--motion-fast)) backwards;
+  }
+
+  [data-tabs] .tabs__tab.is-releasing .tabs__line {
+    visibility: visible;
+    animation: motion-release var(--motion-fast) var(--ease-standard) forwards;
   }
 }
 

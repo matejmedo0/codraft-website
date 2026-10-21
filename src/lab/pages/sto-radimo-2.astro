@@ -49,21 +49,21 @@ const OPTIONS = [
     layout: "plan",
     name: "Opcija 12: terminski plan",
     summary:
-      "Faze kao terminski plan (gantogram), kakav se radi za gradilište. Sav tekst je u jednom stupcu lijevo, lako čitljiv, a desno je plan: svaka faza počinje na svojoj osi s kružićem, a osi se stepenasto spuštaju udesno. Svaka usluga ima svoju crtu u stupcu svoje faze, s gripom na kraju, kao u logotipu. Fiksni opseg, rok i cijena nisu crta nego točka (miljokaz) na početku izrade, jer ih znate prije početka rada. Crte faze 03 idu do ruba i završavaju strelicom, jer održavanje ne prestaje. Bez datuma: plan pokazuje redoslijed, ne obećava tjedne.",
+      "Faze kao terminski plan (gantogram), kakav se radi za gradilište. Sav tekst je u jednom stupcu lijevo, lako čitljiv, a desno, od sredine lista, je plan: svaka faza počinje na svojoj osi s kružićem, osi se stepenasto spuštaju udesno, a iz kružića ide crta faze s gripom na kraju, kao u logotipu. Ispod nje je razdoblje faze, blago šrafirano kao podloga koja vam se svidjela, a svaka usluga ima svoj grip na osi svoje faze: pripada fazi, bez tvrdnje koliko traje (usluge su ponuda iz koje birate, ne poslovi koji se svi rade). Fiksni opseg, rok i cijena su miljokaz na početku izrade, jer ih znate prije početka rada. Crta i razdoblje faze 03 idu do ruba, jer održavanje ne prestaje. Bez datuma. Na mobitelu svaka faza ima mali plan ispod podnaslova.",
   },
   {
     id: "raspored-13",
     layout: "cycle",
     name: "Opcija 13: krug",
     summary:
-      "Faze kao krug, jer posao ne završava objavom: što naučimo dok održavamo stranicu, ulazi u sljedeći plan. Krug je nacrtan kao na nacrtu, sa središnjicama, a to je zatvoreni luk slova „c“ iz vašeg logotipa. Kružići faza stoje na krugu, a svaka usluga ima svoj grip između kružića svoje faze i sljedeće. Na širokom ekranu krug stoji uz tekst dok čitate (stranica se skrola normalno), a plavi luk prati čitanje: kad stigne do usluge, skoči njezin grip i iscrta se ikona. Nakon zadnje usluge luk se zatvori strelicom u 01. Na mobitelu je krug iznad faza i iscrta se jednom.",
+      "Faze kao krug, jer posao ne završava objavom. Krug je nacrtan kao na nacrtu, sa središnjicama, a to je zatvoreni luk slova „c“ iz vašeg logotipa. Kružići faza i po jedan grip za svaku uslugu raspoređeni su jednako, kao rupe na prirubnici, pa je luk svake faze dug koliko faza ima usluga; naziv faze piše uz njezin kružić. Na širokom ekranu krug stoji uz tekst dok čitate (stranica se skrola normalno), a plavi luk prati ono što čitate na sredini ekrana: kad stigne do usluge, skoči njezin grip. Nakon zadnje usluge luk se zatvori strelicom u 01. Ikone se iscrtaju kao u ostalim opcijama. Na mobitelu kruga nema: faze stoje jedna ispod druge.",
   },
   {
     id: "raspored-14",
     layout: "tabs",
     name: "Opcija 14: kartice",
     summary:
-      "Jedna faza odjednom. Tri faze stoje u redu kao kartice i uvijek se vide, pa se redoslijed 01 → 02 → 03 čita odmah; ispod je odabrana faza, njezin podnaslov i usluge u jednom redu. Odabranu karticu podcrta crta s gripom na kraju, kao u logotipu, i iscrta se kad je odaberete; ikone faze iscrtaju se kad je prvi put otvorite. Odjeljak je oko tri puta niži od ostalih. Radi i tipkovnicom (strelice). Usluge faza 02 i 03 vide se tek kad otvorite njihovu karticu.",
+      "Jedna faza odjednom. Tri faze stoje u redu kao kartice i uvijek se vide; ispod je odabrana faza, njezin podnaslov i usluge. Neodabrane kartice podcrtane su kao svaka poveznica, a odabranu podcrta procesna crta s gripom u kutu, i iscrta se kad je odaberete; ikone faze iscrtaju se kad je prvi put otvorite. Odjeljak je upola niži od ostalih. Radi i tipkovnicom (strelice). Usluge faza 02 i 03 vide se tek kad otvorite njihovu karticu. Na mobitelu kartica nema: faze stoje jedna ispod druge.",
   },
 ] as const;
 ---

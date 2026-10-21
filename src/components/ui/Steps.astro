@@ -114,10 +114,12 @@ const last = steps.length - 1;
     font-variant-numeric: tabular-nums;
   }
 
+  /* Balanced, so a short line never ends on one word. */
   .step__body {
     grid-column: 2;
     margin-top: var(--space-1);
     color: var(--ink-muted);
+    text-wrap: balance;
   }
 
   .step:nth-child(2) {

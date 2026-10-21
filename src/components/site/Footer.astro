@@ -166,6 +166,11 @@ const pending = t(locale, "footer.pending");
     font-weight: var(--weight-medium);
   }
 
+  /* A date keeps its day, month and year together. */
+  .title-block time {
+    white-space: nowrap;
+  }
+
   .title-block dd.title-block__pending {
     color: var(--ink-muted);
     font-weight: var(--weight-text);

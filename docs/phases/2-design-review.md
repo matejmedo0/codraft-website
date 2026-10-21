@@ -47,7 +47,7 @@ The fourth session (2026-10-21, batches 24–30) ran the critique and settled "�
    4. Verify every finding yourself against the screenshots, `metrics.json` and the code before reporting it. A finding that goes against a recorded decision of the client is a question, not a defect.
    5. Report to the client in Croatian: the findings by severity, each with options and a recommendation. Change nothing yet.
    6. On the client's word: record the approved fixes as a batch under [Refinements](#refinements), make them, check them, then let the critic re-check (ADR 0025; design-critique.md, "Re-check").
-2. **The Figma sync** (#68), after the critique and its fixes. "Codraft sustav dizajna" has none of the review's refinements yet. Load `figma:figma-use` and `figma:figma-generate-library` before any `use_figma` call ([The Figma library](#the-figma-library) has the file and its nodes). Bring it in line with the code:
+2. **The Figma sync** (#68), after the critique and its fixes. **Done on 2026-10-21** (#132): the library now mirrors the code at `2e7610d`; what changed is listed under [The Figma library](#the-figma-library). Load `figma:figma-use` and `figma:figma-generate-library` before any `use_figma` call ([The Figma library](#the-figma-library) has the file and its nodes). Bring it in line with the code:
    - the variable for the paper grey (`#4A5362`)
    - the component Zaglavlje (no button; "Tehničko crtanje")
    - the nine service icons as components
@@ -134,6 +134,14 @@ Load `figma:figma-use` and `figma:figma-generate-library` before any `use_figma`
 | Component sets | Gumb (16 variants), Stavka, Korak, Zaglavlje, Zaglavlje nacrta | `3:121`, `4:34`, `4:49`, `5:64`, `5:150` |
 | Components | Kota, Milimetarski papir | `4:50`, `4:58` |
 | Example page | Početna, desktop 1440; sheet frame "List" | `6:2`, `6:16` |
+| Added in the sync (2026-10-21) | the nine service icons (`Ikona/…`, in the frame "Ikone usluga"); the component set Usluga (Strana × Poveznica, an icon swap); Oznaka faze (the grid bubble); the house on the example page | icons `14:37`–`14:140`, Usluga `14:242`, Oznaka faze `16:769`, house `18:851` |
+
+**The sync of 2026-10-21** (#132) brought the library in line with the code at `2e7610d`:
+- **Variables:** `grey-on-paper` is `#4A5362` (7.11:1); new `selection-on-paper` (`#C4D3F5`), `selection-on-navy` (`#1D3F8C`) and the role `selection` (ADR 0025), with their swatches on Temelji.
+- **Text styles:** `Naslov stavke` takes the heading's width and weight (87.5 %, 620) and −1.2 % tracking (critique 7); new `Desktop/Naslov usluge`, 24 px, the services' larger title from 64rem (#102).
+- **Components:** Zaglavlje without the button and with „Tehničko crtanje“ (ADR 0017, 0018), its description noting the grips on the links (#111) and the menu's fade (#110); Zaglavlje nacrta with the mark's clear space (24 px), the cells' sides (24 px on phones, 16 px wider; #125, #131) and the date on one line; Stavka with a `Poveznica` axis, a linked title underlined (critique 2); the nine icons; Usluga; Oznaka faze.
+- **The example page Početna** (1440): the hero as in the code (one button, „Pogledajte usluge“, and the drafting link); „Što radimo“ as the central axis with the icons, built from Usluga and Oznaka faze, the process line from 01 to 03; the free audit on the 12-column grid; „Tehničko crtanje“ as option C on the 12-column grid (#118), its drawing the house in palette 1 as editable vectors (exported from the final state in the browser), the layer list as line samples (#115) and „Iscrtaj ponovno“; „Kako radimo“ with the client's three commitments; „Više o nama“ in the hero link's style; the centred closing call to action with one button. The zone letters sit in the margin, so the content has the sheet's full width, as in the code. Zone heights within a few pixels of the code's at 1440, except „Što radimo“ (about 85 px shorter, where the code's balanced lines take two rows).
+- **The cover page** lists the new components and the date of the sync.
 
 - **Text styles:** `Desktop/…` and `Mobitel/…`. Archivo uses `variationSettings` for weight and width (`wdth` 87.5 for headings, 75 for labels).
 - **Plugin API pitfalls:** see [research/2026-10-19-design-system.md §5](../research/2026-10-19-design-system.md#5-figma).
@@ -794,6 +802,14 @@ Checking #125 at every width showed that with 24 px at the cells' sides the plac
 | # | The client's request | Change | Where | Decision | Status |
 |---|---|---|---|---|---|
 | 131 | "24 px samo do 1024 px" | Below 64rem, where the mark has a row of its own, every cell keeps 24 px at its sides, so the mark and the text below it share one edge (#125). From 64rem the cells other than the mark's are back to 16 px: the values fit on one line, and the mark sits 8 px in from the text below it ("Jezik"), as before #125. Checked at 375–1920: no value wraps and the block's height is as before #125 (184 px at 1440, 108 at 1920); the mark on the text's edge at 375 and 768 (33/32 and 49/48 px). | `Footer.astro` | Replaces #125 from 64rem | Done; in review |
+
+**Batch 39 (2026-10-21): the Figma sync**
+
+No message from the client: the sync is step 2 of the order of #106, after the critique.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 132 | "Usklađivanje Figme s kodom (dorada 68)" (#106) | The library "Codraft sustav dizajna" brought in line with the code at `2e7610d`: the variables, two text styles, the header, the title block, Stavka, the nine icons, Usluga, Oznaka faze, the example page and the cover; details under [The Figma library](#the-figma-library). Checked with screenshots of the example page and each new component. | Figma file `pWypJUUuwNZv9iTSDVFBV0` | None | Done |
 
 ## After the refinements
 

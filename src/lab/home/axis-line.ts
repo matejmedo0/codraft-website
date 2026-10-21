@@ -18,8 +18,11 @@
  *   jumps past them.
  * - With branches (`data-axis-branches`, review #90) the line runs on to the
  *   last service's branch, and each service's branch grows out from the
- *   line in BRANCH_MS before its icon draws. (Without JavaScript or with
- *   reduced motion the last stage's rail runs to the end of its services.)
+ *   line in BRANCH_MS (or the attribute's value, in milliseconds) before its
+ *   icon draws. With `data-axis-into` (the trees, review #94) the line ends
+ *   at the top of the last service instead, where its arrow points in.
+ *   (Without JavaScript or with reduced motion the last stage's rail runs to
+ *   the end of its services.)
  * - An IntersectionObserver switches the scroll handling on only while the
  *   section is near the screen.
  *
@@ -61,6 +64,10 @@ interface Axis {
   line: HTMLElement;
   /** The services hang on branches, and the line runs through them all. */
   branches: boolean;
+  /** How long a branch takes to grow. */
+  branchMs: number;
+  /** The line ends in an arrow into the last service. */
+  into: boolean;
   /** The line's top and length in the root, in pixels. */
   top: number;
   length: number;
@@ -90,11 +97,14 @@ function layout(axis: Axis): void {
   const origin = axis.root.getBoundingClientRect().top;
   const items = axis.root.querySelectorAll("[data-axis-item]");
   const lastItem = items[items.length - 1];
-  // With branches the line ends on the last service's branch, at its icon.
-  const end =
-    axis.branches && lastItem !== undefined
-      ? middle(lastItem.querySelector("[data-icon]") ?? lastItem)
-      : middle(last);
+  // With branches the line ends on the last service's branch, at its icon;
+  // in a tree, at the top of the last service.
+  let end = middle(last);
+  if (axis.into && lastItem !== undefined) {
+    end = lastItem.getBoundingClientRect().top;
+  } else if (axis.branches && lastItem !== undefined) {
+    end = middle(lastItem.querySelector("[data-icon]") ?? lastItem);
+  }
   axis.top = middle(first) - origin;
   axis.length = Math.max(end - origin - axis.top, 0);
   axis.line.style.top = `${String(axis.top)}px`;
@@ -142,10 +152,10 @@ function startPassed(axis: Axis, instantUpTo: number): void {
     const delay = row * NEXT_ROW_MS + inRow * NEXT_IN_ROW_MS;
     if (axis.branches) {
       service.item.style.setProperty("--branch-at", ms(delay));
-      service.item.style.setProperty("--branch-for", ms(BRANCH_MS));
+      service.item.style.setProperty("--branch-for", ms(axis.branchMs));
     }
     if (service.icon !== null) {
-      timeStrokes(service.icon, delay + (axis.branches ? BRANCH_MS : 0));
+      timeStrokes(service.icon, delay + (axis.branches ? axis.branchMs : 0));
     }
     service.item.classList.add("is-drawn");
     inRow += 1;
@@ -159,6 +169,8 @@ function init(root: HTMLElement): void {
     root,
     line,
     branches: root.dataset.axisBranches !== undefined,
+    branchMs: Number(root.dataset.axisBranches) || BRANCH_MS,
+    into: root.dataset.axisInto !== undefined,
     top: 0,
     length: 0,
     aim: 0,

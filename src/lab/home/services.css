@@ -161,6 +161,39 @@
   }
 }
 
+/* The trees (review #94–96): a branch is curved or bent, so it is not
+   scaled but uncovered from the line outwards, along its course (in the left
+   column it is turned over, and so is the wipe); then its arrow snaps in.
+   The arrow into the last stage's centred service has no branch before it,
+   so it snaps in as soon as the service starts. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .axis--arrows [data-axis-item]:not(.is-drawn) .service__branch {
+    transform: none;
+    clip-path: inset(-1rem 100% -1rem -1rem);
+  }
+
+  .axis--arrows [data-axis-item].is-drawn:not(.is-instant) .service__branch {
+    animation: tree-branch var(--branch-for, 360ms) var(--ease-pen)
+      var(--branch-at, 0ms) backwards;
+  }
+
+  .axis--arrows
+    [data-axis-item].is-drawn:not(.is-instant):last-child:nth-child(odd)
+    .service__branch::after {
+    animation-delay: var(--branch-at, 0ms);
+  }
+}
+
+@keyframes tree-branch {
+  from {
+    clip-path: inset(-1rem 100% -1rem -1rem);
+  }
+
+  to {
+    clip-path: inset(-1rem);
+  }
+}
+
 /* Hidden at the very start, so a square cap never shows as a dot. */
 @keyframes icon-stroke {
   0% {

@@ -215,6 +215,7 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 | S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | pending |
 | S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | pending |
 | S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | pending |
+| S20 | `drafting.title`, `nav.drafting`, the EN slug (2026-10-22, an alternative to S19) | "Engineering Drafting" (`/en/engineering-drafting`) | "Architectural Drafting" (slug `/en/architectural-drafting`), with S19's audience line. It is the term architects and builders search for in English ("architectural drafting services"); "Technical Drawing" reads as the school subject or general engineering, and "Engineering Drafting" suggests engineering, which ADR 0018 leaves out | **Yes** | pending |
 
 ## 4. Content gaps
 
@@ -389,6 +390,27 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | SEO i lokalna vidljivost | Rad na vašem položaju na Googleu i u AI tražilicama. | `run.seo.body` |
 | Analitika i usklađenost | Analitika, kolačići i pristupačnost postavljeni kako treba. | `run.analytics.body` |
 
+### Home, phase 3 (gap copy, 2026-10-22)
+
+Drafts for Home's missing copy, from the page's argument ([information-architecture.md](information-architecture.md), Home, "The page's argument"). Put to the client on 2026-10-22 (M1); nothing is built before the client's OK. Square brackets hold the client's facts, still to come. Every other line on Home stays as under "Prototype copy" above, and all of them are proofread by the client at the end of phase 3 (#73).
+
+| Where | HR `draft` | Source | Waiting for |
+|---|---|---|---|
+| Free audit, lead (replaces the lead and the placeholder note "Popis onoga što analiza provjerava stiže prije objave.") | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. Provjeravamo [brzinu, prikaz na mobitelu, Profil tvrtke na Googleu, pristupačnost i vidljivost u AI tražilicama]. Dobivate [razgovor od 30 minuta i pisani sažetak s prioritetima], bez obveze. | G4 and G19; `plan.body`; the case without a site as in S11 (changes meaning); critique 22, points 1–2: the lead no longer repeats stage 01 and speaks to visitors without a site too | The client: what is checked (G4), what you get (G19), whether it is without obligation, and whether businesses without a site get it |
+| Free audit, the three steps | Unchanged: **Forma:** Ispunite kratku formu. · **Termin:** Odaberite termin u kalendaru. · **Potvrda:** Dobivate potvrdu termina. | ADR 0007; critique 22, point 3: they describe the booking, which the lead now balances with what the audit gives | — |
+| Closing CTA, one line under the lead (**option**: it adds an element to the zone) | Odgovaramo u roku od [jednog radnog dana]. Skice i nacrte možete poslati i na [e-mail]. | G23; [ADR 0020](decisions/0020-drawings-arrive-by-email.md) (sketches by email); critique, communication Q3 | The client: the option, the reply time, the email address |
+| Team strip | No new line: the names, roles and photos of two people (G3) replace the placeholders and the note "Fotografije, imena i uloge stižu u fazi 3." | G3 | The client (item C) |
+| Home, `<title>` | Izrada web stranica, softvera i AI alata \| Codraft | G28; keyword map (`/`: the brand and "izrada web stranica"; the city once known) | — |
+| Home, meta description (151 characters) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate za tvrtke. Opseg, rok i cijenu znate prije početka rada. Počnite besplatnom analizom. | G28; the hero's H1 and lead, `plan.body` | — |
+| Home, OG image's text alternative | Codraft: planiramo, izrađujemo i održavamo web stranice, softver i AI alate. | G28; the H1 | — |
+
+**English.** The English of every Home line is drafted here after the client's OK on the argument and three decisions: the drafting service's English name (S19 or S20), British or American spelling (S3), and "Croatia" in English titles (S15). The client reads it with every other text at the end of phase 3 (#73). Drafts for the metadata, with S15 and British spelling:
+
+| Where | EN `draft` | Source |
+|---|---|---|
+| Home, `<title>` | Websites, software and AI tools in Croatia \| Codraft | G28; S15; keyword map (`/en`: "web design and development Croatia") |
+| Home, meta description | We plan, build and look after websites, software and AI tools for businesses in Croatia. Fixed scope, timeline and price before any work starts. | G28; `services.intro`, `plan.body` |
+
 ### UI strings of the base components (phase 2)
 
 The header, footer and skip link of the design system (ADR 0015) read these strings from `src/locales/{hr,en}.json`. Both languages are drafts (`draft`); the Croatian lines come from the glossary and the prototype copy, and the English lines are new (gap G27). The navigation labels follow the glossary, so they change with it.
@@ -470,6 +492,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, #63):** "The 3D view's options" added under "Prototype copy": the accessible names of options 2 and 3 and the house's title block. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #61):** The button "Pošaljite skicu" removed from Home's drafting zone, at the client's request. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.
+- **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

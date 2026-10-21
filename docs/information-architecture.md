@@ -118,6 +118,21 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 7. **Team strip:** photos, names, roles (N, G3).
 8. **Closing CTA:** the client's heading "Imate skicu, stranicu ili samo ideju?" and lead (review batch 11, [content.md](content.md) "Prototype copy"), and one button, "Pošaljite upit" (ADR 0017).
 
+**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M1; **proposed**, waiting for the client's OK). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
+
+| Zone | Claim | Proof | Proof today |
+|---|---|---|---|
+| Hero | Codraft plans, builds and looks after websites, software and AI tools; you know the scope, timeline and price before work starts, and the team stays after launch. Architects and builders see their own path at once. | A specific commitment about how the work is done, which "Što radimo" backs: stage 01 (fixed scope, timeline and price first) and stage 03 (maintenance for a fixed monthly fee). The drafting link is inside the first screen at every width (critique, communication lens). | In place |
+| Što radimo | One team covers the whole way, plan → build → run and grow, and you can see exactly what you can get. | Nine services named concretely, each with one line and a link to its full description on `/usluge`; the order of the stages is the process itself. | In place (the full descriptions arrive with `/usluge`) |
+| Besplatna analiza | The first step costs nothing, commits you to nothing and is worth your time. | What the audit checks (G4) and what you get from it (G19); three steps to a time slot. | **Missing:** G4 and G19 (the client's facts). Today a placeholder note. |
+| Tehničko crtanje | Architecture practices and construction companies can hand us their drawings when there are more drawings than hands; we draw in their layers and with their title block, in 2D and 3D. | The work itself, shown large: the floor plan drawn layer by layer and raised into a 3D model of a house, labelled "Ilustracija". How the work is done, stated specifically: "u vašim slojevima i s vašim zaglavljem". The real sample sheets (G10) and formats (G13) belong to `/tehnicko-crtanje`. | In place for Home |
+| Kako radimo | Working with Codraft is simple and honest. | Three commitments in the client's words; "Sve ostaje vaše" names what exactly (code, drawings, domain, access; [ADR 0021](decisions/0021-the-customer-owns-the-work.md)). "Razgovarate s onima koji rade" is proved by the team strip right below it. | In place (leans on Tim) |
+| Tim | Real people with names and faces do the work, the same people you talk to. | Real photos, full names and roles (G3); the link to About for the bios and LinkedIn. | **Missing:** G3 (the client's data). Today placeholder frames. |
+| Closing CTA | Whatever you have (a sketch, a site or just an idea), sending it is easy, and you get a proposal back. | One clear step, "Pošaljite upit" to Contact. When you hear back (G23) and where a sketch goes ([ADR 0020](decisions/0020-drawings-arrive-by-email.md): by email) are not on the page yet. | Partly |
+| Title block (footer) | Codraft is a real company you can check. | OIB, MBS and registered office (item A), checkable on sudreg or poslovna.hr. | **Missing:** item A; "Stiže prije objave" until the Impresum page. |
+
+Rules applied: no zone lacks a claim, so none is cut. A claim without proof at launch is reworded or dropped: the team strip launches with real data or not at all, and the audit zone claims only what G4 and G19 confirm. The AI assistant teaser joins in phase 4, with the demo as its proof.
+
 ### Usluge / Services (`/usluge`)
 
 1. **H1 and intro** (P: `services.title`, `services.intro`).

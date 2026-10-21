@@ -13,6 +13,11 @@
  * gives the CSS the two views and how far each top rises. Then, by option
  * (review #63), a roof comes down onto the walls, or after a hold the walls
  * go down and the plan turns back.
+ *
+ * Where the 3D view is the final state, reduced motion has no replay, so a
+ * button (`data-plan-view`) switches between the 3D view and the plan at
+ * once (critique 12, review #117): it sets `is-flat` on the plan and says
+ * what it shows next.
  */
 import {
   modelView,
@@ -154,8 +159,21 @@ function timeModel(
   }
 }
 
+/** The switch between the 3D view and the plan, with reduced motion. */
+function initViewSwitch(plan: HTMLElement): void {
+  const button = plan.querySelector<HTMLButtonElement>("[data-plan-view]");
+  const label = button?.querySelector<HTMLElement>("[data-plan-view-label]");
+  if (button === null || label === null || label === undefined) return;
+  const { planLabel = "", modelLabel = "" } = button.dataset;
+  button.addEventListener("click", () => {
+    const flat = plan.classList.toggle("is-flat");
+    label.textContent = flat ? modelLabel : planLabel;
+  });
+}
+
 for (const plan of document.querySelectorAll<HTMLElement>("[data-plan]")) {
   const planDone = timePlan(plan);
   const model = plan.dataset.planModel;
   if (isPlanModel(model)) timeModel(plan, planDone, model);
+  initViewSwitch(plan);
 }

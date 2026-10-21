@@ -354,6 +354,9 @@ export interface PlanCopy {
   /** In drawing order (docs/motion.md, "Layers"). */
   layers: { id: PlanLayerId; label: string }[];
   replay: string;
+  /** With reduced motion, the switch between the 3D view and the plan
+      (review #117); it says what it shows next. */
+  view: { plan: string; model: string };
   drawingLabel: string;
   /** The same, where the plan rises into its 3D view (review #58). */
   modelLabel: string;
@@ -381,6 +384,7 @@ export const PLAN: PlanCopy = {
     { id: "zaglavlje", label: "Zaglavlje" },
   ],
   replay: "Iscrtaj ponovno",
+  view: { plan: "Prikaži tlocrt", model: "Prikaži 3D model" },
   // Without the room names, at the client's request (review batch 6).
   drawingLabel:
     "Ilustracija: tlocrt manjeg stana s osima, zidovima, vratima i prozorima te kotama u centimetrima.",

@@ -13,11 +13,14 @@
  * a roof (option 3 of #63, the client's choice in #64), in palette 1 (#66);
  * the comparison pages pass the other options and palettes (#63, #65).
  *
- * The grid's areas are "drawing text" / "legend .". The plan spans the
- * drawing and legend rows as a subgrid, so its frame takes the first row and
- * its layer list the second. Where the text is taller than the drawing, the
- * frame grows with the row and the plan stays centred in it. Below 900 px
- * (the client's breakpoint): one column, text, drawing, layer list.
+ * The zone is on the 12-column grid of the hero, the audit and the team
+ * (critique 13, review #118): the drawing on columns 1-7 and the text from
+ * column 8, where the hero's drawing starts, so 58/42 ("približno 57/43",
+ * #22). The plan spans two rows as a subgrid, so its frame takes the first
+ * row and its layer list the second. Where the text is taller than the
+ * drawing, the frame grows with the row and the plan stays centred in it.
+ * Below 900 px (the client's breakpoint): one column, text, drawing, layer
+ * list.
  */
 import "../services.css";
 
@@ -146,36 +149,29 @@ const labelId = `${headingId}-opcija`;
 
   @media (min-width: 56.25rem) {
     .legend {
-      grid-template-areas:
-        "drawing text"
-        "legend .";
-      grid-template-columns: minmax(0, 57fr) minmax(0, 43fr);
-      gap: 0 var(--space-7);
+      grid-template-rows: auto auto;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 0 var(--gap);
     }
 
     /* Centred on the drawing's frame, not on the layer list's row. */
     .legend__text {
-      grid-area: text;
+      grid-row: 1;
+      grid-column: 8 / -1;
       align-self: center;
     }
 
-    /* The frame takes the drawing row, the layer list the legend row. */
+    /* The frame takes the first row, the layer list the second. */
     .legend__plan {
       display: grid;
-      grid-row: drawing-start / legend-end;
-      grid-column: drawing;
+      grid-row: 1 / span 2;
+      grid-column: 1 / span 7;
       grid-template-rows: subgrid;
     }
 
     .legend__plan :global(.plan__sheet) {
       display: grid;
       align-content: center;
-    }
-  }
-
-  @media (min-width: 80rem) {
-    .legend {
-      column-gap: var(--space-9);
     }
   }
 </style>

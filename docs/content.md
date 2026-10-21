@@ -306,6 +306,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Option 3 (roof), title block | Tlocrt kuće → 3D model kuće · Mjere u cm · Codraft · Ilustracija | A flat has no roof of its own, so with a roof the drawing is a house (ADR 0004: the illustration says what it is) |
 | Option 3 (roof), layer list | Krov, before Zaglavlje | Drafting term, like the other layers |
 | Option 3 (roof), accessible name | Ilustracija: tlocrt prizemne kuće s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model s dvostrešnim krovom. | As above |
+| The view switch, with reduced motion (review #117, 2026-10-21) | Prikaži tlocrt · Prikaži 3D model (the button says what it shows next) | UI strings; glossary (*tlocrt*, *3D model*); in place of "Iscrtaj ponovno", which needs motion |
 
 **The closing call to action on Home** (review batch 11, 2026-10-20). The client's text, verbatim; it replaces "Prvo jasnoća." (`plan.tagline`, which stays in "Što radimo").
 
@@ -464,6 +465,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, batch 9):** "Tehničko crtanje on Home, batch 9" added under "Prototype copy": the heading back to "Tehničko crtanje", the client's new lead, three service lines and the button "Pošaljite skicu", verbatim. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 10):** "'Kako radimo' on Home" added under "Prototype copy": the client's three commitments, verbatim, in place of the round 2 lines. G2 answered ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)). Files come by email, not through the site ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)). No copy block changed.
 - **2026-10-20 (phase 2, review refinements, batch 11):** "The closing call to action on Home" added under "Prototype copy": the client's heading and lead in place of "Prvo jasnoća.". No copy block changed.
+- **2026-10-21 (phase 2, review refinements, #117):** The view switch of the floor plan with reduced motion, "Prikaži tlocrt" and "Prikaži 3D model", added to "The 3D view's options". No copy block changed.
 - **2026-10-21 (phase 2, review refinements, #64):** Home uses option 3's lines (the house's title block, the "Krov" layer and its accessible name). No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #63):** "The 3D view's options" added under "Prototype copy": the accessible names of options 2 and 3 and the house's title block. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #61):** The button "Pošaljite skicu" removed from Home's drafting zone, at the client's request. No copy block changed.

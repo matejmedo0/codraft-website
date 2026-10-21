@@ -717,6 +717,36 @@ The client's message, verbatim:
 |---|---|---|---|---|---|
 | 112 | "što sada od mene trebaš , koja pitanja razrješiti" | Put to the client: the two open points of group A (16's look, #109; 18's grips, #111), then group B's six questions (3, 5, 12, 13, 20, 21), each with options and a recommendation, checked again against the code as it is now. Group C (6, 14, 19, 22) follows B. Nothing changed. | [Research note](../research/2026-10-21-design-critique-home.md#verified-findings) | The client's answers | Asked |
 
+**Batch 34 (2026-10-21): answers to group A and group B**
+
+The client's message, verbatim:
+
+> 16. U redu je kako sad izgleda ako je po tebi
+> 17. Zadržavamo gripove u zaglavlju
+>
+> B skupina pitanja :
+> 3. Idemo po preporuci tvojoj
+> 5. Koja je tvoja preporuka
+>
+> 12. Idemo preporukom opcija C
+>
+> 13. Ne znam sam sredi kako misliš da treba po preporuci onda
+> 20.Idemo na preporuku opet , ali prvo mi prikaži
+> 21. Idemo na preporuku
+
+The grips were point 18 of the critique; the client's "17." is read as 18 (17, the menu's fade, was approved in batch 24).
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 113 | "16. U redu je kako sad izgleda ako je po tebi" | The title block under the drawing on phones (#109) stays as made. | — | None | Approved |
+| 114 | "17. Zadržavamo gripove u zaglavlju" (critique 18) | The grips on the header's links (#111) stay. | — | The client's choice | Approved |
+| 115 | "3. Idemo po preporuci tvojoj" | Option B on Home: the layer list shows the layers' state; it no longer looks like checkboxes. Each lamp is a short sample of its layer's own line, as a CAD layer manager shows a linetype: a chain line for Osi, solid ink for Zidovi, a window's two lines for Otvori, a dimension line with ticks in the accent for Kote, the roof's colour for Krov, a framed cell for Zaglavlje. A layer that is off keeps a faint sample and its name in grey (`--ink-muted`). With motion on, each sample draws in from the left as its layer starts (140 ms) and its name turns to ink; Osi and Kote fade back to grey when the plan rises. Real layer switches (option C) go to the drafting page's layer viewer in phase 3. Screenshot: [batch34-layers-1440.png](screenshots/phase-2/review/batch34-layers-1440.png). | `PlanDrawing.astro`; [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Done; in review |
+| 116 | "5. Koja je tvoja preporuka" | Recommendation B, with its reason, shown as previews (the change applied in the browser only, no code changed) beside option C: B gives the service's line 265 px instead of 209 (about 30 characters, two lines instead of three), the section stays as tall (1856 px against 1864) and two titles still take two lines; C fits every title on one line but makes the section about 300 px taller (2159 px). Screenshots: `batch34-sto-radimo-375-now.png`, `-option-b`, `-option-c`. Waiting for the client's OK. | — | ADR 0022 point 1 on phones, if approved | Asked |
+| 117 | "12. Idemo preporukom opcija C" | With reduced motion (and JavaScript), "Iscrtaj ponovno" gives way to a button that switches between the 3D view and the plan at once, with no movement: "Prikaži tlocrt" lays the plan flat with its axes and dimensions and turns the model and the roof off, the lamps and the title block following; then it says "Prikaži 3D model". The timing with motion on is unchanged, and so is the drawing without JavaScript (the house). Screenshots: [batch34-drafting-flat-1440.png](screenshots/phase-2/review/batch34-drafting-flat-1440.png), `batch34-plan-flat-375.png`. | `PlanDrawing.astro`, `plan-timelapse.ts` (`is-flat`), `src/lab/copy.ts` (`PLAN.view`), `docs/content.md` | None | Done; in review |
+| 118 | "13. Ne znam sam sredi kako misliš da treba po preporuci onda" | Option B: from 900 px the drafting zone is on the 12-column grid of the other zones, with their gap (`--gap`): the drawing on columns 1–7 and the text from column 8 (58/42, within "približno 57/43", #22). The text now starts where the hero's drawing starts: 847 px at 1440 (838 before), 1127 at 1920. The drawing grows a little (742 px wide at 1440, 701 before) and the gap beside it is the grid's 32 px (64 before). At 1440 the text column is 521 px, so its rows keep the title beside its line. Screenshots: [batch34-drafting-1440.png](screenshots/phase-2/review/batch34-drafting-1440.png), `batch34-drafting-1024.png`. | `DraftingLegend.astro` | None | Done; in review |
+| 119 | "20.Idemo na preporuku opet , ali prvo mi prikaži" | Recommendation A (the hero as in the client's reference) stands; option B (the mark selected with four grips at the edge of its clear space, the height of the "c" from the letters) is shown first as previews (in the browser only), alone and with a thin dashed selection frame through the grips. Screenshots: `batch34-hero-1920-now.png`, `-option-b`, `-option-b-frame`, and the same at 375. | — | The client chooses after the preview | Asked |
+| 120 | "21. Idemo na preporuku" | Option A: the drafting zone keeps its own step to one column at 900 px. | — | The client's choice | Decided |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

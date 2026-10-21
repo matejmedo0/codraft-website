@@ -387,6 +387,18 @@ const titles =
     >
       {PLAN.replay}
     </Button>
+    {endsIn3d && (
+      <Button
+        variant="secondary"
+        size="compact"
+        class="plan__view"
+        data-plan-view
+        data-plan-label={PLAN.view.plan}
+        data-model-label={PLAN.view.model}
+      >
+        <span data-plan-view-label>{PLAN.view.plan}</span>
+      </Button>
+    )}
   </div>
 
   <script>
@@ -698,23 +710,86 @@ const titles =
 
   .plan__layer {
     display: inline-flex;
-    gap: 0.4375rem;
+    gap: 0.5rem;
     align-items: center;
   }
 
+  /* Each lamp is a short sample of its layer's own line, as a CAD layer
+     manager shows a linetype. A layer that is off keeps a faint sample and
+     its name in grey. The list shows the layers' state; it is not a
+     control (critique 3). */
   .plan__lamp {
+    --lamp: var(--drawing-ink);
+
     position: relative;
     flex: none;
-    width: 0.75rem;
-    height: 0.75rem;
-    border: 1.5px solid var(--accent);
+    width: 1.25rem;
+    height: var(--lamp-height, 2px);
+  }
+
+  .plan__lamp::before,
+  .plan__lamp::after {
+    position: absolute;
+    inset: 0;
+    background: var(--lamp);
+    box-shadow: var(--lamp-edge, none);
+    content: "";
+  }
+
+  .plan__lamp::before {
+    opacity: 0.25;
   }
 
   .plan__lamp::after {
-    position: absolute;
-    inset: 2px;
-    background: var(--accent);
-    content: "";
+    transform-origin: left center;
+  }
+
+  /* The axes: a chain line, as in the drawing (6 2 1 2). */
+  [data-lamp="osi"] .plan__lamp {
+    --lamp: repeating-linear-gradient(
+      90deg,
+      var(--drawing-muted) 0 6px,
+      transparent 6px 8px,
+      var(--drawing-muted) 8px 9px,
+      transparent 9px 11px
+    );
+    --lamp-height: 1px;
+  }
+
+  /* The walls: solid ink. */
+  [data-lamp="zidovi"] .plan__lamp {
+    --lamp-height: 3px;
+  }
+
+  /* The openings: a window's two thin lines. */
+  [data-lamp="otvori"] .plan__lamp {
+    --lamp:
+      linear-gradient(var(--drawing-ink) 0 0) top / 100% 1px no-repeat,
+      linear-gradient(var(--drawing-ink) 0 0) bottom / 100% 1px no-repeat;
+    --lamp-height: 5px;
+  }
+
+  /* The dimensions: a dimension line in the accent, with its ticks. */
+  [data-lamp="kote"] .plan__lamp {
+    --lamp:
+      linear-gradient(var(--accent) 0 0) center / 100% 1px no-repeat,
+      linear-gradient(var(--accent) 0 0) left / 1px 100% no-repeat,
+      linear-gradient(var(--accent) 0 0) right / 1px 100% no-repeat;
+    --lamp-height: 7px;
+  }
+
+  /* The roof: its colour, edged in ink. */
+  [data-lamp="krov"] .plan__lamp {
+    --lamp: var(--roof);
+    --lamp-edge: inset 0 0 0 1px var(--drawing-ink);
+    --lamp-height: 6px;
+  }
+
+  /* The title block: a frame with a cell. */
+  [data-lamp="zaglavlje"] .plan__lamp {
+    --lamp: linear-gradient(var(--drawing-ink) 0 0) 60% 0 / 1px 100% no-repeat;
+    --lamp-edge: inset 0 0 0 1px var(--drawing-ink);
+    --lamp-height: 8px;
   }
 
   /* Replaying needs the script and motion. */
@@ -725,6 +800,13 @@ const titles =
 
   :global(.js) .plan__toolbar .plan__replay {
     display: inline-flex;
+  }
+
+  /* The switch between the 3D view and the plan is for reduced motion,
+     where the replay is off (critique 12). */
+  .plan__toolbar .plan__view {
+    display: none;
+    margin-left: auto;
   }
 
   /* The timelapse. Before it starts every step and lamp is off; each step
@@ -747,7 +829,11 @@ const titles =
 
   .plan.is-pending .plan__lamp::after {
     opacity: 0;
-    scale: 0;
+    scale: 0 1;
+  }
+
+  .plan.is-pending .plan__layer {
+    color: var(--ink-muted);
   }
 
   .plan.is-drawing [data-wipe="x"] {
@@ -766,6 +852,11 @@ const titles =
   .plan.is-drawing .plan__lamp::after {
     animation: plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms)
       both;
+  }
+
+  .plan.is-drawing .plan__layer {
+    animation: plan-label-on var(--motion-fast) var(--ease-standard)
+      var(--at, 0ms) both;
   }
 
   @keyframes plan-wipe-x {
@@ -803,7 +894,7 @@ const titles =
   @keyframes plan-lamp {
     from {
       opacity: 0;
-      scale: 0;
+      scale: 0 1;
     }
 
     to {
@@ -829,7 +920,10 @@ const titles =
 
   .plan--ends-3d :is([data-lamp="osi"], [data-lamp="kote"]) .plan__lamp::after {
     opacity: 0;
-    scale: 0;
+  }
+
+  .plan--ends-3d :is([data-lamp="osi"], [data-lamp="kote"]) {
+    color: var(--ink-muted);
   }
 
   .plan--returns :is(.plan-floor, .plan__model, .plan-title--model) {
@@ -882,6 +976,13 @@ const titles =
     animation:
       plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms) both,
       plan-lamp-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards;
+  }
+
+  .plan--model.is-drawing :is([data-lamp="osi"], [data-lamp="kote"]) {
+    animation:
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--at, 0ms) both,
+      plan-label-off var(--motion-fast) var(--ease-standard) var(--off-at)
         forwards;
   }
 
@@ -939,6 +1040,15 @@ const titles =
       plan-lamp var(--motion-fast) var(--ease-spring) var(--on-at) forwards;
   }
 
+  .plan--returns.is-drawing :is([data-lamp="osi"], [data-lamp="kote"]) {
+    animation:
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--at, 0ms) both,
+      plan-label-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards,
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--on-at)
+        forwards;
+  }
+
   .plan--returns.is-drawing .plan__ground {
     animation:
       plan-tilt var(--tilt-for) var(--ease-pen) var(--tilt-at) both,
@@ -989,13 +1099,73 @@ const titles =
   @keyframes plan-lamp-off {
     from {
       opacity: 1;
-      scale: 1;
     }
 
     to {
       opacity: 0;
-      scale: 0;
     }
+  }
+
+  @keyframes plan-label-on {
+    from {
+      color: var(--ink-muted);
+    }
+
+    to {
+      color: var(--ink);
+    }
+  }
+
+  @keyframes plan-label-off {
+    from {
+      color: var(--ink);
+    }
+
+    to {
+      color: var(--ink-muted);
+    }
+  }
+
+  /* With reduced motion the switch shows the plan in place of the 3D view
+     (critique 12, review #117), at once: the plan lies flat with its axes
+     and dimensions, the model and the roof are off, and the lamps follow. */
+  .plan--ends-3d.is-flat
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 1;
+  }
+
+  .plan--ends-3d.is-flat
+    :is(.plan-floor, .plan__model, .plan__roof, .plan-title--model) {
+    opacity: 0;
+  }
+
+  .plan--ends-3d.is-flat .plan__ground {
+    transform: var(--plan-from);
+  }
+
+  .plan--ends-3d.is-flat
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    opacity: 1;
+  }
+
+  .plan--ends-3d.is-flat :is([data-lamp="osi"], [data-lamp="kote"]) {
+    color: var(--ink);
+  }
+
+  .plan--roof.is-flat [data-lamp="krov"] .plan__lamp::after {
+    opacity: 0;
+  }
+
+  .plan--roof.is-flat [data-lamp="krov"] {
+    color: var(--ink-muted);
   }
 
   @keyframes plan-tilt {
@@ -1085,6 +1255,10 @@ const titles =
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .plan__toolbar .plan__replay {
       display: none;
+    }
+
+    :global(.js) .plan__toolbar .plan__view {
+      display: inline-flex;
     }
   }
 </style>

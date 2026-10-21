@@ -1,8 +1,23 @@
+import { readFileSync } from "node:fs";
+
 import { expect, test } from "@playwright/test";
 
 import { type Locale, SITE_URL } from "../../src/config/site.ts";
-import { t } from "../../src/features/i18n/ui.ts";
+import type { UiKey } from "../../src/features/i18n/ui.ts";
 import { collectErrors, expectNoSeriousA11yViolations } from "./helpers.ts";
+
+/**
+ * A UI string, read from the locale file: Playwright's loader can't import
+ * JSON without an import attribute, which the site's own `t()` doesn't use.
+ */
+function t(locale: Locale, key: UiKey): string {
+  const file = new URL(`../../src/locales/${locale}.json`, import.meta.url);
+  const strings = JSON.parse(readFileSync(file, "utf8")) as Record<
+    UiKey,
+    string
+  >;
+  return strings[key];
+}
 
 const HREFLANG = {
   hr: `${SITE_URL}/`,

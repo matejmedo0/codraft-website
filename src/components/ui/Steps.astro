@@ -71,7 +71,7 @@ const last = steps.length - 1;
     display: grid;
     grid-template-columns: var(--node) minmax(0, 1fr);
     align-content: start;
-    column-gap: 1.125rem;
+    column-gap: var(--space-4);
     padding-bottom: var(--space-6);
   }
 
@@ -167,7 +167,7 @@ const last = steps.length - 1;
 
     .step__node {
       grid-row: auto;
-      margin: 0 0 1.25rem;
+      margin: 0 0 var(--space-4);
     }
 
     .step__link {

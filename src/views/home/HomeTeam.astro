@@ -83,14 +83,14 @@ const members = TEAM.map(({ id, name }) => ({
   .member {
     display: grid;
     align-content: start;
-    gap: 0.125rem;
+    gap: var(--space-1);
   }
 
   .member__photo {
     position: relative;
     display: block;
     aspect-ratio: 4 / 5;
-    margin-bottom: 0.625rem;
+    margin-bottom: var(--space-2);
     border: var(--rule) solid var(--line);
     background: var(--surface-sunk);
   }
@@ -112,7 +112,7 @@ const members = TEAM.map(({ id, name }) => ({
   .member__name {
     font-stretch: var(--width-heading);
     font-weight: var(--weight-strong);
-    line-height: 1.25;
+    line-height: var(--leading-title);
   }
 
   .member__role {

@@ -24,7 +24,7 @@
   border: 1.5px solid var(--ink);
   border-radius: 50%;
   background: var(--surface);
-  font-size: 0.875rem;
+  font-size: var(--step-label);
   font-stretch: var(--width-label);
   font-weight: var(--weight-strong);
   font-variant-numeric: tabular-nums;
@@ -35,14 +35,14 @@
 .svc-title {
   font-size: var(--step-chapter);
   font-weight: var(--weight-chapter);
-  line-height: 1.1;
-  letter-spacing: -0.018em;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-section);
 }
 
 .svc-tagline {
   color: var(--ink-muted);
   font-size: var(--step-lead);
-  line-height: 1.4;
+  line-height: var(--leading-lead);
 }
 
 .svc-items {

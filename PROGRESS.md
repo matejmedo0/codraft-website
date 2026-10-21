@@ -1,8 +1,8 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, **gotova; dorade su u završnici** (19.–21. 10. 2026.) na grani `phase/2-design`. Do vrata faze ostala su još tri koraka. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
+**Trenutna faza:** 2 — Dizajn, **gotova, s doradama** (19.–21. 10. 2026.) na grani `phase/2-design`. Čeka vaše „idemo dalje“ na vratima faze. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak:** završne provjere i izvještaj, pa PR #2 i vaše „idemo dalje“ (vaš redoslijed, 21. 10. 2026.). Figma je usklađena s kodom (dorada 132). Skupine A i B kritike su riješene (dorade 109–122), skupina C ide u fazu 3 (dorada 123), a ponovna provjera kritičara je gotova: sva četiri kritičara daju „spremno“, a četiri sitnice koje su popravci izazvali riješene su po preporukama (dorade 125–130). Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108). U pet sesija dorada poslali ste 38 skupina (dorade 1–131; dorada 132 je usklađivanje Figme), a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md`, a nova sesija počinje od odjeljka „Handover (2026-10-21)“:
+**Sljedeći korak:** vaše „idemo dalje“. Tada spajam PR #2 u `main` (merge commit), otvaram granu `phase/3-pages` i počinje faza 3 (izrada stranica). Dorade su gotove: u pet sesija poslali ste 38 skupina (dorade 1–131), a uz njih su napravljeni kritika dizajna i njezina ponovna provjera, usklađivanje Figme (dorada 132) te završne provjere i izvještaj (dorada 133). Sve je zapisano u `docs/phases/2-design-review.md`, a PR #2 ima odjeljak „Review refinements“:
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -43,7 +43,7 @@
       - Skupina C (6, 14, 19, 22) ide u fazu 3 (dorada 123).
       - ✓ Ponovna provjera kritičara (21. 10. 2026.): sva četiri daju „spremno“. Po vašoj riječi „Odradi po preporukama“: logotip i tekst podnožja na istoj liniji, animacije nakon skoka redom čitanja, tlocrt uvijek svojom brzinom (oko 8 s do krova), čitljivo zaglavlje crteža gdje god je crtež uzak (dorade 125–130).
    2. ✓ **Usklađivanje Figme** s kodom (21. 10. 2026., dorada 132): siva #4A5362 i boje označenog teksta, zaglavlje bez gumba, podnožje, stavka s podcrtanom poveznicom, devet ikona usluga, komponenta usluge i oznaka faze, a primjer početne složen iznova kao u kodu (os s ikonama, kuća kao vektorski crtež, slojevi kao uzorci crta).
-   3. **Završne provjere i izvještaj:** provjere na lab buildu, `npm run verify` i E2E, snimke, odjeljak o doradama u PR-u #2, zeleni CI. Zatim stajem i čekam vaše „idemo dalje“ za merge i fazu 3.
+   3. ✓ **Završne provjere i izvještaj** (21. 10. 2026., dorada 133): provjere na lab buildu na svim stranicama laba, `npm run verify` (161 unit test, 1,7 KB JavaScripta po stranici), E2E (51 test), završne snimke početne (`docs/phases/screenshots/phase-2/review/final-pocetna-*.png`), odjeljak o doradama u PR-u #2, zeleni CI. Čekam vaše „idemo dalje“ za merge i fazu 3.
 3. **Prebačeno u fazu 3, na vašu riječ (dorade 59 i 70–74):**
    - engleski tekst, stranicu po stranicu, dok se svaka radi na oba jezika
    - prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
@@ -103,7 +103,7 @@ Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
   - tipkovnica i izbornik rade
   - smanjeno kretanje i prikaz bez JavaScripta prikazuju gotovo stanje
 - Prototipovi A–E izgledaju isto kao prije.
-- `npm run verify`: 138 unit testova, 1,0 KB JavaScripta po stranici.
+- `npm run verify`: 161 unit test, 1,7 KB JavaScripta po stranici (nakon dorada, 21. 10. 2026.).
 - `npm run test:e2e`: 51 test.
 
 Redoslijed u fazi 2:
@@ -177,7 +177,7 @@ Za kasnije, kad ih faza zatraži: uvjeti najma servera i rok čuvanja upita iz f
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
 - [x] 1 — Arhitektura (gotova i odobrena 19. 10. 2026., PR #1): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
-- [ ] 2 — Dizajn (gotova 19. 10. 2026.; dorade 19.–21. 10., PR #2; ostaju kritika dizajna, Figma i završne provjere): smjer (ADR 0015), tokeni, font, animacija, komponente, stranica sa stilovima, Figma knjižnica → `docs/phases/2-design.md`
+- [ ] 2 — Dizajn (gotova 19. 10. 2026.; dorade, kritika, Figma i završne provjere gotove 21. 10.; PR #2 čeka vaše „idemo dalje“): smjer (ADR 0015), tokeni, font, animacija, komponente, stranica sa stilovima, Figma knjižnica → `docs/phases/2-design.md`
 - [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
 - [ ] 5 — Kvaliteta: E2E i unit testovi, pristupačnost, performanse → `docs/phases/5-quality.md`

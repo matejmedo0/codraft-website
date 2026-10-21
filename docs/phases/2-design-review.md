@@ -1,10 +1,8 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-21, end of the fourth refinements session): the critique has run and "Što radimo" is settled; the rest of the critique's fixes, the Figma sync and the final checks are left before the phase gate. The next session starts at [Handover](#handover-2026-10-21), step 1.** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third (2026-10-20 to 21) batches 19–23 (refinements 57–74), and the fourth (2026-10-21) batches 24–30 (refinements 75–104): the critique's first fixes, and "Što radimo" through fourteen layouts back to the central axis with larger type (#102). All are reviewed on `/lab/pocetna`.
-> - **First, in the next session:** ask the client whether the older comparison `/lab/sto-radimo` (batch 3's three options: `ServicesChapters.astro`, `ServicesSchedule.astro`, `process-line.ts`) should be deleted too. Batch 30's last question was about it, and the client's answer ("Može sredi dokumentaciju…") didn't say clearly; a deletion needs a clear OK. Keep it until then.
-> - **Next:** the three steps under [Handover](#handover-2026-10-21), in order: the rest of the critique (group A 16–18, then B and C, then the critic's re-check), the Figma sync, the final checks and the report.
-> - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
-> - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
+> **Status (2026-10-21, end of the fifth refinements session): the review is done.** Every step of the [Handover](#handover-2026-10-21) is done: the rest of the critique and its re-check, the Figma sync, and the final checks with the report. PR #2's description has the „Review refinements“ section. Five sessions brought 39 batches (refinements 1–132); the fifth (2026-10-21) brought batches 31–39 (refinements 105–132).
+> - **Next:** the client's word. On „idemo dalje“: merge PR #2 into `main` with a merge commit, create `phase/3-pages` from `main`, start phase 3 ([3-pages.md](3-pages.md)), as the [phase gate](../../.claude/rules/codraft-workflow.md) says.
+> - **The rules of this review** stay for any late refinement: record it under [Refinements](#refinements) first; change only what the client asks for; make the change in code, check it, then bring the Figma library in line.
 
 ## Handover (2026-10-21)
 
@@ -58,7 +56,7 @@ The fourth session (2026-10-21, batches 24–30) ran the critique and settled "�
      - "Kako radimo"
      - the centred closing call to action
    - anything the critique's approved fixes changed
-3. **The final checks and the report** (#69), after Figma: the steps under [After the refinements](#after-the-refinements).
+3. **The final checks and the report** (#69), after Figma: the steps under [After the refinements](#after-the-refinements). **Done on 2026-10-21** (#133).
    - The checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` covers every lab page, the comparisons included (`/lab/tlocrt-3d` and `/lab/kuca-boje` since 2026-10-20 to 21); it is local and not in git, so if it is missing, rebuild it from [How to check a change](#how-to-check-a-change). Include the scroll motion of "Što radimo" and the floor plan's 3D view with the motion on.
    - `npm run verify`, and `npm run test:e2e` with port 4321 free (CI runs E2E on every push as well).
    - Report screenshots from the lab build.
@@ -803,13 +801,14 @@ Checking #125 at every width showed that with 24 px at the cells' sides the plac
 |---|---|---|---|---|---|
 | 131 | "24 px samo do 1024 px" | Below 64rem, where the mark has a row of its own, every cell keeps 24 px at its sides, so the mark and the text below it share one edge (#125). From 64rem the cells other than the mark's are back to 16 px: the values fit on one line, and the mark sits 8 px in from the text below it ("Jezik"), as before #125. Checked at 375–1920: no value wraps and the block's height is as before #125 (184 px at 1440, 108 at 1920); the mark on the text's edge at 375 and 768 (33/32 and 49/48 px). | `Footer.astro` | Replaces #125 from 64rem | Done; in review |
 
-**Batch 39 (2026-10-21): the Figma sync**
+**Batch 39 (2026-10-21): the Figma sync and the final checks**
 
-No message from the client: the sync is step 2 of the order of #106, after the critique.
+No message from the client: these are steps 2 and 3 of the order of #106, after the critique.
 
 | # | The client's request | Change | Where | Decision | Status |
 |---|---|---|---|---|---|
 | 132 | "Usklađivanje Figme s kodom (dorada 68)" (#106) | The library "Codraft sustav dizajna" brought in line with the code at `2e7610d`: the variables, two text styles, the header, the title block, Stavka, the nine icons, Usluga, Oznaka faze, the example page and the cover; details under [The Figma library](#the-figma-library). Checked with screenshots of the example page and each new component. | Figma file `pWypJUUuwNZv9iTSDVFBV0` | None | Done |
+| 133 | "Završne provjere i izvještaj (dorada 69), pa PR #2 i čekanje na moje „idemo dalje“" (#106) | The lab build under the CSP, every lab page at 375, 768 and 1440 px: axe clean, no console errors, no overflow, every part drawn after a slow scroll, keyboard and menu, reduced motion and no JavaScript. On the comparison pages with several plans the first run counted one zone selection still pending 4 s after the scroll: it waits for the steady plan above it (#127) and draws by 8 s; the check now waits 10 s where a page has a steady part, and all pages pass. `npm run verify` (161 unit tests, 1.7 KB of JavaScript per page), `npm run test:e2e` (51; the dev server stopped for it and restarted). Report screenshots from the lab build: `final-pocetna-375.png`, `-768`, `-1440`, `-1920`. The phase log, `PROGRESS.md` and PR #2's „Review refinements“ section. | `docs/`, PR #2 | None | Done; the client's word next |
 
 ## After the refinements
 

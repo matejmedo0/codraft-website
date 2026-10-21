@@ -13,6 +13,9 @@
  * With `branch` the item carries a branch of the process line, a blue line
  * that ends in a grip at the item (review #90); the section places and
  * draws it.
+ *
+ * A layout can add its own decorative parts to the item through the slot,
+ * such as the bar of the schedule (ServicesPlan.astro, review #101).
  */
 import type { HTMLAttributes } from "astro/types";
 
@@ -61,6 +64,7 @@ const Heading = level;
   <p class="service__body">{body}</p>
   {href !== undefined && <Grips />}
   {branch && <span class="service__branch" aria-hidden="true" />}
+  <slot />
 </li>
 
 <style>

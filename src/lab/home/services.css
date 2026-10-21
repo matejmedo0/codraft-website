@@ -217,6 +217,82 @@
   }
 }
 
+/* Option 12, the schedule (review #101): a service's bar draws from its
+   grid line, then its grip or arrow snaps in; the milestone has no bar and
+   snaps in at once. plan-schedule.ts sets --mark-at and --mark-for. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-plan] [data-axis-item]:not(.is-drawn) .plan-mark {
+    transform: scaleX(0);
+  }
+
+  .js [data-plan] [data-axis-item]:not(.is-drawn) .plan-mark::after {
+    opacity: 0;
+  }
+
+  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark {
+    animation: motion-draw-x var(--mark-for, 360ms) var(--ease-pen)
+      var(--mark-at, 0ms) backwards;
+  }
+
+  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark::after {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      calc(var(--mark-at, 0ms) + var(--mark-for, 360ms)) backwards;
+  }
+
+  [data-plan] [data-axis-item].is-drawn:not(.is-instant) .plan-mark--milestone {
+    animation: none;
+  }
+
+  [data-plan]
+    [data-axis-item].is-drawn:not(.is-instant)
+    .plan-mark--milestone::after {
+    animation-delay: var(--mark-at, 0ms);
+  }
+}
+
+/* Option 13, the circle (review #101): the arc isn't there until cycle.ts
+   draws it; a service's grip snaps in as the arc reaches it, and the arrow
+   when the arc closes. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-cycle] .cycle__arc {
+    stroke-dashoffset: 1;
+  }
+
+  .js [data-cycle] :is(.cycle__tick, .cycle__arrow):not(.is-reached) {
+    opacity: 0;
+  }
+
+  [data-cycle] .cycle__tick.is-reached {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap) backwards;
+  }
+
+  [data-cycle] .cycle__arrow.is-reached {
+    animation: motion-fade-in var(--motion-fast) var(--ease-standard) backwards;
+  }
+}
+
+/* Option 14, the tabs (review #101): the chosen tab's line draws from the
+   left and its grip snaps in; stage-tabs.ts sets `is-drawing` once the
+   section is in view and on every choice. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-tabs] .tabs__tab:not(.is-drawing) .tabs__line {
+    transform: scaleX(0);
+  }
+
+  .js [data-tabs] .tabs__tab:not(.is-drawing) .tabs__line::after {
+    opacity: 0;
+  }
+
+  [data-tabs] .tabs__tab.is-drawing .tabs__line {
+    animation: motion-draw-x var(--motion-snap) var(--ease-pen) backwards;
+  }
+
+  [data-tabs] .tabs__tab.is-drawing .tabs__line::after {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      var(--motion-snap) backwards;
+  }
+}
+
 /* Hidden at the very start, so a square cap never shows as a dot. */
 @keyframes icon-stroke {
   0% {

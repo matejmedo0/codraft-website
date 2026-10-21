@@ -1,0 +1,340 @@
+---
+/**
+ * "Što radimo", option 14 "Kartice" (review #101): one stage at a time. The
+ * three stages stand in a row as tabs, always in view, so the order 01 → 02
+ * → 03 reads at a glance; under them, the chosen stage's tagline and its
+ * services, in one row. The section is about a third as tall as the others.
+ *
+ * - The chosen tab is underlined by a drafting line that ends in a grip, as
+ *   in the wordmark; it draws when the tab is chosen. A tab shows its grips
+ *   on hover and keyboard focus, like every control.
+ * - The panels share one place, so choosing a stage never moves the page
+ *   below; the place is as tall as the tallest.
+ * - A stage's icons draw when it is first shown: stage 01's when the
+ *   section reaches 85 % of the screen's height (stage-tabs.ts).
+ * - Keyboard: the arrow keys move between the tabs and choose them, Home
+ *   and End go to the first and the last (the WAI-ARIA tabs pattern).
+ *
+ * Without JavaScript there are no tabs: the three stages stand one after
+ * another, each with its title. With reduced motion the tabs work as
+ * always, without the line drawing.
+ */
+import "./services.css";
+
+import Grips from "../../components/ui/Grips.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { SERVICES } from "../copy.ts";
+import { CHAPTERS } from "./chapters.ts";
+import ServiceItem from "./ServiceItem.astro";
+
+interface Props {
+  /** The heading's id; the comparison page shows several options. */
+  headingId?: string;
+  /** The option's name, on the comparison page. */
+  label?: string;
+}
+
+const { headingId = "usluge", label } = Astro.props;
+const labelId = `${headingId}-opcija`;
+const stages = CHAPTERS.map((chapter) => ({
+  chapter,
+  tab: `${headingId}-faza-${chapter.number}`,
+  panel: `${headingId}-panel-${chapter.number}`,
+}));
+---
+
+<Zone
+  labelledby={label === undefined ? headingId : `${labelId} ${headingId}`}
+  class="svc"
+>
+  {label !== undefined && (
+    <p class="svc-label t-label" id={labelId}>
+      {label}
+    </p>
+  )}
+  <h2 id={headingId}>{SERVICES.title}</h2>
+  <div class="tabs" data-tabs>
+    <div
+      class="tabs__list"
+      role="tablist"
+      aria-labelledby={headingId}
+      hidden
+      data-tabs-list
+    >
+      {stages.map(({ chapter, tab, panel }, index) => (
+        <button
+          class="tabs__tab has-grips"
+          type="button"
+          role="tab"
+          id={tab}
+          aria-controls={panel}
+          aria-selected={index === 0 ? "true" : "false"}
+          tabindex={index === 0 ? 0 : -1}
+          data-tabs-tab
+        >
+          <span class="svc-bubble tabs__bubble">{chapter.number}</span>
+          <span class="tabs__name">{chapter.title}</span>
+          <span class="tabs__line" aria-hidden="true" />
+          <Grips />
+        </button>
+      ))}
+    </div>
+    <div class="tabs__panels">
+      {stages.map(({ chapter, panel }, index) => (
+        <div
+          class:list={["tabs__panel", { "is-active": index === 0 }]}
+          id={panel}
+          data-tabs-panel
+        >
+          <h3 class="svc-title tabs__title">
+            <span class="svc-bubble">{chapter.number}</span>
+            {chapter.title}
+          </h3>
+          <p class="svc-tagline tabs__tagline">{chapter.tagline}</p>
+          <ul
+            class:list={[
+              "svc-items",
+              "tabs__items",
+              `tabs__items--${String(chapter.items.length)}`,
+            ]}
+          >
+            {chapter.items.map((item) => (
+              <ServiceItem
+                title={item.title}
+                body={item.body}
+                href={item.href}
+                icon={item.icon}
+                class="tabs-item"
+                data-axis-item
+              />
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+  <script>
+    import "./stage-tabs.ts";
+  </script>
+</Zone>
+
+<style>
+  .tabs {
+    --icon: 2.5rem;
+    --line-weight: 0.25rem;
+  }
+
+  /* Without the tabs (no JavaScript): the stages one after another. */
+  .tabs__panel + .tabs__panel {
+    margin-top: var(--space-8);
+  }
+
+  .tabs__title {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .tabs__tagline {
+    max-width: 40ch;
+  }
+
+  .tabs__items {
+    gap: var(--space-5) var(--space-6);
+    margin-top: var(--space-5);
+  }
+
+  .tabs-item {
+    display: grid;
+    grid-template-columns: var(--icon) minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-content: start;
+    align-items: start;
+    padding-top: var(--space-4);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .tabs-item :global(.service__icon) {
+    grid-row: 1 / span 2;
+  }
+
+  .tabs-item :global(:is(.service__title, .service__body)) {
+    grid-column: 2;
+  }
+
+  /* The tabs: the three stages in a row, on one rule. */
+  .tabs__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: var(--space-6);
+    border-bottom: var(--rule) solid var(--line);
+  }
+
+  .tabs__list[hidden] {
+    display: none;
+  }
+
+  .tabs__tab {
+    position: relative;
+    display: grid;
+    gap: var(--space-2);
+    justify-items: center;
+    padding: var(--space-3) var(--space-2) var(--space-4);
+    border: 0;
+    background: none;
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: var(--step-body);
+    font-weight: var(--weight-strong);
+    line-height: var(--leading-title);
+    text-align: center;
+    cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .tabs__tab[aria-selected="true"] {
+    color: var(--ink);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tabs__tab:hover {
+      color: var(--ink);
+    }
+  }
+
+  .tabs__tab:focus-visible {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: calc(var(--focus-offset) * -1);
+  }
+
+  .tabs__bubble {
+    color: var(--ink);
+  }
+
+  /* The chosen tab's drafting line, on the rule, ending in a grip. */
+  .tabs__line {
+    position: absolute;
+    right: calc(var(--grip-size) + var(--space-2));
+    bottom: calc(var(--line-weight) / -2 - var(--rule) / 2);
+    left: 0;
+    height: var(--line-weight);
+    background: var(--accent);
+    transform-origin: 0 50%;
+    visibility: hidden;
+  }
+
+  .tabs__line::after {
+    position: absolute;
+    top: calc(50% - var(--grip-size) / 2 - 2px);
+    left: 100%;
+    width: calc(var(--grip-size) + 4px);
+    height: calc(var(--grip-size) + 4px);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+    content: "";
+  }
+
+  .tabs__tab[aria-selected="true"] .tabs__line {
+    visibility: visible;
+  }
+
+  /* With the tabs: only the chosen stage shows, and the stage's title is
+     in its tab. On narrow screens the section is as tall as the chosen
+     stage; from 64rem, where every stage is one row, the panels share one
+     place, as tall as the tallest, so a choice never moves the page. */
+  .tabs.is-tabbed .tabs__panel {
+    margin: 0;
+  }
+
+  .tabs.is-tabbed .tabs__panel:not(.is-active) {
+    display: none;
+  }
+
+  .tabs.is-tabbed .tabs__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .tabs__panel:focus-visible {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  @media (min-width: 48rem) {
+    .tabs__tab {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+      justify-content: flex-start;
+      padding: var(--space-4) var(--space-4) var(--space-5) 0;
+      font-size: var(--step-title);
+      text-align: left;
+    }
+
+    .tabs__items {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .tabs__items > :global(*) {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .tabs {
+      --icon: 3rem;
+      --line-weight: 0.375rem;
+      --step-title: clamp(1.25rem, 1.1rem + 0.45vw, 1.625rem);
+      --step-service: var(--step-lead);
+    }
+
+    .tabs__tab {
+      font-size: var(--step-chapter);
+      font-weight: var(--weight-chapter);
+      letter-spacing: -0.018em;
+    }
+
+    .tabs__list {
+      margin-bottom: var(--space-7);
+    }
+
+    .tabs-item {
+      display: block;
+    }
+
+    .tabs-item :global(.service-icon) {
+      width: var(--icon);
+      height: var(--icon);
+      margin-bottom: var(--space-4);
+      stroke-width: 1.5;
+    }
+
+    .tabs.is-tabbed .tabs__panels {
+      display: grid;
+    }
+
+    .tabs.is-tabbed .tabs__panel {
+      grid-area: 1 / 1;
+    }
+
+    .tabs.is-tabbed .tabs__panel:not(.is-active) {
+      display: block;
+      visibility: hidden;
+    }
+
+    /* A stage's services share the row: 2, 4 or 3 to a row. */
+    .tabs__items--3 > :global(*) {
+      grid-column: span 4;
+    }
+
+    .tabs__items--4 > :global(*) {
+      grid-column: span 3;
+    }
+  }
+</style>

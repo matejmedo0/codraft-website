@@ -1,7 +1,8 @@
 ---
 // "Što radimo" in new layouts, for the client to compare (the critique of
-// 2026-10-21, finding 7; review #79, #90 and the trees of #94 in
-// docs/phases/2-design-review.md). Each option is the section as on Home,
+// 2026-10-21, finding 7; review #79, #90, and #100–101 in
+// docs/phases/2-design-review.md: the three options the client kept and
+// three new kinds of layout). Each option is the section as on Home,
 // with the same copy, icons and motion; the current one comes first for
 // comparison, and the chosen one goes into /lab/pocetna. Noindex; only in
 // `astro dev` and lab builds (astro.config.ts).
@@ -14,6 +15,9 @@ import { t } from "../../features/i18n/ui.ts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import LabBar from "../components/LabBar.astro";
 import ServicesAxis from "../home/ServicesAxis.astro";
+import ServicesCycle from "../home/ServicesCycle.astro";
+import ServicesPlan from "../home/ServicesPlan.astro";
+import ServicesTabs from "../home/ServicesTabs.astro";
 
 const locale = "hr";
 const MAIN_ID = "main";
@@ -25,20 +29,6 @@ const OPTIONS = [
     name: "Sada: središnja os",
     summary:
       "Kao na početnoj: crta u sredini, faze centrirane iznad usluga, a usluge lijevo i desno od crte. Naslovi usluga sada su u stilu naslova, a oni koji vode dalje podcrtani su.",
-  },
-  {
-    id: "raspored-1",
-    layout: "left",
-    name: "Opcija 1: os lijevo",
-    summary:
-      "Crta se seli na lijevi rub, kao na mobitelu. Od 1280 px naslov faze stoji uz njezine usluge, a usluge su u dva stupca, poravnate lijevo. Odjeljak je najkraći i najlakše se čita, ali crta više nije u sredini.",
-  },
-  {
-    id: "raspored-2",
-    layout: "alternate",
-    name: "Opcija 2: središnja os, naizmjence",
-    summary:
-      "Crta ostaje u sredini. Naslov faze stoji uz svoj kružić, a usluge na drugoj strani crte, i strane se izmjenjuju od faze do faze. Od 1280 px dvije su usluge u redu, s ikonom iznad naslova. Zadržava ideju središnje crte i puni obje strane.",
   },
   {
     id: "raspored-3",
@@ -55,53 +45,25 @@ const OPTIONS = [
       "Raspored kao sada, ali svaka usluga stoji u tankom okviru, kao ćelija na nacrtu, i okviri ispunjavaju svoju stranu crte. Slova su krupnija: naslov usluge oko 24 px, opis oko 21 px (na 1440 px). Kad prijeđete mišem preko usluge, gripovi sjednu točno na kutove okvira.",
   },
   {
-    id: "raspored-5",
-    layout: "branches",
-    name: "Opcija 5: središnja os s granama",
+    id: "raspored-12",
+    layout: "plan",
+    name: "Opcija 12: terminski plan",
     summary:
-      "Usluge su odmaknute od crte, a iz glavne crte prema svakoj usluzi raste plava grana koja završava gripom, kao crta u vašem logotipu. Grana izraste kad crta stigne do usluge, a zatim se iscrta ikona. Crta sada ide kroz sve usluge do kraja zadnje faze. Slova su krupnija, kao u opciji 4.",
+      "Faze kao terminski plan (gantogram), kakav se radi za gradilište. Sav tekst je u jednom stupcu lijevo, lako čitljiv, a desno je plan: svaka faza počinje na svojoj osi s kružićem, a osi se stepenasto spuštaju udesno. Svaka usluga ima svoju crtu u stupcu svoje faze, s gripom na kraju, kao u logotipu. Fiksni opseg, rok i cijena nisu crta nego točka (miljokaz) na početku izrade, jer ih znate prije početka rada. Crte faze 03 idu do ruba i završavaju strelicom, jer održavanje ne prestaje. Bez datuma: plan pokazuje redoslijed, ne obećava tjedne.",
   },
   {
-    id: "raspored-6",
-    layout: "framed",
-    name: "Opcija 6: okviri i grane",
+    id: "raspored-13",
+    layout: "cycle",
+    name: "Opcija 13: krug",
     summary:
-      "Opcije 4 i 5 zajedno: usluge u okvirima, odmaknute od crte, a grane iz glavne crte dolaze do okvira i završavaju gripom na njegovu rubu. Najpopunjenija verzija središnje osi.",
+      "Faze kao krug, jer posao ne završava objavom: što naučimo dok održavamo stranicu, ulazi u sljedeći plan. Krug je nacrtan kao na nacrtu, sa središnjicama, a to je zatvoreni luk slova „c“ iz vašeg logotipa. Kružići faza stoje na krugu, a svaka usluga ima svoj grip između kružića svoje faze i sljedeće. Na širokom ekranu krug stoji uz tekst dok čitate (stranica se skrola normalno), a plavi luk prati čitanje: kad stigne do usluge, skoči njezin grip i iscrta se ikona. Nakon zadnje usluge luk se zatvori strelicom u 01. Na mobitelu je krug iznad faza i iscrta se jednom.",
   },
   {
-    id: "raspored-7",
-    layout: "tree",
-    name: "Opcija 7: stablo",
+    id: "raspored-14",
+    layout: "tabs",
+    name: "Opcija 14: kartice",
     summary:
-      "Prema vašem crtežu: grananje i strelice. Faze stoje na crti, a usluge lijevo i desno od nje, svaka na svom razmaku, desna iz para malo niže. Iz crte prema svakoj usluzi izraste zakrivljena grana i završi strelicom. Ispod faze 03 crta završava strelicom u njezinu treću uslugu.",
-  },
-  {
-    id: "raspored-8",
-    layout: "leaders",
-    name: "Opcija 8: stablo s tehničkim strelicama",
-    summary:
-      "Isto stablo, ali grane su kao pokazne crte na tehničkom crtežu: kosa crta pa vodoravna, s punom strelicom. Tehničkija verzija opcije 7.",
-  },
-  {
-    id: "raspored-9",
-    layout: "ground",
-    name: "Opcija 9: stablo s podlogom",
-    summary:
-      "Opcija 7 na nepravilnoj krošnji, šrafiranoj kao presjek na nacrtu, slabog intenziteta. Krošnja je šira gdje se faza grana, a uža iza naslova faze, i ne miče se.",
-  },
-  {
-    id: "raspored-10",
-    layout: "outline",
-    name: "Opcija 10: stablo s obrisom krošnje",
-    summary:
-      "Krošnja je nacrtana kao označen objekt u CAD-u: isprekidan obris s gripom na svakom kutu, kao kvadratić u vašem logotipu, a unutra samo blaga plava nijansa. Najlakša podloga: tekst stoji na gotovo čistom papiru.",
-  },
-  {
-    id: "raspored-11",
-    layout: "grid",
-    name: "Opcija 11: stablo na mreži",
-    summary:
-      "Krošnja je tehnička mreža, kao milimetarski papir: tanka crta svakih 16 px, jača svakih 80 px, a jedna crta mreže pada točno na glavnu crtu. Obris ide samo vodoravno, okomito i pod 45°, kao nacrtan trokutom.",
+      "Jedna faza odjednom. Tri faze stoje u redu kao kartice i uvijek se vide, pa se redoslijed 01 → 02 → 03 čita odmah; ispod je odabrana faza, njezin podnaslov i usluge u jednom redu. Odabranu karticu podcrta crta s gripom na kraju, kao u logotipu, i iscrta se kad je odaberete; ikone faze iscrtaju se kad je prvi put otvorite. Odjeljak je oko tri puta niži od ostalih. Radi i tipkovnicom (strelice). Usluge faza 02 i 03 vide se tek kad otvorite njihovu karticu.",
   },
 ] as const;
 ---
@@ -119,33 +81,17 @@ const OPTIONS = [
         <h1 id="opcije">Što radimo: nove opcije rasporeda</h1>
         <p class="options__lead">
           Nakon kritike dizajna (21. 10. 2026.) tražili ste nekoliko opcija za
-          „Što radimo“: odjeljak sa središnjom crtom djeluje prazno i sitno,
-          iako je ideja crte dobra. Sve opcije imaju isti tekst i iste ikone, u
-          novim opcijama na 48 px, njihovoj prirodnoj veličini. Prva je sadašnja
-          verzija s početne, za usporedbu.
+          „Što radimo“. Od dosadašnjih ostaju tri koje ste odabrali: sadašnja
+          središnja os s početne, opcija 3 „Tri stupca“ i opcija 4 „Središnja os
+          s okvirima“. Sve opcije imaju isti tekst i iste ikone.
         </p>
         <p class="options__lead">
-          Animacija je ista kao dosad: crta raste dok skrolate, a ikona se
-          iscrta kad crta stigne do nje (u opciji 3 crta ide vodoravno). Na
-          mobitelu je crta u svim opcijama na lijevom rubu, kao sada. Razlike se
-          najbolje vide na širokom ekranu, od 1280 px naviše.
-        </p>
-        <p class="options__lead">
-          Opcije 4, 5 i 6 (21. 10. 2026.) zadržavaju središnju os, prema vašim
-          idejama: okviri oko usluga, veći razmak od crte, grane iz glavne crte
-          koje se granaju dok skrolate, i krupnija slova.
-        </p>
-        <p class="options__lead">
-          Opcije 7, 8 i 9 (21. 10. 2026.) prerađuju opciju 5 u stablo, prema
-          vašem crtežu: grane sa strelicama, usluge na različitim razmacima od
-          crte, desna iz para malo niže. Pokret je kao dosad: crta raste dok
-          skrolate, a kad stigne do usluge, izraste njezina grana, skoči
-          strelica i iscrta se ikona, jedno za drugim.
-        </p>
-        <p class="options__lead">
-          Opcije 9, 10 i 11 razrađuju podlogu opcije 9, kako ste tražili: svaka
-          je nepravilna krošnja u tehničkom stilu, slabog intenziteta, šira gdje
-          se faza grana. Sivih okvira više nema nigdje.
+          Opcije 12, 13 i 14 (21. 10. 2026.) su nove i svaka prikazuje tri faze
+          na drukčiji način nego dosad: kao terminski plan, kao krug i kao
+          kartice. Sve su napravljene od istih dijelova kao ostatak stranice:
+          kružići faza, plava crta s gripom kao u logotipu i ikone koje se
+          iscrtaju. Razlike se najbolje vide na širokom ekranu, od 1024 px
+          naviše; na mobitelu je svaka prilagođena uskom ekranu.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (
@@ -156,14 +102,22 @@ const OPTIONS = [
           ))}
         </ol>
       </Zone>
-      {OPTIONS.map(({ id, name, layout }) => (
-        <ServicesAxis
-          headingId={id}
-          label={name}
-          icons="beside"
-          layout={layout}
-        />
-      ))}
+      {OPTIONS.map(({ id, name, layout }) =>
+        layout === "plan" ? (
+          <ServicesPlan headingId={id} label={name} />
+        ) : layout === "cycle" ? (
+          <ServicesCycle headingId={id} label={name} />
+        ) : layout === "tabs" ? (
+          <ServicesTabs headingId={id} label={name} />
+        ) : (
+          <ServicesAxis
+            headingId={id}
+            label={name}
+            icons="beside"
+            layout={layout}
+          />
+        ),
+      )}
     </main>
     <Footer locale={locale} />
   </Sheet>

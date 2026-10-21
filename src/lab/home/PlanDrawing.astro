@@ -463,6 +463,17 @@ const titles =
     vector-effect: non-scaling-stroke;
   }
 
+  /* Two line weights, as in a drafted axonometric (critique 15): the
+     building's mass, its outer walls and its roof, at 1.5 px; the details
+     (the rooms, windows, glass and roofing) stay at 1 px. */
+  .plan__drawing
+    :is(
+      .plan__model .model-side--outer:not(.model--glass),
+      .plan__roof polygon
+    ) {
+    stroke-width: 1.5px;
+  }
+
   .plan__drawing .plan__model .model-side--x {
     fill: var(--model-shade);
   }
@@ -647,13 +658,17 @@ const titles =
   }
 
   /* The timelapse. Before it starts every step and lamp is off; each step
-     wipes in along its own direction, or fades in. */
+     wipes in along its own direction, or fades in. A wiping step is also
+     hidden until its own start, so the clip's open edge never leaves a
+     hairline on the sheet (critique 11). */
   .plan.is-pending [data-wipe="x"] {
     clip-path: inset(-3px 100% -3px -3px);
+    opacity: 0;
   }
 
   .plan.is-pending [data-wipe="y"] {
     clip-path: inset(-3px -3px 100% -3px);
+    opacity: 0;
   }
 
   .plan.is-pending [data-wipe="fade"] {
@@ -684,22 +699,34 @@ const titles =
   }
 
   @keyframes plan-wipe-x {
-    from {
+    0% {
       clip-path: inset(-3px 100% -3px -3px);
+      opacity: 0;
     }
 
-    to {
+    1% {
+      opacity: 1;
+    }
+
+    100% {
       clip-path: inset(-3px);
+      opacity: 1;
     }
   }
 
   @keyframes plan-wipe-y {
-    from {
+    0% {
       clip-path: inset(-3px -3px 100% -3px);
+      opacity: 0;
     }
 
-    to {
+    1% {
+      opacity: 1;
+    }
+
+    100% {
       clip-path: inset(-3px);
+      opacity: 1;
     }
   }
 

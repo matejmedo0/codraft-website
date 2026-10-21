@@ -73,11 +73,13 @@ const Heading = level;
     color: var(--ink);
   }
 
+  /* Balanced, so a short line never ends on one word (critique 8). */
   .service__body {
     max-width: var(--measure);
     margin-top: var(--space-2);
     font-size: var(--step-service);
     line-height: 1.5;
+    text-wrap: balance;
   }
 
   /* The outline goes around the whole item, not just the title. */

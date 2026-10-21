@@ -1,7 +1,7 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
 > **Status (2026-10-21, end of the fifth refinements session): the review is done.** Every step of the [Handover](#handover-2026-10-21) is done: the rest of the critique and its re-check, the Figma sync, and the final checks with the report. PR #2's description has the „Review refinements“ section. Five sessions brought 39 batches (refinements 1–132); the fifth (2026-10-21) brought batches 31–39 (refinements 105–132).
-> - **Next:** the client's word. On „idemo dalje“: merge PR #2 into `main` with a merge commit, create `phase/3-pages` from `main`, start phase 3 ([3-pages.md](3-pages.md)), as the [phase gate](../../.claude/rules/codraft-workflow.md) says.
+> - **Next:** the client's word, which the prompt for the new session carries (#134). On „idemo dalje“: merge PR #2 into `main` with a merge commit, create `phase/3-pages` from `main`, start phase 3 at [3-pages.md, Start here](3-pages.md#start-here-2026-10-21), as the [phase gate](../../.claude/rules/codraft-workflow.md) says.
 > - **The rules of this review** stay for any late refinement: record it under [Refinements](#refinements) first; change only what the client asks for; make the change in code, check it, then bring the Figma library in line.
 
 ## Handover (2026-10-21)
@@ -809,6 +809,16 @@ No message from the client: these are steps 2 and 3 of the order of #106, after 
 |---|---|---|---|---|---|
 | 132 | "Usklađivanje Figme s kodom (dorada 68)" (#106) | The library "Codraft sustav dizajna" brought in line with the code at `2e7610d`: the variables, two text styles, the header, the title block, Stavka, the nine icons, Usluga, Oznaka faze, the example page and the cover; details under [The Figma library](#the-figma-library). Checked with screenshots of the example page and each new component. | Figma file `pWypJUUuwNZv9iTSDVFBV0` | None | Done |
 | 133 | "Završne provjere i izvještaj (dorada 69), pa PR #2 i čekanje na moje „idemo dalje“" (#106) | The lab build under the CSP, every lab page at 375, 768 and 1440 px: axe clean, no console errors, no overflow, every part drawn after a slow scroll, keyboard and menu, reduced motion and no JavaScript. On the comparison pages with several plans the first run counted one zone selection still pending 4 s after the scroll: it waits for the steady plan above it (#127) and draws by 8 s; the check now waits 10 s where a page has a steady part, and all pages pass. `npm run verify` (161 unit tests, 1.7 KB of JavaScript per page), `npm run test:e2e` (51; the dev server stopped for it and restarted). Report screenshots from the lab build: `final-pocetna-375.png`, `-768`, `-1440`, `-1920`. The phase log, `PROGRESS.md` and PR #2's „Review refinements“ section. | `docs/`, PR #2 | None | Done; the client's word next |
+
+**Batch 40 (2026-10-21): the handover to phase 3**
+
+The client's message, verbatim:
+
+> Dobro , sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 134 | "sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)" | The documentation tidied for a fresh session: [3-pages.md](3-pages.md#start-here-2026-10-21) gets a „Start here“ section (the phase gate, Home first, what exists where, the working notes that still apply), `PROGRESS.md` points to it, and this brief's status says the review is closed. The prompt for the new session went to the client. PR #2 is not merged in this session: the prompt carries the client's „idemo dalje“, so the new session merges it (merge commit), creates `phase/3-pages` from `main` and starts phase 3, as the phase gate says. | `docs/phases/3-pages.md`, `PROGRESS.md`, this brief | None | Done |
 
 ## After the refinements
 

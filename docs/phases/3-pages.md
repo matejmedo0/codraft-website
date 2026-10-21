@@ -1,7 +1,58 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** Not started
-- **Branch:** `phase/3-pages`
+- **Status:** Not started. Phase 2 and its review are done (PR #2); the next session starts at [Start here](#start-here-2026-10-21).
+- **Branch:** `phase/3-pages`, created from `main` once PR #2 is merged.
+
+## Start here (2026-10-21)
+
+The handover from phase 2. Phase 2 ended with the client's review refinements, the design critique and its re-check, the Figma sync and the final checks ([2-design-review.md](2-design-review.md), batches 1–40). The client asked for this handover with: „sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)“ (#134).
+
+**1. The phase gate, first** ([codraft-workflow.md](../../.claude/rules/codraft-workflow.md#phase-gate), step 7). The prompt that opens the session carries the client's „idemo dalje“. Then:
+1. Check that `phase/2-design` is clean and pushed, and that CI on PR #2 is green (last: `64437d7`, green).
+2. Merge PR #2 into `main` with a merge commit (`gh pr merge 2 --merge`), then `git checkout main && git pull`.
+3. Create `phase/3-pages` from `main` and push it.
+4. Update the docs:
+   - `PROGRESS.md`: current phase 3; phase 2 ticked
+   - [2-design.md](2-design.md): status done and approved
+   - this document: status in progress, a log entry
+5. Open a draft PR for phase 3 early, so CI checks every push (as in phase 2).
+
+If the prompt doesn't say „idemo dalje“ (or similar), ask before merging.
+
+**2. The first page: Početna.** The approved design is the lab page `/lab/pocetna`; the production Home, `src/views/HomeView.astro`, is still a placeholder (the H1 only). Site code never imports from `src/lab/` (CLAUDE.md, Architecture), so phase 3 ports Home out of the lab:
+- **Where the design lives:**
+  - the zones: `src/lab/home/` — `HomeHero`, `ServicesAxis` with `ServiceItem`, `axis-line.ts`, `chapters.ts`, `services.css`; `HomeAudit`; `drafting/DraftingLegend` with `PlanDrawing`, `plan-*.ts`; `HomePrinciples`, `HomeTeam`, `HomeClosing`
+  - the icons: `src/lab/home/icons/`
+  - the copy: `src/lab/copy.ts`
+  - the page: `src/lab/pages/pocetna.astro`
+  - the design-system parts it uses are already in production (`src/components/ui/`, `src/components/site/`)
+- **Where it goes:** the view in `src/views/`, its parts beside it or in `src/components/` as [architecture.md](../architecture.md) describes; UI strings in `src/locales/{hr,en}.json` through `content.md` first.
+- **What changes on the way:**
+  - the copy moves from `copy.ts` to the locales, with the English (#70)
+  - values off the token scale map to tokens (critique 19)
+  - the two local type sizes are decided (#59)
+  - JSON-LD and metadata (SEO specifics below)
+  - the page's argument comes first (step 1 below)
+- **What doesn't change:** the client's decisions of the review (the hero as in `screenshots/phase-2/review/hero-reference-client.png`; the central axis; the drafting zone, option C; the house in palette 1; the motion rules in [motion.md](../motion.md)), and ADR 0015–0028.
+- **The lab after the port:** `/lab/pocetna` and the comparison pages stay the record. Removing lab code needs the client's OK.
+
+**3. The client's inputs.** Ask for each only when its page needs it ([PROGRESS.md](../../PROGRESS.md), „Trebamo od vas“, items A–G): Home needs the team (C: names, roles, photos) and shows the company data (A) in the title block. Until they arrive, the placeholders stay as in the lab.
+
+**4. How the review worked, kept for phase 3** (the client's habits):
+- Record each of the client's messages verbatim in this document's log before changing anything.
+- Change only what the client asks; offer wider changes as options.
+- A question such as „kako da… / ili da…?“ asks for a proposal; wait for an explicit OK.
+- The client reviews live on the dev server (port 4321), with Windows "Animation effects" on.
+- Commit with `git commit -F` and push after each batch or page.
+
+**5. Working notes that still apply:** [2-design-review.md](2-design-review.md#handover-2026-10-21) („Working notes“) and [Pitfalls from this phase](2-design-review.md#pitfalls-from-this-phase). In short:
+- a component's `<script>` renders in place
+- the CSP blocks inline styles, so per-element values go in through the CSSOM
+- Playwright scripts live in `.playwright-mcp/`; run them with `MSYS_NO_PATHCONV=1` in Git Bash
+- the lab build checks run on port 4322
+- E2E needs port 4321 free
+- a new lab page needs `astro.config.ts` touched
+- the floor plan keeps its own pace (`data-draw-steady`), so a slow-scroll check waits about 10 s where it is on the page
 
 ## Goal
 
@@ -116,4 +167,4 @@ The client moved these items from the phase 2 review to this phase (review batch
 
 ## Log
 
-_Not started._
+_Not started. The handover from phase 2 is under [Start here](#start-here-2026-10-21)._

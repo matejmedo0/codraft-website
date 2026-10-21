@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova, s doradama** (19.–21. 10. 2026.) na grani `phase/2-design`. Čeka vaše „idemo dalje“ na vratima faze. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak:** vaše „idemo dalje“. Tada spajam PR #2 u `main` (merge commit), otvaram granu `phase/3-pages` i počinje faza 3 (izrada stranica). Dorade su gotove: u pet sesija poslali ste 38 skupina (dorade 1–131), a uz njih su napravljeni kritika dizajna i njezina ponovna provjera, usklađivanje Figme (dorada 132) te završne provjere i izvještaj (dorada 133). Sve je zapisano u `docs/phases/2-design-review.md`, a PR #2 ima odjeljak „Review refinements“:
+**Sljedeći korak:** nova sesija za fazu 3 (vaša riječ, 21. 10. 2026., dorada 134). Prompt za nju vam je predan. S vašim „idemo dalje“ iz prompta spajam PR #2 u `main` (merge commit), otvaram granu `phase/3-pages` i počinjem s početnom stranicom. Plan i sve što nova sesija treba su u `docs/phases/3-pages.md`, odjeljak „Start here“. Dorade faze 2 su gotove: 39 skupina (dorade 1–133), kritika dizajna i njezina ponovna provjera, usklađivanje Figme te završne provjere i izvještaj; sve je zapisano u `docs/phases/2-design-review.md`, a PR #2 ima odjeljak „Review refinements“:
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu

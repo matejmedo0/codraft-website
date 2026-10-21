@@ -144,8 +144,10 @@ const pending = t(locale, "footer.pending");
 
   /* The mark keeps its clear space, at least the height of its "c" (about
      21 px at this width) on every side (Assets/codraft-brand/README.md).
-     The other cells have the same 24 px at their sides, so the mark and
-     their text share one edge (the critique's re-check, R1). */
+     Below 64rem, where the mark has a row of its own, the other cells have
+     the same 24 px at their sides, so the mark and the text below it share
+     one edge (the critique's re-check, R1); wider, they keep 16 px, so the
+     values fit on one line in the narrower cells (review #131). */
   .title-block__cell--mark {
     --wordmark-width: 8.5rem;
 
@@ -193,6 +195,10 @@ const pending = t(locale, "footer.pending");
   }
 
   @media (min-width: 64rem) {
+    .title-block__cell:not(.title-block__cell--mark) {
+      padding-inline: var(--space-4);
+    }
+
     .title-block__cell--mark {
       flex: 1.6 1 14rem;
     }

@@ -785,6 +785,16 @@ The client's answer to the re-check's options ([research note](../research/2026-
 | 129 | As above (DC-07, partial) | Accepted: a three-word step in a narrow column keeps one word on its first line ("Dobivate / potvrdu termina."); a copy change, if any, comes with #73. | — | None | Accepted |
 | 130 | As above (the drawn title block where the drawing is narrow) | The readable title block under the drawing (#109) follows the drawing's own width, not the screen's: wherever the drawing is under 37.5rem wide, where its drawn letters would be under about 11 px (phones, and the two-column layout from 900 to about 1300 px), and the drawn one is off there. The sheet is a container (`plan-sheet`); the comparison pages follow the same rule. Checked on the four lab pages with the plan at 375–1920: the HTML block at 375, 960, 1024 and 1280 on Home, the drawn one at 768 (about 10 px letters, as before), 1440 and 1920; no overflow. | `PlanDrawing.astro` | None | Done; in review |
 
+**Batch 38 (2026-10-21): the title block's padding, corrected**
+
+Checking #125 at every width showed that with 24 px at the cells' sides the placeholder "Stiže prije objave" takes two lines in the narrow cells at 1024 (one cell), 1440, 1707 and 1920 px (all five), and the block grows by 30 px; with 16 px it fits on one line everywhere. The recommendation for R1 had said the text still fits; that held only on phones. The client was asked: "Podnožje (R1): uz 24 px razmaka u svim ćelijama zamjenski tekst „Stiže prije objave“ na 1440–1920 px prelazi u dva reda. Kako da riješimo?" The client's answer, verbatim:
+
+> 24 px samo do 1024 px
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 131 | "24 px samo do 1024 px" | Below 64rem, where the mark has a row of its own, every cell keeps 24 px at its sides, so the mark and the text below it share one edge (#125). From 64rem the cells other than the mark's are back to 16 px: the values fit on one line, and the mark sits 8 px in from the text below it ("Jezik"), as before #125. Checked at 375–1920: no value wraps and the block's height is as before #125 (184 px at 1440, 108 at 1920); the mark on the text's edge at 375 and 768 (33/32 and 49/48 px). | `Footer.astro` | Replaces #125 from 64rem | Done; in review |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

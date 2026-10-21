@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 2 — Dizajn, **gotova; dorade su u završnici** (19.–21. 10. 2026.) na grani `phase/2-design`. Do vrata faze ostala su još tri koraka. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak:** vaš pregled točaka 16, 17 i 18 iz skupine A (dorade 109–111; za 18 odlučujete zadržavamo li gripove u zaglavlju). Zatim pitanja B i prijedlozi C, ponovna provjera kritičara, usklađivanje Figme te završne provjere i izvještaj (vaš redoslijed, 21. 10. 2026.). Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108). U pet sesija dorada poslali ste 32 skupine (dorade 1–111), a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md`, a nova sesija počinje od odjeljka „Handover (2026-10-21)“:
+**Sljedeći korak:** ponovna provjera kritičara nakon popravaka (ADR 0025), zatim usklađivanje Figme te završne provjere i izvještaj (vaš redoslijed, 21. 10. 2026.). Skupine A i B kritike su riješene (dorade 109–122), a skupina C ide u fazu 3 (dorada 123). Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108). U pet sesija dorada poslali ste 36 skupina (dorade 1–124), a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md`, a nova sesija počinje od odjeljka „Handover (2026-10-21)“:
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
@@ -38,7 +38,9 @@
       - ✓ Napravljena 21. 10. 2026.: sva četiri kritičara daju „spremno nakon popravaka“. 22 provjerena nalaza i pitanja su u `docs/research/2026-10-21-design-critique-home.md`.
       - Popravke radimo cjelinu po cjelinu (skupine 24 i 25). Odobreni su 1 (logotip u podnožju), 2 (podcrtani linkovi), 4 (animacije čekaju jedna drugu) i 7 (jedan stil naslova). Gotovi su i čekaju vaš pregled: 8, 9, 10, 11 i 15.
       - „Što radimo“: odabrali ste središnju os kakva je bila, s korak krupnijim slovima usluga od 1024 px naviše (skupina 30); takva je na `/lab/pocetna`. Ostale opcije obrisane su iz koda uz vaše odobrenje (ostaju u povijesti gita), a opcija 14 „Kartice“ čuva se u arhivi (`src/lab/archive/`, prikazana na `/lab/sto-radimo-2`).
-      - „Što radimo“ je odabran. U petoj sesiji napravljeni su 16 (čitljivo zaglavlje crteža na mobitelu), 17 (izbornik se otvara s kratkim prijelazom od 200 ms) i 18 (gripovi na poveznicama u zaglavlju, kao proba); čekaju vaš pregled. Zatim pitanja B i prijedlozi C (vaša riječ, 21. 10. 2026., dorada 92).
+      - U petoj sesiji (21. 10. 2026.) skupina A je završena: 16 (čitljivo zaglavlje crteža na mobitelu), 17 (izbornik se otvara s prijelazom od 200 ms) i 18 (gripovi na poveznicama u zaglavlju), sve odobreno.
+      - Skupina B, na vašu riječ: 3 (slojevi kao uzorci crta, a ne kvačice), 5 (na mobitelu ikona uz naslov, opis ispod nje; ADR 0028), 12 (uz smanjeno kretanje gumb „Prikaži tlocrt / Prikaži 3D model“), 13 („Tehničko crtanje“ na mreži od 12 stupaca). Hero (20) i prijelom na 900 px (21) ostaju kakvi jesu.
+      - Skupina C (6, 14, 19, 22) ide u fazu 3 (dorada 123). Slijedi ponovna provjera kritičara.
    2. **Usklađivanje Figme** s kodom: sve dorade iz pregleda i odobreni popravci iz kritike.
    3. **Završne provjere i izvještaj:** provjere na lab buildu, `npm run verify` i E2E, snimke, odjeljak o doradama u PR-u #2, zeleni CI. Zatim stajem i čekam vaše „idemo dalje“ za merge i fazu 3.
 3. **Prebačeno u fazu 3, na vašu riječ (dorade 59 i 70–74):**

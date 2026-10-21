@@ -759,6 +759,17 @@ The client's message, verbatim:
 | 121 | "5. Idemo s B" | Below 48rem each service's icon sits beside its title only, centred on it, and the service's line runs under both at the full width of the column (265 px at 375, 209 before), as in the preview of #116. From 48rem nothing changes. The title is centred on its icon too. Checked at 375 with motion on: all 9 icons drawn, the title centred on its icon; axe clean, no console errors. Screenshot: `batch35-sto-radimo-375.png`. | `ServicesAxis.astro`; ADR 0022's status | [ADR 0028](../decisions/0028-service-icons-on-phones-beside-the-title.md) supersedes ADR 0022 point 1 on phones | Done; in review |
 | 122 | "20. Neka bude A onda , kasnije lako izmjenimo" | No change: the hero stays as in the client's reference. Option B (the grips, with or without the frame) stays in the previews of #119, for later. | — | The client's choice | Decided |
 
+**Batch 36 (2026-10-21): group C to phase 3**
+
+The client's message, verbatim:
+
+> Skupina C - neka onda budu za fazu 3. Ostaje li nam još što u ovoj fazi ?
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 123 | "Skupina C - neka onda budu za fazu 3" | Critique 6 (the hero at 1024, decided with #74, both versions side by side), 14 (the team strip, decided with the real photos, A by default), 19 (values off the token scale, mapped to tokens as the zones leave the lab) and 22 (the copy observations, with the client's proofreading, #73, and the audit's scope, G4 and G19) move to phase 3. | [3-pages.md](3-pages.md#carried-over-from-phase-2) | None | Moved to phase 3 |
+| 124 | "Ostaje li nam još što u ovoj fazi ?" | Answered: the critic's re-check of the fixes (ADR 0025, the order of #106), then the Figma sync (#68), then the final checks, the report and PR #2 (#69), and the wait for "idemo dalje". The re-check starts now, in that order. | [Handover](#handover-2026-10-21) | None | Answered |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

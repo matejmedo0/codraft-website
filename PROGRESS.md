@@ -38,7 +38,7 @@
       - ✓ Napravljena 21. 10. 2026.: sva četiri kritičara daju „spremno nakon popravaka“. 22 provjerena nalaza i pitanja su u `docs/research/2026-10-21-design-critique-home.md`.
       - Popravke radimo cjelinu po cjelinu (skupine 24 i 25). Odobreni su 1 (logotip u podnožju), 2 (podcrtani linkovi), 4 (animacije čekaju jedna drugu) i 7 (jedan stil naslova). Gotovi su i čekaju vaš pregled: 8, 9, 10, 11 i 15.
       - Za „Što radimo“ na `/lab/sto-radimo-2` je šest opcija; 4–6 zadržavaju središnju os (okviri, grane, oboje). Ako nijedna ne odgovara, ide opcija 3 „Tri stupca“.
-      - Slijede 16, 17 i 18 (gripovi u navigaciji isprobavamo tada), zatim pitanja B i prijedlozi C.
+      - Nakon što odaberete „Što radimo“, u novoj sesiji slijede 16, 17 i 18 iz skupine A (tada isprobavamo i gripove u navigaciji), zatim pitanja B i prijedlozi C (vaša riječ, 21. 10. 2026., dorada 92).
    2. **Usklađivanje Figme** s kodom: sve dorade iz pregleda i odobreni popravci iz kritike.
    3. **Završne provjere i izvještaj:** provjere na lab buildu, `npm run verify` i E2E, snimke, odjeljak o doradama u PR-u #2, zeleni CI. Zatim stajem i čekam vaše „idemo dalje“ za merge i fazu 3.
 3. **Prebačeno u fazu 3, na vašu riječ (dorade 59 i 70–74):**

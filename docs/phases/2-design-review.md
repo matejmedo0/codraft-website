@@ -1,13 +1,16 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
-> **Status (2026-10-21, end of the third refinements session): the refinements are done; three steps are left before the phase gate. The next session starts at [Handover](#handover-2026-10-21).** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third (2026-10-20 to 21) batches 19–23 (refinements 57–74), all reviewed on `/lab/pocetna`. The client has no further refinements for now (#67).
-> - **Next:** the three steps under [Handover](#handover-2026-10-21), in order: the design critique, the Figma sync, the final checks and the report.
+> **Status (2026-10-21, end of the fourth refinements session): the critique has run and "Što radimo" is settled; the rest of the critique's fixes, the Figma sync and the final checks are left before the phase gate. The next session starts at [Handover](#handover-2026-10-21), step 1.** Phase 2 is done and in review (PR #2). The first refinements session (2026-10-19) brought batches 1–7 (refinements 1–20), the second (2026-10-19 to 20) batches 8–18 (refinements 21–56), the third (2026-10-20 to 21) batches 19–23 (refinements 57–74), and the fourth (2026-10-21) batches 24–30 (refinements 75–104): the critique's first fixes, and "Što radimo" through fourteen layouts back to the central axis with larger type (#102). All are reviewed on `/lab/pocetna`.
+> - **First, in the next session:** ask the client whether the older comparison `/lab/sto-radimo` (batch 3's three options: `ServicesChapters.astro`, `ServicesSchedule.astro`, `process-line.ts`) should be deleted too. Batch 30's last question was about it, and the client's answer ("Može sredi dokumentaciju…") didn't say clearly; a deletion needs a clear OK. Keep it until then.
+> - **Next:** the three steps under [Handover](#handover-2026-10-21), in order: the rest of the critique (group A 16–18, then B and C, then the critic's re-check), the Figma sync, the final checks and the report.
 > - **The rules of this review:** record each refinement under [Refinements](#refinements) before changing anything; change only what the client asks for (see the lesson in batch 7); make the change in code, check it, then bring the Figma library in line.
 > - **Stop** after reporting. Merging PR #2 and starting phase 3 happen only on the client's word ("idemo dalje"), as the [phase gate](../../.claude/rules/codraft-workflow.md) says. In this review "idemo dalje" has also meant "the next batch"; ask if it is unclear.
 
 ## Handover (2026-10-21)
 
 The client ended the third refinements session with: "Odlično ažuriraj dokumentaciju da u novoj sesij svježoj krenemo na design critica da pokreneš, i sve ostalo što ostaje do kraja faze 2." and answered the rest in batch 23 (below): no more refinements, the Figma sync after the critique, the final checks after Figma, and English and four other items moved to phase 3. Earlier handovers are in git history (`64854d2`, `9f6edf1`).
+
+The fourth session (2026-10-21, batches 24–30) ran the critique and settled "Što radimo". The client ended it with: "Može sredi dokumentaciju i vidimo se u sljedećoj sesiji daj mi prompt za nastavak". The code of the session ends at `8b5e81d`; CI was green on every push.
 
 **Where things are**
 - **Branch:** `phase/2-design`, pushed; the last code commit of the session is `7c0c26d`, and CI was green on every push of the session.
@@ -17,7 +20,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
   - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
 - **Code of the refinements:** `src/lab/home/`:
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
-  - "Što radimo": `ServicesAxis.astro` (the chosen option), `ServiceItem.astro`, `chapters.ts`, `services.css`, and `axis-line.ts`, which drives the line and the icons
+  - "Što radimo": `ServicesAxis.astro` (the chosen central axis, the only layout left, with the services' type a step larger from 64rem, #102), `ServiceItem.astro`, `chapters.ts`, `services.css`, and `axis-line.ts`, which drives the line and the icons. The tabs (option 14) are in `src/lab/archive/` (`ServicesTabs.astro`, `stage-tabs.ts`), shown on `/lab/sto-radimo-2` with the chosen axis (#104); every other layout is in git history (`c5ffc0c`).
   - the icons: `icons/service-icons.ts` (transcribed from `Assets/codraft-icons/svg/`), `icons/ServiceIcon.astro`, `icons/icon-draw.ts`
   - the floor plan: `PlanDrawing.astro` with `plan-timelapse.ts`; its 3D view, roof and palettes from `plan-model.ts` and `plan-projection.ts` (#58, #63–66), with `plan-model.test.ts`
   - "Tehničko crtanje": `drafting/DraftingLegend.astro` (the chosen option; the roof and palette 1 are its defaults)
@@ -37,7 +40,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 
 **The steps to the end of phase 2, in this order** (the client's order, batch 23)
 
-1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). **Run on 2026-10-21:** capture `2026-10-21-0037` at `a28938e`, four critics, all "Ready after fixes"; 22 verified findings and questions in [research/2026-10-21-design-critique-home.md](../research/2026-10-21-design-critique-home.md), put to the client as options. The client answered group A in batch 24 and asked for the fixes one group at a time: 1, 2, 4 and 7 (batch 24), then 8–11 and 15 (batch 25), all done; for "Što radimo" the client kept the central axis, with the services' type a step larger (#102); the tabs (option 14) are in the archive (#104). **The rest moves to a new session, once "Što radimo" is settled (#92):** 16, 17 and 18 of group A (the grips on the header's links tried with 18, #91), then group B and group C (#83), then the critic's re-check. The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
+1. **The independent critique** ([ADR 0024](../decisions/0024-independent-design-critique.md)). **Run on 2026-10-21:** capture `2026-10-21-0037` at `a28938e`, four critics, all "Ready after fixes"; 22 verified findings and questions in [research/2026-10-21-design-critique-home.md](../research/2026-10-21-design-critique-home.md), put to the client as options. The client answered group A in batch 24 and asked for the fixes one group at a time: 1, 2, 4 and 7 (batch 24), then 8–11 and 15 (batch 25), all done; for "Što radimo" the client kept the central axis, with the services' type a step larger (#102); the tabs (option 14) are in the archive (#104). **The rest moves to a new session, once "Što radimo" is settled (#92; settled in #102):** 16, 17 and 18 of group A (the grips on the header's links tried with 18, #91), then group B and group C (#83), then the critic's re-check. The client asked for its first run in this session, which is the client's word for it: „u novoj sesij svježoj krenemo na design critica da pokreneš“. Follow [design-critique.md](../design-critique.md):
    1. Make sure the dev server answers on port 4321 (start `npm run dev` if it doesn't).
    2. Capture Home: `npm run design:capture -- lab/pocetna` (six widths, motion at 1440 px). `/lab/style` only if the client asks.
    3. Launch four `design-critic` agents in one message, one per lens: `art-direction`, `craft`, `communication` and `motion`, each with the capture folder and the page.
@@ -59,7 +62,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
    - The checks on the lab build: `.playwright-mcp/check-lab-r3.mjs` covers every lab page, the comparisons included (`/lab/tlocrt-3d` and `/lab/kuca-boje` since 2026-10-20 to 21); it is local and not in git, so if it is missing, rebuild it from [How to check a change](#how-to-check-a-change). Include the scroll motion of "Što radimo" and the floor plan's 3D view with the motion on.
    - `npm run verify`, and `npm run test:e2e` with port 4321 free (CI runs E2E on every push as well).
    - Report screenshots from the lab build.
-   - The phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description: batches 1–23, ADR 0017–0027, the screenshots.
+   - The phase log, `PROGRESS.md`, and a "Review refinements" section in PR #2's description: batches 1–30, ADR 0017–0027, the two critiques, the screenshots.
    - Green CI, then the report in Croatian, and stop. On "idemo dalje": merge PR #2 with a merge commit, create `phase/3-pages` from `main`, start phase 3.
 
 **Moved to phase 3** (the client's word, batch 23): the English copy (#70), the Kowalski proposals (#71), the browser bar's colour (#72), the client's proofreading of every text at the end of phase 3 (#73), the hero's line count on 1440 px laptops (#74), and the two local type sizes (#59). They are listed in [3-pages.md](3-pages.md#carried-over-from-phase-2).
@@ -73,7 +76,8 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 - **The sheet at 1920 px** keeps its margin since #57; the overflow of #23 is gone, so a check at 1920 px must find none.
 - **The floor plan's 3D view** (#58): the plan's walls, windows and doors live in `plan-model.ts`, which builds the model's faces at build time; the view is in `plan-projection.ts`, shared with `plan-timelapse.ts`, which gives the CSS the two views (`--plan-from`, `--plan-to`) and each top's rise. Each side is a unit rectangle in its own frame (an SVG `transform` attribute), so CSS `scale` raises it from the floor: SVG's default transform origin is the frame's origin. Inline `style` attributes are blocked by the CSP, so per-element values go in through the CSSOM. `plan-model.test.ts` checks that the model fits above the title block.
 - **A new component imported before its file exists** leaves the dev server failing to load the page (`FailedToLoadModuleSSR`) even after the file is written; touch the importing file to reload it.
-- **A child added to `.axis`** must not be a `div`: the stages are found by `:first-of-type` and `nth-of-type()` among the `div`s, so the tree's crown is a `span` or an `svg`.
+- **A child added to `.axis`** must not be a `div`: the stages are found by `:first-of-type` and `nth-of-type()` among the `div`s, so any decoration there is a `span` or an `svg`.
+- **Four critics on one capture** worked well for layout options (batch 29): one capture, four `design-critic` agents in one message, then verify, fix what is clearly the options' own fault, and put the rest to the client as questions. Each critic takes about ten minutes.
 - **A curved border turned over with `scale: -1 1`** leaves a faint 1 px seam on the far side in Chromium; draw the mirror image instead.
 - **A new lab page** needs `astro.config.ts` to reload after the page's file exists: the lab integration injects its routes when the dev server starts. Touch the config (`touch astro.config.ts`) and the dev server reloads it without a restart.
 - **The draw queue** (`draw.ts`, #78) counts every animation of a part, its pseudo-elements' included, plus the siblings marked `data-draw-with`; a part's CSS needs nothing else to take part.
@@ -85,7 +89,7 @@ The client ended the third refinements session with: "Odlično ažuriraj dokumen
 
 ## Where things stand
 
-- **The branch:** `phase/2-design`, pushed. PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is open; its description is the phase report, and gets a "Review refinements" section at the end of the review. CI was green on every push up to `7c0c26d`.
+- **The branch:** `phase/2-design`, pushed. PR #2 (https://github.com/matejmedo0/codraft-website/pull/2) is open; its description is the phase report, and gets a "Review refinements" section at the end of the review. CI was green on every push up to `d8e4f70`.
 - **The decisions:** [ADR 0015](../decisions/0015-design-direction-model-i-list.md) (direction D with a paper header and hero, navy only as the closing call to action, the motion, Archivo, a 2 px radius, the lab keeps A–E) and [ADR 0016](../decisions/0016-figma-for-design-iterations.md) (Figma for quick iterations; code is the source of truth), then the review's ADR 0017–0027.
 - **What was built before the review:** see the [phase log](2-design.md#log) and [2-design-system.md](2-design-system.md).
 

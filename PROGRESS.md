@@ -1,14 +1,14 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, **gotova; dorade su završene** (19.–21. 10. 2026.) na grani `phase/2-design`. Do vrata faze ostala su još tri koraka. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
+**Trenutna faza:** 2 — Dizajn, **gotova; dorade su u završnici** (19.–21. 10. 2026.) na grani `phase/2-design`. Do vrata faze ostala su još tri koraka. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
 
-**Sljedeći korak: u novoj sesiji neovisna kritika dizajna (`design-critic`), zatim usklađivanje Figme, pa završne provjere i izvještaj** (vaš redoslijed, 21. 10. 2026.). U tri sesije dorada poslali ste 23 skupine (dorade 1–74), a ja sam ih napravio na `/lab/pocetna`. Daljnjih dorada zasad nemate (dorada 67). Sve je zapisano u `docs/phases/2-design-review.md`, a nova sesija počinje od odjeljka „Handover (2026-10-21)“:
+**Sljedeći korak, u novoj sesiji:** najprije potvrdite smijem li obrisati i stariju usporedbu `/lab/sto-radimo` (prve tri opcije iz skupine 3). Zatim slijede ostatak kritike (16, 17 i 18 iz skupine A, pa B i C, pa ponovna provjera kritičara), usklađivanje Figme te završne provjere i izvještaj (vaš redoslijed, 21. 10. 2026.). U četiri sesije dorada poslali ste 30 skupina (dorade 1–104), a ja sam ih napravio na `/lab/pocetna`. Sve je zapisano u `docs/phases/2-design-review.md`, a nova sesija počinje od odjeljka „Handover (2026-10-21)“:
 1. **Gotovo:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
    - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019), kao opcija C s vašim rasporedom i tekstom
    - naslov u dva reda na širokim ekranima; hero točno kao na vašoj snimci
-   - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023)
+   - „Što radimo“ sa središnjom osi, jednim kratkim retkom po usluzi i vašim ikonama (opcija B); plava crta glatko prati ekran, a ikone se iscrtavaju kad crta stigne do njih (ADR 0022, 0023). Nakon usporedbe četrnaest rasporeda zadržali ste os, s korak krupnijim slovima usluga (dorada 102); kartice su u arhivi (dorada 104)
    - tlocrt koji se iscrtava kao timelapse, a zatim se podiže u 3D model: zakrene se i nagne u aksonometriju, a zidovi se podignu (dorada 58). Odabrali ste kraj s krovom: na zidove se spusti dvostrešni krov, a crtež postaje kuća, sa svijetlom fasadom i tamnoplavim krovom (dorade 63–66)
    - okvir lista zadržava rub od 24 px i na 1920 px, pa se stranica više ne pomiče ustranu (dorada 57)
    - bez gumba „Pošaljite skicu“ na početnoj: upiti i skice idu kroz kontakt formu i e-mail (dorada 61, ADR 0020)
@@ -54,7 +54,7 @@
 Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 
 **Što pregledati:**
-- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d` i `/lab/kuca-boje`.
+- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d` i `/lab/kuca-boje`; „Što radimo“ nakon usporedbe, s karticama iz arhive: `/lab/sto-radimo-2`.
 - **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja).
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0

@@ -1,7 +1,7 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** Not started. Phase 2 and its review are done (PR #2); the next session starts at [Start here](#start-here-2026-10-21).
-- **Branch:** `phase/3-pages`, created from `main` once PR #2 is merged.
+- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: step 1, the page's argument and its missing copy, put to the client; the build waits for the client's OK (M1).
+- **Branch:** `phase/3-pages`, created from `main` after the merge of PR #2. Draft PR #3 is the phase report.
 
 ## Start here (2026-10-21)
 
@@ -167,4 +167,25 @@ The client moved these items from the phase 2 review to this phase (review batch
 
 ## Log
 
-_Not started. The handover from phase 2 is under [Start here](#start-here-2026-10-21)._
+Each of the client's messages is recorded here verbatim before anything changes. They are numbered M1, M2, …, so they don't clash with the phase 2 refinements (#1–134), which this document still cites.
+
+- **2026-10-22, first session of phase 3**
+  - **M1**, the prompt that opens the session, verbatim:
+
+    > Idemo dalje: počinjemo fazu 3 (Izrada stranica), na hrvatskom. Faza 2 je gotova na grani phase/2-design (zadnji commit 509c1e7, pushano, CI zelen), a PR #2 čeka merge.
+    >
+    > Prvo pročitaj PROGRESS.md i docs/phases/3-pages.md od odjeljka „Start here (2026-10-21)“.
+    >
+    > Redoslijed rada:
+    > 0. Vrata faze: ovo je moje „idemo dalje“. Spoji PR #2 u main (merge commit), napravi granu phase/3-pages iz maina i pushaj je, ažuriraj PROGRESS.md, 2-design.md i 3-pages.md te otvori draft PR za fazu 3.
+    > 1. Prva stranica je Početna: prenesi odobreni dizajn s /lab/pocetna (src/lab/home/) u pravu stranicu (src/views/), na oba jezika, prema koracima za svaku stranicu u 3-pages.md. Najprije mi pokaži argument stranice (tvrdnja i dokaz po zoni) i tekstove koji nedostaju, a gradi tek nakon mog OK-a.
+    > 2. Podatke od mene (tim, podaci o tvrtki, kontakt…) traži tek kad ih stranica treba.
+    >
+    > Pravila:
+    > - Svaku moju poruku najprije doslovno zapiši u dnevnik u docs/phases/3-pages.md.
+    > - Mijenjaj samo ono što tražim; šire promjene mi ponudi kao opcije.
+    > - Na pitanja tipa „kako da… / ili da…?“ predloži rješenje i čekaj moj izričiti OK.
+    > - Odluke iz faze 2 (ADR 0015–0028 i dorade u 2-design-review.md) ostaju; dizajn početne ne mijenjaj bez mene.
+    > - Dev server je na portu 4321; ako ne odgovara, pokreni npm run dev u pozadini.
+    > - Commitaj s git commit -F, a nakon svake skupine pushaj.
+  - **The phase gate** (M1, step 0): CI on PR #2 was green for its last commit, `509c1e7`. PR #2 was merged into `main` with a merge commit (`1f36f82`), and `phase/3-pages` was created from `main` and pushed. `PROGRESS.md`, [2-design.md](2-design.md) and this document are updated, and draft PR #3 is open, so CI checks every push.

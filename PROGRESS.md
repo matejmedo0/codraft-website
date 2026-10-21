@@ -1,9 +1,53 @@
 # Codraft — napredak
 
-**Trenutna faza:** 2 — Dizajn, **gotova, s doradama** (19.–21. 10. 2026.) na grani `phase/2-design`. Čeka vaše „idemo dalje“ na vratima faze. Izvještaj faze je PR #2: https://github.com/matejmedo0/codraft-website/pull/2. Faza 1 (Arhitektura) je gotova i odobrena, a 19. 10. 2026. spojena je u `main` (PR #1).
+**Trenutna faza:** 3 — Izrada stranica, od 22. 10. 2026., na grani `phase/3-pages`. Izvještaj faze je draft PR #3: https://github.com/matejmedo0/codraft-website/pull/3. Faza 2 (Dizajn) je gotova i odobrena: na vaše „idemo dalje“ 22. 10. 2026. spojena je u `main` (PR #2, merge commit).
 
-**Sljedeći korak:** nova sesija za fazu 3 (vaša riječ, 21. 10. 2026., dorada 134). Prompt za nju vam je predan. S vašim „idemo dalje“ iz prompta spajam PR #2 u `main` (merge commit), otvaram granu `phase/3-pages` i počinjem s početnom stranicom. Plan i sve što nova sesija treba su u `docs/phases/3-pages.md`, odjeljak „Start here“. Dorade faze 2 su gotove: 39 skupina (dorade 1–133), kritika dizajna i njezina ponovna provjera, usklađivanje Figme te završne provjere i izvještaj; sve je zapisano u `docs/phases/2-design-review.md`, a PR #2 ima odjeljak „Review refinements“:
-1. **Gotovo:**
+**Sljedeći korak:** Početna, korak 1. Dobivate argument stranice (tvrdnja i dokaz po zoni) i tekstove koji nedostaju, a izrada kreće tek s vašim OK-om. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
+
+Redoslijed stranica u fazi 3, svaka na hrvatskom i engleskom:
+1. Početna ← sada
+2. Usluge
+3. Tehničko crtanje
+4. O nama
+5. Besplatna analiza (statični dijelovi; forma dolazi u fazi 4)
+6. Kontakt (statični dijelovi; forma dolazi u fazi 4)
+7. Privatnost
+8. Kolačići
+9. Impresum
+10. Izjava o pristupačnosti
+11. 404
+
+Podatke od vas (tim, podaci o tvrtki, kontakt…) tražim tek kad ih stranica treba (vaša riječ, 22. 10. 2026.).
+
+**Prebačeno iz faze 2, na vašu riječ (dorade 59, 70–74 i 123):**
+- engleski tekst, stranicu po stranicu, dok se svaka radi na oba jezika
+- prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
+- boja trake preglednika na mobitelu (`theme-color`), tamnoplava ili papirnata, isprobana na pravom Android mobitelu (dorada 51; Taste Skill ide u prilog papirnatoj, dorada 55)
+- naslov u heroju na laptopima od 1440 px (sada tri reda), kad sve stranice budu gotove
+- dvije lokalne veličine slova na početnoj
+- skupina C prve kritike dizajna: hero na 1024 px (6), traka tima (14), vrijednosti izvan skale tokena (19) i tekst (22)
+- vaše čitanje i ispravljanje svih tekstova, na kraju faze 3, za sve stranice zajedno
+
+Sve je zapisano u `docs/phases/3-pages.md` (odjeljak „Carried over from phase 2“).
+
+**Što pregledati:**
+- **Odobreni dizajn početne:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Prava početna nastaje na http://localhost:4321/ i http://localhost:4321/en. Usporedbe iz faze 2 ostaju kao zapis: `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje` i `/lab/sto-radimo-2`.
+- **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
+- **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
+- **Animacije:** vidljive su samo kad su Windowsovi „Animacijski efekti“ uključeni (Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti). Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
+
+**Gdje je što:**
+- Pravila rada i ovlasti: `.claude/rules/codraft-workflow.md`
+- Pokretanje projekta i naredbe: `README.md`
+- Neovisna kritika dizajna: `docs/design-critique.md`
+- Plan po fazama: `docs/phases/`
+- Indeks dokumentacije: `docs/README.md`
+- Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
+
+## Faza 2: rezultat (19.–22. 10. 2026.)
+
+Izvještaj faze je PR #2, s odjeljkom „Review refinements“; spojen je u `main` 22. 10. 2026. Dorade su trajale pet sesija: 40 skupina (dorade 1–134), kritika dizajna i njezina ponovna provjera, usklađivanje Figme te završne provjere i izvještaj. Sve je zapisano u `docs/phases/2-design-review.md`.
+1. **Dorade:**
    - poziv na besplatnu analizu samo jednom na stranici, bez gumba u zaglavlju (ADR 0017)
    - bez „mali“ i bez „žargon“ u tekstu
    - „Tehničko crtanje“ samo za arhitekturu i građevinarstvo, s 3D modelima (ADR 0018, 0019), kao opcija C s vašim rasporedom i tekstom
@@ -33,7 +77,7 @@
      - u fazi 3 svaka stranica počinje svojim argumentom: tvrdnja i provjerljiv dokaz po zoni
 
      Kod stranice se ne mijenja.
-2. **Do kraja faze 2, ovim redoslijedom (dorade 68–69):**
+2. **Kraj faze 2, ovim redoslijedom (dorade 68–69):**
    1. **Neovisna kritika dizajna:** agent `design-critic` (ADR 0024, `docs/design-critique.md`) na početnoj, u novoj sesiji, kako ste rekli. Snimke i mjerenja na šest širina, četiri kritičara paralelno (smjer, izvedba, komunikacija, animacije). Svaki nalaz provjeravam prije nego što vam ga dam. Dobivate ga kao opcije s preporukom i ništa ne mijenjam bez vašeg odobrenja. Nakon odobrenih popravaka kritičar ih ponovno provjerava.
       - ✓ Napravljena 21. 10. 2026.: sva četiri kritičara daju „spremno nakon popravaka“. 22 provjerena nalaza i pitanja su u `docs/research/2026-10-21-design-critique-home.md`.
       - Popravke radimo cjelinu po cjelinu (skupine 24 i 25). Odobreni su 1 (logotip u podnožju), 2 (podcrtani linkovi), 4 (animacije čekaju jedna drugu) i 7 (jedan stil naslova). Gotovi su i čekaju vaš pregled: 8, 9, 10, 11 i 15.
@@ -43,25 +87,10 @@
       - Skupina C (6, 14, 19, 22) ide u fazu 3 (dorada 123).
       - ✓ Ponovna provjera kritičara (21. 10. 2026.): sva četiri daju „spremno“. Po vašoj riječi „Odradi po preporukama“: logotip i tekst podnožja na istoj liniji, animacije nakon skoka redom čitanja, tlocrt uvijek svojom brzinom (oko 8 s do krova), čitljivo zaglavlje crteža gdje god je crtež uzak (dorade 125–130).
    2. ✓ **Usklađivanje Figme** s kodom (21. 10. 2026., dorada 132): siva #4A5362 i boje označenog teksta, zaglavlje bez gumba, podnožje, stavka s podcrtanom poveznicom, devet ikona usluga, komponenta usluge i oznaka faze, a primjer početne složen iznova kao u kodu (os s ikonama, kuća kao vektorski crtež, slojevi kao uzorci crta).
-   3. ✓ **Završne provjere i izvještaj** (21. 10. 2026., dorada 133): provjere na lab buildu na svim stranicama laba, `npm run verify` (161 unit test, 1,7 KB JavaScripta po stranici), E2E (51 test), završne snimke početne (`docs/phases/screenshots/phase-2/review/final-pocetna-*.png`), odjeljak o doradama u PR-u #2, zeleni CI. Čekam vaše „idemo dalje“ za merge i fazu 3.
-3. **Prebačeno u fazu 3, na vašu riječ (dorade 59 i 70–74):**
-   - engleski tekst, stranicu po stranicu, dok se svaka radi na oba jezika
-   - prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
-   - boja trake preglednika na mobitelu (`theme-color`), tamnoplava ili papirnata, isprobana na pravom Android mobitelu (dorada 51; Taste Skill ide u prilog papirnatoj, dorada 55)
-   - naslov u heroju na laptopima od 1440 px (sada tri reda), kad sve stranice budu gotove
-   - dvije lokalne veličine slova na početnoj
-   - vaše čitanje i ispravljanje svih tekstova, na kraju faze 3, za sve stranice zajedno
-   
-   Sve je zapisano u `docs/phases/3-pages.md` (odjeljak „Carried over from phase 2“).
+   3. ✓ **Završne provjere i izvještaj** (21. 10. 2026., dorada 133): provjere na lab buildu na svim stranicama laba, `npm run verify` (161 unit test, 1,7 KB JavaScripta po stranici), E2E (51 test), završne snimke početne (`docs/phases/screenshots/phase-2/review/final-pocetna-*.png`), odjeljak o doradama u PR-u #2, zeleni CI. Na vaše „idemo dalje“ PR #2 je 22. 10. 2026. spojen u `main`.
+3. **Prebačeno u fazu 3, na vašu riječ (dorade 59, 70–74 i 123):** popis je na vrhu ovog dokumenta.
 
-Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
-
-**Što pregledati:**
-- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d` i `/lab/kuca-boje`; „Što radimo“ nakon usporedbe, s karticama iz arhive: `/lab/sto-radimo-2`. Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108).
-- **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
-- **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja).
-- **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
-- **Animacije:** vidljive su samo kad su Windowsovi „Animacijski efekti“ uključeni (Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti). Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.
+**Snimke faze 2:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja te završne snimke početne). Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108).
 
 **Vaše konačne odluke** (19. 10. 2026., `docs/phases/2-design-system.md`, ADR 0015 i 0016):
 - **Smjer:** D „Model i list“ sa svijetlim (papirnatim) zaglavljem i herojem. U heroju je znak na milimetarskom papiru, a tamnoplava ostaje samo u završnom pozivu.
@@ -114,26 +143,10 @@ Redoslijed u fazi 2:
 5. ✓ vaš izbor smjera i ostale konačne odluke (ADR 0015 i 0016)
 6. ✓ tokeni, font, animacija, brand asseti u kodu, osnovne komponente, stranica sa stilovima, Figma knjižnica
 7. ✓ izlazne provjere i PR #2 kao izvještaj faze
-8. vaše dorade prije faze 3 ← sljedeća sesija (`docs/phases/2-design-review.md`)
+8. ✓ vaše dorade, kritika dizajna, usklađivanje Figme i završne provjere (`docs/phases/2-design-review.md`)
+9. ✓ vaše „idemo dalje“ i merge PR-a #2 (22. 10. 2026.)
 
 Prototipovi obiju rundi ostaju na `/lab` kao zapis; snimke su u `docs/phases/screenshots/phase-2/` (runda 1), `.../round-2/` i `.../system/`.
-
-Redoslijed u fazi 1:
-1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
-2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
-3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
-4. ✓ plan scaffolda, odobren 19. 10. 2026. → `docs/plans/2026-10-19-scaffold-plan.md` (provjerene verzije i postavke: `docs/research/2026-10-19-scaffold-toolchain.md`)
-5. ✓ scaffold, CI, hookovi i dozvole, `/init`, provjere i PR → dnevnik u `docs/phases/1-architecture.md`, nalazi u `docs/research/2026-10-19-scaffold-verification.md`
-
-Izlazni kriteriji faze 1 su ispunjeni: build prolazi, dev server radi, prazna stranica prikazuje se na 375, 768 i 1440 px bez grešaka u konzoli, a CI je zelen.
-
-**Gdje je što:**
-- Pravila rada i ovlasti: `.claude/rules/codraft-workflow.md`
-- Pokretanje projekta i naredbe: `README.md`
-- Neovisna kritika dizajna: `docs/design-critique.md`
-- Plan po fazama: `docs/phases/`
-- Indeks dokumentacije: `docs/README.md`
-- Repozitorij: https://github.com/matejmedo0/codraft-website (privatan). Grana `main` je zaštićena, pa svaka promjena ide kroz PR.
 
 ## Faza 1: odluke (donesene 19. 10. 2026.)
 
@@ -173,12 +186,21 @@ Za kasnije, kad ih faza zatraži: uvjeti najma servera i rok čuvanja upita iz f
 - **Na ovom računalu:** Node 24.22.0. Playwright MCP sada ima limit od 10 minuta umjesto 30.
 - **Prijedlog za vas:** CI kao obavezna provjera u pravilu „Protect main“, tako da se PR ne može spojiti dok CI nije zelen. To je administracija repozitorija, pa treba vaše odobrenje.
 
+Redoslijed u fazi 1:
+1. ✓ istraživanje hostinga i servisa → `docs/research/2026-10-19-hosting.md`
+2. ✓ postupak `/architecture` i 3 opcije s troškovima → `docs/phases/1-architecture-options.md`
+3. ✓ vaš izbor: opcija 1 i servisi (ADR 0008–0013)
+4. ✓ plan scaffolda, odobren 19. 10. 2026. → `docs/plans/2026-10-19-scaffold-plan.md` (provjerene verzije i postavke: `docs/research/2026-10-19-scaffold-toolchain.md`)
+5. ✓ scaffold, CI, hookovi i dozvole, `/init`, provjere i PR → dnevnik u `docs/phases/1-architecture.md`, nalazi u `docs/research/2026-10-19-scaffold-verification.md`
+
+Izlazni kriteriji faze 1 su ispunjeni: build prolazi, dev server radi, prazna stranica prikazuje se na 375, 768 i 1440 px bez grešaka u konzoli, a CI je zelen.
+
 ## Faze
 
 - [x] 0 — Temelji: git i GitHub, tekst stranice, sitemap, asseti, odluke, dokumentacija → `docs/phases/0-foundation.md`
 - [x] 1 — Arhitektura (gotova i odobrena 19. 10. 2026., PR #1): istraživanje, stack, hosting, scaffold, CI, hookovi i dozvole → `docs/phases/1-architecture.md`
-- [ ] 2 — Dizajn (gotova 19. 10. 2026.; dorade, kritika, Figma i završne provjere gotove 21. 10.; PR #2 čeka vaše „idemo dalje“): smjer (ADR 0015), tokeni, font, animacija, komponente, stranica sa stilovima, Figma knjižnica → `docs/phases/2-design.md`
-- [ ] 3 — Izrada stranica: stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
+- [x] 2 — Dizajn (gotova i odobrena 22. 10. 2026., PR #2; dorade, kritika, Figma i završne provjere 19.–21. 10.): smjer (ADR 0015), tokeni, font, animacija, komponente, stranica sa stilovima, Figma knjižnica → `docs/phases/2-design.md`
+- [ ] 3 — Izrada stranica (u tijeku od 22. 10. 2026., draft PR #3): stranica po stranica, HR i EN, uz `/check` nakon svake → `docs/phases/3-pages.md`
 - [ ] 4 — Integracije: forme, booking, kolačići i analitika, AI asistent → `docs/phases/4-integrations.md`
 - [ ] 5 — Kvaliteta: E2E i unit testovi, pristupačnost, performanse → `docs/phases/5-quality.md`
 - [ ] 6 — Audit prije objave → `docs/phases/6-audit.md`

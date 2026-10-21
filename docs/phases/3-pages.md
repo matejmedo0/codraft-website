@@ -236,4 +236,5 @@ Each of the client's messages is recorded here verbatim before anything changes.
       4. Printing before scrolling leaves out the process line, the icons and the plan's steps; a print rule would show the final state.
     - **LOW**, noted for the coming pages: the stages' anchors in `services.ts` are for `/usluge`; the view registry's type widens with the second view; the JSON-LD keeps one `@id` for both languages on purpose.
     - Screenshots from the build, final states: [screenshots/phase-3/](screenshots/phase-3/) (`pocetna-{hr,en}-{375,768,1440}.png`).
+    - **E2E:** CI's first run failed before any test: Playwright's loader can't import the locale JSON through `t()` without an import attribute, so the smoke test reads the strings with `fs` (`18986e3`). All 51 E2E tests pass on the build locally (on port 4322, so the dev server on 4321 kept running) and in CI.
   - **Open for the client** (put to the client with the page): the two local type sizes (#59); the MEDIUM findings above. The English footer's placeholder "Arrives before launch" takes two lines in the title block's narrow cells; it goes away with the company data.

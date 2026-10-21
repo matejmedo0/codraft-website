@@ -36,8 +36,9 @@
 2. **Do kraja faze 2, ovim redoslijedom (dorade 68–69):**
    1. **Neovisna kritika dizajna:** agent `design-critic` (ADR 0024, `docs/design-critique.md`) na početnoj, u novoj sesiji, kako ste rekli. Snimke i mjerenja na šest širina, četiri kritičara paralelno (smjer, izvedba, komunikacija, animacije). Svaki nalaz provjeravam prije nego što vam ga dam. Dobivate ga kao opcije s preporukom i ništa ne mijenjam bez vašeg odobrenja. Nakon odobrenih popravaka kritičar ih ponovno provjerava.
       - ✓ Napravljena 21. 10. 2026.: sva četiri kritičara daju „spremno nakon popravaka“. 22 provjerena nalaza i pitanja su u `docs/research/2026-10-21-design-critique-home.md`.
-      - Popravke radimo cjelinu po cjelinu (skupina 24). Gotovi su i čekaju vaš pregled: 1 (logotip u podnožju), 2 (podcrtani linkovi), 4 (animacije čekaju jedna drugu) i 7 (jedan stil naslova). Za „Što radimo“ tri su nove opcije na `/lab/sto-radimo-2`.
-      - Slijede 8–11 i 15–18 iz skupine A, zatim pitanja B i prijedlozi C.
+      - Popravke radimo cjelinu po cjelinu (skupine 24 i 25). Odobreni su 1 (logotip u podnožju), 2 (podcrtani linkovi), 4 (animacije čekaju jedna drugu) i 7 (jedan stil naslova). Gotovi su i čekaju vaš pregled: 8, 9, 10, 11 i 15.
+      - Za „Što radimo“ na `/lab/sto-radimo-2` je šest opcija; 4–6 zadržavaju središnju os (okviri, grane, oboje). Ako nijedna ne odgovara, ide opcija 3 „Tri stupca“.
+      - Slijede 16, 17 i 18 (gripovi u navigaciji isprobavamo tada), zatim pitanja B i prijedlozi C.
    2. **Usklađivanje Figme** s kodom: sve dorade iz pregleda i odobreni popravci iz kritike.
    3. **Završne provjere i izvještaj:** provjere na lab buildu, `npm run verify` i E2E, snimke, odjeljak o doradama u PR-u #2, zeleni CI. Zatim stajem i čekam vaše „idemo dalje“ za merge i fazu 3.
 3. **Prebačeno u fazu 3, na vašu riječ (dorade 59 i 70–74):**

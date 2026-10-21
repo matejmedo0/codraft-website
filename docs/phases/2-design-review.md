@@ -553,6 +553,27 @@ The first critique ([research note](../research/2026-10-21-design-critique-home.
 | 82 | "18. Objasni što su prvo gripovi u zaglavlju" | Explained in the report. | — | None | Answer next |
 | 83 | "B i C točke kasnije razrješavao prvo zapiši B i C koje treba rješiti poslje ovoga" | Open after A, for the client to resolve: **B** 3 (the layer list), 5 ("Što radimo" on phones), 12 (the plan's length), 13 (the second column's grid), 20 (the hero's drawing), 21 (the drafting zone's breakpoint); **C** 6 (the hero at 1024), 14 (the team strip), 19 (values off the token scale), 22 (copy). | [Research note](../research/2026-10-21-design-critique-home.md#verified-findings) | — | Open |
 
+**Batch 25 (2026-10-21): the easy fixes of group A, and more central-axis options**
+
+The client's message, verbatim:
+
+> Dobro idemo ovako zadovoljan sam napravljenim , Što se tiče opcija sekcija Što radimo , nisam uopće siguran vizualno najviše fora izgleda središnja os jer je neobična , ali ja je vizualno ne mogu dobiti da mi sve odgovara i da nema previše praznog prostora i da nije presitna i da je lako čitljiva nisam siguran kako to izvesti. ( Ako imaš ideju možemo još par opcija sa središnjom osi izvesti , možda obrubi oko text boxa , ili odvojenost drugačija šita od crte ili neke strelice da iz glavne crte se granaju kako se skrola kroz svaku fazu čak možda da se popuni taj prostor i povećanje malo fonta ) Smisli par opcija još da vidimo , ali ako ne dobijemo kako želim idemo na preporuku opcija 3.
+>
+> Što se tiče pitanja 18. , probati ćemo i sa gripovima u animaciji kada dođemo do tog dijela.
+>
+> Trenutno rješavamo ovako ono što je trivijalno i lako za rješiti u jednom potezu , 8. , 9. , 10. , 11. i 15. možda , pa nakon toga kada to rješiš idemo na sekciju što radimo s mojom idejom kako sam već rekao.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 84 | "zadovoljan sam napravljenim" | Fixes 1, 2, 4 and 7 (#76–79) approved. | — | None | Approved |
+| 85 | Critique 8 (approved in #80) | The services' lines and the steps' lines are balanced (`text-wrap: balance`), so a short block no longer ends on one word. | `src/lab/home/ServiceItem.astro`, `src/components/ui/Steps.astro` | None | Done; in review |
+| 86 | Critique 9 (approved in #80) | The title block's date stays on one line. | `src/components/site/Footer.astro` | None | Done; in review |
+| 87 | Critique 10 (approved in #80) | "Više o nama" takes the hero link's style: ink, medium weight, underlined. | `src/lab/home/HomeTeam.astro` | None | Done; in review |
+| 88 | Critique 11 (approved in #80) | Every step of the floor plan's timelapse is hidden until its own start, so no hairline shows on the sheet before its element is drawn. Checked in frames of the timelapse with motion on (the axes drawn, the sheet otherwise clean). | `src/lab/home/PlanDrawing.astro` | None | Done; in review |
+| 89 | Critique 15, "možda" (approved in #80) | Two line weights in the 3D house, as in a drafted axonometric: the building's mass (the outer walls and the roof) at 1.5 px, the details (windows, glass, roofing, the rooms) at 1 px. A true silhouette only (a line around the house's outline) needs new geometry or an SVG filter, so it is not a one-step change; offered as a further step. The windows' glass keeps its 1 px accent line. | `src/lab/home/PlanDrawing.astro` | None | Done; in review |
+| 90 | "Ako imaš ideju možemo još par opcija sa središnjom osi izvesti , možda obrubi oko text boxa , ili odvojenost drugačija šita od crte ili neke strelice da iz glavne crte se granaju kako se skrola … i povećanje malo fonta … ako ne dobijemo kako želim idemo na preporuku opcija 3" | Three more options with the central axis on `/lab/sto-radimo-2`, after options 1–3; if none suits the client, option 3 „Tri stupca“. All three have larger type from 64rem (the service's title about 24 px, its line the lead size, about 21 px at 1440) and 48 px icons; phones as now. <br>- **4 „Središnja os s okvirima“:** each service in a thin frame (`--line`), like a cell of a drawing; the cells fill their side of the line and a row's cells share their height; the grips land on the frame's corners on hover. <br>- **5 „Središnja os s granama“:** the services stand a branch's length from the line (`clamp(4rem, 9vw, 11rem)`), and a blue branch grows from the line to each one as the line reaches it, ending in a grip, like the drafting line in the wordmark; then the icon draws. The line runs on through the last stage's services and ends on the last branch. <br>- **6 „Okviri i grane“:** 4 and 5 together; the branch ends in a grip on the frame. <br>Checked with motion on at 1440 px: every icon and branch drawn, the line complete, no console errors; axe clean and no overflow at 375–1920 px. | `ServicesAxis.astro` (`frames`, `branches`, `framed`; the class `axis--central`), `ServiceItem.astro` (`branch`), `axis-line.ts` (the line through the services, `BRANCH_MS`), `services.css`, `src/lab/pages/sto-radimo-2.astro` | The client chooses | Options in review |
+| 91 | "Što se tiče pitanja 18. , probati ćemo i sa gripovima u animaciji kada dođemo do tog dijela." | Critique 18: the grips on the header's links are tried when the rest of group A comes (with 16 and 17). | — | None | Later |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

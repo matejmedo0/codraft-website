@@ -351,6 +351,20 @@ const titles =
         </g>
       </g>
     </svg>
+
+    <div class="plan__title-block" data-layer="zaglavlje" aria-hidden="true">
+      <div class="plan__title-cells t-label" data-wipe="fade">
+        <span class="plan__title-cell plan__title-cell--title">
+          <span class="plan-title">{titles.plan}</span>
+          {model && <span class="plan-title--model">{titles.model}</span>}
+        </span>
+        <span class="plan__title-cell">{titleBlock.units}</span>
+        <span class="plan__title-cell plan__title-cell--strong">
+          {titleBlock.studio}
+        </span>
+        <span class="plan__title-cell">{titleBlock.note}</span>
+      </div>
+    </div>
   </div>
 
   <div class="plan__toolbar">
@@ -601,6 +615,62 @@ const titles =
 
   .plan-cell--strong {
     font-weight: var(--weight-strong);
+  }
+
+  /* On phones the drawn title block shrinks with the drawing to about
+     5 px letters (critique 16), so below 48rem it is set under the drawing
+     at the label size, in the same cells, and the drawn one is off. It is
+     the same layer: the timelapse fades it in with the drawn one. */
+  .plan__title-block {
+    display: none;
+  }
+
+  @media (max-width: 47.99rem) {
+    .plan__drawing [data-layer="zaglavlje"] {
+      display: none;
+    }
+
+    .plan__title-block {
+      display: block;
+      margin-top: var(--space-3);
+    }
+  }
+
+  .plan__title-cells {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: fit-content;
+    margin-left: auto;
+    border: 1px solid var(--drawing-ink);
+    background: var(--drawing-fill);
+    color: var(--drawing-ink);
+    line-height: 1.2;
+  }
+
+  .plan__title-cell {
+    padding: 0.3125rem 0.5rem;
+  }
+
+  .plan__title-cell:nth-child(odd) {
+    border-right: 1px solid var(--drawing-ink);
+  }
+
+  .plan__title-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--drawing-ink);
+  }
+
+  .plan__title-cell--strong,
+  .plan__title-cell--title {
+    font-weight: var(--weight-strong);
+  }
+
+  /* The plan's title and the model's share their cell, as in the drawing. */
+  .plan__title-cell--title {
+    display: grid;
+  }
+
+  .plan__title-cell--title > * {
+    grid-area: 1 / 1;
   }
 
   /* The layer list, like a CAD layer manager: a lamp per layer. */

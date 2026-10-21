@@ -71,25 +71,39 @@ function ms(value: number): string {
   return `${String(Math.round(value))}ms`;
 }
 
+/** Times a layer's steps from its start; returns how long they take. */
+function timeSteps(layer: HTMLElement | SVGElement, start: number): number {
+  const timing = TIMINGS[layer.dataset.layer ?? ""] ?? DEFAULT_TIMING;
+  const steps = [
+    ...layer.querySelectorAll<HTMLElement | SVGElement>("[data-wipe]"),
+  ];
+  for (const [index, step] of steps.entries()) {
+    step.style.setProperty("--at", ms(start + index * timing.stagger));
+    step.style.setProperty("--for", ms(timing.duration));
+  }
+  return Math.max(steps.length - 1, 0) * timing.stagger + timing.duration;
+}
+
 /** Times the plan's layers; returns when the last one is done. */
 function timePlan(plan: HTMLElement): number {
   let at = 0;
-  for (const layer of plan.querySelectorAll<SVGGElement>("[data-layer]")) {
+  // A layer with a second part (the title block set under the drawing on
+  // phones) draws both at once.
+  const starts = new Map<string, number>();
+  for (const layer of plan.querySelectorAll<HTMLElement | SVGGElement>(
+    "[data-layer]",
+  )) {
     const id = layer.dataset.layer ?? "";
-    const timing = TIMINGS[id] ?? DEFAULT_TIMING;
+    const start = starts.get(id);
+    if (start !== undefined) {
+      timeSteps(layer, start);
+      continue;
+    }
+    starts.set(id, at);
     plan
       .querySelector<HTMLElement>(`[data-lamp="${id}"]`)
       ?.style.setProperty("--at", ms(at));
-
-    const steps = [...layer.querySelectorAll<SVGElement>("[data-wipe]")];
-    for (const [index, step] of steps.entries()) {
-      step.style.setProperty("--at", ms(at + index * timing.stagger));
-      step.style.setProperty("--for", ms(timing.duration));
-    }
-    at +=
-      Math.max(steps.length - 1, 0) * timing.stagger +
-      timing.duration +
-      LAYER_GAP_MS;
+    at += timeSteps(layer, at) + LAYER_GAP_MS;
   }
   return at;
 }

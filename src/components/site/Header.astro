@@ -7,13 +7,16 @@
  * marked with `aria-current`.
  *
  * Below 64rem the navigation folds behind the menu button (menu.ts); without
- * JavaScript it stays open.
+ * JavaScript it stays open. Its links take the grips on hover and keyboard
+ * focus, as nav items do in docs/motion.md ("Select"; critique 18, tried in
+ * the client's review).
  */
 import type { Locale } from "../../config/site.ts";
 import { MAIN_NAV } from "../../features/i18n/navigation.ts";
 import type { PageId } from "../../features/i18n/route-map.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
+import Grips from "../ui/Grips.astro";
 import Wordmark from "../ui/Wordmark.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
@@ -57,8 +60,13 @@ function current(target: PageId): "page" | undefined {
     <ul class="site-header__links">
       {MAIN_NAV.map(({ page: target, label }) => (
         <li>
-          <a href={pathFor(target, locale)} aria-current={current(target)}>
+          <a
+            class="has-grips"
+            href={pathFor(target, locale)}
+            aria-current={current(target)}
+          >
             {t(locale, label)}
+            <Grips />
           </a>
         </li>
       ))}
@@ -68,6 +76,7 @@ function current(target: PageId): "page" | undefined {
       page={page}
       display="code"
       class="site-header__language"
+      grips
     />
   </nav>
 </header>
@@ -190,6 +199,13 @@ function current(target: PageId): "page" | undefined {
 
     :global(.js) .site-header__nav:not(.is-open) {
       display: none;
+    }
+
+    /* The menu opens with a short fade of its links, and the page moves
+       down at once (critique 17). A fade of 200 ms stays with reduced
+       motion (motion.md). */
+    :global(.js) .site-header__nav.is-open {
+      animation: motion-fade-in var(--motion-base) var(--ease-standard);
     }
   }
 

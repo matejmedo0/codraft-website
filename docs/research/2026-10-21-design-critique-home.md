@@ -53,7 +53,43 @@ From the four reports: colour on a calibrated screen; Safari, Firefox and real d
 
 ## The client's answers
 
-Recorded in [2-design-review.md](../phases/2-design-review.md) as a batch of refinements, when the client answers.
+Recorded in [2-design-review.md](../phases/2-design-review.md) as refinements: batch 24 (group A), 25 (8–11, 15), 30 ("Što radimo", #102), 32 (16–18), 34 and 35 (group B), 36 (group C to phase 3).
+
+- **Fixed:** 1, 2, 4, 7, 8, 9 (the date), 10, 11, 15, 16, 17, 18; from group B, 3 (option B), 5 (option B, [ADR 0028](../decisions/0028-service-icons-on-phones-beside-the-title.md)), 12 (option C) and 13 (the drafting zone on the 12-column grid).
+- **Kept:** 20 (the hero, option A) and 21 (the 900 px breakpoint).
+- **Moved to phase 3:** 6, 14, 19 and 22 ([3-pages.md](../phases/3-pages.md#carried-over-from-phase-2)); the one-letter words of 9 go to the client's proofreading (#73).
+
+## Re-check (2026-10-21)
+
+The re-check of [ADR 0025](../decisions/0025-browser-details-and-critique-re-check.md), after the fixes above, as [design-critique.md](../design-critique.md) step 7 describes.
+
+- **Capture:** `npm run design:capture -- lab/pocetna` at commit `177976d`, `.playwright-mcp/design-review/2026-10-21-2158/` (ignored by git). At every width: no overflow, axe clean, no console errors.
+- **Critics:** the same four lenses, in parallel. Each brief named this note, the findings the client's approved changes addressed, and the option the client chose where the report gave options, and nothing about how the fixes went.
+- **Verdicts:** all four "Ready", for the scored findings and their regressions only.
+
+**Scores** (the critics' own IDs; the merged number in brackets)
+
+| Lens | Resolved | Partial | Unresolved |
+|---|---|---|---|
+| Art direction | DC-01 (1), DC-02 (2), DC-03 (3), DC-05 (15, within the approval), DC-06 (16), DC-07 (10), Q3 (13), Q4 (4) | Q2 (12): the switch is seen, the plan it shows is not in the capture | — |
+| Craft | DC-01 (1), DC-03 (5), DC-04 (7), DC-05 (10), DC-06 (2), DC-08 (9, the date), DC-10 (13) | DC-07 (8): the audit's three-word steps still split one word from two, now on the first line ("Dobivate / potvrdu termina.") | — |
+| Communication | DC-01 (2), DC-03 (8), DC-04 (9, the date), Q2 (5), Q3 (2) | — | — |
+| Motion | DC-01 (4), DC-02 (3), DC-03 (11), DC-04 (18) | Q1 (12): as art direction's Q2 | DC-05 (17): stills can't show a fade |
+
+The two items the capture can't show were checked by the session with motion: the menu's links fade in over 200 ms (opacity 0.88 at 100 ms, 375 px, review #110), and "Prikaži tlocrt" lays the plan flat with its axes and dimensions ([batch34-drafting-flat-1440.png](../phases/screenshots/phase-2/review/batch34-drafting-flat-1440.png), review #117). Confidence: high.
+
+**Regressions, verified by the session**
+
+| # | Lenses | Regression | Verified | Confidence |
+|---|---|---|---|---|
+| R1 | craft R-01; art (noted) | The footer's mark now sits 8 px right of the text of the cells below it: its cell has 24 px padding for the clear space (#76), the others 16 px at the sides. | `Footer.astro`: `.title-block__cell` `padding: var(--space-3) var(--space-4) 0.875rem`, `.title-block__cell--mark` `padding: var(--space-5)` | High |
+| R2 | motion R-01; art R-02 | After a jump (a fast fling, Page Down, a link), parts that reach their trigger in the same frame start in the order the browser reports them, not in reading order: at the audit zone the steps drew before the zone's selection. | Reproduced: the capture's scroll steps (540 px every ~1.3 s at 1440) with the lab bar removed after load, as the capture does. At 2160 px three parts trigger in one frame; in two runs the order was the drafting zone's selection, then the audit's selection and steps, and the steps, then the drafting selection, then the audit's selection. With the lab bar left in place (other positions) the order was right in four runs. Cause: `request()` in `draw.ts` runs the first part that asks; Chromium doesn't deliver the observers' callbacks in document order. | High |
+| R3 | motion R-02; art R-01 | The floor plan plays at double speed for most visitors: it waits for its zone's selection (it triggers about 150–180 px of scroll after it) and then runs at `HURRY`, so the house lands at about 4.2 s instead of 8.3 s. This follows #78 ("ako korisnik brže skrola brže su i animacije") but not #117 ("the timing stays"). | `draw.ts`: `HURRY = 2`, `next()` runs a waiting part at `HURRY`, `request()` hurries the moving one. The session's own check at 1440 (review #115) had the title block's step at about 3.1 s against 4.5 s at 375. | High |
+| R4 | communication R-01 | `text-wrap: balance` (#85) moved a one-letter word to a line's end: "Brze, prilagođene mobitelu i / usmjerene na upite i narudžbe." at 768–1920 px. Across the six widths such line ends fell from 16 to 14. | The capture's `index.md`, "One-letter word at the end of a line" | High |
+
+**Noted by the critics, not scored:** the drawn title block where the drafting zone is two columns and the drawing narrow (letters about 6 px at 1024, 900–1023 px not captured); DC-05's weights at 1 : 1.5 rather than ISO's 1 : 2, with the roof's outer edge lost against the navy fill.
+
+Put to the client as options; the answers go to [2-design-review.md](../phases/2-design-review.md).
 
 ## Appendix: the four reports
 
@@ -971,3 +1007,265 @@ Second, the layer row under the house looks like a set of checkboxes and does no
 - **Other environments:** Safari, Firefox (`linear()` easings), real devices, touch, and live toggling of Windows "Animation effects".
 - **Page-change view transitions:** only one page exists.
 - **Not this lens:** colour on a calibrated screen and approval of the copy.
+
+## Appendix: the re-check reports
+
+The four re-check reports as the critics gave them. Only their heading levels are lowered to fit this note. Paths in them are relative to the capture folder `2026-10-21-2158` unless they are absolute; absolute paths are shortened to the repository.
+
+### Art direction (re-check)
+
+#### Design re-check: /lab/pocetna (lens: art-direction)
+
+- **Capture:** `.playwright-mcp\design-review\2026-10-21-2158\`, commit 177976d. The screenshot paths below are relative to `…\2026-10-21-2158\lab-pocetna\`. For before-and-after comparison I used the previous capture, `…\2026-10-21-0037\`.
+- **Previous critique:** `docs\research\2026-10-21-design-critique-home.md` (Art direction appendix; "Verified findings" for numbering)
+- **Verdict:** Ready
+
+"Ready" covers only the nine scored items and the two regressions below, not the whole page.
+- **Fixed:** all three Blocking and Major findings (DC-01, DC-02, DC-03) and the Major motion overlap (Q4) are fixed where the capture shows them.
+- **Not visible:** one item (Q2) can't be fully seen in this capture.
+- **Regressions:** both are Minor, both come from the new animation queue, and one of them touches a decision the client made.
+
+##### Scored findings
+
+| Finding | Severity | Now | Evidence |
+|---|---|---|---|
+| DC-01 footer wordmark clear space | Blocking | resolved | `375/`, `768/` and `1440/part-09-footer-title-block.png`: the mark now has clearly more air than the text in the cells next to it. **Code:** the mark cell has `padding: var(--space-5)` = 24 px on every side (`Footer.astro:152`, `tokens.css:124`); the brand rule needs at least the c's height, about 21 px. From 1440 the cell is as tall as its row, so there is more space above and below. **Not scored:** (1) a craft point: the mark now sits 8 px right of the text line in the cells below it (24 px inset against 16 px, `Footer.astro:139`); you can see it at 375 and 768, where the mark has its own row. (2) The header's mark at 375 was not part of this approval and hasn't changed. |
+| DC-02 links that don't look like links (approved: thin underline at rest) | Major | resolved | **"Što radimo":** `375/part-03-sto-radimo.png` and `1440/part-03-sto-radimo.png` show all 7 linked titles underlined. Stage 01's two titles, which are not links, stay plain. **Drafting zone:** the 3 rows are underlined in `part-05` at all six widths. **"Kako radimo":** its titles stay plain (`1440/frame-05.png`), so the underline now separates links from headings. **Code:** `base.css:61-67` gives 1 px at rest with a 0.2em offset and 2 px on hover. `ServiceItem.astro` and the design system's `Item.astro` no longer switch the underline off. |
+| DC-03 layer list looks like checkboxes (approved: option B, status only) | Major | resolved | **Seen** in `part-05` at 375, 768, 1024, 1440 and 1920: each lamp is now a short sample of its layer's line (chain line, solid ink, double line, dimension line with ticks, roof fill, framed cell). There are no boxes, and it reads as a linetype legend. **Off layers:** "Osi" and "Kote" are `#4a5362` (7.12:1); the four layers that are on are `#0f1b2d` (`1440/metrics.json`). **With motion** it reads as status, not as controls (`motion/scroll-05a`: all faint; `05b`: Osi on; `06a`: Zidovi on). |
+| DC-05 house in one line weight (approved: two weights; a true silhouette line was not approved) | Minor | resolved (within what was approved) | **Code:** `PlanDrawing.astro` sets the outer walls and roof polygons to 1.5 px and the details to 1 px. **Seen:** `1920/part-05` against the previous capture's `1920/part-05`. The wall edges are a little heavier and the window frames stay thin. The difference is visible but subtle (medium confidence on how much it reads). **Still there, outside the approval:** the ratio is 1 : 1.5, not ISO's 1 : 2, and the roof's outer edge still disappears against the navy fill. |
+| DC-06 drawing's title block on phones | Minor | resolved | **Seen:** `375/part-05`. Below 48rem the title block is set as HTML inside the drawing's frame, at 13 px and weight 600/500, 15.84:1 ("3D model kuće", "Mjere u cm", "Ilustracija" in `375/metrics.json`). "Ilustracija" can now be read. **Not scored:** from 768 the drawn block returns. In the narrow two-column layout its letters are about 6 px at 1024 (approx., read from `1024/part-05`), and smaller still between 900 and 1023 px (not captured). The finding was about phones only. |
+| DC-07 two link colours (approved: navy underlined style) | Minor | resolved | "Više o nama" is `#0f1b2d`, weight 500, at all six widths (`metrics.json` 375–1920), and underlined (`1440/frame-06`). It now matches the hero's drafting link and the footer's links. |
+| Q2 drafting zone's end (approved: motion Q1 option C) | Minor (question) | partial: the switch can be seen, its result can't | **What can be seen:** "Prikaži tlocrt" appears in the reduced-motion capture at all six widths (`part-05`). The 3D ending and the motion timeline are unchanged in code. **What can't:** this capture has no state with the button pressed, so the flat plan with its axes and dimensions can't be seen. The code does it (`.is-flat` rules in `PlanDrawing.astro`, `initViewSwitch` in `plan-timelapse.ts`). Under the re-check rules a fix I can't see doesn't count; nothing is known to be missing. |
+| Q3 second column's starting lines (approved: craft DC-10 option A) | Minor (question) | resolved | **Measured:** the drafting text starts at 607 / 847 / 1002 / 1127 at 1024 / 1440 / 1707 / 1920 (`legend__lead`). The hero panel starts at about 607 / 847 / 1127 (approx., read from `frame-01` at 1024 / 1440 / 1920). **Code:** both use columns 8 to the end with `--gap` (`HomeHero.astro:101-112`, `DraftingLegend.astro`), so 1707 matches too. **At 1440:** the second column now starts at 847, 816 (axis), 736 (audit, which the client kept) and 515: four lines instead of five. |
+| Q4 overlapping moments (approved: motion DC-01 option A) | Major | resolved (seen at 1440; other widths by code) | Exactly one thing moves in every motion frame:<br>- `motion/scroll-04a`: the step line only.<br>- `04b`: the audit's selection, starting after the steps.<br>- `05a`: the drafting selection only, with the plan's sheet still empty.<br>- `05b`, `06a`, `06b`: the plan only; the "Kako radimo" rule waits, unselected and without its margin letter.<br>- `07a`: Tim's selection.<br>- `08a`: the band's selection.<br>- `08b`: the title block's selection.<br>The queue in `draw.ts` doesn't depend on width. For the order and speed of the queue, see R-01 and R-02. |
+
+##### Regressions
+
+###### R-01 [Minor] Motion: the floor plan nearly always plays at double speed, because it waits for its own zone's selection
+
+- **Where:** "Tehničko crtanje", with motion on, at 1440. The trigger arithmetic suggests the same at other widths; it wasn't captured. Files: `1440/motion/scroll-05a.png`, `scroll-06b.png`, and the previous capture's `1440/motion/scroll-06b.png`.
+- **Seen:**
+  - **05a:** 264 ms after the scroll, the drafting zone's selection has already crossed most of the sheet (to about x 1335 of 1415, approx.).
+  - **06b:** at the same moment after the scroll as in the previous capture, the walls and openings are complete. The old 06b showed the walls only half drawn, even though the plan now starts later (it waits for the selection).
+- **Why it matters:**
+  - **Decision conflict:** the client chose "the 3D house ending and its timing stay" (review #117: "The timing with motion on is unchanged"). The client also approved "ako korisnik brže skrola brže su i animacije" (#78). The second rule overrides the first in ordinary use, not only in a fast scroll.
+  - **Who pays:** the drawing that carries the most content gets its speed set by a decorative selection.
+  - **Pen feel:** a 700 ms selection played in 350 ms across the whole sheet comes close to the "flash" that motion DC-01 warned about (criterion 7, motion as a pen and a CAD action).
+- **Suggestion** (the client's decision, because it touches two of their answers):
+  - **A, keep it:** more visitors see the house land. The plan's sequence runs in about 4.2 s instead of about 8.3 s; motion Q1 option B in effect, without the client's word.
+  - **B:** let the plan opt out of the double speed. A part attribute in `draw.ts`, next to `data-draw-wait` and `data-draw-with`; no new token. It still waits its turn but plays at its full timing.
+  - **C:** don't play the drafting zone's own selection (`select={false}`, an existing prop on `ZoneMark`). This touches ADR 0015's section transitions.
+- **Evidence:**
+  - **Code:** `draw.ts:47` (`HURRY = 2`). `:141-153`: a part that waited runs at `HURRY`. `:186-196`: the part already moving is sped up to `HURRY` when another starts waiting. `PlanDrawing.astro:136` (`data-draw="half"`).
+  - **Triggers at 1440:**
+    - The zone's rule fires at scrollY 2113 (zone top 2743, `metrics.json`, minus the 70 % line at 630).
+    - The plan fires at about 2292, when half of its box of about 736 px is in view (approx., read from `part-05`).
+    - That is about 179 px apart.
+  - **Threshold:** the selection moves for 1020 ms (700 ms draw + 320 ms grip; `ZoneMark.astro:92-105`, `motion.css:15-17`). So any steady scroll faster than about 175 px/s makes the plan wait, and then it plays at double speed.
+  - **Frame 05a:** with `--ease-pen`, the sweep 264 ms after starting would sit at about 47 % at normal speed and about 96 % at double speed. The frame shows about 94 % (approx.).
+- **Confidence:** high for the code and what is seen; medium for how many visitors scroll slowly enough to see the full timing.
+
+###### R-02 [Minor] Motion: at the audit zone, the zone's selection plays after its steps
+
+- **Where:** "Besplatna analiza", with motion on, at 1440. Files: `1440/motion/scroll-04a.png`, `scroll-04b.png`.
+- **Seen:**
+  - **04a:** the step line draws first.
+  - **04b:** the steps are complete, and only then does the full-width blue sweep start on the zone's top rule, from the left frame (about x 24–125, approx.).
+  - The short segment is a start, not the end of a release, because the release is an opacity fade (`motion.css:122-130`).
+- **Why it matters:**
+  - A CAD selection says "this object". Played after the object's contents, it reads as an afterthought.
+  - It also pulls the eye back up to the zone's top edge right after the visitor has read the steps beside the page's only audit button (ADR 0017), the place the motion critique said should be quietest.
+  - Option A as approved said "the step line waits for its zone's selection to land", and the session's own check (#78) saw that order. This capture shows the reverse.
+- **Suggestion:**
+  - Within the queue (`draw.ts`, `next()`/`request()`): when parts of one zone wait together, start the zone's selection first.
+  - Or drop a zone's selection once content in its zone has drawn, as the queue already does for a part that has left the screen. No new tokens.
+- **Evidence:**
+  - `ZoneMark` comes first inside each zone (`Zone.astro:36`). It and the steps are both `data-draw="late"` (`ZoneMark.astro:25`, `Steps.astro:27`).
+  - The rule's trigger is at scrollY 1700 (2330 − 630) and the steps' at about 1853 (step line at about 2483 in the page, read from 04a, approx.). So by position and DOM order the selection should go first; I have not found why it didn't here.
+- **Confidence:** medium. It is seen in this capture; how often it happens depends on how the visitor scrolls (a jump such as Page Down against a smooth wheel).
+
+##### Still open
+
+- **Q2 (partial):** the switch "Prikaži tlocrt" is there at every width, but the state it switches to (the plan with axes and dimensions, the roof and model off, the lamps following) is not in this capture. To close it, capture the drafting zone with the switch pressed under reduced motion, or have someone look at it by hand.
+
+Not scored, for the session to weigh:
+- The drawn title block in the narrow two-column layout (about 6 px letters at 1024, approx.; 900–1023 px not captured).
+- The footer mark sits 8 px right of the cells' text line below it.
+- DC-05's 1 : 1.5 ratio and the roof edge that disappears against the navy fill.
+- Motion was captured only at 1440, so Q4, R-01 and R-02 at other widths rest on the code.
+
+### Craft (re-check)
+
+#### Design re-check: /lab/pocetna (lens: craft)
+
+- **Capture:** `.playwright-mcp\design-review\2026-10-21-2158\`, commit 177976d
+- **Previous critique:** `docs\research\2026-10-21-design-critique-home.md` (the Craft report in the Appendix, with the merged numbers from "Verified findings")
+- **Verdict:** Ready
+
+The Blocking finding and every Major finding are resolved at all six widths. One Minor finding is partial (DC-07), and the fixes caused one Minor regression (R-01). This "Ready" covers only the eight findings scored here and that regression, not the whole page. The out-of-scope items (DC-02, DC-09, DC-11, Q2 to Q4) were not re-judged.
+
+##### Scored findings
+
+| Finding | Severity | Now | Evidence |
+| --- | --- | --- | --- |
+| DC-01 (merged #1): footer wordmark clear space | Blocking | resolved | **Screenshots:** `375/part-09-footer-title-block.png`, `768/part-09-…`, `1024/part-09-…`, `1440/part-09-…`. **Seen:** the mark now has clear space on every side. **Code:** the mark cell has `padding: var(--space-5)`, which is 24 px (`Footer.astro:152`). Before, it was 12 / 16 / 14 px. The "c" is about 20.8 px tall, because the mark is 136 × 29.4 px (`--wordmark-width: 8.5rem`). The 375 px footer grows from 535 to 557 px. **Not part of this score:** the merged table's side note on the header mark (about 2 px short on the left at 375) is unchanged. `Header.astro` was only touched for nav grips and the menu fade. |
+| DC-03 (merged #5): "Što radimo" on phones, option A | Major | resolved | **Screenshots:** `375/part-03-sto-radimo.png`, `375/frame-02/03/04.png`. **Column:** at 375 every `service__body` now starts at left 85 and is 265 px wide. Before, it started at 141 and was 209 px wide. **Line count:** each service line is now 2 lines; before, they ran to 2 or 3. **Short lines:** the index's "measure under 35 ch" list at 375 drops from 6 entries (5 of them service lines) to 1, the drafting lead, which is not a service line. **Titles:** the titles breaking in two drop from 5 of 9 to 2 of 9: "Web stranice / i web trgovine" and "Integracije i / online rezervacije". **Zone height:** 1932 → 1856 px. **Note:** some balanced first lines still run 22–25 ch, for example "Alati po mjeri umjesto / tablica i ručnog rada." That is DC-07's `balance` splitting a two-line block, not a squeezed column. The column holds about 31 ch (approx., 265 ÷ (17 × 0.5)), as option A promised. |
+| DC-04 (merged #7): same item in two type styles | Major | resolved | **Measured:** every list title is now heading width, 87.5 %, at weight 620 with tracking −0.012em. At 1440, "Web stranice i web trgovine" is 620 / 87.5 % / −0.289 px and "2D crteži" is 620 / 87.5 % / −0.264 px. At 1920, "Razgovarate s onima koji rade" is 620 / 87.5 % / −0.264 px. At 375, all 15 titles are 19 px, 620, 87.5 %. **Code:** `ServiceItem.astro:65-68` and `Item.astro` now take the base heading values, and the `DraftingLegend` override is gone. **Size difference:** from 1024 up the "Što radimo" titles are larger (24.1 vs 22 px at 1440, 26 vs 22 px at 1920). That comes from the client's #102, not from this finding. |
+| DC-05 (merged #10): two link styles, "Više o nama" set like the hero link | Minor | resolved | **Measured:** "Više o nama" is `#0f1b2d`, weight 500 and underlined at all six widths. It matches the hero's drafting link (`#0f1b2d`, 500 at 1440). **Screenshots:** `1440/frame-06.png`, `375/frame-07.png`. **Code:** `HomeTeam.astro`, `.home-team__more`. |
+| DC-06 (merged #2): linked titles with no sign at rest, thin underline added | Minor (craft) / Major (merged) | resolved | **Seen:** all ten linked titles are underlined at rest at every width: 7 in "Što radimo", 3 in "Tehničko crtanje". **Screenshots:** `375/part-03-…`, `375/frame-05.png`, `375/frame-06.png`, `768/part-03-…`, `1024/part-03-…`, `1440/frame-02` to `frame-05`, `1707/part-05-…`, `1920/part-05-…`. **Telling links from headings:** stage 01's two titles, which are not links, and the "Kako radimo" titles stay plain, so a link now looks different from a heading. **Code:** `text-decoration: none` is removed from `ServiceItem.astro:72-74` and `Item.astro`, so the base underline applies: 1 px with a 0.2em offset at rest and 2 px on hover (`base.css:60-68`). |
+| DC-07 (merged #8): short blocks ending on one word, ragged pairs | Minor | partial | **Service lines, resolved everywhere:** at 375 every one is two lines. At 1440 the right-aligned "Brze, prilagođene mobitelu i / usmjerene na upite i narudžbe." is now 28 / 30 ch. **Audit steps, fixed:** 768 and 1440, "Odaberite termin / u kalendaru.". **Audit steps, still ragged:** at 1024, "Ispunite / kratku formu." and "Dobivate / potvrdu termina."; at 1440, "Dobivate / potvrdu termina.". The lone word has moved from the last line to the first. **Screenshots and numbers:** `1024/part-04-besplatna-analiza.png` and `1440/part-04-besplatna-analiza.png`; the step columns are 130 px (1024) and 194 px (1440) wide, from `metrics.json`. |
+| DC-08 (merged #9): the title block's date only | Minor | resolved | **Measured:** "21. listopada 2026." is one line (`lineCount` 1) at all six widths. **Screenshots:** `1024/part-09-…`, `1920/part-09-…`. **Code:** `white-space: nowrap` on the `<time>` (`Footer.astro:170-172`). **Unchanged:** the date cell sitting alone in a full-width row at 1707 was already like that in the previous capture. The fix did not cause it. |
+| DC-10 (merged #13): right-hand column starts, option A | Minor | resolved (within option A) | **Measured:** the drafting text now starts at column 8, on the hero drawing's edge, at every two-column width. It is at 607 px (1024), 847 px (1440), 1002 px (1707) and 1127 px (1920). Each value is the 12-column grid's column 8, and each matches the hero drawing (`1024/frame-01`, `1440/frame-01`, `1707/frame-01`, `1920/frame-01`, and the part-05 files). **Second-column starts at 1440:** 847 / 816 / 736 / 847 / 515, so four distinct lines where there were five. Every one is a grid column, except the axis's mirrored column at 816. **Left by design of option A:** the audit steps (column 7) and the drafting heading (column 8) still share a screen, 111 px apart at 1440 (736 vs 847, `1440/frame-04.png`) and 151 px apart at 1920 (976 vs 1127, `1920/frame-04.png`). Lining those up was option B, which was not approved. |
+
+##### Regressions
+
+###### R-01 [Minor] 4. Layout (alignment): the footer mark has left the title block's text edge
+
+- **Where:** Footer (title block) at 375, 768, 1024, 1440 and 1707. At 1920 the block is a single row, so nothing sits below the mark. Screenshots: `375/part-09-footer-title-block.png`, `768/part-09-…`, `1440/part-09-…`.
+- **Seen:** the mark is now indented 8 px from the cell text in the same column. At 375 it starts at about 33 px, while "Naziv tvrtke", "Jezik" and "Zadnja izmjena" sit at 25. At 768 and 1440 it is at about 49, while "Naziv tvrtke" (768) and "Jezik" (1440) sit at 41. In the previous capture the mark sat on that edge, at 25 and 41.
+- **Why it matters:** in a title block the point is cells on one grid. Alignment to common edges is Gestalt alignment. The DC-01 fix bought the clear space by moving the mark off the edge that every other cell's text shares.
+- **Suggestion:**
+  - **A:** give every title-block cell `--space-5` (24 px) side padding instead of `--space-4` (`Footer.astro:139`). All text then lines up with the mark again, and the clear space stays. The cost is 16 px less text width per cell. At 375 the two-column cells keep about 130 px, which still fits "Stiže prije objave" (about 120 px wide, approx., read from the screenshot).
+  - **B:** accept the 8 px offset as the price of the brand's clear space rule.
+- **Evidence:** cell text `left` is 25 (375) and 41 (768, 1440, 1707) in `metrics.json`. The cell padding is 16 px at the sides (`Footer.astro:139`) and the mark cell's is 24 px (`:152`). The mark's position is approx., read from the screenshots, because the SVG is not measured.
+- **Confidence:** high for the cause, from the code; medium for how much a visitor notices it.
+
+##### Still open
+
+- **DC-07 (partial):** three step lines still have a one-word line, now the first line instead of the last. At 1024: "Ispunite / kratku formu." and "Dobivate / potvrdu termina."; at 1440: "Dobivate / potvrdu termina.". No `text-wrap` setting can split a three-word sentence evenly in a 130–194 px column. What's left is a choice for the client between accepting it, giving the steps a wider column, or changing the copy in the proofreading (#73).
+
+##### Notes
+
+- **One-letter words at line ends:** they are still there in several places, for example "Brze, prilagođene mobitelu i" and "Integracije i". Per the brief they are copy for the client's proofreading (#73), not part of DC-08.
+- **Not checked:**
+  - The focus outline on a service item at 375. The crop of focus stop 6 is still too tight to show an outline drawn around the whole item.
+  - How `text-wrap: balance` renders in Safari and Firefox.
+  - 900–1023 px, where the drafting zone is two columns on the new grid.
+  - Real phones.
+- **Process note:** early on I ran one `node -e` command to read `metrics.json`, outside this agent's Bash allowance. It was read-only and nothing was written. All other reading used Read and Grep.
+
+### Communication (re-check)
+
+#### Design re-check: /lab/pocetna (lens: communication)
+
+- **Capture:** `.playwright-mcp\design-review\2026-10-21-2158\`, commit 177976d. All screenshot paths below are relative to this folder.
+- **Previous critique:** `docs\research\2026-10-21-design-critique-home.md` (Communication report in the Appendix; merged rows #2, #5, #8 and #9)
+- **Compared against:** the previous capture, `.playwright-mcp\design-review\2026-10-21-0037\` (commit a28938e), which is still on disk
+- **Verdict:** Ready
+
+All five scored items are resolved at every width where they showed. The one regression is Minor, needs no code change and already falls under the client's proofreading list (#73). "Ready" covers only these items and that regression, not the whole page: the rest of the merged table and the known items (audit scope, team, company data) are outside this re-check.
+
+##### Scored findings
+
+| Finding | Severity | Now | Evidence |
+| --- | --- | --- | --- |
+| DC-01: service and drafting links don't look like links | Major (merged #2) | resolved | **Seen:** the 7 linked titles in "Što radimo" and the 3 drafting rows are underlined at rest at 375, 768, 1024, 1440, 1707 and 1920 (`lab-pocetna/<w>/part-03-sto-radimo.png`, `part-05-tehnicko-crtanje.png`). They are also underlined with motion on (`1440/motion/scroll-05b.png`, `scroll-06b.png`). **Not links, still plain:** stage 01's two titles and the titles in "Kako radimo", so a link now reads differently from a non-link. **Code:** `ServiceItem.astro:72` and `Item.astro:85` no longer override `text-decoration`, so `base.css:60-68` applies: 1 px at a 0.2em offset, 2 px on hover. |
+| DC-03: the service lines end in short ragged lines | Minor (merged #8) | resolved | **Code:** `text-wrap: balance` (`ServiceItem.astro:82`, `Steps.astro:122`). **At 1440:** "Brze, prilagođene mobitelu i / usmjerene na upite i narudžbe." (was "…na upite / i narudžbe.") and "Ažuriranja i sigurnosne kopije / za fiksnu mjesečnu naknadu." (was "…za fiksnu / mjesečnu naknadu."). The same breaks hold at 1024, 1707 and 1920. **At 375:** every service line has two lines; five had three before, ending "narudžbe.", "stranicom.", "naknadu.", and so on. **Index:** no one-word last line at 375, 768, 1024, 1707 or 1920. The only one at 1440 is the heading "Tehnička / dokumentacija", which already broke that way in the previous capture and was not part of DC-03. **Small residual:** in the audit steps the short line moved from the end to the start: "Ispunite / kratku formu." and "Dobivate / potvrdu termina." at 1024, and "Dobivate / potvrdu termina." at 1440 (`1024/part-04-besplatna-analiza.png`, `1440/part-04-…`). Three words in a 130–194 px column can't break evenly. No one-word last line is left. |
+| DC-04: the title block's date (date only) | Minor (merged #9) | resolved | **Seen:** "21. listopada 2026." is on one line at all six widths (`metrics.json`), against "21. listopada / 2026." at 1024 and 1920 before (`1024/part-09-footer-title-block.png`, `1920/part-09-…`). **Code:** `Footer.astro:170` (`.title-block time { white-space: nowrap }`). **Overflow:** 0 px at every width. **Fit:** at 1024 and 1920 the date ends about 16 px from its cell's right rule (approx., read from the screenshot). **Not a regression:** at 1707 the date sits in a full-width row of its own, but the previous capture shows the same layout. |
+| Q2: the service lines on phones (icon on the title's row, below 48rem) | Question (merged #5, Major) | resolved | **Code:** `ServicesAxis.astro:184-195`. **At 375:** the service lines now start at x = 85 and are 265 px wide (were 141 and 209 px). Every line runs on two lines of 22–35 characters (were 21–24, with five blocks on three lines). Two titles of nine still break in two, "Web stranice / i web trgovine" and "Integracije i / online rezervacije" (five before). "Što radimo" is 1856 px (was 1932), and the audit lead is 76 px higher (top 2777, was 2853). **At 768:** unchanged, as intended: the icon keeps its column and the lines are 442 px wide. **Screenshots:** `375/part-03-sto-radimo.png`, `375/frame-02.png`, `frame-03.png`. |
+| Q3: the drafting visitor's next step (through DC-01's underline) | Question (merged #2) | resolved, within the approved option | **Seen:** "2D crteži", "3D modeli" and "Tehnička dokumentacija" read as links at every width, with or without motion (`375/frame-05.png`, `frame-06.png`, `768/part-05-…`, `1440/part-05-…`, `1440/motion/scroll-05b.png`). The zone now shows a visible way on. **The framed button:** the zone's outlined button is a drawing control: "Prikaži tlocrt" with reduced motion (#117), "Iscrtaj ponovno" with motion. It sits under the drawing, its label says what it does, and on phones it comes after the links, so it doesn't compete with them. **Still waiting:** the other half of Q3 (an email beside "Pošaljite upit") depends on item B, a known item, and was not scored. |
+
+##### Regressions
+
+###### R-01 [Minor] Typography (Croatian): balancing moved a one-letter word to a line end
+
+- **Where:** "Što radimo", the description under "Web stranice i web trgovine", at 768, 1024, 1440, 1707 and 1920. At 375 it already ended a line there before. Screenshots: `1440/part-03-sto-radimo.png`, `1920/part-03-sto-radimo.png`, `768/part-03-sto-radimo.png`.
+- **Seen:** the line now reads "Brze, prilagođene mobitelu i / usmjerene na upite i narudžbe." at every width. Before, the "i" started a line at 1024 and up ("…mobitelu i usmjerene na upite / i narudžbe." at 1440). At 1707 and 1920 the previous index listed no one-letter line ends; now each width lists this one.
+- **Why it matters:** Croatian typesetting avoids a one-letter word at a line end (criterion 3). This is polish.
+- **Context:** the net effect of balancing is still positive. Across the six widths the index count fell from 16 to 14. For example, "Odaberite termin u / kalendaru." at 768 and 1440 is now "Odaberite termin / u kalendaru."
+- **Suggestion:** no code change, and keep the balancing. This string joins the client's proofreading list (#73), where one no-break space after "mobitelu i" fixes it at every width.
+- **Evidence:** `index.md`, "One-letter word at the end of a line" at each width, against the same section of the previous capture's `index.md`. The `metrics.json` lines are quoted above.
+- **Confidence:** high
+
+##### Still open
+
+None of the scored findings. For the record:
+- The audit steps' short first line at 1024 and 1440 (see DC-03) is the expected result of three words in a narrow column, not the defect DC-03 named. A wider step column or a copy change would be the only remedies, and it doesn't need either now.
+- The contact half of Q3 waits for item B (known item).
+
+##### Not checked
+
+- **Hover:** hover on the service and drafting titles. Only the first header link and the first button have hover captures; the 2 px hover comes from the code.
+- **Focus outline:** the 375 focus crop for "Web stranice i web trgovine" (`375/state-focus-06.png`) is still too tight to show whether the outline goes around the whole item.
+- **Widths between the captured ones:** the date's `nowrap` is unchecked in title-block cells narrower than those captured (between 1024 and 1440 px), and in the English page's date format.
+- **Real devices:** real phones and touch, and Safari and Firefox.
+
+### Motion (re-check)
+
+#### Design re-check: /lab/pocetna (lens: motion)
+
+- **Capture:** `.playwright-mcp\design-review\2026-10-21-2158\`, commit 177976d. The paths below are relative to its `lab-pocetna\` folder. Motion frames exist only at 1440. Every other width shows the final, reduced-motion state.
+- **Previous critique:** `docs\research\2026-10-21-design-critique-home.md`, the Motion report in the Appendix (DC-01 to DC-05, Q1). For comparison I also opened the previous capture's frames in `…\design-review\2026-10-21-0037\`.
+- **Verdict:** Ready. This covers only the six scored items and the two regressions below. I did not review the rest of the page again. Both Major findings are resolved. DC-05 and Q1 can't be closed from this capture, because stills can't show the menu's fade and the capture has no shot of the button's result. Both regressions are Minor, and R-02 is the client's decision.
+
+##### Scored findings
+
+| Finding | Severity | Now | Evidence |
+|---|---|---|---|
+| DC-01 (several drawings at once) | Major | resolved | Each of the 16 scroll frames has at most one thing moving. `1440/motion/scroll-04a.png`: only the step line draws and both audit rules are plain. `scroll-04b`: the steps are done, and only then does the top-rule selection start. `scroll-05a`: only the drafting selection moves, and the plan's sheet waits empty. `scroll-05b`, `06a`, `06b`: only the plan moves, and the "Kako radimo" selection waits. In the previous capture's `06b` that selection ran together with the plan. `07a`/`07b`: only Tim's selection. `08a`/`08b`: the closing band, then the title block, one after the other. `scroll-end.png` equals `frame-07.png`. Motion was captured at 1440 only. At other widths it is the same width-independent code (`draw.ts:141-195`). |
+| DC-02 (lamps look like checkboxes) | Major | resolved | `375/`, `1024/` and `1440/part-05-tehnicko-crtanje.png`: each layer shows a sample of its own line (chain, solid, double, dimension, fill, framed cell). There is no hollow box with a fill any more. Layers that are off are grey: "Osi" and "Kote" in #4a5362 at 7.12:1, against #0f1b2d at 15.84:1 for layers that are on (`1440/metrics.json`). With motion on, the state follows the drawing: in `scroll-05a` everything is grey, in `05b` "Osi" is in ink, `06a` adds "Zidovi" and `06b` adds "Otvori". At 375 the row wraps into a legend under "Slojevi", not into a group of checkboxes. |
+| DC-03 (stray hairlines) | Minor | resolved | `scroll-05a`: the graph paper is clean before the axes start. `scroll-05b`: six axes with no stray ticks on A, B or C. The previous capture's `05b` showed about a dozen. `scroll-06a`: no hairline at the ends of walls that haven't started yet. Seen at 1440 only. |
+| DC-04 (nav without grips) | Minor | resolved | `1440/state-focus-03.png` to `state-focus-06.png`: Usluge, Tehničko crtanje, O nama and Kontakt each get the outline plus four grips. `state-hover-header-link.png` at 1024, 1440, 1707 and 1920: grips plus the underline, matching the button in `1440/state-hover-button.png`. |
+| DC-05 (menu opens with no motion) | Minor | unresolved (can't be seen in this capture) | `375/state-menu-open.png` and `768/state-menu-open.png` show only the final, reduced-motion state, the same as before, and there is no frame of the menu opening. The code at 177976d does have the fade: `Header.astro:207-209` (`motion-fade-in`, `--motion-base` 200 ms, `--ease-standard`). With reduced motion the links are fully visible, so nothing is hidden. |
+| Q1 (option C: static switch under reduced motion) | Question | partial | The control is visible. Under reduced motion "Prikaži tlocrt" appears at 375 (142 × 44 px), 1024 and 1440 (147 × 44 px, `metrics.json` targets), where the previous capture had no control at all. In the 3D state the lamps show "Osi" and "Kote" as off, which matches the view. What the button opens (the flat plan with its axes and dimensions) is not in the capture, so I can't call it resolved. With motion on, the button is still "Iscrtaj ponovno" (`scroll-05a`). For the timing with motion on, see R-02. |
+
+##### Regressions
+
+###### R-01 [Minor] 7. Motion: when parts trigger in the same frame, a zone's selection can play after its own content
+
+- **Where:** the free-audit zone at 1440. `1440/motion/scroll-04a.png`, `scroll-04b.png`.
+- **Seen:**
+  - After the jump to 2160, the step line draws first. At 264 ms it shows grip 1 and the line to about x 910, while the audit's top rule (y about 170) is still plain.
+  - At 1003 ms the steps are complete. Only then does the selection start, at the left of the top rule (x about 24 to 125, approx., read from the screenshot).
+  - So the zone's "this zone" selection comes last. It sweeps the top edge while the eye is on the steps and on "Rezervirajte besplatnu analizu".
+  - DC-01's approved option A had the opposite order: "The step line waits for its zone's selection to land."
+- **Why it matters:**
+  - Every motion should guide attention (`docs/motion.md`, principle 1). A selection that arrives after the content pulls the eye back up instead of leading it in.
+  - The queue holds waiting parts "in the order they reached their trigger" (`draw.ts:52`). Each part has its own IntersectionObserver (`draw.ts:65-81`). When several parts reach their trigger in one frame, they start in whatever order the browser calls the observers back, which is not reading order.
+- **When it happens:**
+  - In a continuous scroll the order is right. The rule triggers at scrollY 1700 (zone top 2330, `metrics.json`; trigger at 630 px), about 146 px before the steps (line at about 2482, approx.).
+  - The inversion needs a jump: the capture's instant 540 px scroll, the End key, an anchor, or a fast fling.
+- **Suggestion:** inside `draw.ts`, with no new tokens: keep `waiting` in document order (insert using `compareDocumentPosition`). Alternatively, when several parts request in one frame, start the highest one first.
+- **Evidence:** `draw.ts:52`, `65-81`, `187-195`. `metrics.json` 1440: audit zone top 2330, "1 Forma" top 2511.
+- **Confidence:** high for what is seen. Medium for the cause (the callback order across observers) and for how often real visitors jump.
+
+###### R-02 [Minor, the client's call] 7. Motion: the floor plan plays at double speed for most visitors
+
+- **Where:** "Tehničko crtanje" at 1440. `1440/motion/scroll-05a.png`, `05b`, `06a`, `06b`.
+- **Seen:**
+  - **05a (260 ms):** the plan's sheet is empty while the zone's selection sweeps the top rule. The selection is already at x about 1335 (approx.), against about 595 after 250 ms in the previous capture, so it runs at double speed.
+  - **05b (1014 ms):** all six axes and their bubbles are drawn and no wall has started.
+    - At full speed the axes take 900 ms (450 + 5 × 90, `plan-timelapse.ts:37`), and the walls start at 1020 ms (`plan-timelapse.ts:47`).
+    - The plan can only have started after the hurried selection landed, at about 510 ms.
+  - **06b:** walls and openings are complete.
+    - In the previous capture, at the same scroll steps, `06b` had the walls only partly drawn, even though that plan started earlier.
+    - So the plan runs at about twice its speed.
+  - **06a/06b:** "Kako radimo"'s selection and its margin letter wait behind the plan.
+- **Why it matters:**
+  - **The client's decision:** in #117 (Q1, option C) the client recorded "The timing with motion on is unchanged", meaning about 8.3 s to the roof. Only a reader who pauses now sees that.
+  - **The queue (#78):**
+    - It starts any part that waited at `HURRY = 2` (`draw.ts:47`, `146`).
+    - It speeds up a moving part as soon as another part waits for it (`draw.ts:195`).
+  - **When the plan waits:**
+    - The plan's half-in-view trigger comes about 149 px of scroll after the zone rule's trigger. The rule fires at scrollY 2743 − 630 = 2113. The plan's box is about 2824–3500 (approx., read from `part-05`), so it is half in view at about 2262.
+    - The selection moves for 1020 ms (700 + 320 ms, `motion.css:15-17`).
+    - Anyone scrolling faster than about 146 px/s there gets the plan at double speed. The house then lands at about 4.2 s instead of 8.3.
+  - **The other speed-up:** the plan is also sped up when "Kako radimo"'s rule reaches its trigger (scrollY 3010) while the plan is still on screen.
+  - **What the plan waits for:** the zone's selection, the decorative motion of Q2. The decoration takes precedence over the zone's main content motion.
+  - **Why it isn't a defect:** it follows the client's own words in #78 ("ako korisnik brže skrola brže su i animacije").
+- **Options:**
+  - **A:** the plan always plays at full speed. Exempt it from `HURRY` in `draw.ts`, for example with a data attribute. A part queued behind it waits, or is dropped when its rule leaves the screen.
+    - Gained: the timing approved in #117.
+    - Lost: the next zone's selection is late or skipped more often.
+  - **B:** keep it as is, and record in `docs/motion.md` that the plan's length depends on scroll speed.
+    - For scrolling visitors the plan lasts about 4.2 s, near the 5 s that Q1's option B aimed for.
+    - Lost: most visitors don't see the plan's timing as approved.
+- **Evidence:** `draw.ts:47`, `141-146`, `187-195`; `plan-timelapse.ts:37-47`; `motion.css:15-17`; `docs/phases/2-design-review.md` #78 and #117.
+- **Confidence:** high for the code path. High that it runs faster than full speed (`06b` against the previous capture). Medium for the exact factor read from the stills.
+
+##### Still open
+
+- **DC-05:** not visible in stills. One motion frame of the menu about 100 ms after opening at 375 would close it. The code has the fade.
+- **Q1:** the control is there, but its result isn't captured. A reduced-motion shot after clicking "Prikaži tlocrt" at 375 and 1440 would close it.
+- **R-01 (new, Minor):** keep the queue in document order, so a zone's selection never comes after its content.
+- **R-02 (new, Minor, the client's call):** the plan runs at double speed for most scrolling visitors. Keep it, or exempt the plan.

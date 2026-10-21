@@ -161,9 +161,9 @@
   }
 }
 
-/* The trees (review #94–96): a branch is curved or bent, so it is not
+/* The trees (review #94–99): a branch is curved or bent, so it is not
    scaled but uncovered from the line outwards, along its course (in the left
-   column it is turned over, and so is the wipe); then its arrow snaps in.
+   column from the right); then its arrow snaps in.
    The arrow into the last stage's centred service has no branch before it,
    so it snaps in as soon as the service starts. */
 @media (prefers-reduced-motion: no-preference) {
@@ -172,9 +172,22 @@
     clip-path: inset(-1rem 100% -1rem -1rem);
   }
 
+  .js
+    .axis--arrows
+    [data-axis-item]:nth-child(odd):not(.is-drawn)
+    .service__branch {
+    clip-path: inset(-1rem -1rem -1rem 100%);
+  }
+
   .axis--arrows [data-axis-item].is-drawn:not(.is-instant) .service__branch {
     animation: tree-branch var(--branch-for, 360ms) var(--ease-pen)
       var(--branch-at, 0ms) backwards;
+  }
+
+  .axis--arrows
+    [data-axis-item]:nth-child(odd).is-drawn:not(.is-instant)
+    .service__branch {
+    animation-name: tree-branch-left;
   }
 
   .axis--arrows
@@ -187,6 +200,16 @@
 @keyframes tree-branch {
   from {
     clip-path: inset(-1rem 100% -1rem -1rem);
+  }
+
+  to {
+    clip-path: inset(-1rem);
+  }
+}
+
+@keyframes tree-branch-left {
+  from {
+    clip-path: inset(-1rem -1rem -1rem 100%);
   }
 
   to {

@@ -36,16 +36,19 @@
  *   line runs on through the last stage's services.
  * - "framed": the frames and the branches together.
  * And three that rework "branches" as a branching tree, after the client's
- * sketch (review #94–96): the stage heads in boxes on the line, the services
- * in boxes left and right of it, the right one of a pair lower, each a
+ * sketch (review #94–99): the stage heads on the line, the services left
+ * and right of it, the right one of a pair lower, each a
  * different distance from the line; a branch runs from the line to each
  * service and ends in an arrow, and the line ends in an arrow into the last
  * stage's centred service.
- * - "tree": curved branches and open arrows, the boxes tinted.
+ * - "tree": curved branches and open arrows.
  * - "leaders": the branches as a drawing's leader lines, a slant and then
- *   level, with a filled arrow; the boxes in thin frames.
- * - "ground": "tree" on an irregular hatched ground, wider where a stage
- *   branches, at low opacity.
+ *   level, with a filled arrow.
+ * - "ground", "outline", "grid": "tree" on an irregular crown at low
+ *   opacity, wider where a stage branches (TreeCrown.astro): hatched like a
+ *   section, drawn as a selected CAD outline with its grips, or a drawing's
+ *   grid in a stepped outline (#98).
+ * No boxes: the services and heads stand on the page as text (#97).
  * Phones show the line down the left in every layout.
  */
 import "./services.css";
@@ -54,6 +57,7 @@ import Zone from "../../components/ui/Zone.astro";
 import { SERVICES } from "../copy.ts";
 import { CHAPTERS } from "./chapters.ts";
 import ServiceItem from "./ServiceItem.astro";
+import TreeCrown from "./TreeCrown.astro";
 
 interface Props {
   /** The heading's id; the comparison page shows several options. */
@@ -73,13 +77,24 @@ interface Props {
     | "framed"
     | "tree"
     | "leaders"
-    | "ground";
+    | "ground"
+    | "outline"
+    | "grid";
 }
 
 const { headingId = "usluge", label, icons, layout = "centre" } = Astro.props;
 const labelId = `${headingId}-opcija`;
-/** The tree layouts: branches that end in arrows (review #94). */
-const arrows = ["tree", "leaders", "ground"].includes(layout);
+/** The tree layouts: branches that end in arrows (review #94, #98). */
+const arrows = ["tree", "leaders", "ground", "outline", "grid"].includes(
+  layout,
+);
+/** The trees on a ground, each with its own crown (review #95, #98). */
+const CROWNS = {
+  ground: "hatch",
+  outline: "outline",
+  grid: "grid",
+} as const;
+const crown = layout in CROWNS ? CROWNS[layout as keyof typeof CROWNS] : null;
 /** The layouts with the line down the middle. */
 const central =
   arrows || ["centre", "frames", "branches", "framed"].includes(layout);
@@ -105,6 +120,7 @@ const BRANCH_MS = 360;
       `axis--${layout}`,
       central && "axis--central",
       arrows && "axis--arrows",
+      arrows && layout !== "leaders" && "axis--curves",
       icons !== undefined && `axis--icons-${icons}`,
     ]}
     data-axis
@@ -112,6 +128,7 @@ const BRANCH_MS = 360;
     data-axis-branches={branches ? (arrows ? BRANCH_MS : "") : undefined}
     data-axis-into={arrows ? "" : undefined}
   >
+    {crown !== null && <TreeCrown variant={crown} />}
     <span class="axis__line" data-axis-line aria-hidden="true"></span>
     {layout === "columns" && (
       <span class="axis__row" data-axis-row-line aria-hidden="true" />
@@ -556,10 +573,11 @@ const BRANCH_MS = 360;
     }
   }
 
-  /* The trees (review #94–96). Each branch is laid out for the right
-     column, the line on its left and the service on its right, and turned
-     over for the left column. It ends a rail short of its service, under
-     the tip of its arrow. */
+  /* The trees (review #94–99). Each branch runs from the line to its
+     service and ends a rail short of it, under the tip of its arrow; the
+     left column's are drawn mirrored (not turned over with a transform,
+     which leaves a faint seam on a curved corner in Chromium). No boxes: the services and the heads stand on the
+     page as text (#97). */
   @media (min-width: 64rem) {
     .axis--arrows {
       /* How far the columns stand from the line. */
@@ -567,28 +585,30 @@ const BRANCH_MS = 360;
       /* How much lower the right service of a pair sits. */
       --stagger: var(--space-5);
       --arrow: 0.625rem;
-      --item-pad: var(--space-4);
-    }
+      --item-pad: 0rem;
 
-    .axis--arrows .axis-stage__head {
-      padding: var(--space-3) var(--space-6) var(--space-4);
-      border-radius: var(--radius);
-      background: var(--surface-sunk);
-    }
-
-    .axis--arrows .axis-stage__tagline {
-      margin-top: var(--space-2);
+      /* The crown (TreeCrown.astro) lies under everything in the tree. */
+      isolation: isolate;
     }
 
     .axis--arrows .axis-stage__items {
       column-gap: calc(var(--reach) * 2);
-      row-gap: var(--space-5);
-      margin-top: var(--space-5);
+      row-gap: var(--space-6);
     }
 
-    /* Each service in a box as wide as its text; --lean sets it apart from
-       the line, --drop how far above it its branch leaves the line, --bend
-       how wide the branch's curve is. */
+    /* Room under the last service, for the crown's lowest edge; the last
+       rail (without JavaScript or with reduced motion) stops above it. */
+    .axis--arrows .axis-stage:last-child {
+      padding-bottom: var(--space-6);
+    }
+
+    .axis.axis--arrows .axis-stage:last-child .axis-stage__rail {
+      bottom: var(--space-6);
+    }
+
+    /* --lean sets a service apart from the line, --drop how far above it
+       its branch leaves the line, --bend how wide the branch's curve is.
+       The side towards the line keeps a gap before the arrow. */
     .axis--arrows .axis-stage__item {
       --lean: 0rem;
       --drop: var(--space-7);
@@ -597,27 +617,21 @@ const BRANCH_MS = 360;
       align-self: start;
       width: fit-content;
       max-width: min(100% - var(--lean), 28rem);
-      padding: var(--item-pad) var(--space-5);
+      padding: 0;
       border-top: 0;
-      border-radius: var(--radius);
-      background: var(--surface-sunk);
-    }
-
-    /* Lines that fill the box: a balanced line leaves the box wider than
-       its text. */
-    .axis--arrows .axis-stage__item :global(.service__body) {
-      text-wrap: pretty;
     }
 
     .axis--arrows .axis-stage__item:nth-child(odd) {
       justify-self: end;
       margin-right: var(--lean);
+      padding-right: var(--space-3);
     }
 
     .axis--arrows .axis-stage__item:nth-child(even) {
       justify-self: start;
       margin-top: var(--stagger);
       margin-left: var(--lean);
+      padding-left: var(--space-3);
     }
 
     /* Irregular, but in a cycle: four services a stage, the stages
@@ -692,22 +706,17 @@ const BRANCH_MS = 360;
       right: auto;
       left: 100%;
       margin: 0 0 0 var(--rail);
-      scale: -1 1;
     }
 
-    /* "tree" and "ground": the branch leaves the line downwards and curves
-       out level; an open arrow. */
-    .axis:is(.axis--tree, .axis--ground)
-      .axis-stage__item
-      :global(.service__branch) {
+    /* Curved branches (all but "leaders"): the branch leaves the line
+       downwards and curves out level; an open arrow. */
+    .axis--curves .axis-stage__item :global(.service__branch) {
       border-bottom: var(--rail) solid var(--accent);
       border-left: var(--rail) solid var(--accent);
       border-bottom-left-radius: min(var(--bend), 70%) 100%;
     }
 
-    .axis:is(.axis--tree, .axis--ground)
-      .axis-stage__item
-      :global(.service__branch)::after {
+    .axis--curves .axis-stage__item :global(.service__branch)::after {
       position: absolute;
       right: calc(var(--arrow) * 0.2071 - var(--rail));
       bottom: calc(var(--rail) / -2 - var(--arrow) / 2);
@@ -719,13 +728,23 @@ const BRANCH_MS = 360;
       content: "";
     }
 
-    /* "leaders": a slant at 45° and a level shoulder, as a drawing's leader
-       line, with its filled arrow; the boxes as a drawing's cells. */
-    .axis--leaders :is(.axis-stage__head, .axis-stage__item) {
-      border: var(--rule) solid var(--line);
-      background: var(--surface);
+    .axis--curves .axis-stage__item:nth-child(odd) :global(.service__branch) {
+      border-right: var(--rail) solid var(--accent);
+      border-left: 0;
+      border-bottom-right-radius: min(var(--bend), 70%) 100%;
+      border-bottom-left-radius: 0;
     }
 
+    .axis--curves
+      .axis-stage__item:nth-child(odd)
+      :global(.service__branch)::after {
+      right: auto;
+      left: calc(var(--arrow) * 0.2071 - var(--rail));
+      rotate: 225deg;
+    }
+
+    /* "leaders": a slant at 45° and a level shoulder, as a drawing's leader
+       line, with its filled arrow. */
     .axis--leaders {
       --arrow: 0.75rem;
     }
@@ -758,90 +777,49 @@ const BRANCH_MS = 360;
       content: "";
     }
 
-    /* "ground": an irregular ground under the tree, hatched like a section
-       in a drawing and faint (review #95). It is wide where a stage branches
-       and narrow at its head; the stages sit at much the same heights at
-       every width, so one outline fits them all. */
-    .axis--ground {
-      isolation: isolate;
+    .axis--leaders .axis-stage__item:nth-child(odd) :global(.service__branch) {
+      background-position: left bottom;
     }
 
-    .axis--ground::before {
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          -45deg,
-          color-mix(in srgb, var(--accent) 16%, transparent) 0 1px,
-          transparent 1px 9px
-        ),
-        color-mix(in srgb, var(--accent) 3%, transparent);
-      clip-path: polygon(
-        44% 1%,
-        52% 0%,
-        58% 5%,
-        66% 9.5%,
-        84% 11.5%,
-        95% 15%,
-        92% 23%,
-        77% 25%,
-        72% 30%,
-        85% 35.5%,
-        98% 40%,
-        96% 50%,
-        99% 59%,
-        86% 63%,
-        68% 65%,
-        71% 71%,
-        88% 74.5%,
-        98% 81%,
-        93% 88%,
-        77% 90.5%,
-        70% 99.5%,
-        36% 99%,
-        29% 93%,
-        19% 88.5%,
-        4% 86%,
-        2% 78.5%,
-        14% 74.5%,
-        31% 72%,
-        29% 65.5%,
-        10% 62.5%,
-        1% 55%,
-        3% 45%,
-        1% 38.5%,
-        17% 36%,
-        27% 32%,
-        24% 25.5%,
-        7% 22%,
-        3% 15%,
-        16% 11.5%,
-        36% 9%,
-        41% 3%
-      );
-      content: "";
+    .axis--leaders
+      .axis-stage__item:nth-child(odd)
+      :global(.service__branch)::before {
+      right: calc(var(--rail) / 2);
+      left: auto;
+      transform-origin: 100% 50%;
+      rotate: -45deg;
     }
 
-    /* The last stage's centred service: the line ends in an arrow into it. */
+    .axis--leaders
+      .axis-stage__item:nth-child(odd)
+      :global(.service__branch)::after {
+      right: auto;
+      left: calc(var(--rail) * -1);
+      clip-path: polygon(100% 0, 0 50%, 100% 100%);
+    }
+
+    /* The last stage's centred service: the line ends in an arrow into it.
+       The arrow's tip sits a rail below the service's top, where the line
+       ends (axis-line.ts), so the line's square end stays inside the tip
+       (#99). */
     .axis--arrows .axis-stage__item:last-child:nth-child(odd) {
       --lean: 0rem;
 
       width: fit-content;
       max-width: min(100%, 28rem);
+      padding: var(--space-4) 0 0;
     }
 
     .axis--arrows
       .axis-stage__item:last-child:nth-child(odd)
       :global(.service__branch) {
-      top: 0;
+      top: var(--rail);
       left: 50%;
       width: 0;
       height: 0;
       margin: 0;
       border: 0;
       background: none;
-      scale: none;
     }
 
     .axis--arrows
@@ -850,7 +828,7 @@ const BRANCH_MS = 360;
       content: none;
     }
 
-    .axis:is(.axis--tree, .axis--ground)
+    .axis--curves
       .axis-stage__item:last-child:nth-child(odd)
       :global(.service__branch)::after {
       top: calc(var(--arrow) * -1.2071);
@@ -867,7 +845,26 @@ const BRANCH_MS = 360;
       right: auto;
       bottom: auto;
       left: calc(var(--arrow) * -0.6);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
       rotate: 90deg;
+    }
+
+    /* Where the stages' rails draw the line (without JavaScript), the last
+       one runs to the end of the stage: a strip of the page's ground hides
+       it behind the centred service. */
+    :global(html:not(.js))
+      .axis--arrows
+      .axis-stage__item:last-child:nth-child(odd) {
+      background: linear-gradient(var(--surface), var(--surface)) 50% 0 /
+        calc(var(--rail) + 2px) 100% no-repeat;
+    }
+  }
+
+  /* … and with reduced motion. */
+  @media (min-width: 64rem) and (prefers-reduced-motion: reduce) {
+    .axis--arrows .axis-stage__item:last-child:nth-child(odd) {
+      background: linear-gradient(var(--surface), var(--surface)) 50% 0 /
+        calc(var(--rail) + 2px) 100% no-repeat;
     }
   }
 

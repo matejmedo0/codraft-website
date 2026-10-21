@@ -73,21 +73,35 @@ const OPTIONS = [
     layout: "tree",
     name: "Opcija 7: stablo",
     summary:
-      "Prema vašem crtežu. Faze stoje u sivim okvirima na crti, a usluge u okvirima lijevo i desno od nje, svaka na svom razmaku, desna iz para malo niže. Iz crte prema svakoj usluzi izraste zakrivljena grana i završi strelicom. Ispod faze 03 crta završava strelicom u njezinu treću uslugu.",
+      "Prema vašem crtežu: grananje i strelice. Faze stoje na crti, a usluge lijevo i desno od nje, svaka na svom razmaku, desna iz para malo niže. Iz crte prema svakoj usluzi izraste zakrivljena grana i završi strelicom. Ispod faze 03 crta završava strelicom u njezinu treću uslugu.",
   },
   {
     id: "raspored-8",
     layout: "leaders",
     name: "Opcija 8: stablo s tehničkim strelicama",
     summary:
-      "Isto stablo, ali grane su kao pokazne crte na tehničkom crtežu: kosa crta pa vodoravna, s punom strelicom, a usluge su u tankim okvirima, kao ćelije na nacrtu. Tehničkija verzija opcije 7.",
+      "Isto stablo, ali grane su kao pokazne crte na tehničkom crtežu: kosa crta pa vodoravna, s punom strelicom. Tehničkija verzija opcije 7.",
   },
   {
     id: "raspored-9",
     layout: "ground",
     name: "Opcija 9: stablo s podlogom",
     summary:
-      "Opcija 7 na nepravilnoj podlozi, šrafiranoj kao presjek na nacrtu, slabog intenziteta. Podloga je šira gdje se faza grana, a uža oko naslova faze, i ne miče se.",
+      "Opcija 7 na nepravilnoj krošnji, šrafiranoj kao presjek na nacrtu, slabog intenziteta. Krošnja je šira gdje se faza grana, a uža iza naslova faze, i ne miče se.",
+  },
+  {
+    id: "raspored-10",
+    layout: "outline",
+    name: "Opcija 10: stablo s obrisom krošnje",
+    summary:
+      "Krošnja je nacrtana kao označen objekt u CAD-u: isprekidan obris s gripom na svakom kutu, kao kvadratić u vašem logotipu, a unutra samo blaga plava nijansa. Najlakša podloga: tekst stoji na gotovo čistom papiru.",
+  },
+  {
+    id: "raspored-11",
+    layout: "grid",
+    name: "Opcija 11: stablo na mreži",
+    summary:
+      "Krošnja je tehnička mreža, kao milimetarski papir: tanka crta svakih 16 px, jača svakih 80 px, a jedna crta mreže pada točno na glavnu crtu. Obris ide samo vodoravno, okomito i pod 45°, kao nacrtan trokutom.",
   },
 ] as const;
 ---
@@ -123,10 +137,15 @@ const OPTIONS = [
         </p>
         <p class="options__lead">
           Opcije 7, 8 i 9 (21. 10. 2026.) prerađuju opciju 5 u stablo, prema
-          vašem crtežu: grane sa strelicama, okviri različitih širina, desna
-          usluga iz para malo niže. Pokret je kao dosad: crta raste dok
+          vašem crtežu: grane sa strelicama, usluge na različitim razmacima od
+          crte, desna iz para malo niže. Pokret je kao dosad: crta raste dok
           skrolate, a kad stigne do usluge, izraste njezina grana, skoči
           strelica i iscrta se ikona, jedno za drugim.
+        </p>
+        <p class="options__lead">
+          Opcije 9, 10 i 11 razrađuju podlogu opcije 9, kako ste tražili: svaka
+          je nepravilna krošnja u tehničkom stilu, slabog intenziteta, šira gdje
+          se faza grana. Sivih okvira više nema nigdje.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (

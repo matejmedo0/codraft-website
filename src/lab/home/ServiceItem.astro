@@ -9,13 +9,6 @@
  *
  * With `icon` the item starts with its service icon (review batch 13); the
  * section places it.
- *
- * With `branch` the item carries a branch of the process line, a blue line
- * that ends in a grip at the item (review #90); the section places and
- * draws it.
- *
- * A layout can add its own decorative parts to the item through the slot,
- * such as the bar of the schedule (ServicesPlan.astro, review #101).
  */
 import type { HTMLAttributes } from "astro/types";
 
@@ -30,8 +23,6 @@ interface Props extends HTMLAttributes<"li"> {
   icon?: ServiceIconId | undefined;
   /** The title's level under the zone's headings. */
   level?: "h3" | "h4";
-  /** A branch of the process line leads to the item. */
-  branch?: boolean;
 }
 
 const {
@@ -40,7 +31,6 @@ const {
   href,
   icon,
   level = "h4",
-  branch = false,
   class: className,
   ...attributes
 } = Astro.props;
@@ -63,8 +53,6 @@ const Heading = level;
   </Heading>
   <p class="service__body">{body}</p>
   {href !== undefined && <Grips />}
-  {branch && <span class="service__branch" aria-hidden="true" />}
-  <slot />
 </li>
 
 <style>

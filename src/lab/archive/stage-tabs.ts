@@ -16,7 +16,7 @@
  * drawing.
  */
 import { DURATION_MS, prefersReducedMotion } from "../../styles/motion.ts";
-import { timeStrokes } from "./icons/icon-draw.ts";
+import { timeStrokes } from "../home/icons/icon-draw.ts";
 
 /** A row's icons start this far apart. */
 const NEXT_MS = 60;

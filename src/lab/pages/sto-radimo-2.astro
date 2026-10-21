@@ -1,11 +1,11 @@
 ---
-// "Što radimo" in new layouts, for the client to compare (the critique of
-// 2026-10-21, finding 7; review #79, #90, and #100–101 in
-// docs/phases/2-design-review.md: the three options the client kept and
-// three new kinds of layout). Each option is the section as on Home,
-// with the same copy, icons and motion; the current one comes first for
-// comparison, and the chosen one goes into /lab/pocetna. Noindex; only in
-// `astro dev` and lab builds (astro.config.ts).
+// "Što radimo" after the layout options, as the record (the critique of
+// 2026-10-21, finding 7; review #79–104 in docs/phases/2-design-review.md).
+// The client compared fourteen layouts and kept the central axis, with the
+// services' type a step larger (#102); it is on /lab/pocetna. The tabs
+// (option 14) are kept in the archive (src/lab/archive/, #104), so the
+// client can come back to them; the other options are in git history.
+// Noindex; only in `astro dev` and lab builds (astro.config.ts).
 import Footer from "../../components/site/Footer.astro";
 import Header from "../../components/site/Header.astro";
 import Sheet from "../../components/ui/Sheet.astro";
@@ -13,64 +13,34 @@ import SkipLink from "../../components/ui/SkipLink.astro";
 import Zone from "../../components/ui/Zone.astro";
 import { t } from "../../features/i18n/ui.ts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServicesTabs from "../archive/ServicesTabs.astro";
 import LabBar from "../components/LabBar.astro";
 import ServicesAxis from "../home/ServicesAxis.astro";
-import ServicesCycle from "../home/ServicesCycle.astro";
-import ServicesPlan from "../home/ServicesPlan.astro";
-import ServicesTabs from "../home/ServicesTabs.astro";
 
 const locale = "hr";
 const MAIN_ID = "main";
 
 const OPTIONS = [
   {
-    id: "raspored-sada",
-    layout: "centre",
-    name: "Sada: središnja os",
+    id: "raspored-odabrano",
+    name: "Odabrano: središnja os, krupnija slova",
     summary:
-      "Kao na početnoj: crta u sredini, faze centrirane iznad usluga, a usluge lijevo i desno od crte. Naslovi usluga sada su u stilu naslova, a oni koji vode dalje podcrtani su.",
+      "Središnja os kao dosad, a slova usluga od 1024 px naviše korak su krupnija, radi lakšeg čitanja: naslov usluge oko 24 px, njezin redak oko 21 px (na 1440 px). Na mobitelu su veličine iste, zbog uskog retka. Ova je verzija na početnoj.",
   },
   {
-    id: "raspored-3",
-    layout: "columns",
-    name: "Opcija 3: tri stupca",
+    id: "raspored-arhiva-kartice",
+    name: "U arhivi: opcija 14, kartice",
     summary:
-      "Od 1280 px tri faze stoje jedna uz drugu, a crta ide vodoravno kroz njihove kružiće, od 01 do 03, kao proces slijeva nadesno. Kad dođe u ekran, crta se iscrta jednim potezom, a ikone svake faze kad pero stigne do njezina kružića. Najzbijenija opcija; na užim ekranima ista je kao opcija 1.",
-  },
-  {
-    id: "raspored-4",
-    layout: "frames",
-    name: "Opcija 4: središnja os s okvirima",
-    summary:
-      "Raspored kao sada, ali svaka usluga stoji u tankom okviru, kao ćelija na nacrtu, i okviri ispunjavaju svoju stranu crte. Slova su krupnija: naslov usluge oko 24 px, opis oko 21 px (na 1440 px). Kad prijeđete mišem preko usluge, gripovi sjednu točno na kutove okvira.",
-  },
-  {
-    id: "raspored-12",
-    layout: "plan",
-    name: "Opcija 12: terminski plan",
-    summary:
-      "Faze kao terminski plan (gantogram), kakav se radi za gradilište. Sav tekst je u jednom stupcu lijevo, lako čitljiv, a desno, od sredine lista, je plan: svaka faza počinje na svojoj osi s kružićem, osi se stepenasto spuštaju udesno, a iz kružića ide crta faze s gripom na kraju, kao u logotipu. Ispod nje je razdoblje faze, blago šrafirano kao podloga koja vam se svidjela, a svaka usluga ima svoj grip na osi svoje faze: pripada fazi, bez tvrdnje koliko traje (usluge su ponuda iz koje birate, ne poslovi koji se svi rade). Fiksni opseg, rok i cijena su miljokaz na početku izrade, jer ih znate prije početka rada. Crta i razdoblje faze 03 idu do ruba, jer održavanje ne prestaje. Bez datuma. Na mobitelu svaka faza ima mali plan ispod podnaslova.",
-  },
-  {
-    id: "raspored-13",
-    layout: "cycle",
-    name: "Opcija 13: krug",
-    summary:
-      "Faze kao krug, jer posao ne završava objavom. Krug je nacrtan kao na nacrtu, sa središnjicama, a to je zatvoreni luk slova „c“ iz vašeg logotipa. Kružići faza i po jedan grip za svaku uslugu raspoređeni su jednako, kao rupe na prirubnici, pa je luk svake faze dug koliko faza ima usluga; naziv faze piše uz njezin kružić. Na širokom ekranu krug stoji uz tekst dok čitate (stranica se skrola normalno), a plavi luk prati ono što čitate na sredini ekrana: kad stigne do usluge, skoči njezin grip. Nakon zadnje usluge luk se zatvori strelicom u 01. Ikone se iscrtaju kao u ostalim opcijama. Na mobitelu kruga nema: faze stoje jedna ispod druge.",
-  },
-  {
-    id: "raspored-14",
-    layout: "tabs",
-    name: "Opcija 14: kartice",
-    summary:
-      "Jedna faza odjednom. Tri faze stoje u redu kao kartice i uvijek se vide; ispod je odabrana faza, njezin podnaslov i usluge. Neodabrane kartice podcrtane su kao svaka poveznica, a odabranu podcrta procesna crta s gripom u kutu, i iscrta se kad je odaberete; ikone faze iscrtaju se kad je prvi put otvorite. Odjeljak je upola niži od ostalih. Radi i tipkovnicom (strelice). Usluge faza 02 i 03 vide se tek kad otvorite njihovu karticu. Na mobitelu kartica nema: faze stoje jedna ispod druge.",
+      "Jedna faza odjednom, kao kartice. Niste je odabrali, ali je čuvamo u arhivi ako joj se poželite vratiti.",
   },
 ] as const;
+
+const [chosen, archived] = OPTIONS;
 ---
 
 <BaseLayout
   locale={locale}
-  title="Što radimo: nove opcije | Laboratorij dizajna"
+  title="Što radimo: odabrano i arhiva | Laboratorij dizajna"
 >
   <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
   <LabBar current="sto-radimo-2" />
@@ -78,20 +48,13 @@ const OPTIONS = [
     <Header locale={locale} />
     <main id={MAIN_ID}>
       <Zone labelledby="opcije" select={false} class="options">
-        <h1 id="opcije">Što radimo: nove opcije rasporeda</h1>
+        <h1 id="opcije">Što radimo: odabrano i arhiva</h1>
         <p class="options__lead">
-          Nakon kritike dizajna (21. 10. 2026.) tražili ste nekoliko opcija za
-          „Što radimo“. Od dosadašnjih ostaju tri koje ste odabrali: sadašnja
-          središnja os s početne, opcija 3 „Tri stupca“ i opcija 4 „Središnja os
-          s okvirima“. Sve opcije imaju isti tekst i iste ikone.
-        </p>
-        <p class="options__lead">
-          Opcije 12, 13 i 14 (21. 10. 2026.) su nove i svaka prikazuje tri faze
-          na drukčiji način nego dosad: kao terminski plan, kao krug i kao
-          kartice. Sve su napravljene od istih dijelova kao ostatak stranice:
-          kružići faza, plava crta s gripom kao u logotipu i ikone koje se
-          iscrtaju. Razlike se najbolje vide na širokom ekranu, od 1024 px
-          naviše; na mobitelu je svaka prilagođena uskom ekranu.
+          Nakon kritike dizajna (21. 10. 2026.) usporedili ste četrnaest
+          rasporeda za „Što radimo“ i odabrali središnju os kakva je bila, s
+          krupnijim slovima usluga (skupina 30). Opciju 14 „Kartice“ čuvamo u
+          arhivi; ostale opcije više nisu u kodu, ali ostaju zapisane u
+          povijesti projekta.
         </p>
         <ol class="options__list">
           {OPTIONS.map(({ id, name, summary }) => (
@@ -102,22 +65,8 @@ const OPTIONS = [
           ))}
         </ol>
       </Zone>
-      {OPTIONS.map(({ id, name, layout }) =>
-        layout === "plan" ? (
-          <ServicesPlan headingId={id} label={name} />
-        ) : layout === "cycle" ? (
-          <ServicesCycle headingId={id} label={name} />
-        ) : layout === "tabs" ? (
-          <ServicesTabs headingId={id} label={name} />
-        ) : (
-          <ServicesAxis
-            headingId={id}
-            label={name}
-            icons="beside"
-            layout={layout}
-          />
-        ),
-      )}
+      <ServicesAxis headingId={chosen.id} label={chosen.name} icons="beside" />
+      <ServicesTabs headingId={archived.id} label={archived.name} />
     </main>
     <Footer locale={locale} />
   </Sheet>

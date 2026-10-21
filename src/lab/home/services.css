@@ -1,7 +1,8 @@
 /*
- * "Što radimo" on Home: the parts its three options share (the client's
- * review, batch 3; lab only). Each option places the chapters and the
- * services in its own scoped styles.
+ * "Što radimo" on Home: the parts its options share (the client's review,
+ * batch 3; lab only): the chosen central axis (ServicesAxis.astro), the
+ * earlier record on /lab/sto-radimo and the tabs in the archive. Each
+ * places the chapters and the services in its own scoped styles.
  */
 
 .svc {
@@ -124,153 +125,10 @@
   }
 }
 
-/* The layout "columns" (review #79): on wide screens the line runs across
-   the stages' bubbles and draws once at a constant speed (axis-row.ts).
-   Before that it isn't there; without JavaScript, or with reduced motion,
-   it is complete. */
-@media (prefers-reduced-motion: no-preference) {
-  .js .axis__row:not(.is-drawing) {
-    transform: scaleX(0);
-  }
-
-  .axis__row.is-drawing:not(.is-instant) {
-    animation: motion-draw-x var(--row-for, 1200ms) linear both;
-  }
-}
-
-/* The branches (review #90): once the line reaches a service, its branch
-   grows out from the line, then the grip snaps in where it meets the
-   service; axis-line.ts sets --branch-at and --branch-for. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-axis-item]:not(.is-drawn) .service__branch {
-    transform: scaleX(0);
-  }
-
-  .js [data-axis-item]:not(.is-drawn) .service__branch::after {
-    opacity: 0;
-  }
-
-  [data-axis-item].is-drawn:not(.is-instant) .service__branch {
-    animation: motion-draw-x var(--branch-for, 240ms) var(--ease-pen)
-      var(--branch-at, 0ms) backwards;
-  }
-
-  [data-axis-item].is-drawn:not(.is-instant) .service__branch::after {
-    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
-      calc(var(--branch-at, 0ms) + var(--branch-for, 240ms)) backwards;
-  }
-}
-
-/* The trees (review #94–99): a branch is curved or bent, so it is not
-   scaled but uncovered from the line outwards, along its course (in the left
-   column from the right); then its arrow snaps in.
-   The arrow into the last stage's centred service has no branch before it,
-   so it snaps in as soon as the service starts. */
-@media (prefers-reduced-motion: no-preference) {
-  .js .axis--arrows [data-axis-item]:not(.is-drawn) .service__branch {
-    transform: none;
-    clip-path: inset(-1rem 100% -1rem -1rem);
-  }
-
-  .js
-    .axis--arrows
-    [data-axis-item]:nth-child(odd):not(.is-drawn)
-    .service__branch {
-    clip-path: inset(-1rem -1rem -1rem 100%);
-  }
-
-  .axis--arrows [data-axis-item].is-drawn:not(.is-instant) .service__branch {
-    animation: tree-branch var(--branch-for, 360ms) var(--ease-pen)
-      var(--branch-at, 0ms) backwards;
-  }
-
-  .axis--arrows
-    [data-axis-item]:nth-child(odd).is-drawn:not(.is-instant)
-    .service__branch {
-    animation-name: tree-branch-left;
-  }
-
-  .axis--arrows
-    [data-axis-item].is-drawn:not(.is-instant):last-child:nth-child(odd)
-    .service__branch::after {
-    animation-delay: var(--branch-at, 0ms);
-  }
-}
-
-@keyframes tree-branch {
-  from {
-    clip-path: inset(-1rem 100% -1rem -1rem);
-  }
-
-  to {
-    clip-path: inset(-1rem);
-  }
-}
-
-@keyframes tree-branch-left {
-  from {
-    clip-path: inset(-1rem -1rem -1rem 100%);
-  }
-
-  to {
-    clip-path: inset(-1rem);
-  }
-}
-
-/* Option 12, the schedule (review #101): a stage's bar draws from its
-   bubble, then its grip or arrow snaps in; a service's grip snaps in on its
-   stage's grid line; on phones, the milestone in stage 01's small schedule
-   snaps in after the bar. plan-schedule.ts sets --mark-at and --mark-for. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-plan] [data-plan-row]:not(.is-drawn) .plan-mark--stage {
-    transform: scaleX(0);
-  }
-
-  .js [data-plan] [data-plan-row]:not(.is-drawn) .plan-mark::after {
-    opacity: 0;
-  }
-
-  [data-plan] [data-plan-row].is-drawn:not(.is-instant) .plan-mark--stage {
-    animation: motion-draw-x var(--mark-for, 360ms) var(--ease-pen)
-      var(--mark-at, 0ms) backwards;
-  }
-
-  [data-plan] [data-plan-row].is-drawn:not(.is-instant) .plan-mark::after {
-    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
-      var(--mark-at, 0ms) backwards;
-  }
-
-  [data-plan]
-    [data-plan-row].is-drawn:not(.is-instant)
-    :is(.plan-mark--stage, .plan-mark--narrow)::after {
-    animation-delay: calc(var(--mark-at, 0ms) + var(--mark-for, 360ms));
-  }
-}
-
-/* Option 13, the circle (review #101): the arc isn't there until cycle.ts
-   draws it; a service's grip snaps in as the arc reaches it, and the arrow
-   when the arc closes. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-cycle] .cycle__arc {
-    stroke-dashoffset: 1;
-  }
-
-  .js [data-cycle] :is(.cycle__tick, .cycle__arrow):not(.is-reached) {
-    opacity: 0;
-  }
-
-  [data-cycle] .cycle__tick.is-reached:not(.is-instant) {
-    animation: motion-snap-in var(--motion-snap) var(--ease-snap) backwards;
-  }
-
-  [data-cycle] .cycle__arrow.is-reached:not(.is-instant) {
-    animation: motion-fade-in var(--motion-fast) var(--ease-standard) backwards;
-  }
-}
-
-/* Option 14, the tabs (review #101): the chosen tab's line draws from the
-   left in --motion-base and its grip snaps in as the line ends; the line of
-   the tab left behind fades, as a selection releases. stage-tabs.ts sets
+/* Option 14, the tabs, kept in the archive (review #101, #104;
+   src/lab/archive/): the chosen tab's line draws from the left in
+   --motion-base and its grip snaps in as the line ends; the line of the
+   tab left behind fades, as a selection releases. stage-tabs.ts sets
    `is-drawing` once the section is in view and on every choice, and
    `is-releasing` for --motion-fast. */
 @media (prefers-reduced-motion: no-preference) {

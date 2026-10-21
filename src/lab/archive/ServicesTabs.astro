@@ -1,5 +1,8 @@
 ---
 /**
+ * In the archive (review #104): not chosen for Home, kept so the client can
+ * come back to it; /lab/sto-radimo-2 shows it beside the chosen axis.
+ *
  * "Što radimo", option 14 "Kartice" (review #101): one stage at a time. The
  * three stages stand in a row as tabs, always in view, so the order 01 → 02
  * → 03 reads at a glance; under them, the chosen stage's tagline and its
@@ -20,13 +23,13 @@
  * three stages stand one after another, each with its title. With reduced
  * motion the tabs work as always, without the line drawing.
  */
-import "./services.css";
+import "../home/services.css";
 
 import Grips from "../../components/ui/Grips.astro";
 import Zone from "../../components/ui/Zone.astro";
 import { SERVICES } from "../copy.ts";
-import { CHAPTERS } from "./chapters.ts";
-import ServiceItem from "./ServiceItem.astro";
+import { CHAPTERS } from "../home/chapters.ts";
+import ServiceItem from "../home/ServiceItem.astro";
 
 interface Props {
   /** The heading's id; the comparison page shows several options. */

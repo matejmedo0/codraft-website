@@ -16,13 +16,6 @@
  *   NEXT_ROW_MS apart.
  * - Services already above the screen are complete at once, and the tip
  *   jumps past them.
- * - With branches (`data-axis-branches`, review #90) the line runs on to the
- *   last service's branch, and each service's branch grows out from the
- *   line in BRANCH_MS (or the attribute's value, in milliseconds) before its
- *   icon draws. With `data-axis-into` (the trees, review #94) the line ends
- *   at the top of the last service instead, where its arrow points in.
- *   (Without JavaScript or with reduced motion the last stage's rail runs to
- *   the end of its services.)
  * - An IntersectionObserver switches the scroll handling on only while the
  *   section is near the screen.
  *
@@ -31,7 +24,6 @@
  * script does nothing.
  */
 import { DURATION_MS, prefersReducedMotion } from "../../styles/motion.ts";
-import { initRow, ROW_FROM } from "./axis-row.ts";
 import { timeStrokes } from "./icons/icon-draw.ts";
 
 /** The tip aims at this share of the screen's height. */
@@ -48,8 +40,6 @@ const NEXT_ROW_MS = 60;
 const ROW_TOLERANCE_PX = 4;
 /** The section counts as near the screen this far ahead. */
 const NEAR: IntersectionObserverInit = { rootMargin: "50% 0px" };
-/** A branch grows from the line to its service in this time. */
-const BRANCH_MS = 240;
 
 interface Service {
   item: HTMLElement;
@@ -62,12 +52,6 @@ interface Service {
 interface Axis {
   root: HTMLElement;
   line: HTMLElement;
-  /** The services hang on branches, and the line runs through them all. */
-  branches: boolean;
-  /** How long a branch takes to grow. */
-  branchMs: number;
-  /** The line ends in an arrow into the last service. */
-  into: boolean;
   /** The line's top and length in the root, in pixels. */
   top: number;
   length: number;
@@ -82,10 +66,6 @@ function middle(element: Element): number {
   return box.top + box.height / 2;
 }
 
-function ms(value: number): string {
-  return `${String(Math.round(value))}ms`;
-}
-
 /** Places the line between the first and last bubble; measures services. */
 function layout(axis: Axis): void {
   const marks = [
@@ -95,18 +75,8 @@ function layout(axis: Axis): void {
   const last = marks.at(-1);
   if (first === undefined || last === undefined) return;
   const origin = axis.root.getBoundingClientRect().top;
-  const items = axis.root.querySelectorAll("[data-axis-item]");
-  const lastItem = items[items.length - 1];
-  // With branches the line ends on the last service's branch, at its icon;
-  // in a tree, at the top of the last service.
-  let end = middle(last);
-  if (axis.into && lastItem !== undefined) {
-    end = lastItem.getBoundingClientRect().top;
-  } else if (axis.branches && lastItem !== undefined) {
-    end = middle(lastItem.querySelector("[data-icon]") ?? lastItem);
-  }
   axis.top = middle(first) - origin;
-  axis.length = Math.max(end - origin - axis.top, 0);
+  axis.length = Math.max(middle(last) - origin - axis.top, 0);
   axis.line.style.top = `${String(axis.top)}px`;
   axis.line.style.height = `${String(axis.length)}px`;
 
@@ -150,13 +120,7 @@ function startPassed(axis: Axis, instantUpTo: number): void {
       inRow = 0;
     }
     const delay = row * NEXT_ROW_MS + inRow * NEXT_IN_ROW_MS;
-    if (axis.branches) {
-      service.item.style.setProperty("--branch-at", ms(delay));
-      service.item.style.setProperty("--branch-for", ms(axis.branchMs));
-    }
-    if (service.icon !== null) {
-      timeStrokes(service.icon, delay + (axis.branches ? axis.branchMs : 0));
-    }
+    if (service.icon !== null) timeStrokes(service.icon, delay);
     service.item.classList.add("is-drawn");
     inRow += 1;
   }
@@ -168,9 +132,6 @@ function init(root: HTMLElement): void {
   const axis: Axis = {
     root,
     line,
-    branches: root.dataset.axisBranches !== undefined,
-    branchMs: Number(root.dataset.axisBranches) || BRANCH_MS,
-    into: root.dataset.axisInto !== undefined,
     top: 0,
     length: 0,
     aim: 0,
@@ -251,10 +212,7 @@ function init(root: HTMLElement): void {
 }
 
 if (!prefersReducedMotion()) {
-  const isRow = window.matchMedia(ROW_FROM).matches;
   for (const root of document.querySelectorAll<HTMLElement>("[data-axis]")) {
-    // The layout "columns" runs its line across on wide screens.
-    if (isRow && root.dataset.axisRow !== undefined) initRow(root);
-    else init(root);
+    init(root);
   }
 }

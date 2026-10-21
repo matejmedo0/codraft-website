@@ -667,6 +667,33 @@ The client's answers to the four questions of batch 29, verbatim:
 | 103 | "Ne odabiremo krug"; "Ne odabiremom ni 14" | Options 13 and 14 are not chosen; nor is 12 (#102). | — | The client's choice | Decided |
 | 104 | "Možeš obriši ono što ne koristimo ostavi samo opciju 14 kartice negdje u arhivi da ako se vratim na to da imam" | Removed: every layout of `ServicesAxis.astro` but the central axis (options 1–11, among them 3 „Tri stupca“ and 4 with its frames), `TreeCrown.astro`, `axis-row.ts`, the branches and the trees in `axis-line.ts` and `services.css`, `ServiceItem`'s branch and slot, options 12 and 13 (`ServicesPlan.astro`, `plan-schedule.ts`, `ServicesCycle.astro`, `cycle.ts`). All of it stays in git history (the last commit with every option: `c5ffc0c`). Option 14 „Kartice“ moved to `src/lab/archive/` (`ServicesTabs.astro`, `stage-tabs.ts`), its motion still in `services.css`. `/lab/sto-radimo-2` is now the record: the chosen axis and the archived tabs. The older comparison `/lab/sto-radimo` (batch 3) stays as the record, as do the other comparison pages. | `src/lab/home/`, `src/lab/archive/` (new), `src/lab/pages/sto-radimo-2.astro`, the lab bar and index | The client's OK | Done |
 
+**Batch 31 (2026-10-21, fifth session): the order to the end of phase 2**
+
+The client opened the fifth session with this message, verbatim:
+
+> Nastavljamo fazu 2 (Dizajn), na hrvatskom, na grani phase/2-design (zadnji commit a5b79a5, pushano, CI zelen). Prvo pročitaj PROGRESS.md i docs/phases/2-design-review.md od odjeljka „Handover (2026-10-21)“, uključujući status na vrhu.
+>
+> Gdje smo: „Što radimo“ je riješen. Na /lab/pocetna je središnja os s korak krupnijim slovima usluga od 64rem (dorada 102). Ostale opcije su obrisane, a kartice (opcija 14) su u src/lab/archive/ i vide se na /lab/sto-radimo-2 (dorada 104).
+>
+> Redoslijed rada:
+> 0. Najprije me pitaj smiješ li obrisati i stariju usporedbu /lab/sto-radimo (prve tri opcije iz skupine 3: ServicesChapters.astro, ServicesSchedule.astro, process-line.ts). Briši tek uz moje jasno „da“.
+> 1. Ostatak kritike dizajna (dorada 92): 16, 17 i 18 iz skupine A (uz 18 isprobaj gripove na poveznicama u zaglavlju, dorada 91), zatim pitanja B (3, 5, 12, 13, 20, 21) i prijedlozi C (6, 14, 19, 22), pa ponovna provjera kritičara (ADR 0025). Nalaze su u docs/research/2026-10-21-design-critique-home.md.
+> 2. Usklađivanje Figme s kodom (dorada 68).
+> 3. Završne provjere i izvještaj (dorada 69), pa PR #2 i čekanje na moje „idemo dalje“.
+>
+> Pravila:
+> - Svaku moju poruku najprije doslovno zapiši kao novu skupinu (31, dorada 105 nadalje) u 2-design-review.md.
+> - Mijenjaj samo ono što tražim; šire promjene mi ponudi kao opcije.
+> - Na pitanja tipa „kako da… / ili da…?“ predloži rješenje i čekaj moj izričiti OK.
+> - Dev server je na portu 4321; ako ne odgovara, pokreni npm run dev u pozadini.
+> - Commitaj s git commit -F, a nakon svake skupine pushaj.
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 105 | "Najprije me pitaj smiješ li obrisati i stariju usporedbu /lab/sto-radimo (prve tri opcije iz skupine 3 …). Briši tek uz moje jasno „da“." | Asked before anything else. A deletion would remove the page `/lab/sto-radimo`, `ServicesChapters.astro`, `ServicesSchedule.astro` and `process-line.ts` in `src/lab/home/`, the page's entries in the lab bar, the lab index and `astro.config.ts`, and the mention in `services.css`'s comment. Lab D's chapters are another file (`src/lab/hybrid/ServicesChapters.astro`) and stay. | — | Deleting: only on the client's clear „da“ | Asked |
+| 106 | "Redoslijed rada: … 1. Ostatak kritike dizajna (dorada 92) … 2. Usklađivanje Figme s kodom (dorada 68). 3. Završne provjere i izvještaj (dorada 69) …" | The order of #92, #68 and #69 stands: group A 16–18 (with the grips on the header's links, #91), then B, then C, then the critic's re-check; then Figma; then the final checks, the report and PR #2. | [Handover](#handover-2026-10-21) | None | Recorded |
+| 107 | "Svaku moju poruku najprije doslovno zapiši …"; "Mijenjaj samo ono što tražim …"; "predloži rješenje i čekaj moj izričiti OK"; "Commitaj s git commit -F, a nakon svake skupine pushaj." | The rules of this review as before, plus a push after each batch. | — | None | Recorded |
+
 ## After the refinements
 
 1. Run the checks ([How to check a change](#how-to-check-a-change)): the lab check on the lab build, `npm run verify`, `npm run test:e2e`, and report screenshots from the lab build.

@@ -1,6 +1,6 @@
 # 0022. Service icons on Home, drawn as the line reaches them
 
-- **Status:** Accepted; point 3 superseded by [0023](0023-process-line-follows-the-screen.md)
+- **Status:** Accepted; point 3 superseded by [0023](0023-process-line-follows-the-screen.md); point 1 on phones superseded by [0028](0028-service-icons-on-phones-beside-the-title.md)
 - **Date:** 2026-10-20
 - **Deciders:** client (Codraft team), Claude
 

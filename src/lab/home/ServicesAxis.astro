@@ -178,6 +178,22 @@ const labelId = `${headingId}-opcija`;
     grid-column: 2;
   }
 
+  /* On phones the icon sits beside the title only, and the line runs under
+     both at the column's full width, so it isn't squeezed to 21-24
+     characters (critique 5, review #121; ADR 0028). */
+  @media (max-width: 47.99rem) {
+    .axis--icons-beside
+      .axis-stage__item
+      :global(:is(.service__icon, .service__title)) {
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .axis--icons-beside .axis-stage__item :global(.service__body) {
+      grid-column: 1 / -1;
+    }
+  }
+
   @media (min-width: 64rem) {
     /* The line down the middle, and the services' type a step larger for
        easier reading (#102). */

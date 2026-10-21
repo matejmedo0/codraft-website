@@ -1,0 +1,145 @@
+---
+/**
+ * Zone F: the team strip on Home (ADR 0007): the two people (ADR 0015),
+ * with their names and roles from the client (G3, phase 3 M2), and the
+ * full team on About. Until the photos arrive, each photo is a drafting
+ * placeholder, a frame with its diagonals, and a note says the photos come
+ * before launch; no stock or generated people stand in for the team
+ * (docs/brand.md, "Imagery").
+ */
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { TEAM } from "../../config/team.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const members = TEAM.map(({ id, name }) => ({
+  name,
+  role: t(locale, `team.${id}.role`),
+}));
+---
+
+<Zone labelledby="tim" class="home-team">
+  <div class="home-team__head">
+    <h2 id="tim">{t(locale, "home.team.title")}</h2>
+    <p class="home-team__note">{t(locale, "home.team.pending")}</p>
+    <a class="home-team__more" href={pathFor("about", locale)}>
+      {t(locale, "home.team.more")}
+    </a>
+  </div>
+  <ul class="home-team__list">
+    {members.map((member) => (
+      <li class="member">
+        <span class="member__photo" aria-hidden="true">
+          <svg
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            focusable="false"
+          >
+            <path d="M0 0L100 100M100 0L0 100" />
+          </svg>
+        </span>
+        <span class="member__name">{member.name}</span>
+        <span class="member__role">{member.role}</span>
+      </li>
+    ))}
+  </ul>
+</Zone>
+
+<style>
+  .home-team {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .home-team__note {
+    max-width: 30ch;
+    margin-top: var(--space-3);
+    color: var(--ink-muted);
+  }
+
+  /* The page's one style for a text link on paper, as in the hero. */
+  .home-team__more {
+    display: inline-block;
+    margin-top: var(--space-4);
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  .home-team__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .member {
+    display: grid;
+    align-content: start;
+    gap: 0.125rem;
+  }
+
+  .member__photo {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    margin-bottom: 0.625rem;
+    border: var(--rule) solid var(--line);
+    background: var(--surface-sunk);
+  }
+
+  .member__photo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .member__photo path {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .member__name {
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-strong);
+    line-height: 1.25;
+  }
+
+  .member__role {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  @media (min-width: 48rem) {
+    .home-team__list {
+      gap: var(--space-5);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .home-team {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    .home-team__head {
+      grid-column: 1 / span 4;
+    }
+
+    .home-team__list {
+      grid-column: 5 / span 6;
+      gap: var(--gap);
+    }
+  }
+</style>

@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 3 — Izrada stranica, od 22. 10. 2026., na grani `phase/3-pages`. Izvještaj faze je draft PR #3: https://github.com/matejmedo0/codraft-website/pull/3. Faza 2 (Dizajn) je gotova i odobrena: na vaše „idemo dalje“ 22. 10. 2026. spojena je u `main` (PR #2, merge commit).
 
-**Sljedeći korak:** Početna, korak 1. Dobivate argument stranice (tvrdnja i dokaz po zoni) i tekstove koji nedostaju, a izrada kreće tek s vašim OK-om. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
+**Sljedeći korak:** Početna je izrađena na `/` i `/en` po odobrenom argumentu (vaš OK, 22. 10. 2026.). Slijede vrijednosti izvan skale tokena (nalaz 19, odobren), postupak `/check` i vaš pregled. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
 
 Redoslijed stranica u fazi 3, svaka na hrvatskom i engleskom:
 1. Početna ← sada
@@ -241,6 +241,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Od skillova Emila Kowalskog u globalne skillove i pravila faza dodana su četiri, prilagođena projektu: `animate`, `animation-performance`, `mobile-native` i `break-ui` (s hrvatskim vrijednostima). Kod stranice se zasad ne mijenja. | [ADR 0026](docs/decisions/0026-emil-kowalski-skills-in-the-setup.md) |
 | 2026-10-20 | Taste Skill ne instaliramo. Iz njega smo preuzeli:<br>- pet provjera za `design-critic` (okvir stranice, ideja do zadnje zone, test „kostima“, tri razine detalja u crtežima, hrvatske tipografske sitnice)<br>- animacije vezane uz skrol i prijelaze između stranica u skillu `animate`<br>- argument stranice (tvrdnja i dokaz po zoni) kao prvi korak svake stranice u fazi 3<br>Kod stranice se ne mijenja. | [ADR 0027](docs/decisions/0027-taste-skill-ideas-in-the-setup.md) |
 | 2026-10-21 | „Što radimo“ na mobitelu: ikona usluge stoji samo uz naslov, a opis ide ispod nje punom širinom (opcija B iz kritike); od 768 px sve ostaje kao u ADR 0022 | [ADR 0028](docs/decisions/0028-service-icons-on-phones-beside-the-title.md) |
+| 2026-10-22 | Engleski: tehničko crtanje se zove „Architectural Drafting“ (`/en/architectural-drafting`), britanski pravopis, „Croatia“ u engleskim naslovima stranica | [ADR 0029](docs/decisions/0029-english-naming-spelling-and-titles.md) |
 
 ## Sitemap
 
@@ -250,7 +251,7 @@ Struktura je odobrena s planom (ADR 0003). Sekcije po stranicama su u `docs/info
 |---|---|---|---|---|
 | Početna | `/` | `/en` | Rezervirajte besplatnu analizu | 3 |
 | Usluge | `/usluge` | `/en/services` | Rezervirajte besplatnu analizu | 3 |
-| Tehničko crtanje | `/tehnicko-crtanje` | `/en/engineering-drafting` | Zatražite ponudu | 3 |
+| Tehničko crtanje | `/tehnicko-crtanje` | `/en/architectural-drafting` | Zatražite ponudu | 3 |
 | O nama | `/o-nama` | `/en/about` | Pošaljite upit (ADR 0017) | 3 |
 | Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` | Nastavite na odabir termina | 3 (forma: 4) |
 | Kontakt | `/kontakt` | `/en/contact` | Pošaljite upit | 3 (forma: 4) |
@@ -281,7 +282,7 @@ Pregled je u `docs/brand.md`.
 |---|---|---|
 | A | **Podaci o tvrtki:**<br>- pravni oblik i registrirani naziv<br>- sjedište<br>- sud i MBS ili obrtni registar<br>- OIB<br>- status u sustavu PDV-a<br>- banka i IBAN<br>- za (j.)d.o.o. još temeljni kapital i uprava | 3 (bez toga nema objave) |
 | B | **Kontakt:**<br>- e-mail i telefon<br>- je li adresa javna<br>- radno vrijeme<br>- grad i područje rada<br>- primate li klijente uživo<br>- rok u kojem odgovarate na upit<br>- profili na društvenim mrežama | 3 |
-| C | **Tim:**<br>- ime, uloga, kratka biografija i LinkedIn za svaku osobu<br>- pisana privola za objavu<br>- fotografije prema specifikaciji u `docs/brand.md` | 3 |
+| C | **Tim:**<br>- ✓ imena i uloge: Matej Medved i Tin Manjerović (22. 10. 2026.)<br>- kratka biografija i LinkedIn za svaku osobu (za O nama)<br>- pisana privola za objavu<br>- fotografije prema specifikaciji u `docs/brand.md` | 3 |
 | D | **CAD:**<br>- smijemo li prikazati pojedine projekte<br>- softver i verzija<br>- formati i standardi<br>- rokovi isporuke<br>- 2–3 uzorka izrađena posebno za stranicu | 3 |
 | E | **Poslovno:**<br>- opseg besplatne analize i što klijent dobiva<br>- prikazujemo li cijene<br>- mjesečna naknada za održavanje<br>- ✓ vlasništvo domene i koda: sve pripada klijentu (ADR 0021)<br>- NDA | 3 |
 | F | **Odobrenja:**<br>- HR nacrt postojećeg teksta<br>- prijedlozi S1–S19<br>- terminologija i obraćanje (vi/ti), u `docs/content.md`<br>- sve tekstove sami pregledavate i ispravljate na kraju faze 3, za sve stranice zajedno (vaša riječ, 20. i 21. 10. 2026.) | prije faze 3 |
@@ -317,7 +318,7 @@ Nijedno od ovih pitanja ne blokira početak faze 1. Odgovori trebaju najkasnije 
    - „analiza“ ili „audit“
    - ✓ „Tehničko crtanje“, samo za arhitekturu i građevinarstvo (vaša odluka, 19. 10. 2026., ADR 0018)
    - obraćanje „vi“ ili „ti“
-   - engleski britanskim ili američkim pravopisom
+   - ✓ engleski britanskim pravopisom, a tehničko crtanje na engleskom „Architectural Drafting“ (vaša odluka, 22. 10. 2026., ADR 0029)
 4. Koje prijedloge S1–S19 prihvaćate (`docs/content.md` §3)?
 5. Želite li ponuditi 2–3 partnerska projekta po nižoj cijeni, u zamjenu za objavljenu studiju slučaja (`docs/information-architecture.md`)?
 6. Hoće li i ostali članovi tima raditi s Claudeom na svojim računalima? Skillovi i agenti (npr. `/architecture`) postoje samo u `~/.claude` na ovom računalu. Ako da, prebacujemo ih u projekt.

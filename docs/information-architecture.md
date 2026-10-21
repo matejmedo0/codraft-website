@@ -18,7 +18,7 @@
 |---|---|---|---|---|---|---|
 | 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu (once, in the free audit teaser) | 3 |
 | 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu (once, in `#planiranje`) | 3 |
-| 3 | Tehničko crtanje / Engineering Drafting | `/tehnicko-crtanje` | `/en/engineering-drafting` | B2B drafting offer for architecture and construction | Zatražite ponudu | 3 |
+| 3 | Tehničko crtanje / Architectural Drafting | `/tehnicko-crtanje` | `/en/architectural-drafting` | B2B drafting offer for architecture and construction | Zatražite ponudu | 3 |
 | 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Pošaljite upit | 3 |
 | 5 | Besplatna analiza / Free audit | `/besplatna-analiza` | `/en/free-audit` | What we check and what you get; form, then time slot | Nastavite na odabir termina (form submit, leads to booking) | 3 (form: 4) |
 | 6 | Kontakt / Contact | `/kontakt` | `/en/contact` | General enquiries and drafting quote requests | Pošaljite upit | 3 (form: 4) |
@@ -60,7 +60,7 @@ Planned order:
 
 **Header**
 - HR: Usluge · Tehničko crtanje · O nama · Kontakt · EN
-- EN: Services · Engineering Drafting · About · Contact · HR
+- EN: Services · Architectural Drafting · About · Contact · HR
 - No button: the header serves both audiences, so it offers no sales action ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - The language switcher links to the *same page* in the other language; it does not go to the home page.
 - No "Radovi" item until real case studies exist.
@@ -118,7 +118,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 7. **Team strip:** photos, names, roles (N, G3).
 8. **Closing CTA:** the client's heading "Imate skicu, stranicu ili samo ideju?" and lead (review batch 11, [content.md](content.md) "Prototype copy"), and one button, "Pošaljite upit" (ADR 0017).
 
-**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M1; **proposed**, waiting for the client's OK). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
+**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M1; **approved** by the client the same day: „Odobravam uglavnom kreni s izradom“, M2). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
 
 | Zone | Claim | Proof | Proof today |
 |---|---|---|---|
@@ -149,7 +149,7 @@ Rules applied: no zone lacks a claim, so none is cut. A claim without proof at l
 6. **FAQ, 6–8 questions** (N, G8).
 7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
-### Tehničko crtanje / Engineering Drafting (`/tehnicko-crtanje`)
+### Tehničko crtanje / Architectural Drafting (`/tehnicko-crtanje`)
 
 1. **Hero:** H1 "Tehničko crtanje za arhitekturu i građevinarstvo" (I); `drafting.tagline`, `drafting.audience` (P).
 2. **The three services:** `drafting.cad.*`, `drafting.3d.*` (P; added 2026-10-19, [ADR 0019](decisions/0019-drafting-adds-3d-models.md)) and `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
@@ -212,7 +212,7 @@ Validated in phase 3 with the `seo` skill. The city is added once known.
 | `/tehnicko-crtanje` | "tehničko crtanje", "CAD crtanje", "AutoCAD crtanje", "digitalizacija nacrta" |
 | `/besplatna-analiza` | "besplatna analiza web stranice" |
 | `/en` | "web design and development Croatia" |
-| `/en/engineering-drafting` | "CAD drafting services", "drafting outsourcing" |
+| `/en/architectural-drafting` | "architectural drafting services", "CAD drafting services", "drafting outsourcing" ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 
 FAQ copy is written for people and for AI search. Since August 2023, Google shows FAQ rich results only for well-known government and health sites, so don't expect them here.
 

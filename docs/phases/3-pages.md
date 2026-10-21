@@ -1,6 +1,6 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: step 1, the page's argument and its missing copy, put to the client; the build waits for the client's OK (M1).
+- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: the argument approved (M2) and the page built in both languages; critique 19 and the `/check` procedure next.
 - **Branch:** `phase/3-pages`, created from `main` after the merge of PR #2. Draft PR #3 is the phase report.
 
 ## Start here (2026-10-21)
@@ -190,3 +190,33 @@ Each of the client's messages is recorded here verbatim before anything changes.
     > - Commitaj s git commit -F, a nakon svake skupine pushaj.
   - **The phase gate** (M1, step 0): CI on PR #2 was green for its last commit, `509c1e7`. PR #2 was merged into `main` with a merge commit (`1f36f82`), and `phase/3-pages` was created from `main` and pushed. `PROGRESS.md`, [2-design.md](2-design.md) and this document are updated, and draft PR #3 is open, so CI checks every push.
   - **Početna, steps 1–2** (M1, item 1): the page's argument, a claim and its proof per zone, is in [information-architecture.md](../information-architecture.md) (Home, "The page's argument"); the drafts of the missing copy are in [content.md](../content.md) ("Home, phase 3"), with suggestion S20. Two zones lack proof today: the free audit (G4, G19) and the team strip (G3). Put to the client with the decisions the build needs: the audit's facts, the team's data, the optional line in the closing call to action, and the English name of the drafting service with the spelling and S15. The company data (item A) and the rest of the contact data (item B) wait for the Impresum and Kontakt pages; until then the title block keeps "Stiže prije objave". Nothing is built before the client's OK.
+  - **M2**, the client's answer, verbatim:
+
+    > Trenutno tekst neka bude kakav je prije pusha ću ti ja reći u konačnoj verziji što točno izmjenjujemo neka tekst ostane kako si napravio sada.
+    > 2. Tim jesu dvije osobe prva osoba ( ja ):
+    > Matej Medved , ja sam Full Stack Web Developer , SEO radim , dizajne , - ukratko ideju pretvaram u stvarnost što se tiče weba i AI asisteni i AI na stranici
+    > A druga osoba je :
+    > Tin Manjerović
+    > SEO optimizacija isto
+    > AI asistenti
+    > Tehničko Crtanje
+    >
+    > 3. Završni poziv , da sam smisli tekst.
+    > 4. Engleski po preporuci Croatia , i sve po preporuci onda
+    > Podatci o tvrtci slike i ostale stvari naknadno koje nisam naveo ako ne blokiraju fazu
+    > 19) može
+    >
+    > Odobravam uglavnom kreni s izradom
+  - **What M2 decided:**
+    - The page's argument is approved; the build starts.
+    - The copy stays as drafted for now; before launch the client says what changes in the final version. So the audit's lead goes in without brackets, and its facts (what is checked, the 30-minute call, the written summary, "bez obveze") wait for the client's confirmation before launch.
+    - The team: Matej Medved and Tin Manjerović, with their roles (G3, part of item C). The photos, the bios and the written consent come later.
+    - The closing call to action gets a note under its lead, written by Claude: the reply time (one working day, a commitment the client confirms before launch) and sketches by email (ADR 0020).
+    - The English as recommended: "Architectural Drafting" at `/en/architectural-drafting` (S20), British spelling (S3), "Croatia" in English titles (S15): [ADR 0029](../decisions/0029-english-naming-spelling-and-titles.md).
+    - Critique 19 (values off the token scale) is approved.
+    - The company data, the photos and the rest come later, as long as they don't block the phase.
+  - **Početna, step 3, the build** (skills loaded: `seo`, `i18n-sync`):
+    - Home's zones are ported from `src/lab/home/` to `src/views/home/`, with only the client's choices (the roof, palette 1, the icons beside the text); the lab is unchanged, as the record. The services' catalogue and icons are in `src/features/services/` for `/usluge` too, the team's names in `src/config/team.ts`.
+    - Every line is a locale key (`docs/content.md`, "Home, phase 3"), in Croatian and in British English; the English slug of the drafting page and its navigation label follow ADR 0029.
+    - SEO: the title and meta description per language from the view registry in `[...slug].astro`, Open Graph tags in BaseLayout, and a `ProfessionalService` JSON-LD with only today's facts (`src/features/seo/`, 5 unit tests). The OG image comes later in the phase, with the other pages.
+    - **Checks:** each zone against `/lab/pocetna` at 375–1920 px in its final state: the hero and "Što radimo" are pixel-identical, the drafting zone and "Kako radimo" identical but for a 1 px offset, and the audit, the team and the closing call to action differ only by their new text. The dev server and the build under the CSP, `/` and `/en` at 375, 768 and 1440 px (the dev server also at 1024 and 1920): no console errors, axe clean, no overflow; a slow scroll draws every part, and without JavaScript nothing is hidden. `npm run verify`: 178 unit tests, 4.0 KB of JavaScript on Home. The E2E smoke test checks Home's H1, title, description, Open Graph URL and JSON-LD in both languages; CI runs it.

@@ -2,13 +2,15 @@
 import "../styles/global.css";
 
 import archivoCore from "../assets/fonts/archivo-core.woff2?url";
-import type { Locale } from "../config/site.ts";
+import { type Locale, OG_LOCALES, SITE_NAME } from "../config/site.ts";
 import type { PageId } from "../features/i18n/route-map.ts";
-import { alternatesFor, urlFor } from "../features/i18n/urls.ts";
+import { alternatesFor, otherLocale, urlFor } from "../features/i18n/urls.ts";
 
 interface Props {
   locale: Locale;
   title: string;
+  /** The meta description, also used for Open Graph (G28). */
+  description?: string | undefined;
   /**
    * The route-map page, for the canonical and hreflang links. The 404 pages
    * have none and are marked noindex.
@@ -21,7 +23,7 @@ interface Props {
   preloadFont?: boolean;
 }
 
-const { locale, title, page, preloadFont = true } = Astro.props;
+const { locale, title, description, page, preloadFont = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,6 +32,9 @@ const { locale, title, page, preloadFont = true } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    {description !== undefined && (
+      <meta name="description" content={description} />
+    )}
     {preloadFont && (
       <link
         rel="preload"
@@ -52,6 +57,20 @@ const { locale, title, page, preloadFont = true } = Astro.props;
         {alternatesFor(page).map(({ hreflang, href }) => (
           <link rel="alternate" hreflang={hreflang} href={href} />
         ))}
+        {/* Open Graph for link previews; the per-page image is generated
+             later in phase 3 (docs/phases/3-pages.md, "OG images"). */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={title} />
+        {description !== undefined && (
+          <meta property="og:description" content={description} />
+        )}
+        <meta property="og:url" content={urlFor(page, locale)} />
+        <meta property="og:locale" content={OG_LOCALES[locale]} />
+        <meta
+          property="og:locale:alternate"
+          content={OG_LOCALES[otherLocale(locale)]}
+        />
       </>
     ) : (
       <meta name="robots" content="noindex" />

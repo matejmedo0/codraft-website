@@ -37,16 +37,20 @@ codraft-website/
 │   │   │                  SkipLink, Wordmark, and draw.ts (the one-shot draws)
 │   │   └── site/          Site chrome that reads the route map: Header (with menu.ts), Footer (the title block),
 │   │                      LanguageSwitcher
-│   ├── config/            site.ts (site URL, locales) and company.ts (the title block's company data): the bottom layer
+│   ├── config/            site.ts (site URL, locales), company.ts (the title block's company data) and team.ts (the team's
+│   │                      names): the bottom layer
 │   ├── env.d.ts           Astro's client types for plain .ts files (`?raw`, `?url`)
-│   ├── features/i18n/     Route map, URL helpers, navigation lists, UI-string lookup, with their tests
+│   ├── features/
+│   │   ├── i18n/          Route map, URL helpers, navigation lists, UI-string lookup, with their tests
+│   │   ├── seo/           Structured data (JSON-LD), with its tests
+│   │   └── services/      The services' catalogue (stages, anchors, copy keys) and the nine service icons
 │   ├── lab/               The phase 2 design lab: prototypes A–E, the style page, their fonts and components (see below)
 │   ├── layouts/           BaseLayout (<html lang>, head, fonts, icons, canonical, hreflang) and SiteLayout (the sheet)
 │   ├── lib/               Pure helpers: contrast.ts
 │   ├── locales/           UI strings: hr.json and en.json
 │   ├── pages/             [...slug].astro (every route-map page), 404.astro, en/404.astro, api/health.ts
 │   ├── styles/            global.css with tokens.css, motion.css, fonts.css, base.css, utilities.css; motion.ts
-│   └── views/             One view per page: HomeView, NotFoundView
+│   └── views/             One view per page: HomeView (its zones and the floor plan in home/), NotFoundView
 ├── tests/e2e/             Playwright tests
 ├── astro.config.ts · tsconfig.json · eslint.config.js · prettier.config.mjs · vitest.config.ts · playwright.config.ts
 └── CLAUDE.md · CONTRIBUTING.md · PROGRESS.md · README.md
@@ -57,6 +61,7 @@ codraft-website/
 - **What it carries:** the pages have no route-map entry, so they are noindex. The style page is built from the production components; the prototypes keep their own, unlayered styles.
 - **Fonts:** the lab's fonts sit in `src/lab/fonts/` and are emitted only when a lab page uses them.
 - **Checks:** lint, typecheck and the unit tests cover the lab. Check the prototypes under the real CSP with `npm run build:lab`; CI builds without them.
+- **After the port:** phase 3 builds each page from its lab design into `src/views/`. Home's production code (`src/views/home/`) is a copy of `src/lab/home/` with only the client's choices (the roof, palette 1, the icons beside the text) and the copy from the locales; the lab stays unchanged as the record, and removing lab code needs the client's OK.
 
 **The design system (phase 2, [ADR 0015](decisions/0015-design-direction-model-i-list.md)).**
 - **Tokens** are CSS custom properties in `src/styles/`, all inside cascade layers (`reset`, `tokens`, `base`, `utilities`), so unlayered component styles always win. Components use role tokens (`--ink`, `--surface`, `--line`, …), never the palette; `.surface-navy` switches the roles to the navy surface. `tokens.test.ts` checks the contrast of every text pair, and `motion.test.ts` keeps `motion.ts` (for React islands) in step with `motion.css`.
@@ -68,13 +73,13 @@ codraft-website/
 
 **Planned additions, when a phase needs them:**
 - `src/features/<feature>/`: `audit-form/`, `contact-form/`, `consent/`, `chatbot/` (phase 4). Server-only code goes in a `server/` folder inside the feature.
-- Long copy per locale, generated from the block IDs in `content.md` (phase 3)
+- Long copy per locale (the legal pages), if a page's text outgrows the locale files (phase 3)
 
 ## How a page is built
 
 1. **The route map** (`src/features/i18n/route-map.ts`) lists every launch page with its slug in each language. Slugs stay provisional until the client approves the Croatian terminology.
-2. **The catch-all route** (`src/pages/[...slug].astro`) holds the view registry in its `getStaticPaths`. Every page that has a view is generated in both languages: `/`, `/en`, `/usluge`, `/en/services`, … Pages without a view exist only in the route map. Until phase 3 only `home` has a view.
-3. **BaseLayout** sets `<html lang>`, the title, the canonical link and the reciprocal hreflang links (`x-default` points to English), all from the route map. The 404 pages have no route-map entry and are marked noindex.
+2. **The catch-all route** (`src/pages/[...slug].astro`) holds the view registry in its `getStaticPaths`: each page's view and the locale keys of its title and meta description. Every page that has a view is generated in both languages: `/`, `/en`, `/usluge`, `/en/services`, … Pages without a view exist only in the route map. Phase 3 adds the views page by page.
+3. **BaseLayout** sets `<html lang>`, the title, the meta description, the canonical link, the reciprocal hreflang links (`x-default` points to English) and the Open Graph tags, all from the route map. The 404 pages have no route-map entry and are marked noindex. A view adds its own structured data (`src/features/seo/`) as a JSON-LD script, which is data, not script, so the CSP doesn't apply to it.
 4. **The build** writes static HTML to `dist/client`. Every page carries Astro's hash-based CSP in a `<meta>` tag. The `/api/*` routes (`export const prerender = false`) go into the Node server, `dist/server/entry.mjs`.
 5. **In production** (phase 7), Caddy serves `dist/client`, sends the security headers and proxies `/api/*` to the Node server.
 
@@ -93,7 +98,7 @@ codraft-website/
 ### Content, i18n and design tokens
 
 - **Content and translations live outside components.**
-  - Copy flows from [content.md](content.md) into locale files, one key per content block ID.
+  - Copy flows from [content.md](content.md) into locale files, one key per content block ID. A page's copy is UI strings too: `content.md` lists each line with its key (for Home: "Home, phase 3").
   - UI strings go in `src/locales/{hr,en}.json` and are read with `t(locale, key)`. Both files must have the same keys: a type check catches missing English keys, and a unit test catches extra ones.
   - The phase 1 strings (the 404 title and link) are placeholders; the real copy (gap G27) comes in phase 3.
 - **One route map** drives the navigation, the language switcher, hreflang, `sitemap.xml` and canonicals ([ADR 0002](decisions/0002-croatian-default-english-secondary.md)). Never hard-code a URL, and never build a canonical from `Astro.url`, which keeps a trailing slash in directory builds.

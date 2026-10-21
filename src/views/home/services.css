@@ -1,0 +1,139 @@
+/*
+ * "Što radimo" on Home (HomeServices.astro): the stages' bubbles, titles and
+ * taglines, the process line and the icons' drawing. Global, because the
+ * icons' strokes live in ServiceIcon.astro; every class here is the zone's
+ * own.
+ */
+
+.svc {
+  --bubble: 2.75rem;
+  /* The services' one line, larger than body text (review batch 3). */
+  --step-service: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+}
+
+.svc > h2 {
+  margin-bottom: var(--space-6);
+}
+
+/* A grid bubble, as at the end of a drawing's grid line. */
+.svc-bubble {
+  display: grid;
+  place-items: center;
+  width: var(--bubble);
+  height: var(--bubble);
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-stretch: var(--width-label);
+  font-weight: var(--weight-strong);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.svc-title {
+  font-size: var(--step-chapter);
+  font-weight: var(--weight-chapter);
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+
+.svc-tagline {
+  color: var(--ink-muted);
+  font-size: var(--step-lead);
+  line-height: 1.4;
+}
+
+.svc-items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The process line, one stretch per stage: the line without JavaScript or
+   with reduced motion. */
+.svc-rail {
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+/* The central axis: the line follows the screen and the service icons draw
+   as it reaches them (review batches 14 and 15; axis-line.ts eases the line
+   frame by frame). The text never waits. Without JavaScript, or with
+   reduced motion, the stages' rails draw the line complete and the icons
+   are complete. */
+.axis__line {
+  display: none;
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One line, set by the script, in place of the rails. */
+  .js [data-axis] .svc-rail {
+    display: none;
+  }
+
+  .js .axis__line {
+    display: block;
+    transform: scaleY(var(--progress, 0));
+  }
+
+  /* An icon isn't there until its row starts; then its strokes run along
+     their paths (icon-draw.ts) and the grip snaps in. Once drawn, a stroke
+     is plain again. */
+  .js [data-axis-item]:not(.is-drawn) [data-stroke] {
+    opacity: 0;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant)
+    :is([data-stroke="ink"], [data-stroke="line"]) {
+    animation: icon-stroke var(--for, 220ms) var(--ease-pen) var(--at, 0ms)
+      backwards;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant) [data-stroke="grip"] {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: icon-grip var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      backwards;
+  }
+}
+
+/* Hidden at the very start, so a square cap never shows as a dot. */
+@keyframes icon-stroke {
+  0% {
+    opacity: 0;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes icon-grip {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

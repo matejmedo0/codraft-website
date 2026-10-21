@@ -30,8 +30,9 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | Hosting & Maintenance | **Hosting i održavanje** | — | `#hosting` · `#hosting` |
 | SEO & Local Visibility | **SEO i lokalna vidljivost** | Vidljivost na Googleu | `#seo` · `#seo` |
 | Analytics & Compliance | **Analitika i usklađenost** | Analitika, kolačići i pristupačnost | `#analitika` · `#analytics` |
-| Engineering Drafting | **Tehničko crtanje** (the client's choice, [ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)) | CAD crtanje | `/tehnicko-crtanje` · `/en/engineering-drafting` |
+| Architectural Drafting (was "Engineering Drafting"; S20, [ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) | **Tehničko crtanje** (the client's choice, [ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)) | CAD crtanje | `/tehnicko-crtanje` · `/en/architectural-drafting` |
 | CAD Drafting | **2D CAD crteži** | CAD crtanje u AutoCAD-u | `#2d-crtezi` · `#cad-drafting` |
+| 3D Models | **3D modeli** ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)) | — | `#3d-modeli` · `#3d-models` |
 | Technical Documentation | **Tehnička dokumentacija** | — | `#dokumentacija` · `#documentation` |
 | Free audit | **Besplatna analiza** | Besplatni audit; Besplatni pregled | `/besplatna-analiza` · `/en/free-audit` |
 | Book a free audit | **Rezervirajte besplatnu analizu** | Zatražite besplatnu analizu | — |
@@ -158,19 +159,19 @@ Each EN line is identical to the client's text. Where the original puts a title 
   - EN: Analytics, cookie consent and accessibility set up properly, so you can measure results and meet EU requirements.
   - HR `draft`: Analitika, privola za kolačiće i pristupačnost postavljene kako treba, da možete mjeriti rezultate i ispuniti zahtjeve EU-a.
 
-### Engineering Drafting (own page)
+### Architectural Drafting (own page)
 
 - **`drafting.title`**
-  - EN: Engineering Drafting
-  - HR `draft`: Tehničko crtanje (the client's choice, ADR 0018; the EN waits for S19)
+  - EN: Architectural Drafting (S20, accepted 2026-10-22; was "Engineering Drafting")
+  - HR `draft`: Tehničko crtanje (the client's choice, ADR 0018)
 - **`drafting.tagline`**
   - EN: Precise drawings, delivered on deadline.
   - HR `draft`: Precizni crteži, isporučeni u roku.
   - Not on Home: the client removed it from Home's drafting zone (review batch 8, 2026-10-19: "obriši u potpunosti"). Whether the drafting page keeps it is the client's call in phase 3.
 - **`drafting.audience`**
-  - EN: For architects, engineering firms and manufacturers who need extra drafting capacity.
+  - EN: For architecture practices and construction companies that need extra drafting capacity. (S19's line, accepted with S20 on 2026-10-22; was "For architects, engineering firms and manufacturers who need extra drafting capacity.")
   - HR `draft`: Za arhitektonske urede i tvrtke u građevinarstvu kojima treba dodatni kapacitet za crtanje.
-  - Architecture and construction only, at the client's request (ADR 0018). The EN keeps its three audiences until S19.
+  - Architecture and construction only, at the client's request (ADR 0018).
 - **`drafting.cad.title`**
   - EN: CAD Drafting
   - HR `draft`: 2D CAD crteži
@@ -198,7 +199,7 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 |---|---|---|---|---|---|
 | S1 | `plan.body` | "free review" | "free audit", to match the CTA | No | pending |
 | S2 | `build.websites.*` | "Online Stores" in the title, "e-shops" in the body | One term in both, e.g. "online stores" | No | pending |
-| S3 | `build.integrations.body` | "inquiry" (US spelling) | "enquiry", if British English is chosen (the brand README uses "colour") | No (spelling convention to decide) | pending |
+| S3 | `build.integrations.body` | "inquiry" (US spelling) | "enquiry", if British English is chosen (the brand README uses "colour") | No (spelling convention to decide) | accepted 2026-10-22: British English ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 | S4 | `build.integrations.body` | "payments and CRM" | "payments and your CRM"; consider naming "online booking" for search | No | pending |
 | S5 | `run.analytics.body` | "…accessibility set up properly, so you can…" | "…accessibility, set up properly so you can…" | No | pending |
 | S6 | `run.analytics.body` | "meet EU requirements" | "help you meet EU requirements". A technical setup is not legal compliance. | **Yes** | pending |
@@ -210,12 +211,12 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 | S12 | `build.ai.body` | — | Add "clearly labelled as AI". EU AI Act Art. 50 then becomes a selling point. | **Yes** | pending |
 | S13 | `drafting.cad.body` | "in AutoCAD" | "in AutoCAD (DWG)"; confirm the versions you deliver | No | pending |
 | S14 | all | — | Typographic apostrophes and quotes everywhere on the site; Croatian uses „…“ | No | pending |
-| S15 | page metadata only | — | Add "Croatia" to English page titles and meta descriptions, not to body copy | No | pending |
+| S15 | page metadata only | — | Add "Croatia" to English page titles and meta descriptions, not to body copy | No | accepted 2026-10-22 ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 | S16 | `build.integrations.body` | — | Local angle: mention e-invoicing (eRačun) and fiscalisation integrations for Croatian businesses | **Yes** (new claim) | pending |
 | S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | pending |
 | S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | pending |
-| S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | pending |
-| S20 | `drafting.title`, `nav.drafting`, the EN slug (2026-10-22, an alternative to S19) | "Engineering Drafting" (`/en/engineering-drafting`) | "Architectural Drafting" (slug `/en/architectural-drafting`), with S19's audience line. It is the term architects and builders search for in English ("architectural drafting services"); "Technical Drawing" reads as the school subject or general engineering, and "Engineering Drafting" suggests engineering, which ADR 0018 leaves out | **Yes** | pending |
+| S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | rejected 2026-10-22: S20 instead; its audience line is kept |
+| S20 | `drafting.title`, `nav.drafting`, the EN slug (2026-10-22, an alternative to S19) | "Engineering Drafting" (`/en/engineering-drafting`) | "Architectural Drafting" (slug `/en/architectural-drafting`), with S19's audience line. It is the term architects and builders search for in English ("architectural drafting services"); "Technical Drawing" reads as the school subject or general engineering, and "Engineering Drafting" suggests engineering, which ADR 0018 leaves out | **Yes** | accepted 2026-10-22 ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 
 ## 4. Content gaps
 
@@ -390,26 +391,95 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | SEO i lokalna vidljivost | Rad na vašem položaju na Googleu i u AI tražilicama. | `run.seo.body` |
 | Analitika i usklađenost | Analitika, kolačići i pristupačnost postavljeni kako treba. | `run.analytics.body` |
 
-### Home, phase 3 (gap copy, 2026-10-22)
+### Home, phase 3 (2026-10-22)
 
-Drafts for Home's missing copy, from the page's argument ([information-architecture.md](information-architecture.md), Home, "The page's argument"). Put to the client on 2026-10-22 (M1); nothing is built before the client's OK. Square brackets hold the client's facts, still to come. Every other line on Home stays as under "Prototype copy" above, and all of them are proofread by the client at the end of phase 3 (#73).
+The copy of the real Home (`/`, `/en`), with the locale key of each line. It follows the page's argument ([information-architecture.md](information-architecture.md), Home, "The page's argument"), which the client approved on 2026-10-22 ("Odobravam uglavnom kreni s izradom", M2). Every line is `draft`. The client's word on the text (M2): it stays as drafted for now, and before launch the client says what changes in the final version; all of it is proofread with every page at the end of phase 3 (#73).
 
-| Where | HR `draft` | Source | Waiting for |
+**Croatian.** The lines new in phase 3; every other Croatian line is as under "Prototype copy" above, and the table further down lists every key.
+
+| Where | Key | HR `draft` | Source |
 |---|---|---|---|
-| Free audit, lead (replaces the lead and the placeholder note "Popis onoga što analiza provjerava stiže prije objave.") | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. Provjeravamo [brzinu, prikaz na mobitelu, Profil tvrtke na Googleu, pristupačnost i vidljivost u AI tražilicama]. Dobivate [razgovor od 30 minuta i pisani sažetak s prioritetima], bez obveze. | G4 and G19; `plan.body`; the case without a site as in S11 (changes meaning); critique 22, points 1–2: the lead no longer repeats stage 01 and speaks to visitors without a site too | The client: what is checked (G4), what you get (G19), whether it is without obligation, and whether businesses without a site get it |
-| Free audit, the three steps | Unchanged: **Forma:** Ispunite kratku formu. · **Termin:** Odaberite termin u kalendaru. · **Potvrda:** Dobivate potvrdu termina. | ADR 0007; critique 22, point 3: they describe the booking, which the lead now balances with what the audit gives | — |
-| Closing CTA, one line under the lead (**option**: it adds an element to the zone) | Odgovaramo u roku od [jednog radnog dana]. Skice i nacrte možete poslati i na [e-mail]. | G23; [ADR 0020](decisions/0020-drawings-arrive-by-email.md) (sketches by email); critique, communication Q3 | The client: the option, the reply time, the email address |
-| Team strip | No new line: the names, roles and photos of two people (G3) replace the placeholders and the note "Fotografije, imena i uloge stižu u fazi 3." | G3 | The client (item C) |
-| Home, `<title>` | Izrada web stranica, softvera i AI alata \| Codraft | G28; keyword map (`/`: the brand and "izrada web stranica"; the city once known) | — |
-| Home, meta description (151 characters) | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate za tvrtke. Opseg, rok i cijenu znate prije početka rada. Počnite besplatnom analizom. | G28; the hero's H1 and lead, `plan.body` | — |
-| Home, OG image's text alternative | Codraft: planiramo, izrađujemo i održavamo web stranice, softver i AI alate. | G28; the H1 | — |
+| Free audit, lead (replaces the lead and the placeholder note "Popis onoga što analiza provjerava stiže prije objave.") | `home.audit.lead` | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. Provjeravamo brzinu, prikaz na mobitelu, Profil tvrtke na Googleu, pristupačnost i vidljivost u AI tražilicama. Dobivate razgovor od 30 minuta i pisani sažetak s prioritetima, bez obveze. | G4 and G19, Claude's draft: what is checked, the 30-minute call, the written summary and "bez obveze" are **facts the client confirms before launch** (M2); the case without a site as in S11; critique 22, points 1–2 |
+| Closing CTA, a note under the lead | `home.closing.note` | Odgovaramo u roku od jednog radnog dana. Skice i nacrte primamo i e-mailom. | Written by Claude at the client's request ("da sam smisli tekst", M2). The reply time (G23) is a commitment **the client confirms before launch**; sketches come by email ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)), and the address is on Kontakt (G24) |
+| Team strip, first person | `team.matejMedved.role` | Matej Medved · Web razvoj, dizajn, SEO i AI asistenti | The client (M2): "Full Stack Web Developer, SEO radim, dizajne … što se tiče weba i AI asisteni i AI na stranici". The title "Full stack web developer" and the longer description are for About (G15) |
+| Team strip, second person | `team.tinManjerovic.role` | Tin Manjerović · Tehničko crtanje, SEO i AI asistenti | The client (M2): "SEO optimizacija isto, AI asistenti, Tehničko Crtanje" |
+| Team strip, note | `home.team.pending` | Fotografije stižu prije objave. | Replaces "Fotografije, imena i uloge stižu u fazi 3."; the photos and the written consent come later (item C) |
+| Home, `<title>` | `meta.home.title` | Izrada web stranica, softvera i AI alata \| Codraft | G28; keyword map (`/`: the brand and "izrada web stranica"; the city once known) |
+| Home, meta description (151 characters) | `meta.home.description` | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate za tvrtke. Opseg, rok i cijenu znate prije početka rada. Počnite besplatnom analizom. | G28; the hero's H1 and lead, `plan.body` |
 
-**English.** The English of every Home line is drafted here after the client's OK on the argument and three decisions: the drafting service's English name (S19 or S20), British or American spelling (S3), and "Croatia" in English titles (S15). The client reads it with every other text at the end of phase 3 (#73). Drafts for the metadata, with S15 and British spelling:
+**Every key on Home, HR and EN.** British English ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)). Where the client's English exists (§2), it is used verbatim; every other English line is a new draft, translated from the Croatian above it.
 
-| Where | EN `draft` | Source |
-|---|---|---|
-| Home, `<title>` | Websites, software and AI tools in Croatia \| Codraft | G28; S15; keyword map (`/en`: "web design and development Croatia") |
-| Home, meta description | We plan, build and look after websites, software and AI tools for businesses in Croatia. Fixed scope, timeline and price before any work starts. | G28; `services.intro`, `plan.body` |
+| Key | HR `draft` | EN `draft` | EN source |
+|---|---|---|---|
+| `meta.home.title` | Izrada web stranica, softvera i AI alata \| Codraft | Websites, software and AI tools in Croatia \| Codraft | New; S15 |
+| `meta.home.description` | (above) | We plan, build and look after websites, software and AI tools for businesses in Croatia. Fixed scope, timeline and price before any work starts. | From `services.intro` and `plan.body`; S15 |
+| `meta.country` | Hrvatska | Croatia | Structured data (`areaServed`) |
+| `home.hero.titleLine1` | Planiramo, izrađujemo i održavamo | We plan, build and look after | From `services.intro` |
+| `home.hero.titleLine2` | web stranice, softver i AI alate. | websites, software and AI tools. | `services.intro` |
+| `home.hero.lead` | Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas. | For businesses that want to know where they stand: you get the scope, timeline and price before any work starts, and we stay with you after launch. | New |
+| `home.hero.cta` | Pogledajte usluge | See our services | New |
+| `home.hero.drafting` | Tehničko crtanje za arhitekturu i građevinarstvo | Architectural drafting for architects and builders | New; S20 |
+| `services.title` | Što radimo | What we do | The client |
+| `plan.title` | Planiranje | Plan | `plan.heading`, without its number |
+| `plan.tagline` | Prvo jasnoća. | Start with clarity. | The client |
+| `plan.audit.title` | Besplatna analiza | Free audit | Glossary |
+| `plan.audit.short` | Pregled vaše web stranice i vidljivosti na Googleu. | A review of your website and Google visibility. | From `plan.body` |
+| `plan.scope.title` | Fiksni opseg, rok i cijena | Fixed scope, timeline and price | From `plan.body` |
+| `plan.scope.short` | Znate ih prije početka rada. | You know them before work starts. | New |
+| `build.title` | Izrada | Build | `build.heading`, without its number |
+| `build.tagline` | Web stranice i softver prilagođeni načinu na koji stvarno radite. | Websites and software shaped around how you actually work. | The client |
+| `build.websites.title` | Web stranice i web trgovine | Websites & Online Stores | The client |
+| `build.websites.short` | Brze, prilagođene mobitelu i usmjerene na upite i narudžbe. | Fast, mobile-first and built for enquiries and orders. | From `build.websites.body` |
+| `build.apps.title` | Web aplikacije i interni alati | Web Apps & Internal Tools | The client |
+| `build.apps.short` | Alati po mjeri umjesto tablica i ručnog rada. | Custom tools instead of spreadsheets and manual work. | From `build.apps.body` |
+| `build.integrations.title` | Integracije i online rezervacije | Integrations & Booking | The client |
+| `build.integrations.short` | Kalendari, plaćanja i CRM povezani s vašom stranicom. | Calendars, payments and CRM connected to your site. | From `build.integrations.body` |
+| `build.ai.title` | AI asistenti i automatizacija | AI Assistants & Automation | The client |
+| `build.ai.short` | Chatbot koji odgovara danonoćno, na temelju vašeg sadržaja. | A chatbot that answers around the clock, from your own content. | From `build.ai.body` |
+| `run.title` | Održavanje i rast | Run & Grow | `run.heading`, without its number |
+| `run.tagline` | Ne nestajemo nakon objave. | We don’t disappear after launch. | The client |
+| `run.hosting.title` | Hosting i održavanje | Hosting & Maintenance | The client |
+| `run.hosting.short` | Ažuriranja i sigurnosne kopije za fiksnu mjesečnu naknadu. | Updates and backups for a fixed monthly fee. | From `run.hosting.body` |
+| `run.seo.title` | SEO i lokalna vidljivost | SEO & Local Visibility | The client |
+| `run.seo.short` | Rad na vašem položaju na Googleu i u AI tražilicama. | Work on your ranking on Google and in AI search. | From `run.seo.body` |
+| `run.analytics.title` | Analitika i usklađenost | Analytics & Compliance | The client |
+| `run.analytics.short` | Analitika, kolačići i pristupačnost postavljeni kako treba. | Analytics, cookies and accessibility set up properly. | From `run.analytics.body` |
+| `home.audit.title` | Besplatna analiza | Free audit | Glossary |
+| `home.audit.lead` | (above) | We review your website and how customers find you on Google, or, if you don’t have a site yet, just your visibility on Google. We check speed, how the site works on mobile, your Google Business Profile, accessibility and visibility in AI search. You get a 30-minute call and a written summary with priorities, with no obligation. | New; the facts wait for the client, as in Croatian |
+| `audit.step.form.title` · `.body` | Forma · Ispunite kratku formu. | Form · Fill in a short form. | New (G20) |
+| `audit.step.slot.title` · `.body` | Termin · Odaberite termin u kalendaru. | Time slot · Pick a time in the calendar. | New (G20) |
+| `audit.step.confirmation.title` · `.body` | Potvrda · Dobivate potvrdu termina. | Confirmation · You get a confirmation of your time slot. | New (G20) |
+| `audit.cta` | Rezervirajte besplatnu analizu | Book a free audit | `plan.cta`, without its arrow |
+| `drafting.title` | Tehničko crtanje | Architectural Drafting | S20 |
+| `home.drafting.lead` | Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem. | For architecture practices and construction companies when there are more drawings than hands. We draw in your layers and with your title block. | New |
+| `drafting.cad.shortTitle` | 2D crteži | 2D Drawings | New |
+| `drafting.cad.short` | Tlocrti, presjeci i detalji koje možete odmah nastaviti. | Plans, sections and details you can pick up straight away. | New |
+| `drafting.3d.title` | 3D modeli | 3D Models | New |
+| `drafting.3d.short` | Zgrade i detalji iz vaših nacrta i skica. | Buildings and details from your drawings and sketches. | New |
+| `drafting.docs.title` | Tehnička dokumentacija | Technical Documentation | The client |
+| `drafting.docs.short` | Kompleti listova složeni za predaju. | Drawing sets assembled for handover. | New; "hand over" as in `drafting.docs.body` |
+| `drawing.label` | Ilustracija: tlocrt prizemne kuće s osima, zidovima, vratima i prozorima te kotama u centimetrima, podignut u 3D model s dvostrešnim krovom. | Illustration: the floor plan of a single-storey house with axes, walls, doors and windows, and dimensions in centimetres, raised into a 3D model with a gable roof. | New (G28) |
+| `drawing.layers` | Slojevi | Layers | New |
+| `drawing.layer.axes` · `walls` · `openings` · `dimensions` · `roof` · `titleBlock` | Osi · Zidovi · Otvori · Kote · Krov · Zaglavlje | Axes · Walls · Openings · Dimensions · Roof · Title block | New |
+| `drawing.replay` | Iscrtaj ponovno | Draw again | New |
+| `drawing.showPlan` · `drawing.showModel` | Prikaži tlocrt · Prikaži 3D model | Show floor plan · Show 3D model | New |
+| `drawing.titlePlan` · `drawing.titleModel` | Tlocrt kuće · 3D model kuće | House floor plan · House 3D model | New |
+| `drawing.units` · `drawing.note` | Mjere u cm · Ilustracija | Units: cm · Illustration | New |
+| `home.principles.title` | Kako radimo | How we work | New |
+| `principles.direct.title` · `.body` | Razgovarate s onima koji rade · Bez posrednika: pitanje ide ravno osobi koja radi na vašem projektu. | You talk to the people doing the work · No go-betweens: your question goes straight to the person working on your project. | New, from the client's Croatian |
+| `principles.honest.title` · `.body` | Kažemo i kad nešto ne treba · Ako vam nešto ne donosi korist, reći ćemo vam prije nego što to platite. | We tell you when you don’t need something · If something won’t benefit you, we’ll tell you before you pay for it. | New, from the client's Croatian |
+| `principles.yours.title` · `.body` | Sve ostaje vaše · Kod, crteži, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje. | Everything stays yours · Code, drawings, domain and access belong to you, even if one day you go elsewhere. | New, from the client's Croatian (ADR 0021) |
+| `home.team.title` | Tim | Team | New |
+| `home.team.more` | Više o nama | More about us | New |
+| `home.team.pending` | (above) | Photos arrive before launch. | New |
+| `team.matejMedved.role` | Web razvoj, dizajn, SEO i AI asistenti | Web development, design, SEO and AI assistants | The client (M2) |
+| `team.tinManjerovic.role` | Tehničko crtanje, SEO i AI asistenti | Architectural drafting, SEO and AI assistants | The client (M2) |
+| `home.closing.title` | Imate skicu, stranicu ili samo ideju? | Have a sketch, a website or just an idea? | New, from the client's Croatian |
+| `home.closing.lead` | Pošaljite nam što imate i javit ćemo vam se s prijedlogom. | Send us what you have and we’ll get back to you with a proposal. | New, from the client's Croatian |
+| `home.closing.note` | (above) | We reply within one working day, and we take sketches and drawings by email too. | New |
+| `home.closing.cta` | Pošaljite upit | Send an enquiry | Glossary |
+
+The names in the team strip are not translated; they live in `src/config/team.ts`.
 
 ### UI strings of the base components (phase 2)
 
@@ -422,7 +492,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `header.menu` | Izbornik | Menu | Menu button on narrow screens |
 | `header.navLabel` | Glavna navigacija | Main navigation | Accessible name of the main navigation |
 | `nav.services` | Usluge | Services | Navigation |
-| `nav.drafting` | Tehničko crtanje | Engineering Drafting | Navigation (EN waits for S19) |
+| `nav.drafting` | Tehničko crtanje | Architectural Drafting | Navigation (S20, [ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 | `nav.about` | O nama | About | Navigation |
 | `nav.contact` | Kontakt | Contact | Navigation |
 | `legal.privacy` | Privatnost | Privacy | Title block |
@@ -493,6 +563,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, #61):** The button "Pošaljite skicu" removed from Home's drafting zone, at the client's request. No copy block changed.
 - **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.
 - **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
+- **2026-10-22 (phase 3, Home, the build):** The client approved Home's argument and asked to build (M2). "Home, phase 3" now holds every Home line with its locale key, in Croatian and in British English: the audit's lead without brackets (its facts confirmed by the client before launch), the closing call to action's note written by Claude at the client's request, and the team's names and roles from the client. Accepted: S3 (British English), S15 and S20, which changes the EN blocks `drafting.title` and `drafting.audience` and the slug to `/en/architectural-drafting` ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)); S19 rejected.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

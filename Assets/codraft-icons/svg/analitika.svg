@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+  <rect x="5" y="5" width="38" height="38"/>
+  <rect x="9.5" y="29.5" width="4" height="8"/>
+  <rect x="16.5" y="23" width="4" height="14.5"/>
+  <rect x="23.5" y="16.5" width="4" height="21"/>
+  <polyline points="10.5 12.5 13 15 17.5 10.5"/>
+  <g id="accent" stroke="#2F6BFF">
+    <line x1="29" y1="16.5" x2="33.5" y2="16.5"/>
+    <rect x="33.5" y="14.5" width="4" height="4"/>
+  </g>
+</svg>

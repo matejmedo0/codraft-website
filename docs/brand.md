@@ -1,6 +1,6 @@
 # Brand
 
-> **Status (2026-10-18):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses optimised copies made in phase 2. The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png).
+> **Status (2026-10-19):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses the web copies made in phase 2 by `scripts/brand-web-copies.mjs` (the favicon set in `public/`, the marks in `src/assets/brand/`, all without C2PA). The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png). The colour and type tokens are final in `src/styles/` ([ADR 0015](decisions/0015-design-direction-model-i-list.md)).
 
 ## The marks
 
@@ -32,10 +32,11 @@ Code + Draft: drawing the line literally finishes the word. This is the basis of
 
 **For animation (phase 2).** The web copy splits the accent into three paths with identical geometry. The shapes are filled outlines, not strokes, so the "draw" effect is a clip or scale reveal, not a stroke-dash animation. The animation always ends on the exact mark.
 
-### Decisions pending (phase 2)
+### Decisions (phase 2)
 
-- **Logo entrance animation.** The README forbids effects on the marks. Proposal: a one-time entrance (line draws, grip snaps in) that always ends on the exact, unmodified mark. **The client approves or rejects this.**
-- **C2PA metadata.** Every SVG master embeds a C2PA content-credentials block, about 6–8 KB of each 9–11 KB file. The masters stay untouched. Whether the optimised web copies strip it is **the client's call**.
+Both were decided on 2026-10-19 ([ADR 0014](decisions/0014-logo-animation-web-copies-and-local-review.md)):
+- **Logo entrance animation: approved, on the home hero only.** It plays once per page load: the line draws, then the grip snaps in, ending on the exact, unmodified mark. The header logo and every other placement stay static. This is the only exception to the README's "no effects" rule.
+- **C2PA metadata: stripped from every web copy** (SVG and PNG). Every master embeds a C2PA content-credentials block, about 6–8 KB of each 9–11 KB SVG. The masters stay untouched and keep it.
 
 ## Colour
 
@@ -55,23 +56,33 @@ Code + Draft: drawing the line literally finishes the word. This is the basis of
 | White on blue `#2F6BFF` | **4.4988:1** | **Fails AA** (4.5:1). Don't round up; no white text on brand blue |
 | Blue on navy | 3.84:1 | Large text and graphics only |
 
-**Proposed text tokens** (contrast verified; final values set in phase 2):
+**Text tokens** (contrast verified; final in `src/styles/tokens.css` as `--color-blue-on-paper`, `--color-blue-on-navy`, `--color-grey-on-paper` and `--color-grey-on-navy`, with every text pair checked in `tokens.test.ts`):
 
 | Token | Hex | Contrast |
 |---|---|---|
 | `--accent` | `#2F6BFF` | Graphics only: grips, lines, focus ring |
 | `--accent-text-light` | `#2457D6` | 5.65:1 on off-white, 6.16:1 on white. Same hue as the brand blue; for links on light backgrounds |
 | `--accent-text-dark` | `#77A0FF` | 6.80:1 on navy; for links on dark backgrounds |
-| `--muted-light` | `#5E6878` | 5.16:1 on off-white. Avoid the common `#6B7280`, which is only about 4.4:1 |
+| `--muted-light` | `#4A5362` | 7.11:1 on off-white (AAA), 6.51:1 on the sunk paper. Darker since review batch 10 (2026-10-20), at the client's request; it was `#5E6878` (5.16:1). Avoid the common `#6B7280`, which is only about 4.4:1 |
 | `--muted-dark` | `#A7B0BD` | 7.89:1 on navy |
 
 **Implications**
 - Primary buttons are navy with off-white text, which matches the README's "blue: accents only".
 - Links are underlined.
 
+**What the browser draws** takes the brand's colours too ([ADR 0025](decisions/0025-browser-details-and-critique-re-check.md), `src/styles/base.css`):
+
+| Detail | Token | Hex | Contrast |
+|---|---|---|---|
+| Selected text on paper | `--color-selection-on-paper` | `#C4D3F5` | Navy text on it: 11.50:1. A light tint of the brand blue, like a selection in CAD. |
+| Selected text on navy | `--color-selection-on-navy` | `#1D3F8C` | Off-white text on it: 8.98:1 |
+| Text cursor in fields | `--accent` | `#2F6BFF` | A graphic: 4.12:1 on off-white, 3.84:1 on navy |
+
+Selected text always takes the surface's ink (navy on paper, off-white on navy), so links and grey text stay readable while selected.
+
 ## Typography
 
-The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. They are chosen in phase 2 to these requirements:
+The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. **Chosen in phase 2: Archivo, the only family** ([ADR 0015](decisions/0015-design-direction-model-i-list.md)), at three widths: 100 % for text, 87.5 % for headings, 75 % for labels and title-block data. It is self-hosted in two files split by `unicode-range` (a 36.5 KB core file for English and Croatian, preloaded) with size-adjusted Arial fallbacks; details in [research/2026-10-19-design-system.md](research/2026-10-19-design-system.md). It met these requirements:
 
 **Croatian coverage**
 - Full Latin Extended-A, including Č č Ć ć Đ đ Š š Ž ž, plus „ “ ‚ ‘ – — €.
@@ -102,6 +113,34 @@ The wordmark is a custom geometric face drawn as outlines, so the site needs web
 
 **CAD samples.** These are sheets drawn for the site, not client work (G10). Deliver them as DWG plus PDF, exportable per layer, so they can be shown in the layer viewer.
 
+**Service icons (delivered 2026-10-20, placement in review).** The client made the nine icons to the specification below and cleared them for use (review batch 11). The sources are in `Assets/codraft-icons/{svg,png}/`, without C2PA or other metadata; the SVGs already meet the spec, so they are transcribed into code as they are (`src/lab/home/icons/service-icons.ts`), not redrawn. On screen they are 40 px with the stroke at 1.8 on the 48 grid, so the line stays 1.5 px; the accent takes the surface's `--accent`. Two placements are on `/lab/ikone` (review batch 13); the ADR that adopts them follows the client's choice.
+
+The original proposal: the client offered a set of custom icons, one per service in "Što radimo", drawn as the line reaches each stage (review batch 4, 2026-10-19). They are custom, never a generic pack (below). What the files need, so they fit the drawing sheet and can be drawn on screen:
+- **Count and names:** nine, one per service, named by the service's anchor: `besplatna-analiza`, `fiksni-opseg`, `web-stranice`, `web-aplikacije`, `integracije`, `ai-asistenti`, `hosting`, `seo`, `analitika`.
+- **Style:** line drawings in the drafting language: navy strokes of one weight, square corners, at most one blue accent per icon (a drafting line or a grip, as in the wordmark). No fills, gradients, shadows, text or perspective.
+- **Format:** one SVG per icon, `viewBox="0 0 48 48"`, drawn on a 48 px grid with 2 px of clear space. Strokes stay strokes (`stroke`, not outlined to fills), 1.5 px wide, with `stroke-linecap="square"` and `stroke-linejoin="miter"`, and `currentColor` for the ink, so the site can colour them and draw them stroke by stroke. Paths are listed in drawing order. No `style` attributes (the CSP blocks them), no embedded images, no metadata.
+- **Source and rights:** the editable source (Figma or Illustrator) and confirmation that Codraft owns the icons.
+- **On the site:** about 40–48 px, decorative (the service's title carries the meaning), drawn once and static with reduced motion.
+- **If the icons are generated** (the client's plan, review batch 5): any SVG or transparent PNG of at least 1024 px will do. Claude redraws each one as a stroke SVG on the 48 px grid, so the set stays consistent and can be drawn on screen. Check that the tool's licence allows commercial use.
+
+The prompt sent to the client: the style part, the same for every icon, followed by one subject.
+
+```text
+A single minimalist technical line icon, drawn like a symbol on an architectural CAD drawing. Flat orthographic 2D, no perspective, no 3D, no shading. Thin uniform navy blue strokes (#0F1B2D), every line the same weight, square line ends and sharp mitred corners, built from straight lines, right angles, circles and arcs on a precise square grid. No fills, no gradients, no shadows, no textures, no text or letters. Exactly one small accent in bright blue (#2F6BFF): a short straight drafting line that ends in a small hollow square, like a CAD selection grip. Centred, with generous empty space around it, on a transparent background, square 1:1 format. Precise, calm and professional; not cartoonish, not playful, not glossy, not a generic stock icon. Subject: [SUBJECT]
+```
+
+| File | Service | Subject |
+|---|---|---|
+| `besplatna-analiza` | Besplatna analiza | a magnifying glass over a simple website window |
+| `fiksni-opseg` | Fiksni opseg, rok i cijena | a sheet of paper with a dimension line measuring its width, with extension lines and small arrowheads |
+| `web-stranice` | Web stranice i web trgovine | a desktop browser window with a smartphone standing in front of its lower right corner |
+| `web-aplikacije` | Web aplikacije i interni alati | an application window with a sidebar and a grid of panels, one panel holding a small bar chart |
+| `integracije` | Integracije i online rezervacije | three small square nodes joined by right-angled connector lines, one node drawn as a tiny calendar |
+| `ai-asistenti` | AI asistenti i automatizacija | a speech bubble with a small network of three connected dots inside |
+| `hosting` | Hosting i održavanje | a server of three stacked rectangles with small indicator dots, and a circular arrow beside it |
+| `seo` | SEO i lokalna vidljivost | a map location pin above a rising line chart |
+| `analitika` | Analitika i usklađenost | a simple bar chart inside a frame, with a small check mark in one corner |
+
 **What we don't use**
 - stock photography
 - AI-generated people
@@ -114,4 +153,4 @@ Instead the site uses drafting motifs: a grid, dimension lines, a title block, a
 
 ## Favicon and manifest
 
-The `web/` set is ready for the site root (phase 2). `site.webmanifest` names the site "Codraft"; `theme_color` is `#0F1B2D` and `background_color` is `#F6F5F1`.
+The `web/` set is served from the site root since phase 2 (`public/`, PNGs without their C2PA chunk), and BaseLayout carries the package's head snippet. `site.webmanifest` names the site "Codraft"; `theme_color` is `#0F1B2D` and `background_color` is `#F6F5F1`.

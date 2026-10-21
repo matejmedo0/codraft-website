@@ -1,0 +1,78 @@
+---
+/**
+ * The drawing sheet every page sits on (ADR 0015): a frame inset from the
+ * viewport, with zone numbers along its top edge. The header, the zones
+ * (Zone.astro) and the title block go inside it; each zone shows its letter
+ * in the left margin. The references are decorative and hidden from
+ * assistive technology; on phones the margin is too narrow for them.
+ */
+interface Props {
+  /** How many zone numbers run along the top edge. */
+  columns?: number;
+}
+
+const { columns = 6 } = Astro.props;
+const numbers = Array.from({ length: columns }, (_, index) => index + 1);
+---
+
+<div class="sheet">
+  <ol class="sheet__numbers" aria-hidden="true">
+    {numbers.map((number) => (
+      <li>{number}</li>
+    ))}
+  </ol>
+  <slot />
+</div>
+
+<style>
+  /* The margin holds at every width: past --sheet-max the sheet centres,
+     and with a scrollbar it never grows into its own margin (review #57). */
+  .sheet {
+    position: relative;
+    max-width: min(var(--sheet-max), 100% - 2 * var(--sheet-margin));
+    margin: var(--sheet-margin) auto;
+    border: var(--rule) solid var(--frame);
+    counter-reset: zone;
+  }
+
+  .sheet__numbers {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .sheet__numbers {
+      position: absolute;
+      top: calc(var(--sheet-margin) * -1);
+      right: 0;
+      left: 0;
+      display: grid;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      height: var(--sheet-margin);
+      margin: 0;
+      padding: 0;
+      color: var(--ink-muted);
+      font-size: 0.6875rem;
+      font-stretch: var(--width-label);
+      font-variant-numeric: tabular-nums;
+      list-style: none;
+    }
+
+    .sheet__numbers li {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    /* A tick between two zones, as on a drawing's border. */
+    .sheet__numbers li + li::before {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: var(--rule);
+      height: var(--space-2);
+      background: var(--frame);
+      content: "";
+    }
+  }
+</style>

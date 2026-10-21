@@ -1,0 +1,162 @@
+---
+/**
+ * The design-lab bar above each prototype and the style page: which page
+ * this is, and links to the others: the style page and Home of the chosen
+ * direction first, then round 2 and round 1. Lab chrome only; it is not part of any
+ * direction.
+ */
+import { LAB_DIRECTIONS, type LabDirectionId } from "../directions.ts";
+
+interface Props {
+  current?:
+    | LabDirectionId
+    | "style"
+    | "pocetna"
+    | "crtanje"
+    | "ikone"
+    | "tlocrt-3d"
+    | "kuca-boje"
+    | "sto-radimo-2";
+}
+
+const { current } = Astro.props;
+
+const ROUNDS = [
+  { round: 2, label: "Runda 2:" },
+  { round: 1, label: "Runda 1:" },
+] as const;
+---
+
+<nav class="lab-bar" aria-label="Laboratorij dizajna">
+  <a class="lab-bar__home" href="/lab">
+    Laboratorij dizajna
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/style"
+    aria-current={current === "style" ? "page" : undefined}
+  >
+    Sustav dizajna
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/pocetna"
+    aria-current={current === "pocetna" ? "page" : undefined}
+  >
+    Početna
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/crtanje"
+    aria-current={current === "crtanje" ? "page" : undefined}
+  >
+    Tehničko crtanje: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/ikone"
+    aria-current={current === "ikone" ? "page" : undefined}
+  >
+    Ikone: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/tlocrt-3d"
+    aria-current={current === "tlocrt-3d" ? "page" : undefined}
+  >
+    3D tlocrt: opcije
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/kuca-boje"
+    aria-current={current === "kuca-boje" ? "page" : undefined}
+  >
+    Kuća: boje
+  </a>
+  <a
+    class="lab-bar__style"
+    href="/lab/sto-radimo-2"
+    aria-current={current === "sto-radimo-2" ? "page" : undefined}
+  >
+    Što radimo: odabrano i arhiva
+  </a>
+  {ROUNDS.map(({ round, label }) => (
+    <div class="lab-bar__round">
+      <span class="lab-bar__label">{label}</span>
+      <ul class="lab-bar__list">
+        {LAB_DIRECTIONS.filter((direction) => direction.round === round).map(
+          ({ id, letter, name }) => (
+            <li>
+              <a
+                href={`/lab/${id}`}
+                aria-current={id === current ? "page" : undefined}
+              >
+                {letter} „{name}“
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+    </div>
+  ))}
+  <span class="lab-bar__note">Prototip, nije objavljen</span>
+</nav>
+
+<style>
+  .lab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #e3e1da;
+    color: #1f2733;
+    font:
+      500 0.8125rem/1.4 system-ui,
+      sans-serif;
+  }
+
+  .lab-bar a {
+    color: inherit;
+  }
+
+  .lab-bar__home {
+    font-weight: 700;
+  }
+
+  .lab-bar__round {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    align-items: baseline;
+  }
+
+  .lab-bar__label {
+    color: #4a5260;
+  }
+
+  .lab-bar__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lab-bar__style[aria-current="page"],
+  .lab-bar__list a[aria-current="page"] {
+    font-weight: 700;
+    text-decoration-thickness: 2px;
+  }
+
+  .lab-bar__note {
+    margin-left: auto;
+    color: #4a5260;
+  }
+
+  .lab-bar :focus-visible {
+    outline: 2px solid #2f6bff;
+    outline-offset: 2px;
+  }
+</style>

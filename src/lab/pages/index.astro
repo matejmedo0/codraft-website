@@ -1,0 +1,111 @@
+---
+// The design-lab index: the directions of phase 2, round 2 first (noindex;
+// only in `astro dev` and lab builds, see astro.config.ts).
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabBar from "../components/LabBar.astro";
+import { LAB_DIRECTIONS } from "../directions.ts";
+
+const hybrids = LAB_DIRECTIONS.filter(({ round }) => round === 2);
+const firstRound = LAB_DIRECTIONS.filter(({ round }) => round === 1);
+---
+
+<BaseLayout locale="hr" title="Laboratorij dizajna | Codraft">
+  <LabBar />
+  <main class="lab-index">
+    <h1>Laboratorij dizajna</h1>
+    <p>
+      Prototipovi za fazu 2, s pravim tekstom, fontovima i animacijom. Smjer je
+      odabran 19. 10. 2026. (ADR 0015): hibrid D „Model i list“, sa svijetlim
+      zaglavljem i herojem.
+    </p>
+
+    <h2>Sustav dizajna</h2>
+    <p>
+      Tokeni i osnovne komponente odabranog smjera, onakvi kakvi idu na
+      stranicu: <a href="/lab/style">Sustav dizajna</a>.
+    </p>
+
+    <h2>Početna u odabranom smjeru</h2>
+    <p>
+      Početna složena od tih komponenti, sa svijetlim zaglavljem i herojem i
+      tamnoplavom samo u završnom pozivu. Na njoj radimo vaše dorade prije faze
+      3: <a href="/lab/pocetna">Početna</a>. Odjeljak Tehničko crtanje ima
+      opcije za usporedbu: <a href="/lab/crtanje">Tehničko crtanje: opcije</a>.
+      Ikone usluga imaju dvije opcije: <a href="/lab/ikone">Ikone: opcije</a>.
+      3D prikaz tlocrta ima tri opcije:{" "}
+      <a href="/lab/tlocrt-3d">3D tlocrt: opcije</a>, a kuća s krovom tri
+      palete: <a href="/lab/kuca-boje">Kuća: boje</a>. Nakon kritike dizajna
+      usporedili ste nove rasporede „Što radimo“ i zadržali središnju os s
+      krupnijim slovima; kartice su u arhivi:
+      <a href="/lab/sto-radimo-2">Što radimo: odabrano i arhiva</a>.
+    </p>
+
+    <h2>Runda 2: hibridi</h2>
+    <p>
+      Zapis drugog pregleda: dva hibrida prema vašem pregledu runde 1, s listom
+      nacrta iz A, tamnoplavom iz B, većim naslovom i trakom tima iz C, te novim
+      animacijama. Skrolajte polako: crte se iscrtavaju kad dođete do njih, a
+      CAD crtež se gradi sloj po sloj.
+    </p>
+    <ol class="lab-index__list">
+      {hybrids.map(({ id, letter, name, summary }) => (
+        <li>
+          <a href={`/lab/${id}`}>
+            Hibrid {letter} „{name}“
+          </a>
+          <p>{summary}</p>
+        </li>
+      ))}
+    </ol>
+
+    <h2>Runda 1: tri smjera</h2>
+    <p>Zapis prvog pregleda (19. 10. 2026.).</p>
+    <ol class="lab-index__list">
+      {firstRound.map(({ id, letter, name, summary }) => (
+        <li>
+          <a href={`/lab/${id}`}>
+            Smjer {letter} „{name}“
+          </a>
+          <p>{summary}</p>
+        </li>
+      ))}
+    </ol>
+  </main>
+</BaseLayout>
+
+<style>
+  .lab-index {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1rem 4rem;
+    color: #0f1b2d;
+    font-family: system-ui, sans-serif;
+  }
+
+  .lab-index h1 {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+  }
+
+  .lab-index h2 {
+    margin: 2.5rem 0 0.5rem;
+    font-size: 1.375rem;
+  }
+
+  .lab-index__list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 1.5rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .lab-index__list a {
+    color: #2457d6;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .lab-index__list p {
+    margin: 0.25rem 0 0;
+  }
+</style>

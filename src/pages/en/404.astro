@@ -1,15 +1,15 @@
 ---
 import { SITE_NAME } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import NotFoundView from "../../views/NotFoundView.astro";
 
 const locale = "en";
 ---
 
-<BaseLayout
+<SiteLayout
   locale={locale}
   title={`${t(locale, "notFound.title")} | ${SITE_NAME}`}
 >
   <NotFoundView locale={locale} />
-</BaseLayout>
+</SiteLayout>

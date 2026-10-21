@@ -1,0 +1,66 @@
+/*
+ * Archivo, the site's only family (ADR 0015), self-hosted under the SIL Open
+ * Font License 1.1 (src/assets/fonts/archivo-OFL.txt). One variable font,
+ * narrowed to widths 75–100 % and weights 400–700, split in two files by
+ * unicode-range:
+ * - core: English and Croatian text, figures, punctuation, ×, Ø, €, arrows.
+ *   BaseLayout preloads it.
+ * - ext: the rest of Latin-1 and Latin Extended-A, loaded only by a page
+ *   that uses one of those letters (é, ü, ł, …).
+ * How the files were made: docs/research/2026-10-19-design-system.md.
+ *
+ * The fallbacks are local Arial faces scaled to Archivo's metrics, so the
+ * swap moves almost nothing: Arial for text, Arial Narrow Bold for headings
+ * at the semi-condensed width.
+ */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/archivo-core.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-007E, U+00A0, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B3, U+00B7,
+    U+00BB, U+00D7-00D8, U+00F8, U+0106-0107, U+010C-010D, U+0110-0111,
+    U+0160-0161, U+017D-017E, U+0301, U+030C, U+2009, U+2010-2011, U+2013-2014,
+    U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+20AC,
+    U+2122, U+2190, U+2192, U+2212;
+}
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/archivo-ext.woff2") format("woff2");
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+00A1-00A6, U+00A8, U+00AA, U+00AC-00AD, U+00AF, U+00B4-00B6, U+00B8-00BA,
+    U+00BC-00D6, U+00D9-00F7, U+00F9-0105, U+0108-010B, U+010E-010F,
+    U+0112-015F, U+0162-017C, U+017F;
+}
+
+/* Archivo at weight 400 and width 100 % against Arial, measured over the
+   site's own copy. */
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 98.54%;
+  ascent-override: 89.1%;
+  descent-override: 21.31%;
+  line-gap-override: 0%;
+}
+
+/* Archivo at weight 680 and width 87.5 % (the H1) against Arial Narrow Bold.
+   The weight range keeps the browser from making it bolder still. */
+@font-face {
+  font-family: "Archivo Heading Fallback";
+  src: local("Arial Narrow Bold"), local("ArialNarrow-Bold");
+  font-weight: 400 900;
+  size-adjust: 106.89%;
+  ascent-override: 82.14%;
+  descent-override: 19.65%;
+  line-gap-override: 0%;
+}

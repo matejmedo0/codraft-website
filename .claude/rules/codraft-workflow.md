@@ -130,8 +130,10 @@ Exit: build passes, dev server runs, an empty page renders in Playwright at all 
 - `frontend-design:frontend-design`: 2–3 visual directions built from the logo (navy wordmark, blue CAD-handle accent, warm off-white ground) for the user to choose from.
 - Tokens as CSS custom properties: color, type scale, spacing, radius, motion. Two font families at most.
 - `motion-foundations`: motion tokens, springs, `prefers-reduced-motion`.
+- `animate` for motion in CSS and small TypeScript modules (most of this site), `animation-performance` when motion stutters (ADR 0026). `docs/motion.md` and the client's decisions take precedence over their defaults.
 - Base components: header with mobile menu, footer, button, section, card. `frontend-a11y` for the menu, focus states and skip link.
 - Figma only when the user asks: `figma:figma-generate-design` or `figma:figma-generate-library`, with `figma:figma-use` before any `use_figma` call.
+- `design-critic` (project agent, ADR 0024) for an independent critique, on the user's word: capture with `npm run design:capture`, then one critic per lens, as `docs/design-critique.md` describes. Verify its findings before reporting them, and put them to the user as options.
 
 Exit: a style page with tokens and base components, screenshots at three widths, the user approves the direction.
 
@@ -139,17 +141,17 @@ Exit: a style page with tokens and base components, screenshots at three widths,
 
 One page at a time, in sitemap order.
 
-- While writing: `react-patterns`; `seo` (metadata, heading order, JSON-LD: Organization/ProfessionalService on Home, Service per offering, BreadcrumbList); `frontend-a11y` for interactive parts; `motion-patterns`, plus `motion-advanced` only for complex animation; `i18n-sync` when there is more than one language.
-- After each page: `/check` procedure, then Playwright screenshots at three widths with no console errors.
+- While writing: `react-patterns`; `seo` (metadata, heading order, JSON-LD: Organization/ProfessionalService on Home, Service per offering, BreadcrumbList); `frontend-a11y` for interactive parts; `animate` for motion in CSS and plain TypeScript, `motion-patterns` for React islands, plus `motion-advanced` only for complex animation; `mobile-native` for touch details (hover, tap feedback, fields), applying only the fixes whose reason fits a content site; `i18n-sync` when there is more than one language.
+- After each page: `/check` procedure, then Playwright screenshots at three widths with no console errors. Pages with variable content (team, tables, legal texts) also get `break-ui` in both languages, with its Croatian values.
 - Build or type error: `/fix` procedure (`build-error-resolver` or `react-build-resolver`).
 
 Exit: every page in the sitemap built; no open CRITICAL or HIGH findings.
 
 ### 4 — Integrations (Integracije)
 
-- Free audit / contact form: `api-design`, `error-handling`; Zod validation on client and server, honeypot, rate limiting. `security-reviewer` and `silent-failure-hunter` always review it.
+- Free audit / contact form: `api-design`, `error-handling`; Zod validation on client and server, honeypot, rate limiting. `security-reviewer` and `silent-failure-hunter` always review it. `mobile-native` for the fields (16 px, `inputmode`, `autocomplete`, `enterkeyhint`); `break-ui` for worst-case input in both languages.
 - Booking, analytics and cookie consent: no analytics or third-party script loads before consent; scripts load async or deferred.
-- AI chatbot demo (the user said yes, ADR 0007): load `claude-api` before writing any code.
+- AI chatbot demo (the user said yes, ADR 0007): load `claude-api` before writing any code. `break-ui` on its answers: long URLs, Markdown and HTML shown as text, an API error, an empty message.
 - Any database: `postgres-patterns`, `database-migrations`, `database-reviewer`.
 
 Exit: the form works end to end locally; analytics stay blocked until consent.
@@ -157,7 +159,8 @@ Exit: the form works end to end locally; analytics stay blocked until consent.
 ### 5 — Quality and tests (Kvaliteta)
 
 - `/test` procedure: `e2e-runner` with `e2e-testing` for journeys (navigation and mobile menu, audit form, language switch, cookie banner); `tdd-guide` with `react-testing` for form logic and utilities.
-- `a11y-architect` on the menu, form and cookie banner; `performance-optimizer` with `react-performance` on images, fonts and bundle.
+- `a11y-architect` on the menu, form and cookie banner; `performance-optimizer` with `react-performance` on images, fonts and bundle, and with `animation-performance` on motion.
+- `break-ui` worst cases become test fixtures; `mobile-native` items that only a real phone shows (sticky hover, tap feedback, keyboard, `theme-color`) are checked on a phone.
 
 Exit: tests pass; no open CRITICAL or HIGH findings.
 

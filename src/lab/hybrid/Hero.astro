@@ -1,0 +1,51 @@
+---
+/**
+ * Zone A: the headline beside a drawing that holds the mark. The mark plays
+ * its entrance there, once per page load (ADR 0014): the line draws, then
+ * the grip snaps in. The H1 is visible at first paint. In D the zone is navy
+ * and the drawing a blueprint; in E both are paper.
+ */
+import { pathFor } from "../../features/i18n/urls.ts";
+import Grips from "../components/Grips.astro";
+import Wordmark from "../components/Wordmark.astro";
+import { HERO } from "../copy.ts";
+import ZoneMark from "./ZoneMark.astro";
+
+interface Props {
+  letter: string;
+  navy?: boolean;
+}
+
+const { letter, navy = false } = Astro.props;
+const locale = "hr";
+---
+
+<section
+  class:list={["zone", "hero", { "on-navy": navy }]}
+  aria-labelledby="naslov"
+>
+  <ZoneMark letter={letter} select={false} />
+  <div class="hero__text">
+    <h1 id="naslov">{HERO.title}</h1>
+    <p class="hero__lead">{HERO.lead}</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary has-grips" href={pathFor("audit", locale)}>
+        {HERO.primary}
+        <Grips />
+      </a>
+      <a
+        class="btn btn--secondary has-grips"
+        href={pathFor("services", locale)}
+      >
+        {HERO.secondary}
+        <Grips />
+      </a>
+    </div>
+    <p class="hero__drafting">
+      <a href={pathFor("drafting", locale)}>{HERO.draftingLink}</a>
+    </p>
+  </div>
+  <div class="hero__drawing drafting-grid">
+    <Wordmark class="hero__mark" draw />
+  </div>
+</section>

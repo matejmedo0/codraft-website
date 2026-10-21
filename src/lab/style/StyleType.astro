@@ -1,0 +1,192 @@
+---
+/**
+ * The type tokens: Archivo at three widths, and the fluid scale, each step
+ * set in its own size with the site's own copy.
+ */
+import Zone from "../../components/ui/Zone.astro";
+import { TYPE_STEPS, tokenValue } from "./style-data.ts";
+
+const steps = TYPE_STEPS.map((step) => ({
+  ...step,
+  value: tokenValue(step.token),
+}));
+
+const WIDTHS = [
+  { label: "Puna širina 100 %", use: "Tekst", className: "width--text" },
+  {
+    label: "Polusužena 87,5 %",
+    use: "Naslovi",
+    className: "width--heading",
+  },
+  { label: "Uska 75 %", use: "Oznake i podaci", className: "width--label" },
+] as const;
+---
+
+<Zone labelledby="tipografija" class="style-zone">
+  <div class="style-zone__head">
+    <h2 id="tipografija">Tipografija</h2>
+    <p class="style-zone__intro">
+      Jedna obitelj, Archivo, s vlastitog servera. Tehnički glas daje joj
+      širina: naslovi su polusuženi, a oznake i podaci u zaglavlju nacrta uski,
+      s tabličnim brojkama.
+    </p>
+    <p class="style-zone__intro">
+      Osnovna datoteka (hrvatski i engleski) ima 36 KB i učitava se unaprijed;
+      rjeđa slova (é, ü, ł…) stižu u drugoj datoteci, samo kad zatrebaju.
+    </p>
+  </div>
+
+  <div class="style-zone__body">
+    <section class="style-block" aria-labelledby="sirine">
+      <h3 id="sirine">Tri širine</h3>
+      <ul class="widths">
+        {WIDTHS.map(({ label, use, className }) => (
+          <li class="width">
+            <span class:list={["width__sample", className]}>
+              Zaglavlje nacrta
+            </span>
+            <span class="width__label t-label">
+              {label}: {use}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="style-block" aria-labelledby="skala">
+      <h3 id="skala">Skala</h3>
+      <ol class="scale">
+        {steps.map(({ token, name, use, sample, value }) => (
+          <li class="scale__step">
+            <p class:list={["scale__sample", `scale__sample--${token}`]}>
+              {sample}
+            </p>
+            <p class="scale__meta t-label">
+              {name}, --{token}: {value}
+            </p>
+            <p class="scale__use">{use}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+</Zone>
+
+<style>
+  .widths {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .width {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .width__sample {
+    font-size: var(--step-section);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+  }
+
+  .width--text {
+    font-stretch: var(--width-text);
+  }
+
+  .width--heading {
+    font-stretch: var(--width-heading);
+  }
+
+  .width--label {
+    font-stretch: var(--width-label);
+  }
+
+  .width__label,
+  .scale__meta {
+    color: var(--ink-muted);
+  }
+
+  .scale {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .scale__step {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-5) 0;
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .scale__sample {
+    max-width: 22ch;
+    margin-bottom: var(--space-2);
+  }
+
+  .scale__sample--step-display {
+    font-family: var(--font-heading);
+    font-size: var(--step-display);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .scale__sample--step-section {
+    font-family: var(--font-heading);
+    font-size: var(--step-section);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-section);
+  }
+
+  .scale__sample--step-chapter {
+    font-family: var(--font-heading);
+    font-size: var(--step-chapter);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-chapter);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+  }
+
+  .scale__sample--step-title {
+    font-size: var(--step-title);
+    font-weight: var(--weight-strong);
+    line-height: var(--leading-title);
+  }
+
+  .scale__sample--step-lead {
+    max-width: var(--measure-lead);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .scale__sample--step-body {
+    max-width: var(--measure);
+  }
+
+  .scale__sample--step-small {
+    max-width: var(--measure);
+    font-size: var(--step-small);
+  }
+
+  .scale__sample--step-label {
+    max-width: none;
+    font-size: var(--step-label);
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scale__use {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+/**
+ * "Skip to content": the first focusable element on every page. Hidden
+ * above the viewport until it gets keyboard focus.
+ */
+interface Props {
+  /** The id of the main content, without "#". */
+  target: string;
+  label: string;
+}
+
+const { target, label } = Astro.props;
+---
+
+<a class="skip-link" href={`#${target}`}>
+  {label}
+</a>
+
+<style>
+  .skip-link {
+    position: absolute;
+    z-index: 100;
+    top: var(--space-3);
+    left: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--button-primary-bg);
+    color: var(--button-primary-fg);
+    font-weight: var(--weight-strong);
+    text-decoration: none;
+    transform: translateY(-300%);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+  }
+</style>

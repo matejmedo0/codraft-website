@@ -16,6 +16,7 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 - **Brand assets:** `Assets/codraft-brand/`.
   - This is the final package. The masters are read-only; the site uses optimised copies.
   - See the package README and `docs/brand.md`.
+- **Design critique:** the `design-critic` agent in `.claude/agents/`. It is independent and report-only; how to run it is in `docs/design-critique.md` (ADR 0024).
 
 ## Languages and market
 
@@ -29,7 +30,7 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 |---|---|---|
 | Početna | `/` | `/en` |
 | Usluge | `/usluge` | `/en/services` |
-| CAD crtanje | `/cad-crtanje` | `/en/engineering-drafting` |
+| Tehničko crtanje | `/tehnicko-crtanje` | `/en/engineering-drafting` |
 | O nama | `/o-nama` | `/en/about` |
 | Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` |
 | Kontakt | `/kontakt` | `/en/contact` |
@@ -67,12 +68,14 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Dev server on http://localhost:4321. The CSP is off in dev. |
+| `npm run dev` | Dev server on http://localhost:4321. The CSP is off in dev. The design lab (phase 2 prototypes) is at `/lab`. |
 | `npm run build` | Production build: static pages in `dist/client`, the Node server in `dist/server/entry.mjs`. |
+| `npm run build:lab` | The production build plus the design lab, for checking it under the CSP. Never deploy it. |
 | `npm run preview` | Runs the built Node server. |
 | `npm run verify` | What CI's verify job runs, in order: lint, format check, typecheck (`astro check`), unit tests, build, JavaScript budget, copy guardrails. |
-| `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first; install the browser once with `npx playwright install chromium`. |
+| `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first, and stop the dev server: locally Playwright reuses whatever listens on port 4321. Install the browser once with `npx playwright install chromium`. |
 | `npm run format` | Prettier on everything except `docs/`, `Assets/` and the root Markdown files. |
+| `npm run design:capture` | Screenshots and measurements of running pages at six widths, for the `design-critic` agent (`docs/design-critique.md`). Pages go without the leading slash: `npm run design:capture -- lab/pocetna`. |
 
 - One unit test file or name: `npm run test -- src/features/i18n/urls.test.ts`, or `npm run test -- -t "pathFor"`.
 - One E2E test at one width: `npm run test:e2e -- -g "English 404" --project=mobile-375`.
@@ -81,9 +84,12 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 
 - **One route map drives every URL.** `src/features/i18n/route-map.ts` holds each launch page's `{ hr, en }` slug, and `urls.ts` builds the paths (no trailing slash), absolute URLs and hreflang links (`x-default` points to English). Never hard-code a URL, and never build a canonical from `Astro.url`: the directory build format keeps a trailing slash there.
 - **One catch-all route renders every page.** `src/pages/[...slug].astro` generates a route-map page in both languages once the page has a view in `src/views/`; the view registry is inside its `getStaticPaths`. Until phase 3 only `home` has a view. The 404 pages and `/api/*` are static routes and take precedence.
+- **The design lab** (`src/lab/`, phase 2 prototypes and the style page) is injected by an integration in `astro.config.ts` only in `astro dev` and `npm run build:lab`. Site code never imports from `src/lab/`.
 - **UI strings** live in `src/locales/{hr,en}.json` and are read with `t(locale, key)`. Both files must have the same keys (a type check plus a unit test). Copy goes into `docs/content.md` before it goes into the site.
 - **CSP.** Astro adds a hash-based CSP `<meta>` to every built page. It blocks inline `style` attributes and anything from another origin. It is off in `astro dev`, so test CSP-sensitive changes on the build; the E2E tests fail on any console error, CSP violations included.
-- **Layers, enforced by ESLint:** client code (`.tsx`, client scripts in `.astro`) never imports `**/server/**`, and `src/components/ui/` never imports features, views, layouts or pages. `src/config/site.ts` is the bottom layer.
+- **Layers, enforced by ESLint:** client code (`.tsx`, client scripts in `.astro`) never imports `**/server/**`; `src/components/ui/` never imports features, views, layouts or pages; `src/components/site/` never imports views, layouts or pages. `src/config/` is the bottom layer.
+- **Design system (ADR 0015):** tokens are CSS custom properties in `src/styles/`, inside cascade layers so component styles always win. Components use role tokens (`--ink`, `--surface`, `--line`, …), never the `--color-*` palette; `.surface-navy` switches to the navy surface, used once per page. Design-system components are in `src/components/ui/`, the header, title-block footer and language switcher in `src/components/site/`, and views render their zones inside `SiteLayout`. The style page is `/lab/style`; the Figma library mirrors the code (ADR 0016), which stays the source of truth.
+- **Astro renders a component's `<script>` in place**, not hoisted: keep scripts out of components that render inside links or SVG. Without JavaScript, or with reduced motion, every part must show its final state.
 - **Type-aware lint covers `.ts` and `.tsx` only.** `.astro` files are linted without types and type-checked by `astro check`. A `.ts` file can't see the types of an imported `.astro` file, so keep `.astro` imports inside `.astro` files.
 - **`scripts/check-js-budget.mjs`** imports the route map through Node's TypeScript type stripping, so `route-map.ts`, `urls.ts` and `site.ts` must use erasable syntax only and import each other with `.ts` extensions. Budgets (gzip, per page): 15 KB for content pages, 100 KB for pages with a form or the layer viewer, 120 KB for the AI page.
 - **Environment variables** are declared in the `env.schema` of `astro.config.ts` and documented in `.env.example`.

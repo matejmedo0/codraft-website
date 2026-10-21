@@ -1,0 +1,152 @@
+---
+/**
+ * Zone D, "Tehničko crtanje", option B "Središnja os" (the client's review,
+ * batch 6): centred like "Što radimo". On wide screens the tagline and the
+ * audience are centred, with the floor plan below them in the middle of the
+ * sheet, then the three services (ADR 0019) around a dash-dot centre line,
+ * as on a drawing: the left one aligned to the line, the odd last one
+ * centred under it, and the button centred. On narrow screens everything
+ * stacks on the left. The plan draws like a timelapse (PlanDrawing.astro).
+ */
+import "../services.css";
+
+import Button from "../../../components/ui/Button.astro";
+import Zone from "../../../components/ui/Zone.astro";
+import { pathFor } from "../../../features/i18n/urls.ts";
+import { DRAFTING } from "../../copy.ts";
+import PlanDrawing from "../PlanDrawing.astro";
+import ServiceItem from "../ServiceItem.astro";
+import { DRAFTING_SERVICES } from "./drafting.ts";
+
+interface Props {
+  /** The heading's id; the comparison page shows several options. */
+  headingId?: string;
+  /** The option's name, on the comparison page. */
+  label?: string;
+}
+
+const { headingId = "cad", label } = Astro.props;
+const labelId = `${headingId}-opcija`;
+---
+
+<Zone
+  labelledby={label === undefined ? headingId : `${labelId} ${headingId}`}
+  class="svc"
+>
+  {label !== undefined && (
+    <p class="svc-label t-label" id={labelId}>
+      {label}
+    </p>
+  )}
+  <h2 id={headingId}>{DRAFTING.title}</h2>
+  <div class="axis">
+    <div class="axis__head">
+      <p class="svc-title">{DRAFTING.tagline}</p>
+      <p class="svc-tagline axis__audience">{DRAFTING.audience}</p>
+    </div>
+    <div class="axis__figure">
+      <PlanDrawing idPrefix={headingId} />
+    </div>
+    <ul class="svc-items axis__items">
+      {DRAFTING_SERVICES.map((item) => (
+        <ServiceItem
+          title={item.title}
+          body={item.body}
+          href={item.href}
+          level="h3"
+          class="axis__item"
+        />
+      ))}
+    </ul>
+    <div class="axis__actions">
+      <Button href={pathFor("drafting", "hr")}>{DRAFTING.cta}</Button>
+    </div>
+  </div>
+</Zone>
+
+<style>
+  .axis {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .axis__audience {
+    max-width: 34ch;
+    margin-top: var(--space-3);
+  }
+
+  .axis__item {
+    padding: var(--space-4) 0 var(--space-5);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  @media (min-width: 64rem) {
+    .axis__head {
+      justify-self: center;
+      max-width: 40rem;
+      text-align: center;
+    }
+
+    .axis__audience {
+      margin-inline: auto;
+    }
+
+    .axis__figure {
+      justify-self: center;
+      width: min(100%, 52rem);
+    }
+
+    /* A centre line between the two columns, as on a drawing. */
+    .axis__items {
+      position: relative;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-10);
+      justify-self: center;
+      width: min(100%, 64rem);
+    }
+
+    .axis__items::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% - var(--rule) / 2);
+      width: var(--rule);
+      background: repeating-linear-gradient(
+        to bottom,
+        var(--drawing-muted) 0 12px,
+        transparent 12px 16px,
+        var(--drawing-muted) 16px 18px,
+        transparent 18px 22px
+      );
+      content: "";
+    }
+
+    /* The left column leans on the line. */
+    .axis__item:nth-child(odd) {
+      text-align: right;
+    }
+
+    .axis__item:nth-child(odd) :global(.service__body) {
+      margin-left: auto;
+    }
+
+    /* The odd last one is centred under the line, and covers it. */
+    .axis__item:last-child:nth-child(odd) {
+      position: relative;
+      z-index: 1;
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: min(100%, 36rem);
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .axis__item:last-child:nth-child(odd) :global(.service__body) {
+      margin-inline: auto;
+    }
+
+    .axis__actions {
+      justify-self: center;
+    }
+  }
+</style>

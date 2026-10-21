@@ -1,0 +1,1269 @@
+---
+/**
+ * The floor plan in Home's drafting zone (the client's review, batch 5;
+ * ADR 0018: architecture and construction only). A small flat, drawn like a
+ * timelapse of drafting: once half of it is in view (draw.ts), its elements
+ * appear one by one, each wiped in along its own direction, layer after
+ * layer: axes, walls, openings, dimensions, title block (the room names
+ * were removed in review batch 6). The layer list switches on in step and
+ * "Iscrtaj ponovno" replays it. plan-timelapse.ts times the steps.
+ *
+ * With `model` (the drafting zone's option C, review #58), the finished plan
+ * then rises into a 3D view: the axes and dimensions switch off, the plan
+ * turns and tilts back into an axonometric view, and the walls rise from
+ * it, with the windows, lintels and door leaves (plan-model.ts, in the
+ * projection of plan-projection.ts). How it ends is the option (review
+ * #63): "stay" keeps the 3D view (Home), "return" lowers the walls and
+ * goes back to the plan, and "roof" sets a pitched roof on the model.
+ *
+ * With a roof, `palette` colours the house (review #65): the facade (the
+ * walls' outer sides and the gable) and the roof, from the brand's colours.
+ *
+ * Without JavaScript, or with reduced motion, the drawing is complete: the
+ * plan, or the 3D view where the option ends in it.
+ *
+ * It is an illustration, not client work, and its title block says so
+ * (ADR 0004). Units: 1 = 10 cm; the flat is 1000 × 700 cm. Colours come
+ * from the surface's drawing tokens; thin lines don't scale.
+ *
+ * A class passed in gets the parent's scoped styles, so a zone can place
+ * the drawing and its layer list in its own grid (option C, batch 8).
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import Button from "../../components/ui/Button.astro";
+import { PLAN } from "../copy.ts";
+import {
+  DOORS,
+  modelFaces,
+  type Rect,
+  roofDrawing,
+  WALLS,
+  WINDOWS,
+} from "./plan-model.ts";
+import {
+  type HousePalette,
+  modelView,
+  type PlanModel,
+  viewTransform,
+} from "./plan-projection.ts";
+
+type Wipe = "x" | "y";
+
+/** A step wipes in along the longer side of its rectangle. */
+function wipeOf([, , width, depth]: Rect): Wipe {
+  return width >= depth ? "x" : "y";
+}
+
+/** A window in the plan: the wall's two faces and the glass between. */
+function windowPath([x, y, width, depth]: Rect): string {
+  const n = (value: number): string => String(value);
+  const [x1, y1] = [x + width, y + depth];
+  return width >= depth
+    ? `M${n(x)} ${n(y)}H${n(x1)}M${n(x)} ${n(y + depth / 2)}H${n(x1)}M${n(x)} ${n(y1)}H${n(x1)}M${n(x)} ${n(y)}V${n(y1)}M${n(x1)} ${n(y)}V${n(y1)}`
+    : `M${n(x)} ${n(y)}V${n(y1)}M${n(x + width / 2)} ${n(y)}V${n(y1)}M${n(x1)} ${n(y)}V${n(y1)}M${n(x)} ${n(y)}H${n(x1)}M${n(x)} ${n(y1)}H${n(x1)}`;
+}
+
+/** Grid axes on the walls' centre lines, with their bubbles. */
+const COLUMNS = [
+  { at: 1.5, label: "1" },
+  { at: 60, label: "2" },
+  { at: 98.5, label: "3" },
+];
+const ROWS = [
+  { at: 1.5, label: "A" },
+  { at: 40, label: "B" },
+  { at: 68.5, label: "C" },
+];
+
+interface Props extends HTMLAttributes<"div"> {
+  /** Prefixes the drawing's ids, so a page can show it more than once. */
+  idPrefix?: string;
+  /** Raises the finished plan into its 3D view, and how it ends (#63). */
+  model?: PlanModel;
+  /** The house's colours, with a roof (review #65). */
+  palette?: HousePalette | undefined;
+}
+
+const {
+  idPrefix = "plan",
+  model,
+  palette,
+  class: className,
+  ...attributes
+} = Astro.props;
+const drawingId = `${idPrefix}-crtez`;
+const layersId = `${idPrefix}-slojevi`;
+
+const { titleBlock } = PLAN;
+const view = model === undefined ? undefined : modelView(model);
+const faces = view === undefined ? [] : modelFaces(view);
+const roof = model === "roof" ? roofDrawing(view) : undefined;
+// Where the 3D view is the final state, the plan's group is drawn turned.
+const endsIn3d = model === "stay" || model === "roof";
+const labels = {
+  stay: PLAN.modelLabel,
+  return: PLAN.returnLabel,
+  roof: PLAN.roof.label,
+};
+// With a roof, the layer list has the roof's layer before the title block.
+const layers =
+  model === "roof"
+    ? PLAN.layers.flatMap((layer) =>
+        layer.id === "zaglavlje"
+          ? [{ id: "krov" as const, label: PLAN.roof.layer }, layer]
+          : [layer],
+      )
+    : PLAN.layers;
+const titles =
+  model === "roof"
+    ? { plan: PLAN.roof.title, model: PLAN.roof.modelTitle }
+    : { plan: titleBlock.title, model: titleBlock.modelTitle };
+---
+
+<div
+  class:list={[
+    "plan",
+    {
+      "plan--model": model !== undefined,
+      "plan--ends-3d": endsIn3d,
+      "plan--returns": model === "return",
+      "plan--roof": model === "roof",
+    },
+    model === "roof" && palette !== undefined && `plan--palette-${palette}`,
+    className,
+  ]}
+  data-draw="half"
+  data-draw-steady
+  data-plan
+  data-plan-model={model}
+  {...attributes}
+>
+  <div class="plan__sheet graph-paper">
+    <svg
+      class="plan__drawing"
+      viewBox="-21 -21 125 110"
+      role="img"
+      aria-labelledby={drawingId}
+      focusable="false"
+    >
+      <title id={drawingId}>
+        {model === undefined ? PLAN.drawingLabel : labels[model]}
+      </title>
+
+      <g
+        class="plan__ground"
+        data-plan-ground
+        transform={
+          endsIn3d && view !== undefined
+            ? viewTransform(view, "svg")
+            : undefined
+        }
+      >
+        {model && (
+          <rect class="plan-floor" x="0" y="0" width="100" height="70" />
+        )}
+
+        <g data-layer="osi">
+          {COLUMNS.map(({ at, label }) => (
+            <g data-wipe="y">
+              <path class="plan-axis" d={`M${String(at)} -14V73`} />
+              <circle class="plan-bubble" cx={at} cy="-17" r="3" />
+              <text class="plan-bubble__label" x={at} y="-17">
+                {label}
+              </text>
+            </g>
+          ))}
+          {ROWS.map(({ at, label }) => (
+            <g data-wipe="x">
+              <path class="plan-axis" d={`M-14 ${String(at)}H103`} />
+              <circle class="plan-bubble" cx="-17" cy={at} r="3" />
+              <text class="plan-bubble__label" x="-17" y={at}>
+                {label}
+              </text>
+            </g>
+          ))}
+        </g>
+
+        <g data-layer="zidovi">
+          {WALLS.map((wall) => {
+            const [x, y, width, depth] = wall;
+            return (
+              <rect
+                class="plan-wall"
+                x={x}
+                y={y}
+                width={width}
+                height={depth}
+                data-wipe={wipeOf(wall)}
+              />
+            );
+          })}
+        </g>
+
+        <g data-layer="otvori">
+          <g class="plan-windows">
+            {WINDOWS.map((opening) => (
+              <path
+                class="plan-window"
+                d={windowPath(opening)}
+                data-wipe={wipeOf(opening)}
+              />
+            ))}
+          </g>
+          {DOORS.map(({ leaf, swing }) => (
+            <g data-wipe="fade">
+              <path
+                class="plan-door"
+                d={`M${leaf.from.join(" ")}L${leaf.to.join(" ")}`}
+              />
+              <path class="plan-swing" d={swing} />
+            </g>
+          ))}
+        </g>
+
+        <g data-layer="kote">
+          <g data-wipe="x">
+            <path
+              class="plan-dim"
+              d="M0 -1V-11M60 -1V-11M100 -1V-11M0 -5H100"
+            />
+            <path class="plan-dim" d="M-1 -4L1 -6M59 -4L61 -6M99 -4L101 -6" />
+            <text class="plan-dim__text" x="30" y="-6">
+              600
+            </text>
+            <text class="plan-dim__text" x="80" y="-6">
+              400
+            </text>
+          </g>
+          <g data-wipe="x">
+            <path class="plan-dim" d="M0 -10H100M-1 -9L1 -11M99 -9L101 -11" />
+            <text class="plan-dim__text" x="50" y="-11">
+              1000
+            </text>
+          </g>
+          <g data-wipe="y">
+            <path class="plan-dim" d="M-1 0H-11M-1 40H-11M-1 70H-11M-5 0V70" />
+            <path class="plan-dim" d="M-6 1L-4 -1M-6 41L-4 39M-6 71L-4 69" />
+            <text
+              class="plan-dim__text"
+              x="-6"
+              y="20"
+              transform="rotate(-90 -6 20)"
+            >
+              400
+            </text>
+            <text
+              class="plan-dim__text"
+              x="-6"
+              y="55"
+              transform="rotate(-90 -6 55)"
+            >
+              300
+            </text>
+          </g>
+          <g data-wipe="y">
+            <path class="plan-dim" d="M-10 0V70M-11 1L-9 -1M-11 71L-9 69" />
+            <text
+              class="plan-dim__text"
+              x="-11"
+              y="35"
+              transform="rotate(-90 -11 35)"
+            >
+              700
+            </text>
+          </g>
+        </g>
+      </g>
+
+      {model && (
+        <g class="plan__model">
+          {faces.map((face) =>
+            face.type === "side" ? (
+              <g transform={face.matrix}>
+                <rect
+                  class:list={[
+                    "model-side",
+                    `model-side--${face.facing}`,
+                    `model--${face.kind}`,
+                    { "model-side--outer": face.outer },
+                  ]}
+                  x="0"
+                  y={face.z0}
+                  width="1"
+                  height={face.z1 - face.z0}
+                />
+              </g>
+            ) : (
+              <polygon
+                class:list={["model-top", `model--${face.kind}`]}
+                points={face.points}
+                data-rise={face.rise}
+              />
+            ),
+          )}
+        </g>
+      )}
+
+      {roof !== undefined && (
+        <g class="plan__roof">
+          {roof.faces.map(({ kind, shade, points }) => (
+            <polygon
+              class:list={[
+                "roof-face",
+                `roof-face--${kind}`,
+                { "roof-face--shade": shade },
+              ]}
+              points={points}
+            />
+          ))}
+          <path class="roof-hatch" d={roof.hatch} />
+        </g>
+      )}
+
+      <g data-layer="zaglavlje">
+        <g data-wipe="fade">
+          <path class="plan-frame" d="M54 75H100V87H54ZM54 81H100M84 75V87" />
+          <text
+            class="plan-cell plan-cell--strong plan-title"
+            x="55.5"
+            y="79.2"
+          >
+            {titles.plan}
+          </text>
+          {model && (
+            <text
+              class="plan-cell plan-cell--strong plan-title--model"
+              x="55.5"
+              y="79.2"
+            >
+              {titles.model}
+            </text>
+          )}
+          <text class="plan-cell" x="85.5" y="79.2">
+            {titleBlock.units}
+          </text>
+          <text class="plan-cell plan-cell--strong" x="55.5" y="85.2">
+            {titleBlock.studio}
+          </text>
+          <text class="plan-cell" x="85.5" y="85.2">
+            {titleBlock.note}
+          </text>
+        </g>
+      </g>
+    </svg>
+
+    <div class="plan__title-block" data-layer="zaglavlje" aria-hidden="true">
+      <div class="plan__title-cells t-label" data-wipe="fade">
+        <span class="plan__title-cell plan__title-cell--title">
+          <span class="plan-title">{titles.plan}</span>
+          {model && <span class="plan-title--model">{titles.model}</span>}
+        </span>
+        <span class="plan__title-cell">{titleBlock.units}</span>
+        <span class="plan__title-cell plan__title-cell--strong">
+          {titleBlock.studio}
+        </span>
+        <span class="plan__title-cell">{titleBlock.note}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan__toolbar">
+    <p class="plan__layers-label t-label" id={layersId}>
+      {PLAN.layersLabel}
+    </p>
+    <ol class="plan__layers" aria-labelledby={layersId}>
+      {layers.map(({ id, label }) => (
+        <li class="plan__layer" data-lamp={id}>
+          <span class="plan__lamp" aria-hidden="true" />
+          {label}
+        </li>
+      ))}
+    </ol>
+    <Button
+      variant="secondary"
+      size="compact"
+      class="plan__replay"
+      data-draw-replay
+    >
+      {PLAN.replay}
+    </Button>
+    {endsIn3d && (
+      <Button
+        variant="secondary"
+        size="compact"
+        class="plan__view"
+        data-plan-view
+        data-plan-label={PLAN.view.plan}
+        data-model-label={PLAN.view.model}
+      >
+        <span data-plan-view-label>{PLAN.view.plan}</span>
+      </Button>
+    )}
+  </div>
+
+  <script>
+    import "../../components/ui/draw.ts";
+    import "./plan-timelapse.ts";
+  </script>
+</div>
+
+<style>
+  /* The sheet is a container: the title block follows its width. */
+  .plan__sheet {
+    padding: var(--space-5) var(--space-4);
+    container: plan-sheet / inline-size;
+  }
+
+  .plan__drawing {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Line work: thin lines keep their weight at every size. */
+  .plan__drawing :is(path, circle) {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .plan__drawing .plan-axis {
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
+    stroke-dasharray: 6 2 1 2;
+  }
+
+  .plan__drawing .plan-bubble {
+    fill: var(--drawing-fill);
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+  }
+
+  .plan-wall {
+    fill: var(--drawing-ink);
+  }
+
+  .plan__drawing :is(.plan-window, .plan-frame) {
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+  }
+
+  .plan__drawing .plan-door {
+    stroke: var(--drawing-ink);
+    stroke-width: 1.5px;
+  }
+
+  .plan__drawing .plan-swing {
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
+  }
+
+  /* The 3D view (review #58). The tops of the walls and lintels are where
+     the model is cut, so they keep the plan's solid ink; every other face
+     is paper, the sides facing along x a shade darker, and the glass a
+     tint of the accent. The house's colours are variables, so a palette
+     (review #65) only sets them; without one the house is paper. */
+  .plan--model {
+    --model-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 9%,
+      var(--drawing-fill)
+    );
+    --facade: var(--drawing-fill);
+    --facade-shade: var(--model-shade);
+    --facade-line: var(--drawing-ink);
+    --roof: var(--drawing-fill);
+    --roof-shade: var(--model-shade);
+    --roof-line: var(--drawing-muted);
+    --glass: color-mix(in srgb, var(--accent) 16%, transparent);
+  }
+
+  .plan__drawing
+    :is(
+      .plan-floor,
+      .plan__model rect,
+      .plan__model polygon,
+      .plan__roof polygon
+    ) {
+    fill: var(--drawing-fill);
+    stroke: var(--drawing-ink);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Two line weights, as in a drafted axonometric (critique 15): the
+     building's mass, its outer walls and its roof, at 1.5 px; the details
+     (the rooms, windows, glass and roofing) stay at 1 px. */
+  .plan__drawing
+    :is(
+      .plan__model .model-side--outer:not(.model--glass),
+      .plan__roof polygon
+    ) {
+    stroke-width: 1.5px;
+  }
+
+  .plan__drawing .plan__model .model-side--x {
+    fill: var(--model-shade);
+  }
+
+  .plan__drawing .plan__model .model-side--outer {
+    fill: var(--facade);
+    stroke: var(--facade-line);
+  }
+
+  .plan__drawing .plan__model .model-side--outer.model-side--x,
+  .plan__drawing .plan__roof .roof-face--gable {
+    fill: var(--facade-shade);
+    stroke: var(--facade-line);
+  }
+
+  .plan__drawing .plan__roof :is(.roof-face--slope, .roof-face--edge) {
+    fill: var(--roof);
+  }
+
+  .plan__drawing
+    .plan__roof
+    .roof-face--shade:is(.roof-face--slope, .roof-face--edge) {
+    fill: var(--roof-shade);
+  }
+
+  /* The roofing: lines down the slopes, like a hatch. */
+  .plan__drawing .roof-hatch {
+    stroke: var(--roof-line);
+    stroke-width: 1px;
+  }
+
+  .plan__drawing .model-top:is(.model--wall, .model--lintel) {
+    fill: var(--drawing-ink);
+  }
+
+  .plan__drawing .plan__model .model--glass {
+    fill: var(--glass);
+    stroke: var(--accent);
+  }
+
+  .plan__drawing .plan__model .model-top.model--glass {
+    fill: var(--accent);
+  }
+
+  /* The house's palettes (review #65), all from the brand: navy, paper and
+     blue, mixed from the drawing's roles. */
+
+  /* 1: a paper facade under a navy roof, like slate, its lines lighter. */
+  .plan--palette-navy-roof {
+    --roof: color-mix(in srgb, var(--drawing-ink) 86%, var(--drawing-fill));
+    --roof-shade: var(--drawing-ink);
+    --roof-line: color-mix(
+      in srgb,
+      var(--drawing-fill) 38%,
+      var(--drawing-ink)
+    );
+  }
+
+  /* 2: a navy facade with lighter joints, under a pale metal roof. */
+  .plan--palette-navy-walls {
+    --facade: color-mix(in srgb, var(--drawing-ink) 80%, var(--drawing-fill));
+    --facade-shade: var(--drawing-ink);
+    --facade-line: color-mix(
+      in srgb,
+      var(--drawing-fill) 30%,
+      var(--drawing-ink)
+    );
+    --roof: color-mix(in srgb, var(--drawing-ink) 5%, var(--drawing-fill));
+    --roof-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 15%,
+      var(--drawing-fill)
+    );
+    --roof-line: color-mix(
+      in srgb,
+      var(--drawing-ink) 40%,
+      var(--drawing-fill)
+    );
+    --glass: color-mix(in srgb, var(--accent) 45%, var(--drawing-ink));
+  }
+
+  /* 3: blue tones: a facade tinted with the accent under a deep blue roof,
+     its lines in the accent. */
+  .plan--palette-blue {
+    --facade: color-mix(in srgb, var(--accent) 10%, var(--drawing-fill));
+    --facade-shade: color-mix(
+      in srgb,
+      var(--drawing-ink) 8%,
+      color-mix(in srgb, var(--accent) 18%, var(--drawing-fill))
+    );
+    --roof: color-mix(in srgb, var(--accent) 46%, var(--drawing-ink));
+    --roof-shade: color-mix(in srgb, var(--accent) 32%, var(--drawing-ink));
+    --roof-line: color-mix(in srgb, var(--accent) 50%, var(--drawing-fill));
+  }
+
+  .plan__drawing .plan-dim {
+    stroke: var(--accent);
+    stroke-width: 1px;
+  }
+
+  /* Lettering, in the drawing's units: 1 = 10 cm. */
+  .plan__drawing text {
+    font-stretch: var(--width-label);
+  }
+
+  .plan-bubble__label {
+    fill: var(--drawing-ink);
+    font-size: 2.6px;
+    font-weight: var(--weight-strong);
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .plan-dim__text {
+    fill: var(--accent-text);
+    font-size: 2.4px;
+    font-weight: var(--weight-medium);
+    text-anchor: middle;
+  }
+
+  .plan-cell {
+    fill: var(--drawing-ink);
+    font-size: 2.3px;
+  }
+
+  .plan-cell--strong {
+    font-weight: var(--weight-strong);
+  }
+
+  /* The drawn title block shrinks with the drawing: about 5 px letters on
+     phones (critique 16), about 8 px where the drafting zone is two narrow
+     columns (the re-check, #130). Where the drawing is under 37.5rem wide
+     (its letters under about 11 px) it is set under the drawing at the
+     label size, in the same cells, and the drawn one is off. It is the same layer: the timelapse fades it in with the
+     drawn one. */
+  .plan__title-block {
+    display: none;
+  }
+
+  @container plan-sheet (max-width: 37.49rem) {
+    .plan__drawing [data-layer="zaglavlje"] {
+      display: none;
+    }
+
+    .plan__title-block {
+      display: block;
+      margin-top: var(--space-3);
+    }
+  }
+
+  .plan__title-cells {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: fit-content;
+    margin-left: auto;
+    border: 1px solid var(--drawing-ink);
+    background: var(--drawing-fill);
+    color: var(--drawing-ink);
+    line-height: 1.2;
+  }
+
+  .plan__title-cell {
+    padding: 0.3125rem 0.5rem;
+  }
+
+  .plan__title-cell:nth-child(odd) {
+    border-right: 1px solid var(--drawing-ink);
+  }
+
+  .plan__title-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--drawing-ink);
+  }
+
+  .plan__title-cell--strong,
+  .plan__title-cell--title {
+    font-weight: var(--weight-strong);
+  }
+
+  /* The plan's title and the model's share their cell, as in the drawing. */
+  .plan__title-cell--title {
+    display: grid;
+  }
+
+  .plan__title-cell--title > * {
+    grid-area: 1 / 1;
+  }
+
+  /* The layer list, like a CAD layer manager: a lamp per layer. */
+  .plan__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) 1.25rem;
+    align-items: center;
+    margin-top: var(--space-4);
+  }
+
+  .plan__layers-label {
+    color: var(--ink-muted);
+  }
+
+  .plan__layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem var(--space-4);
+    margin: 0;
+    padding: 0;
+    font-size: var(--step-small);
+    list-style: none;
+  }
+
+  .plan__layer {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  /* Each lamp is a short sample of its layer's own line, as a CAD layer
+     manager shows a linetype. A layer that is off keeps a faint sample and
+     its name in grey. The list shows the layers' state; it is not a
+     control (critique 3). */
+  .plan__lamp {
+    --lamp: var(--drawing-ink);
+
+    position: relative;
+    flex: none;
+    width: 1.25rem;
+    height: var(--lamp-height, 2px);
+  }
+
+  .plan__lamp::before,
+  .plan__lamp::after {
+    position: absolute;
+    inset: 0;
+    background: var(--lamp);
+    box-shadow: var(--lamp-edge, none);
+    content: "";
+  }
+
+  .plan__lamp::before {
+    opacity: 0.25;
+  }
+
+  .plan__lamp::after {
+    transform-origin: left center;
+  }
+
+  /* The axes: a chain line, as in the drawing (6 2 1 2). */
+  [data-lamp="osi"] .plan__lamp {
+    --lamp: repeating-linear-gradient(
+      90deg,
+      var(--drawing-muted) 0 6px,
+      transparent 6px 8px,
+      var(--drawing-muted) 8px 9px,
+      transparent 9px 11px
+    );
+    --lamp-height: 1px;
+  }
+
+  /* The walls: solid ink. */
+  [data-lamp="zidovi"] .plan__lamp {
+    --lamp-height: 3px;
+  }
+
+  /* The openings: a window's two thin lines. */
+  [data-lamp="otvori"] .plan__lamp {
+    --lamp:
+      linear-gradient(var(--drawing-ink) 0 0) top / 100% 1px no-repeat,
+      linear-gradient(var(--drawing-ink) 0 0) bottom / 100% 1px no-repeat;
+    --lamp-height: 5px;
+  }
+
+  /* The dimensions: a dimension line in the accent, with its ticks. */
+  [data-lamp="kote"] .plan__lamp {
+    --lamp:
+      linear-gradient(var(--accent) 0 0) center / 100% 1px no-repeat,
+      linear-gradient(var(--accent) 0 0) left / 1px 100% no-repeat,
+      linear-gradient(var(--accent) 0 0) right / 1px 100% no-repeat;
+    --lamp-height: 7px;
+  }
+
+  /* The roof: its colour, edged in ink. */
+  [data-lamp="krov"] .plan__lamp {
+    --lamp: var(--roof);
+    --lamp-edge: inset 0 0 0 1px var(--drawing-ink);
+    --lamp-height: 6px;
+  }
+
+  /* The title block: a frame with a cell. */
+  [data-lamp="zaglavlje"] .plan__lamp {
+    --lamp: linear-gradient(var(--drawing-ink) 0 0) 60% 0 / 1px 100% no-repeat;
+    --lamp-edge: inset 0 0 0 1px var(--drawing-ink);
+    --lamp-height: 8px;
+  }
+
+  /* Replaying needs the script and motion. */
+  .plan__toolbar .plan__replay {
+    display: none;
+    margin-left: auto;
+  }
+
+  :global(.js) .plan__toolbar .plan__replay {
+    display: inline-flex;
+  }
+
+  /* The switch between the 3D view and the plan is for reduced motion,
+     where the replay is off (critique 12). */
+  .plan__toolbar .plan__view {
+    display: none;
+    margin-left: auto;
+  }
+
+  /* The timelapse. Before it starts every step and lamp is off; each step
+     wipes in along its own direction, or fades in. A wiping step is also
+     hidden until its own start, so the clip's open edge never leaves a
+     hairline on the sheet (critique 11). */
+  .plan.is-pending [data-wipe="x"] {
+    clip-path: inset(-3px 100% -3px -3px);
+    opacity: 0;
+  }
+
+  .plan.is-pending [data-wipe="y"] {
+    clip-path: inset(-3px -3px 100% -3px);
+    opacity: 0;
+  }
+
+  .plan.is-pending [data-wipe="fade"] {
+    opacity: 0;
+  }
+
+  .plan.is-pending .plan__lamp::after {
+    opacity: 0;
+    scale: 0 1;
+  }
+
+  .plan.is-pending .plan__layer {
+    color: var(--ink-muted);
+  }
+
+  .plan.is-drawing [data-wipe="x"] {
+    animation: plan-wipe-x var(--for, 300ms) var(--ease-pen) var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing [data-wipe="y"] {
+    animation: plan-wipe-y var(--for, 300ms) var(--ease-pen) var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing [data-wipe="fade"] {
+    animation: motion-fade-in var(--for, 300ms) var(--ease-standard)
+      var(--at, 0ms) both;
+  }
+
+  .plan.is-drawing .plan__lamp::after {
+    animation: plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      both;
+  }
+
+  .plan.is-drawing .plan__layer {
+    animation: plan-label-on var(--motion-fast) var(--ease-standard)
+      var(--at, 0ms) both;
+  }
+
+  @keyframes plan-wipe-x {
+    0% {
+      clip-path: inset(-3px 100% -3px -3px);
+      opacity: 0;
+    }
+
+    1% {
+      opacity: 1;
+    }
+
+    100% {
+      clip-path: inset(-3px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes plan-wipe-y {
+    0% {
+      clip-path: inset(-3px -3px 100% -3px);
+      opacity: 0;
+    }
+
+    1% {
+      opacity: 1;
+    }
+
+    100% {
+      clip-path: inset(-3px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes plan-lamp {
+    from {
+      opacity: 0;
+      scale: 0 1;
+    }
+
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  /* Where the 3D view is the final state, the axes, dimensions and the
+     plan's own walls, windows and leaves are off, and their lamps too.
+     Where the option returns to the plan, the model is the one that's off. */
+  .plan--ends-3d
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 0;
+  }
+
+  .plan--ends-3d :is([data-lamp="osi"], [data-lamp="kote"]) .plan__lamp::after {
+    opacity: 0;
+  }
+
+  .plan--ends-3d :is([data-lamp="osi"], [data-lamp="kote"]) {
+    color: var(--ink-muted);
+  }
+
+  .plan--returns :is(.plan-floor, .plan__model, .plan-title--model) {
+    opacity: 0;
+  }
+
+  /* While the plan is drawn it lies flat and the model waits: the sides
+     at no height, the tops on the floor (plan-timelapse.ts sets --rise and
+     the two views). */
+  .plan--model.is-pending
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 1;
+  }
+
+  .plan--model.is-pending
+    :is(.plan-floor, .plan__model, .plan__roof, .plan-title--model) {
+    opacity: 0;
+  }
+
+  .plan--model.is-pending .plan__ground {
+    transform: var(--plan-from);
+  }
+
+  .plan--model.is-pending .model-side {
+    scale: 1 0;
+  }
+
+  .plan--model.is-pending .model-top {
+    translate: 0 var(--rise, 0);
+  }
+
+  /* Then, after the title block (plan-timelapse.ts sets the times): the
+     axes and dimensions switch off, the plan turns and tilts back, and the
+     walls rise from it as the plan's own walls give way. */
+  .plan--model.is-drawing :is([data-layer="osi"], [data-layer="kote"]) {
+    animation: plan-off var(--motion-base) var(--ease-standard) var(--off-at)
+      both;
+  }
+
+  .plan--model.is-drawing
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    animation:
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms) both,
+      plan-lamp-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards;
+  }
+
+  .plan--model.is-drawing :is([data-lamp="osi"], [data-lamp="kote"]) {
+    animation:
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--at, 0ms) both,
+      plan-label-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards;
+  }
+
+  .plan--model.is-drawing .plan__ground {
+    animation: plan-tilt var(--tilt-for) var(--ease-pen) var(--tilt-at) both;
+  }
+
+  .plan--model.is-drawing .plan-floor {
+    animation: motion-fade-in var(--motion-slow) var(--ease-standard)
+      var(--tilt-at) both;
+  }
+
+  .plan--model.is-drawing
+    :is([data-layer="zidovi"], .plan-windows, .plan-door, .plan-title) {
+    animation: plan-off var(--motion-instant) linear var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing :is(.plan__model, .plan-title--model) {
+    animation: motion-fade-in var(--motion-instant) linear var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing .model-side {
+    animation: plan-rise-side var(--rise-for) var(--ease-standard)
+      var(--rise-at) both;
+  }
+
+  .plan--model.is-drawing .model-top {
+    animation: plan-rise-top var(--rise-for) var(--ease-standard) var(--rise-at)
+      both;
+  }
+
+  /* Option "roof": once the walls are up, the roof comes down onto them. */
+  .plan--roof.is-drawing .plan__roof {
+    animation: plan-roof var(--roof-for) var(--ease-standard) var(--roof-at)
+      both;
+  }
+
+  /* Option "return": after a hold, the walls go down, the plan turns back,
+     and the axes and dimensions switch on again. Each part's second
+     animation fills forwards only, so the first one holds until it starts. */
+  .plan--returns.is-drawing :is([data-layer="osi"], [data-layer="kote"]) {
+    animation:
+      plan-off var(--motion-base) var(--ease-standard) var(--off-at) both,
+      motion-fade-in var(--motion-base) var(--ease-standard) var(--on-at)
+        forwards;
+  }
+
+  .plan--returns.is-drawing
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    animation:
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--at, 0ms) both,
+      plan-lamp-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards,
+      plan-lamp var(--motion-fast) var(--ease-spring) var(--on-at) forwards;
+  }
+
+  .plan--returns.is-drawing :is([data-lamp="osi"], [data-lamp="kote"]) {
+    animation:
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--at, 0ms) both,
+      plan-label-off var(--motion-fast) var(--ease-standard) var(--off-at)
+        forwards,
+      plan-label-on var(--motion-fast) var(--ease-standard) var(--on-at)
+        forwards;
+  }
+
+  .plan--returns.is-drawing .plan__ground {
+    animation:
+      plan-tilt var(--tilt-for) var(--ease-pen) var(--tilt-at) both,
+      plan-untilt var(--untilt-for) var(--ease-pen) var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing .plan-floor {
+    animation:
+      motion-fade-in var(--motion-slow) var(--ease-standard) var(--tilt-at) both,
+      plan-off var(--motion-slow) var(--ease-standard) var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing
+    :is([data-layer="zidovi"], .plan-windows, .plan-door, .plan-title) {
+    animation:
+      plan-off var(--motion-instant) linear var(--rise-at) both,
+      motion-fade-in var(--motion-instant) linear var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing :is(.plan__model, .plan-title--model) {
+    animation:
+      motion-fade-in var(--motion-instant) linear var(--rise-at) both,
+      plan-off var(--motion-instant) linear var(--untilt-at) forwards;
+  }
+
+  .plan--returns.is-drawing .model-side {
+    animation:
+      plan-rise-side var(--rise-for) var(--ease-standard) var(--rise-at) both,
+      plan-lower-side var(--lower-for) var(--ease-pen) var(--lower-at) forwards;
+  }
+
+  .plan--returns.is-drawing .model-top {
+    animation:
+      plan-rise-top var(--rise-for) var(--ease-standard) var(--rise-at) both,
+      plan-lower-top var(--lower-for) var(--ease-pen) var(--lower-at) forwards;
+  }
+
+  @keyframes plan-off {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes plan-lamp-off {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes plan-label-on {
+    from {
+      color: var(--ink-muted);
+    }
+
+    to {
+      color: var(--ink);
+    }
+  }
+
+  @keyframes plan-label-off {
+    from {
+      color: var(--ink);
+    }
+
+    to {
+      color: var(--ink-muted);
+    }
+  }
+
+  /* With reduced motion the switch shows the plan in place of the 3D view
+     (critique 12, review #117), at once: the plan lies flat with its axes
+     and dimensions, the model and the roof are off, and the lamps follow. */
+  .plan--ends-3d.is-flat
+    :is(
+      [data-layer="osi"],
+      [data-layer="zidovi"],
+      [data-layer="kote"],
+      .plan-windows,
+      .plan-door,
+      .plan-title
+    ) {
+    opacity: 1;
+  }
+
+  .plan--ends-3d.is-flat
+    :is(.plan-floor, .plan__model, .plan__roof, .plan-title--model) {
+    opacity: 0;
+  }
+
+  .plan--ends-3d.is-flat .plan__ground {
+    transform: var(--plan-from);
+  }
+
+  .plan--ends-3d.is-flat
+    :is([data-lamp="osi"], [data-lamp="kote"])
+    .plan__lamp::after {
+    opacity: 1;
+  }
+
+  .plan--ends-3d.is-flat :is([data-lamp="osi"], [data-lamp="kote"]) {
+    color: var(--ink);
+  }
+
+  .plan--roof.is-flat [data-lamp="krov"] .plan__lamp::after {
+    opacity: 0;
+  }
+
+  .plan--roof.is-flat [data-lamp="krov"] {
+    color: var(--ink-muted);
+  }
+
+  @keyframes plan-tilt {
+    from {
+      transform: var(--plan-from);
+    }
+
+    to {
+      transform: var(--plan-to);
+    }
+  }
+
+  @keyframes plan-untilt {
+    from {
+      transform: var(--plan-to);
+    }
+
+    to {
+      transform: var(--plan-from);
+    }
+  }
+
+  /* The roof comes down from above and settles on the walls. */
+  @keyframes plan-roof {
+    from {
+      opacity: 0;
+      translate: 0 -14px;
+    }
+
+    40% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes plan-lower-side {
+    from {
+      scale: 1;
+    }
+
+    to {
+      scale: 1 0;
+    }
+  }
+
+  @keyframes plan-lower-top {
+    from {
+      translate: 0 0;
+    }
+
+    to {
+      translate: 0 var(--rise, 0);
+    }
+  }
+
+  /* A side rises from the floor: its frame's origin (plan-model.ts). */
+  @keyframes plan-rise-side {
+    from {
+      scale: 1 0;
+    }
+
+    to {
+      scale: 1;
+    }
+  }
+
+  @keyframes plan-rise-top {
+    from {
+      translate: 0 var(--rise, 0);
+    }
+
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .plan__sheet {
+      padding: var(--space-7) var(--space-6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .plan__toolbar .plan__replay {
+      display: none;
+    }
+
+    :global(.js) .plan__toolbar .plan__view {
+      display: inline-flex;
+    }
+  }
+</style>

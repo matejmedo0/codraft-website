@@ -1,0 +1,238 @@
+---
+/**
+ * The site header, on paper at the top of the sheet (ADR 0015): the static
+ * wordmark (only the home hero's mark moves, ADR 0014), the main navigation
+ * and the language switcher. It has no button: the free audit is asked for
+ * once on a page, where the page explains it (ADR 0017). The current page is
+ * marked with `aria-current`.
+ *
+ * Below 64rem the navigation folds behind the menu button (menu.ts); without
+ * JavaScript it stays open. Its links take the grips on hover and keyboard
+ * focus, as nav items do in docs/motion.md ("Select"; critique 18, tried in
+ * the client's review).
+ */
+import type { Locale } from "../../config/site.ts";
+import { MAIN_NAV } from "../../features/i18n/navigation.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import Grips from "../ui/Grips.astro";
+import Wordmark from "../ui/Wordmark.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+interface Props {
+  locale: Locale;
+  page?: PageId | undefined;
+}
+
+const { locale, page } = Astro.props;
+const MENU_ID = "site-menu";
+
+function current(target: PageId): "page" | undefined {
+  return target === page ? "page" : undefined;
+}
+---
+
+<header class="site-header">
+  <a
+    class="site-header__home"
+    href={pathFor("home", locale)}
+    aria-current={current("home")}
+  >
+    <span class="visually-hidden">{t(locale, "header.home")}</span>
+    <Wordmark />
+  </a>
+  <button
+    class="site-header__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls={MENU_ID}
+    data-menu-toggle
+  >
+    {t(locale, "header.menu")}
+    <span class="site-header__toggle-icon" aria-hidden="true"></span>
+  </button>
+  <nav
+    class="site-header__nav"
+    id={MENU_ID}
+    aria-label={t(locale, "header.navLabel")}
+  >
+    <ul class="site-header__links">
+      {MAIN_NAV.map(({ page: target, label }) => (
+        <li>
+          <a
+            class="has-grips"
+            href={pathFor(target, locale)}
+            aria-current={current(target)}
+          >
+            {t(locale, label)}
+            <Grips />
+          </a>
+        </li>
+      ))}
+    </ul>
+    <LanguageSwitcher
+      locale={locale}
+      page={page}
+      display="code"
+      class="site-header__language"
+      grips
+    />
+  </nav>
+</header>
+
+<script>
+  import "./menu.ts";
+</script>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    align-items: center;
+    padding: var(--space-3) var(--pad);
+    border-bottom: var(--rule) solid var(--frame);
+    background: var(--surface);
+    view-transition-name: site-header;
+  }
+
+  .site-header__home {
+    --wordmark-width: 7.25rem;
+
+    display: block;
+    padding: var(--space-2) 0;
+    color: var(--ink);
+  }
+
+  .site-header__toggle {
+    display: none;
+    gap: 0.625rem;
+    align-items: center;
+    min-height: var(--control-height-compact);
+    margin-left: auto;
+    padding: 0 0.875rem;
+    border: var(--rule) solid var(--line-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink);
+    font-weight: var(--weight-strong);
+    cursor: pointer;
+  }
+
+  /* Two drafting lines that cross when the menu is open. */
+  .site-header__toggle-icon {
+    position: relative;
+    width: 1rem;
+    height: 0.5rem;
+    border-block: 1.5px solid currentColor;
+  }
+
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-icon {
+    border: 0;
+  }
+
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-icon::before,
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-icon::after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    content: "";
+    transform: rotate(45deg);
+  }
+
+  .site-header__toggle[aria-expanded="true"] .site-header__toggle-icon::after {
+    transform: rotate(-45deg);
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-bottom: var(--space-2);
+  }
+
+  .site-header__links {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-header__links a,
+  .site-header__nav :global(.site-header__language) {
+    display: block;
+    padding: var(--space-3) 0;
+    border-bottom: var(--rule) solid var(--line);
+    color: var(--ink);
+    font-size: 1.125rem;
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+  }
+
+  .site-header__links a:hover,
+  .site-header__nav :global(.site-header__language):hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  /* The current page: a blue drafting line under its link. */
+  .site-header__links a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: var(--rail);
+  }
+
+  .site-header__nav :global(.site-header__language) {
+    align-self: start;
+    border: 0;
+  }
+
+  @media (max-width: 63.99rem) {
+    :global(.js) .site-header__toggle {
+      display: inline-flex;
+    }
+
+    :global(.js) .site-header__nav:not(.is-open) {
+      display: none;
+    }
+
+    /* The menu opens with a short fade of its links, and the page moves
+       down at once (critique 17). A fade of 200 ms stays with reduced
+       motion (motion.md). */
+    :global(.js) .site-header__nav.is-open {
+      animation: motion-fade-in var(--motion-base) var(--ease-standard);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .site-header {
+      flex-wrap: nowrap;
+    }
+
+    .site-header__nav {
+      flex-basis: auto;
+      flex-direction: row;
+      gap: var(--space-6);
+      align-items: center;
+      margin-left: auto;
+      padding: 0;
+    }
+
+    .site-header__links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .site-header__links a,
+    .site-header__nav :global(.site-header__language) {
+      padding: var(--space-2) 0;
+      border: 0;
+      font-size: 1rem;
+    }
+  }
+</style>

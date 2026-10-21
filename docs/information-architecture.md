@@ -5,20 +5,21 @@
 ## Principles
 
 - **Small and focused.** Every page has one job and one primary call to action.
+- **Ask once.** The free-audit button appears at most once on a page, in the section that explains the audit. The header has no button, and the closing call to action invites a conversation ("Pošaljite upit") ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - **Croatian first.** Croatian lives at the root and English under `/en` ([ADR 0002](decisions/0002-croatian-default-english-secondary.md)).
 - **Two audiences, two paths.**
   - Small and medium businesses want a website, software or AI tools. Their path ends at the free audit.
-  - Architects, engineering firms and manufacturers need drafting capacity. Their path ends at a quote request.
+  - Architecture practices and construction companies need drafting capacity ([ADR 0018](decisions/0018-drafting-for-architecture-and-construction.md)). Their path ends at a quote request.
 - **Trust from verifiable proof only** ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
 
 ## Launch sitemap
 
 | # | Page | HR (default) | EN | Purpose | Primary CTA | Phase |
 |---|---|---|---|---|---|---|
-| 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu | 3 |
-| 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu | 3 |
-| 3 | CAD crtanje / Engineering Drafting | `/cad-crtanje` | `/en/engineering-drafting` | B2B drafting offer for architects, engineering firms, manufacturers | Zatražite ponudu | 3 |
-| 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Rezervirajte besplatnu analizu | 3 |
+| 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu (once, in the free audit teaser) | 3 |
+| 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu (once, in `#planiranje`) | 3 |
+| 3 | Tehničko crtanje / Engineering Drafting | `/tehnicko-crtanje` | `/en/engineering-drafting` | B2B drafting offer for architecture and construction | Zatražite ponudu | 3 |
+| 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Pošaljite upit | 3 |
 | 5 | Besplatna analiza / Free audit | `/besplatna-analiza` | `/en/free-audit` | What we check and what you get; form, then time slot | Nastavite na odabir termina (form submit, leads to booking) | 3 (form: 4) |
 | 6 | Kontakt / Contact | `/kontakt` | `/en/contact` | General enquiries and drafting quote requests | Pošaljite upit | 3 (form: 4) |
 | 7 | Privatnost / Privacy | `/privatnost` | `/en/privacy` | GDPR privacy notice | — | 3 |
@@ -34,7 +35,7 @@
 
 **Free audit and Contact are separate pages.**
 - They serve different people with different forms: a business owner booking a call, and an architect asking for a quote.
-- The drafting page also embeds the shared contact form, with the topic preset to "CAD crtanje".
+- The drafting page also embeds the shared contact form, with the topic preset to "Tehničko crtanje".
 
 **One Services page with anchors at launch, not eight service pages.**
 - The existing copy is about 20 words per service. Eight pages in two languages would mean 16 thin pages. Padding them is exactly the low-value content that Google's quality systems demote.
@@ -58,8 +59,9 @@ Planned order:
 ### Navigation and footer
 
 **Header**
-- HR: Usluge · CAD crtanje · O nama · Kontakt · **[Besplatna analiza]** · EN
-- EN: Services · Engineering Drafting · About · Contact · **[Free audit]** · HR
+- HR: Usluge · Tehničko crtanje · O nama · Kontakt · EN
+- EN: Services · Engineering Drafting · About · Contact · HR
+- No button: the header serves both audiences, so it offers no sales action ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - The language switcher links to the *same page* in the other language; it does not go to the home page.
 - No "Radovi" item until real case studies exist.
 
@@ -106,15 +108,15 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 1. **Hero**
    - H1 (N, G1).
    - Subline: `services.intro` (P).
-   - CTAs: audit and "Pogledajte usluge" (I).
+   - CTA: "Pogledajte usluge" (I), and the link to Tehničko crtanje. No audit button here (ADR 0017).
    - The wordmark's blue drafting line draws once, if the client approves the logo animation in phase 2 (see [motion.md](motion.md)).
 2. **Što radimo:** 01 Planiranje / 02 Izrada / 03 Održavanje i rast, with the services listed inside each stage. Each service gets one line and links to `/usluge#…` (P: `plan.*`, `build.*`, `run.*`).
-3. **Free audit teaser:** what we check (N, G4) and the 3-step flow (I).
+3. **Free audit teaser:** what we check (N, G4) and the 3-step flow (I), with the page's one "Rezervirajte besplatnu analizu" button (P: `plan.cta`).
 4. **AI assistant teaser:** links to the live demo. Added in phase 4, when the demo exists (N, G29).
-5. **Drafting strip:** its own path for architects, engineers and manufacturers (P: `drafting.tagline`, `drafting.audience`).
-6. **How we work** (I): fixed price before work starts, plain language, we stay after launch. Ownership of domain and code (N, G2, client decides).
+5. **Drafting strip:** its own path for architecture and construction: the floor plan drawn as a timelapse and raised into a 3D model of a house, with a roof set on it, a paper facade under a navy roof (review #58; the client's choices: the roof in #64, palette 1 in #66), the heading "Tehničko crtanje", a lead, the three services with one line each, whose titles link to the drafting page (I; the client's text from review batch 9, [content.md](content.md) "Prototype copy"). No button: the client removed "Pošaljite skicu" in review #61, because requests come through the contact form and email (ADR 0020). `drafting.tagline` and `drafting.audience` are for the drafting page.
+6. **How we work:** three commitments in the client's words (review batch 10): you talk to the people who do the work, we say so when something isn't needed, and everything stays yours (code, drawings, domain and access; G2 answered, [ADR 0021](decisions/0021-the-customer-owns-the-work.md)).
 7. **Team strip:** photos, names, roles (N, G3).
-8. **Closing CTA** (P: `plan.cta`).
+8. **Closing CTA:** the client's heading "Imate skicu, stranicu ili samo ideju?" and lead (review batch 11, [content.md](content.md) "Prototype copy"), and one button, "Pošaljite upit" (ADR 0017).
 
 ### Usluge / Services (`/usluge`)
 
@@ -130,12 +132,12 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
    - an indication of the monthly fee (N, G7)
 5. **Tijek suradnje** (I): analiza → ponuda → izrada → objava → održavanje.
 6. **FAQ, 6–8 questions** (N, G8).
-7. **CTA** (P: `plan.cta`).
+7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
-### CAD crtanje / Engineering Drafting (`/cad-crtanje`)
+### Tehničko crtanje / Engineering Drafting (`/tehnicko-crtanje`)
 
-1. **Hero:** H1 "CAD crtanje i tehnička dokumentacija" (I); `drafting.tagline`, `drafting.audience` (P).
-2. **The two services:** `drafting.cad.*`, `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
+1. **Hero:** H1 "Tehničko crtanje za arhitekturu i građevinarstvo" (I); `drafting.tagline`, `drafting.audience` (P).
+2. **The three services:** `drafting.cad.*`, `drafting.3d.*` (P; added 2026-10-19, [ADR 0019](decisions/0019-drafting-adds-3d-models.md)) and `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
 3. **Uzorci / Samples:** 2–3 sample sheets made in-house for the site, shown in a layer viewer (N, G10). Each is labelled "Uzorak izrađen za Codraft — nije rad za klijenta".
 4. **Opseg i odgovornost / Scope and responsibility** (N, G11; legally sensitive):
    - We draft to your sketches, markups and standards.
@@ -143,7 +145,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 5. **Kako surađujemo / How we work together** (N, G12): files in → quote → drafting → review rounds → delivery.
 6. **Formati i standardi / Formats and standards** (N, G13): DWG version, DXF, PDF, layers, title blocks, CTB/STB, units.
 7. **Povjerljivost / Confidentiality** (N, G14): NDA on request; client work is never shown without written permission.
-8. **Quote request:** the embedded contact form with topic "CAD crtanje" (I; form built in phase 4).
+8. **Quote request:** the embedded contact form with topic "Tehničko crtanje" (I; form built in phase 4).
 
 ### O nama / About (`/o-nama`)
 
@@ -160,7 +162,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
    - page weight
    - WCAG target
    - no third-party requests before consent
-7. **CTA** (P: `plan.cta`).
+7. **Closing CTA:** "Pošaljite upit" (I, ADR 0017).
 
 ### Besplatna analiza / Free audit (`/besplatna-analiza`)
 
@@ -175,7 +177,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 ### Kontakt / Contact (`/kontakt`)
 
 1. **H1 and a response-time promise** (N, G23).
-2. **Form with a topic field:** Web i softver / CAD crtanje / Ostalo. For CAD it adds work type, sheet count, deadline and formats (N, G25; built in phase 4).
+2. **Form with a topic field:** Web i softver / Tehničko crtanje / Ostalo. For drafting it adds work type, sheet count, deadline and formats (N, G25; built in phase 4).
 3. **Contact details** (N, G24): email, phone, hours; the address only if it is public.
 4. **Link to the free audit** for web enquiries (I).
 
@@ -192,7 +194,7 @@ Validated in phase 3 with the `seo` skill. The city is added once known.
 |---|---|
 | `/` | brand + "izrada web stranica" (+ city) |
 | `/usluge` | the service cluster: izrada web stranica, web trgovine, web aplikacije, održavanje, SEO, AI chatbot |
-| `/cad-crtanje` | "CAD crtanje", "AutoCAD crtanje", "digitalizacija nacrta" |
+| `/tehnicko-crtanje` | "tehničko crtanje", "CAD crtanje", "AutoCAD crtanje", "digitalizacija nacrta" |
 | `/besplatna-analiza` | "besplatna analiza web stranice" |
 | `/en` | "web design and development Croatia" |
 | `/en/engineering-drafting` | "CAD drafting services", "drafting outsourcing" |

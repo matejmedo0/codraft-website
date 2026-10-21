@@ -1,0 +1,54 @@
+---
+/**
+ * The navy surface, as the closing call to action uses it: once on a page,
+ * at the end (ADR 0015). The same button as on paper, with the surface's own
+ * tokens. It invites a conversation and doesn't repeat the audit (ADR 0017).
+ * Laid out as on Home (HomeClosing.astro, review batches 11 and 12).
+ */
+import Button from "../../components/ui/Button.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { CLOSING } from "../copy.ts";
+---
+
+<Zone labelledby="zavrsni-poziv" surface="navy" class="closing">
+  <p class="closing__label t-label">Tamnoplava površina: završni poziv</p>
+  <div class="closing__text">
+    <h2 id="zavrsni-poziv">{CLOSING.title}</h2>
+    <p class="closing__lead">{CLOSING.lead}</p>
+  </div>
+  <Button href={pathFor("contact", "hr")} class="closing__cta">
+    {CLOSING.secondary}
+  </Button>
+</Zone>
+
+<style>
+  .closing {
+    display: grid;
+    justify-items: center;
+    padding-block: calc(var(--zone-pad) * 2 / 3);
+    text-align: center;
+  }
+
+  .closing__label {
+    margin-bottom: var(--space-4);
+    color: var(--ink-muted);
+  }
+
+  .closing__text {
+    max-width: 100%;
+  }
+
+  .closing__lead {
+    width: 0;
+    min-width: 100%;
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+    text-wrap: balance;
+  }
+
+  .closing__cta {
+    margin-top: var(--space-5);
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+/**
+ * A page on the drawing sheet (ADR 0015): the skip link, then the sheet with
+ * the header, the page's zones in <main> and the title block. The view puts
+ * its zones (src/components/ui/Zone.astro) in the default slot; they are
+ * lettered A, B, C, … down the sheet, and the title block takes the next
+ * letter.
+ */
+import Footer from "../components/site/Footer.astro";
+import Header from "../components/site/Header.astro";
+import Sheet from "../components/ui/Sheet.astro";
+import SkipLink from "../components/ui/SkipLink.astro";
+import type { Locale } from "../config/site.ts";
+import type { PageId } from "../features/i18n/route-map.ts";
+import { t } from "../features/i18n/ui.ts";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  page?: PageId | undefined;
+}
+
+const { locale, title, page } = Astro.props;
+const MAIN_ID = "main";
+---
+
+<BaseLayout locale={locale} title={title} page={page}>
+  <slot name="head" slot="head" />
+  <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
+  <Sheet>
+    <Header locale={locale} page={page} />
+    <main id={MAIN_ID}>
+      <slot />
+    </main>
+    <Footer locale={locale} page={page} />
+  </Sheet>
+</BaseLayout>

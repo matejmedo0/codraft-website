@@ -1,15 +1,39 @@
 /*
- * Global styles, kept minimal in phase 1. Phase 2 adds the design tokens
- * (colour, type scale, spacing, radius, motion) as custom properties.
+ * Global styles, imported once by BaseLayout. Everything sits in cascade
+ * layers, so component styles (unlayered and scoped) always win over them,
+ * whatever their specificity. The design lab's prototypes keep their own,
+ * unlayered styles, which win the same way.
  */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@layer reset, tokens, base, utilities;
+
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./motion.css";
+@import "./base.css";
+@import "./utilities.css";
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 }
 
-body {
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
+/* Page change: a short crossfade between pages where the browser supports
+   cross-document view transitions (docs/motion.md). The header has its own
+   name, so it stays still. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(root) {
+  animation-duration: var(--motion-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
 }

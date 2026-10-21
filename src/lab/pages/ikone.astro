@@ -1,0 +1,107 @@
+---
+// The service icons on "Što radimo" in two options, for the client to
+// compare (the review, batch 13; docs/phases/2-design-review.md). Each
+// option is the section as on Home, with the icons placed its own way; the
+// chosen one goes into /lab/pocetna. Noindex; only in `astro dev` and lab
+// builds (astro.config.ts).
+import Footer from "../../components/site/Footer.astro";
+import Header from "../../components/site/Header.astro";
+import Sheet from "../../components/ui/Sheet.astro";
+import SkipLink from "../../components/ui/SkipLink.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { t } from "../../features/i18n/ui.ts";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabBar from "../components/LabBar.astro";
+import ServicesAxis from "../home/ServicesAxis.astro";
+
+const locale = "hr";
+const MAIN_ID = "main";
+
+const OPTIONS = [
+  {
+    id: "ikone-a",
+    name: "Opcija A: iznad naslova",
+    summary:
+      "Ikona stoji iznad naziva usluge, na strani okrenutoj prema crti: u lijevom stupcu desno, u desnom lijevo. Ikona je prva stvar koju oko vidi.",
+  },
+  {
+    id: "ikone-b",
+    name: "Opcija B: uz tekst",
+    summary:
+      "Ikona stoji uz naziv i opis, u svom stupcu prema crti, pa usluga ostaje niska kao dosad. Mirnije, više kao legenda na nacrtu.",
+  },
+] as const;
+
+const [first, second] = OPTIONS;
+---
+
+<BaseLayout
+  locale={locale}
+  title="Ikone usluga: dvije opcije | Laboratorij dizajna"
+>
+  <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
+  <LabBar current="ikone" />
+  <Sheet>
+    <Header locale={locale} />
+    <main id={MAIN_ID}>
+      <Zone labelledby="opcije" select={false} class="options">
+        <h1 id="opcije">Ikone usluga: dvije opcije</h1>
+        <p class="options__lead">
+          Vaših devet ikona u odjeljku „Što radimo“, na dva načina. U obje
+          opcije ikona stoji na strani usluge koja gleda prema plavoj crti, a
+          zadnja usluga u sredini ima ikonu iznad sebe. Odabrali ste opciju B
+          (20. 10. 2026.); ona je sada na početnoj. Ova stranica ostaje kao
+          zapis usporedbe.
+        </p>
+        <p class="options__lead">
+          Animacija je ista u obje: dok skrolate, plava crta glatko raste
+          zajedno s ekranom, a ikona svake usluge iscrta se potez po potez čim
+          crta stigne do nje, na kraju s plavom linijom i hvataljkom. Sve se
+          odvija jednom i ništa se ne vraća. Ako su na računalu isključeni
+          animacijski efekti, crta i ikone su odmah gotovi.
+        </p>
+        <ol class="options__list">
+          {OPTIONS.map(({ id, name, summary }) => (
+            <li>
+              <a href={`#${id}`}>{name}</a>
+              <p>{summary}</p>
+            </li>
+          ))}
+        </ol>
+      </Zone>
+      <ServicesAxis headingId={first.id} label={first.name} icons="above" />
+      <ServicesAxis headingId={second.id} label={second.name} icons="beside" />
+    </main>
+    <Footer locale={locale} />
+  </Sheet>
+</BaseLayout>
+
+<style>
+  .options {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .options__lead {
+    max-width: var(--measure);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .options__list {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure);
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .options__list a {
+    font-weight: var(--weight-strong);
+  }
+
+  .options__list p {
+    margin-top: var(--space-1);
+    color: var(--ink-muted);
+  }
+</style>

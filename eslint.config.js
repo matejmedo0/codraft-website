@@ -18,6 +18,7 @@ export default defineConfig(
   globalIgnores([
     "dist/",
     ".astro/",
+    ".playwright-mcp/",
     "playwright-report/",
     "test-results/",
     "Assets/",
@@ -104,6 +105,24 @@ export default defineConfig(
               ],
               message:
                 "UI components must not import features or routes (docs/architecture.md).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/components/site/**"],
+    rules: {
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            NO_SERVER_IMPORTS,
+            {
+              group: ["**/views/**", "**/layouts/**", "**/pages/**"],
+              message:
+                "Site components must not import views, layouts or routes (docs/architecture.md).",
             },
           ],
         },

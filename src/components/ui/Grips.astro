@@ -1,0 +1,85 @@
+---
+/**
+ * CAD selection grips: four hollow squares at the corners of the parent,
+ * shown on hover and keyboard focus (docs/motion.md, "Select"). They echo
+ * the corner squares of icon C. The parent gets the `has-grips` class and
+ * must be positioned (the class does that). The focus outline stays the real
+ * indicator; the grips are decorative.
+ *
+ * Usage: <a class="has-grips" href="…">Text<Grips /></a>
+ */
+---
+
+<span class="grips" aria-hidden="true">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</span>
+
+<style is:global>
+  @layer utilities {
+    .has-grips {
+      position: relative;
+    }
+
+    .grips {
+      position: absolute;
+      inset: calc(var(--grip-offset) * -1);
+      pointer-events: none;
+    }
+
+    .grips > span {
+      position: absolute;
+      width: var(--grip-size);
+      height: var(--grip-size);
+      border: var(--grip-stroke) solid var(--accent);
+      background: var(--grip-fill);
+      opacity: 0;
+      transform: scale(0.6);
+      transition:
+        opacity var(--motion-fast) var(--ease-standard),
+        transform var(--motion-fast) var(--ease-spring);
+    }
+
+    .grips > span:nth-child(1) {
+      top: calc(var(--grip-size) / -2);
+      left: calc(var(--grip-size) / -2);
+    }
+
+    .grips > span:nth-child(2) {
+      top: calc(var(--grip-size) / -2);
+      right: calc(var(--grip-size) / -2);
+    }
+
+    .grips > span:nth-child(3) {
+      bottom: calc(var(--grip-size) / -2);
+      left: calc(var(--grip-size) / -2);
+    }
+
+    .grips > span:nth-child(4) {
+      right: calc(var(--grip-size) / -2);
+      bottom: calc(var(--grip-size) / -2);
+    }
+
+    .has-grips:focus-visible > .grips > span,
+    .has-grips:has(:focus-visible) > .grips > span {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (hover: hover) {
+      .has-grips:hover > .grips > span {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .grips > span {
+        transform: none;
+        transition: opacity var(--motion-fast) linear;
+      }
+    }
+  }
+</style>

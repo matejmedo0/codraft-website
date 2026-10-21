@@ -1,0 +1,206 @@
+---
+/**
+ * The footer as the drawing's title block (ADR 0015): the wordmark, the
+ * company data a title block (and Croatian law) asks for, contact, the legal
+ * links, the language, the page's sheet number and the date of the last
+ * change (the build date). Company data the client hasn't sent yet says it
+ * arrives before launch (src/config/company.ts).
+ *
+ * The cells wrap in rows that always fill the width, so the block never
+ * shows an empty cell, whatever the screen and whichever cells a page has.
+ */
+import { COMPANY } from "../../config/company.ts";
+import type { Locale } from "../../config/site.ts";
+import { LEGAL_NAV, sheetFor } from "../../features/i18n/navigation.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import Wordmark from "../ui/Wordmark.astro";
+import ZoneMark from "../ui/ZoneMark.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+interface Props {
+  locale: Locale;
+  page?: PageId | undefined;
+}
+
+const { locale, page } = Astro.props;
+
+const DATE_LOCALES = { hr: "hr-HR", en: "en-GB" } as const satisfies Record<
+  Locale,
+  string
+>;
+
+const built = new Date();
+const builtLabel = new Intl.DateTimeFormat(DATE_LOCALES[locale], {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(built);
+const builtIso = built.toISOString().slice(0, 10);
+
+const contact = [COMPANY.email, COMPANY.phone].filter(
+  (value): value is string => value !== null,
+);
+const company = [
+  { label: t(locale, "footer.companyName"), value: COMPANY.legalName },
+  { label: t(locale, "footer.oib"), value: COMPANY.oib },
+  { label: t(locale, "footer.mbs"), value: COMPANY.mbs },
+  { label: t(locale, "footer.seat"), value: COMPANY.seat },
+];
+const sheet = sheetFor(page);
+const pending = t(locale, "footer.pending");
+---
+
+<footer class="title-block">
+  <ZoneMark />
+  <dl class="title-block__cells">
+    <div class="title-block__cell title-block__cell--mark">
+      <dt class="visually-hidden">{t(locale, "footer.mark")}</dt>
+      <dd>
+        <Wordmark label="Codraft" />
+      </dd>
+    </div>
+    {company.map(({ label, value }) => (
+      <div class="title-block__cell">
+        <dt class="t-label">{label}</dt>
+        <dd class:list={{ "title-block__pending": value === null }}>
+          {value ?? pending}
+        </dd>
+      </div>
+    ))}
+    <div class="title-block__cell">
+      <dt class="t-label">{t(locale, "footer.contact")}</dt>
+      {contact.length === 0 ? (
+        <dd class="title-block__pending">{pending}</dd>
+      ) : (
+        contact.map((value) => <dd>{value}</dd>)
+      )}
+    </div>
+    <div class="title-block__cell title-block__cell--wide">
+      <dt class="t-label">{t(locale, "footer.legal")}</dt>
+      <dd>
+        <ul class="title-block__links">
+          {LEGAL_NAV.map(({ page: target, label }) => (
+            <li>
+              <a href={pathFor(target, locale)}>{t(locale, label)}</a>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+    <div class="title-block__cell">
+      <dt class="t-label">{t(locale, "footer.language")}</dt>
+      <dd>
+        <LanguageSwitcher locale={locale} page={page} />
+      </dd>
+    </div>
+    {sheet && (
+      <div class="title-block__cell">
+        <dt class="t-label">{t(locale, "footer.sheet")}</dt>
+        <dd>
+          {sheet.number} {t(locale, "footer.sheetOf")} {sheet.of}
+        </dd>
+      </div>
+    )}
+    <div class="title-block__cell">
+      <dt class="t-label">{t(locale, "footer.updated")}</dt>
+      <dd>
+        <time datetime={builtIso}>{builtLabel}</time>
+      </dd>
+    </div>
+  </dl>
+</footer>
+
+<style>
+  .title-block {
+    --zone-mark-top: var(--space-4);
+
+    position: relative;
+    border-top: var(--rule) solid var(--frame);
+    background: var(--surface);
+  }
+
+  /* The cells grow to fill each row. Each draws its right and bottom
+     lines; the lines on the block's outer edges are clipped, where the
+     sheet's frame already runs. */
+  .title-block__cells {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .title-block__cell {
+    display: grid;
+    flex: 1 1 10rem;
+    align-content: start;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-5) 0.875rem;
+    box-shadow:
+      var(--rule) 0 0 0 var(--frame),
+      0 var(--rule) 0 0 var(--frame);
+  }
+
+  /* The mark keeps its clear space, at least the height of its "c" (about
+     21 px at this width) on every side (Assets/codraft-brand/README.md).
+     Below 64rem, where the mark has a row of its own, the other cells have
+     the same 24 px at their sides, so the mark and the text below it share
+     one edge (the critique's re-check, R1); wider, they keep 16 px, so the
+     values fit on one line in the narrower cells (review #131). */
+  .title-block__cell--mark {
+    --wordmark-width: 8.5rem;
+
+    flex: 1 1 100%;
+    align-content: center;
+    padding: var(--space-5);
+    color: var(--ink);
+  }
+
+  .title-block__cell--wide {
+    flex: 2 1 18rem;
+  }
+
+  .title-block dt {
+    color: var(--ink-muted);
+  }
+
+  .title-block dd {
+    margin: 0;
+    font-weight: var(--weight-medium);
+  }
+
+  /* A date keeps its day, month and year together. */
+  .title-block time {
+    white-space: nowrap;
+  }
+
+  .title-block dd.title-block__pending {
+    color: var(--ink-muted);
+    font-weight: var(--weight-text);
+  }
+
+  .title-block__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .title-block a,
+  .title-block :global(.language-switcher) {
+    color: var(--ink);
+  }
+
+  @media (min-width: 64rem) {
+    .title-block__cell:not(.title-block__cell--mark) {
+      padding-inline: var(--space-4);
+    }
+
+    .title-block__cell--mark {
+      flex: 1.6 1 14rem;
+    }
+  }
+</style>

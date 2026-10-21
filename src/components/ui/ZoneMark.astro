@@ -1,0 +1,122 @@
+---
+/**
+ * A zone's references on the sheet: its letter in the left margin and the
+ * section transition on its top rule (docs/motion.md, ADR 0015). When the
+ * rule scrolls into view, a blue drafting line draws along it, its grip
+ * snaps in at the frame, and the selection releases, leaving the plain
+ * rule; the letter snaps in with the grip. Decorative: hidden from
+ * assistive technology. Reduced motion and no JavaScript show the plain
+ * rule and the letter.
+ *
+ * Place it first inside a positioned zone (Zone.astro, the title block).
+ * The letters count A, B, C, … down the sheet (a CSS counter that
+ * Sheet.astro resets), so the title block takes the letter after the last
+ * zone by itself. The letter sits at --zone-mark-top from the zone's top.
+ */
+interface Props {
+  /** The first zone has no rule above it, so nothing to select. */
+  select?: boolean;
+}
+
+const { select = true } = Astro.props;
+---
+
+{select && (
+  <span class="zone-mark__select" data-draw="late" aria-hidden="true">
+    <span class="zone-mark__grip" />
+  </span>
+)}
+<span class="zone-mark__letter" data-draw-with aria-hidden="true"></span>
+
+<script>
+  import "./draw.ts";
+</script>
+
+<style>
+  .zone-mark__letter {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .zone-mark__letter {
+      position: absolute;
+      top: var(--zone-mark-top, calc(var(--zone-pad) + var(--space-1)));
+      left: calc((var(--sheet-margin) + var(--rule)) * -1);
+      display: block;
+      width: var(--sheet-margin);
+      /* The margin is paper on every page. */
+      color: var(--color-grey-on-paper);
+      font-size: 0.6875rem;
+      font-stretch: var(--width-label);
+      line-height: 1.5;
+      text-align: center;
+      counter-increment: zone;
+    }
+
+    .zone-mark__letter::before {
+      content: counter(zone, upper-alpha);
+    }
+  }
+
+  /* The selection lies on the zone's top rule. */
+  .zone-mark__select {
+    position: absolute;
+    top: calc(var(--rule) * -1);
+    right: 0;
+    left: 0;
+    height: var(--rule);
+    pointer-events: none;
+  }
+
+  .zone-mark__select::before {
+    position: absolute;
+    inset: -0.5px 0;
+    background: var(--accent);
+    content: "";
+    opacity: 0;
+    transform-origin: 0 50%;
+  }
+
+  .zone-mark__grip {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: var(--grip-size);
+    height: var(--grip-size);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+    opacity: 0;
+    translate: 50% -50%;
+  }
+
+  .zone-mark__select.is-drawing::before {
+    opacity: 1;
+    animation:
+      motion-draw-x var(--motion-draw) var(--ease-pen) both,
+      motion-release var(--motion-slow) var(--ease-standard) var(--motion-hold)
+        forwards;
+  }
+
+  .zone-mark__select.is-drawing .zone-mark__grip {
+    animation:
+      motion-snap-in var(--motion-snap) var(--ease-snap) var(--motion-draw) both,
+      motion-release var(--motion-slow) var(--ease-standard) var(--motion-hold)
+        forwards;
+  }
+
+  .zone-mark__select.is-pending ~ .zone-mark__letter {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  .zone-mark__select.is-drawing ~ .zone-mark__letter {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      var(--motion-draw) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zone-mark__select {
+      display: none;
+    }
+  }
+</style>

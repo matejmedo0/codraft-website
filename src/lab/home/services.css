@@ -1,0 +1,178 @@
+/*
+ * "Što radimo" on Home: the parts its options share (the client's review,
+ * batch 3; lab only): the chosen central axis (ServicesAxis.astro) and the
+ * tabs in the archive. Each places the chapters and the services in its
+ * own scoped styles.
+ */
+
+.svc {
+  --bubble: 2.75rem;
+  /* The services' one line, larger than body text (review batch 3). */
+  --step-service: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+}
+
+.svc > h2 {
+  margin-bottom: var(--space-6);
+}
+
+/* Which option this is, on the comparison page. */
+.svc-label {
+  margin-bottom: var(--space-3);
+  color: var(--accent-text);
+}
+
+/* A grid bubble, as at the end of a drawing's grid line. */
+.svc-bubble {
+  display: grid;
+  place-items: center;
+  width: var(--bubble);
+  height: var(--bubble);
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-stretch: var(--width-label);
+  font-weight: var(--weight-strong);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.svc-title {
+  font-size: var(--step-chapter);
+  font-weight: var(--weight-chapter);
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+
+.svc-tagline {
+  color: var(--ink-muted);
+  font-size: var(--step-lead);
+  line-height: 1.4;
+}
+
+.svc-items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The process line, one stretch per chapter: the line without JavaScript
+   or with reduced motion (ServicesAxis.astro). */
+.svc-rail {
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+/* Option 3, the central axis: the line follows the screen and the service
+   icons draw as it reaches them (review batches 14 and 15; axis-line.ts
+   eases the line frame by frame). The text never waits. Without
+   JavaScript, or with reduced motion, the stages' rails draw the line
+   complete and the icons are complete. */
+.axis__line {
+  display: none;
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One line, set by the script, in place of the rails. */
+  .js [data-axis] .svc-rail {
+    display: none;
+  }
+
+  .js .axis__line {
+    display: block;
+    transform: scaleY(var(--progress, 0));
+  }
+
+  /* An icon isn't there until its row starts; then its strokes run along
+     their paths (icon-draw.ts) and the grip snaps in. Once drawn, a stroke
+     is plain again. */
+  .js [data-axis-item]:not(.is-drawn) [data-stroke] {
+    opacity: 0;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant)
+    :is([data-stroke="ink"], [data-stroke="line"]) {
+    animation: icon-stroke var(--for, 220ms) var(--ease-pen) var(--at, 0ms)
+      backwards;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant) [data-stroke="grip"] {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: icon-grip var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      backwards;
+  }
+}
+
+/* Option 14, the tabs, kept in the archive (review #101, #104;
+   src/lab/archive/): the chosen tab's line draws from the left in
+   --motion-base and its grip snaps in as the line ends; the line of the
+   tab left behind fades, as a selection releases. stage-tabs.ts sets
+   `is-drawing` once the section is in view and on every choice, and
+   `is-releasing` for --motion-fast. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-tabs] .tabs__tab:not(.is-drawing, .is-releasing) .tabs__line {
+    transform: scaleX(0);
+  }
+
+  .js
+    [data-tabs]
+    .tabs__tab:not(.is-drawing, .is-releasing)
+    .tabs__line::after {
+    opacity: 0;
+  }
+
+  [data-tabs] .tabs__tab.is-drawing .tabs__line {
+    animation: motion-draw-x var(--motion-base) var(--ease-pen) backwards;
+  }
+
+  [data-tabs] .tabs__tab.is-drawing .tabs__line::after {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      calc(var(--motion-base) - var(--motion-fast)) backwards;
+  }
+
+  [data-tabs] .tabs__tab.is-releasing .tabs__line {
+    visibility: visible;
+    animation: motion-release var(--motion-fast) var(--ease-standard) forwards;
+  }
+}
+
+/* Hidden at the very start, so a square cap never shows as a dot. */
+@keyframes icon-stroke {
+  0% {
+    opacity: 0;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes icon-grip {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

@@ -1,0 +1,79 @@
+---
+/**
+ * "Što radimo" as chapters (hybrid D): each stage is a row, its number in a
+ * grid bubble, with a large title beside its services. A process line joins
+ * the bubbles 01 → 02 → 03; each chapter draws its stretch of the line once,
+ * as it scrolls into view. Stage 01 lists two items from its own text, so
+ * the stages hold 2, 4 and 3 items.
+ */
+import { pathFor } from "../../features/i18n/urls.ts";
+import Grips from "../components/Grips.astro";
+import { PLAN_ITEMS, SERVICES } from "../copy.ts";
+import ZoneMark from "./ZoneMark.astro";
+
+interface Props {
+  letter: string;
+}
+
+const { letter } = Astro.props;
+const locale = "hr";
+const services = pathFor("services", locale);
+const { plan, stages } = SERVICES;
+---
+
+<section class="zone services" aria-labelledby="usluge">
+  <ZoneMark letter={letter} />
+  <h2 id="usluge">{SERVICES.title}</h2>
+
+  <div class="chapters">
+    <div class="chapter" data-draw="late">
+      <span class="chapter__rail" aria-hidden="true"></span>
+      <div class="chapter__head">
+        <h3 class="chapter__title">
+          <span class="bubble chapter__bubble">{plan.number}</span>
+          {plan.title}
+        </h3>
+        <p class="chapter__tagline">{plan.tagline}</p>
+      </div>
+      <div class="chapter__body">
+        <ul class="items items--pair">
+          {PLAN_ITEMS.map((item) => (
+            <li class="item">
+              <h4 class="item__title">{item.title}</h4>
+              <p class="item__body">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+        <a class="stage-cta" href={pathFor("audit", locale)}>
+          {plan.cta}
+        </a>
+      </div>
+    </div>
+
+    {stages.map((stage) => (
+      <div class="chapter" data-draw="late">
+        <span class="chapter__rail" aria-hidden="true" />
+        <div class="chapter__head">
+          <h3 class="chapter__title">
+            <span class="bubble chapter__bubble">{stage.number}</span>
+            {stage.title}
+          </h3>
+          <p class="chapter__tagline">{stage.tagline}</p>
+        </div>
+        <ul class="items items--pair chapter__body">
+          {stage.items.map((item) => (
+            <li class="item has-grips">
+              <h4 class="item__title">
+                <a class="stretched-link" href={`${services}#${item.anchor}`}>
+                  {item.title}
+                </a>
+              </h4>
+              <p class="item__body">{item.body}</p>
+              <Grips />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

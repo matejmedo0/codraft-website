@@ -1,0 +1,99 @@
+---
+/**
+ * Zone A of the style page, set like the home hero of the chosen direction
+ * (ADR 0015): the headline beside a drawing on graph paper that holds the
+ * mark, which plays its entrance once per load (ADR 0014). On paper, like
+ * the header above it. Its one button leads to the services: the free audit
+ * is asked for once on a page, where the page explains it (ADR 0017).
+ */
+import Button from "../../components/ui/Button.astro";
+import Wordmark from "../../components/ui/Wordmark.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { HERO } from "../copy.ts";
+---
+
+<Zone labelledby="sustav" select={false} class="style-hero">
+  <div class="style-hero__text">
+    <h1 id="sustav">Sustav dizajna</h1>
+    <p class="style-hero__lead">
+      Odabrani smjer je „Model i list“, sa svijetlim zaglavljem i herojem (ADR
+      0015). Ovdje su njegovi tokeni i osnovne komponente, onakvi kakvi idu na
+      stranicu.
+    </p>
+    <p class="style-hero__note">
+      Ovaj prvi odjeljak složen je kao hero početne stranice: naslov uz crtež na
+      milimetarskom papiru, u kojem se znak iscrtava jednom pri učitavanju.
+    </p>
+    <div class="style-hero__actions">
+      <Button href={pathFor("services", "hr")}>{HERO.secondary}</Button>
+    </div>
+  </div>
+  <div class="style-hero__drawing graph-paper">
+    <Wordmark entrance />
+  </div>
+</Zone>
+
+<style>
+  .style-hero {
+    display: grid;
+    gap: var(--space-7);
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .style-hero__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .style-hero__note {
+    max-width: var(--measure);
+    margin-top: var(--space-4);
+    color: var(--ink-muted);
+  }
+
+  .style-hero__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  /* On narrow screens the drawing is a low strip and the mark stays mid
+     size (the client didn't want a large mark in front). */
+  .style-hero__drawing {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 21 / 9;
+    padding: 6% 25%;
+    color: var(--ink);
+  }
+
+  @media (min-width: 40rem) {
+    .style-hero__actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .style-hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: center;
+      padding-block: 4.5rem var(--space-10);
+    }
+
+    .style-hero__text {
+      grid-column: 1 / span 7;
+    }
+
+    .style-hero__drawing {
+      grid-column: 8 / -1;
+      aspect-ratio: 4 / 3;
+      padding: 14%;
+    }
+  }
+</style>

@@ -1,8 +1,9 @@
 ---
-// The empty home page of phase 1: only the H1, no design or copy yet.
+// The home page until phase 3 builds it: only the H1, on the sheet.
+import Zone from "../components/ui/Zone.astro";
 import { SITE_NAME } from "../config/site.ts";
 ---
 
-<main>
-  <h1>{SITE_NAME}</h1>
-</main>
+<Zone labelledby="naslov" select={false}>
+  <h1 id="naslov">{SITE_NAME}</h1>
+</Zone>

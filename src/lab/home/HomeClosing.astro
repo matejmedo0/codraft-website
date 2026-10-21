@@ -1,0 +1,64 @@
+---
+/**
+ * Zone G: the closing call to action, the page's one navy surface
+ * (ADR 0015). It invites a conversation and doesn't repeat the audit, which
+ * its own zone asks for once (ADR 0017): the client's question and lead
+ * (review batch 11), then one button to Kontakt.
+ *
+ * Centred, one under the other (review batch 12): the heading, a zone h2
+ * smaller than the hero's, with room for one line from 900 px; the lead,
+ * never wider than the heading; the button.
+ */
+import Button from "../../components/ui/Button.astro";
+import Zone from "../../components/ui/Zone.astro";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { CLOSING } from "../copy.ts";
+---
+
+<Zone labelledby="zavrsni-poziv" surface="navy" class="home-closing">
+  <div class="home-closing__text">
+    <h2 class="home-closing__title" id="zavrsni-poziv">
+      {CLOSING.title}
+    </h2>
+    <p class="home-closing__lead">{CLOSING.lead}</p>
+  </div>
+  <Button href={pathFor("contact", "hr")} class="home-closing__cta">
+    {CLOSING.secondary}
+  </Button>
+</Zone>
+
+<style>
+  /* Equal padding above and below, two thirds of a zone's, as the heading
+     is two thirds of its old size (48 of 72 px). */
+  .home-closing {
+    display: grid;
+    justify-items: center;
+    padding-block: calc(var(--zone-pad) * 2 / 3);
+    text-align: center;
+  }
+
+  /* As wide as the heading; the lead takes no width of its own. */
+  .home-closing__text {
+    max-width: 100%;
+  }
+
+  /* Trimmed to the cap height, so the space above the letters matches the
+     space below the button. */
+  .home-closing__title {
+    text-box: trim-start cap alphabetic;
+  }
+
+  .home-closing__lead {
+    width: 0;
+    min-width: 100%;
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+    text-wrap: balance;
+  }
+
+  /* 1.5 times the gap between the heading and the lead. */
+  .home-closing__cta {
+    margin-top: var(--space-5);
+  }
+</style>

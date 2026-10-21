@@ -1,0 +1,41 @@
+---
+/**
+ * Hybrid D "Model i list" (docs/phases/2-design-round-2.md): A's drawing
+ * sheet, with navy as the model space at both ends. The header and hero are
+ * navy, with the mark on a blueprint grid; the sheet in between is paper;
+ * the closing call to action returns to navy. "Što radimo" reads as
+ * chapters joined by a process line.
+ */
+import "../../hybrid/hybrid.css";
+
+import AuditSection from "../../hybrid/AuditSection.astro";
+import CadSection from "../../hybrid/CadSection.astro";
+import ClosingCta from "../../hybrid/ClosingCta.astro";
+import Hero from "../../hybrid/Hero.astro";
+import Masthead from "../../hybrid/Masthead.astro";
+import Principles from "../../hybrid/Principles.astro";
+import ServicesChapters from "../../hybrid/ServicesChapters.astro";
+import TeamStrip from "../../hybrid/TeamStrip.astro";
+import TitleBlock from "../../hybrid/TitleBlock.astro";
+
+const ZONES = [1, 2, 3, 4, 5, 6];
+---
+
+<div class="sheet">
+  <ol class="sheet__zones" aria-hidden="true">
+    {ZONES.map((zone) => (
+      <li>{zone}</li>
+    ))}
+  </ol>
+  <Masthead menuId="izbornik-d" navy />
+  <main id="sadrzaj">
+    <Hero letter="A" navy />
+    <ServicesChapters letter="B" />
+    <AuditSection letter="C" />
+    <CadSection letter="D" />
+    <Principles letter="E" />
+    <TeamStrip letter="F" />
+    <ClosingCta letter="G" navy />
+  </main>
+  <TitleBlock letter="H" />
+</div>

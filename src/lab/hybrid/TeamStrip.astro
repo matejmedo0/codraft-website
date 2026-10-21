@@ -1,0 +1,45 @@
+---
+/**
+ * Zone F: the team strip on Home (ADR 0007), with the full team on About.
+ * Until the photos, names and roles arrive in phase 3 (G3), each place is a
+ * drafting placeholder, a frame with its diagonals; no stock or generated
+ * people stand in for the team (docs/brand.md, "Imagery").
+ */
+import { pathFor } from "../../features/i18n/urls.ts";
+import { TEAM } from "../copy.ts";
+import ZoneMark from "./ZoneMark.astro";
+
+interface Props {
+  letter: string;
+}
+
+const { letter } = Astro.props;
+---
+
+<section class="zone team" aria-labelledby="tim">
+  <ZoneMark letter={letter} />
+  <div class="team__head">
+    <h2 id="tim">{TEAM.title}</h2>
+    <p class="team__note">{TEAM.placeholderNote}</p>
+    <a class="team__more" href={pathFor("about", "hr")}>
+      {TEAM.more}
+    </a>
+  </div>
+  <ul class="team__list">
+    {TEAM.members.map((member) => (
+      <li class="member">
+        <span class="member__photo" aria-hidden="true">
+          <svg
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            focusable="false"
+          >
+            <path d="M0 0L100 100M100 0L0 100" />
+          </svg>
+        </span>
+        <span class="member__name">{member.name}</span>
+        <span class="member__role">{member.role}</span>
+      </li>
+    ))}
+  </ul>
+</section>

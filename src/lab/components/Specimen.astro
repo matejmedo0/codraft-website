@@ -1,0 +1,336 @@
+---
+/**
+ * The specimen at the end of each prototype: type scale, colours with their
+ * contrast, button states, grips and a dimension. It is styled by the
+ * direction's tokens and classes (.t-*, .btn, .card). Lab chrome: the state
+ * samples are static, the real states are on the page above.
+ */
+import { contrast, formatRatio } from "../../lib/contrast.ts";
+import Grips from "./Grips.astro";
+import type { Swatch, TextPair } from "./specimen-types.ts";
+import Wordmark from "./Wordmark.astro";
+
+export type { Swatch, TextPair } from "./specimen-types.ts";
+
+interface Props {
+  letter: string;
+  swatches: Swatch[];
+  pairs: TextPair[];
+}
+
+const { letter, swatches, pairs } = Astro.props;
+
+const AA_NORMAL = 4.5;
+const AA_LARGE = 3;
+
+const rows = pairs.map((pair) => {
+  const ratio = contrast(pair.fg, pair.bg);
+  const needed = pair.large === true ? AA_LARGE : AA_NORMAL;
+  return { ...pair, ratio: formatRatio(ratio), passes: ratio >= needed };
+});
+
+const states = [
+  { label: "Zadano", className: "" },
+  { label: "Prijelaz mišem", className: "is-hover" },
+  { label: "Fokus tipkovnicom", className: "is-focus" },
+  { label: "Pritisak", className: "is-active" },
+] as const;
+---
+
+<section class="specimen" aria-labelledby="specimen-title">
+  <div class="specimen__inner">
+    <h2 class="specimen__title" id="specimen-title">
+      Specimen smjera {letter}
+    </h2>
+    <p class="specimen__intro t-body">
+      Uzorci za usporedbu smjerova. Stanja su ovdje prikazana statično; prava
+      stanja isprobajte mišem i tipkom Tab na stranici iznad.
+    </p>
+
+    <h3 class="specimen__heading t-label">Tipografija</h3>
+    <div class="specimen__type">
+      <p class="t-h1">Precizni crteži, isporučeni u roku.</p>
+      <p class="t-h2">Što radimo</p>
+      <p class="t-h3">Integracije i online rezervacije</p>
+      <p class="t-body">
+        Vaša web stranica povezana s kalendarima, plaćanjima i CRM-om, da svaki
+        upit stigne do prave osobe.
+      </p>
+      <p class="t-label">
+        Đurđevac, Čakovec, Ćićarija, Šibenik, Žminj · „Code + Draft“ · 1.200,00
+        € · 19. 10. 2026.
+      </p>
+    </div>
+
+    <h3 class="specimen__heading t-label">Boje</h3>
+    <ul class="specimen__swatches">
+      {swatches.map(({ name, hex, use }) => (
+        <li>
+          {/* SVG fill, not a style attribute: the CSP blocks those. */}
+          <svg
+            class="specimen__chip"
+            viewBox="0 0 1 1"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <rect width="1" height="1" fill={hex} />
+          </svg>
+          <span class="specimen__chip-name">{name}</span>
+          <span class="specimen__chip-hex t-label">{hex}</span>
+          <span class="specimen__chip-use">{use}</span>
+        </li>
+      ))}
+    </ul>
+
+    <h3 class="specimen__heading t-label">Kontrast teksta (WCAG AA)</h3>
+    <table class="specimen__table">
+      <thead>
+        <tr>
+          <th scope="col">Par</th>
+          <th scope="col">Omjer</th>
+          <th scope="col">AA</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ label, ratio, passes, large }) => (
+          <tr>
+            <th scope="row">
+              {label}
+              {large === true && " (samo veliki tekst)"}
+            </th>
+            <td>{ratio}</td>
+            <td>{passes ? "Prolazi" : "Ne prolazi"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h3 class="specimen__heading t-label">Gumbi</h3>
+    <div class="specimen__buttons">
+      {(["primary", "secondary"] as const).map((variant) => (
+        <div class="specimen__button-row">
+          {states.map(({ label, className }) => (
+            <figure>
+              <span
+                class:list={["btn", `btn--${variant}`, "has-grips", className]}
+              >
+                Besplatna analiza
+                <Grips />
+              </span>
+              <figcaption class="t-label">{label}</figcaption>
+            </figure>
+          ))}
+          <figure>
+            <span class:list={["btn", `btn--${variant}`]} aria-disabled="true">
+              Besplatna analiza
+            </span>
+            <figcaption class="t-label">Onemogućeno</figcaption>
+          </figure>
+        </div>
+      ))}
+    </div>
+
+    <h3 class="specimen__heading t-label">Kartica s gripovima i kota</h3>
+    <div class="specimen__demo">
+      <div class="card has-grips is-focus specimen__card">
+        <p class="t-h3">Hosting i održavanje</p>
+        <p class="t-body">
+          Hosting o kojem brinemo mi, redovita ažuriranja, sigurnosne kopije i
+          zakrpe, sve za fiksnu mjesečnu naknadu.
+        </p>
+        <Grips />
+      </div>
+      <figure class="specimen__dimension">
+        <div class="specimen__dimension-drawing">
+          <span class="specimen__dimension-line rule-draw rule-draw--y"></span>
+          <span class="specimen__dimension-value t-label">20 px</span>
+          <Wordmark class="specimen__dimension-mark" />
+        </div>
+        <figcaption class="t-label">
+          Najmanja visina znaka na ekranu (brand paket)
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .specimen {
+    margin-top: 4rem;
+    padding: 3rem 0 4rem;
+    border-top: 1px dashed var(--line-strong);
+    background: var(--specimen-bg, transparent);
+    color: var(--ink);
+  }
+
+  .specimen__inner {
+    width: min(100% - 2rem, 72rem);
+    margin: 0 auto;
+  }
+
+  .specimen__title {
+    margin: 0 0 0.5rem;
+  }
+
+  .specimen__intro {
+    max-width: 40rem;
+    margin: 0 0 2rem;
+  }
+
+  .specimen__heading {
+    margin: 2.5rem 0 1rem;
+    color: var(--ink-muted);
+  }
+
+  .specimen__type > * {
+    margin: 0 0 0.75rem;
+  }
+
+  .specimen__swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .specimen__swatches li {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .specimen__chip {
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 0.25rem;
+    outline: 1px solid var(--line-strong);
+    outline-offset: -1px;
+  }
+
+  .specimen__chip-name {
+    font-weight: 600;
+  }
+
+  .specimen__chip-use {
+    color: var(--ink-muted);
+    font-size: 0.875rem;
+  }
+
+  .specimen__table {
+    width: 100%;
+    max-width: 40rem;
+    border-collapse: collapse;
+  }
+
+  .specimen__table :is(th, td) {
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .specimen__table thead th {
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  .specimen__table tbody th {
+    font-weight: 400;
+  }
+
+  .specimen__buttons {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .specimen__button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .specimen__button-row figure {
+    display: grid;
+    justify-items: start;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .specimen__button-row figcaption {
+    color: var(--ink-muted);
+  }
+
+  .specimen__demo {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 48rem) {
+    .specimen__demo {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .specimen__card {
+    max-width: 24rem;
+  }
+
+  .specimen__card > p {
+    margin: 0 0 0.5rem;
+  }
+
+  .specimen__dimension {
+    margin: 0;
+  }
+
+  .specimen__dimension-drawing {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  /* A vertical dimension: 20 px between two ticks. */
+  .specimen__dimension-line {
+    position: relative;
+    width: 1px;
+    height: 20px;
+    background: var(--accent);
+  }
+
+  .specimen__dimension-line::before,
+  .specimen__dimension-line::after {
+    position: absolute;
+    left: -5px;
+    width: 11px;
+    height: 1px;
+    background: var(--accent);
+    content: "";
+  }
+
+  .specimen__dimension-line::before {
+    top: 0;
+  }
+
+  .specimen__dimension-line::after {
+    bottom: 0;
+  }
+
+  .specimen__dimension-value {
+    order: -1;
+    color: var(--link);
+  }
+
+  .specimen__dimension-drawing :global(.specimen__dimension-mark) {
+    width: auto;
+    height: 20px;
+    color: var(--ink);
+  }
+
+  .specimen__dimension figcaption {
+    color: var(--ink-muted);
+  }
+</style>

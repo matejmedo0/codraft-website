@@ -19,8 +19,23 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0011](0011-analytics-goatcounter-after-consent.md) | Analytics: self-hosted GoatCounter after consent, plus Search Console and Bing | Accepted | 2026-10-19 |
 | [0012](0012-booking-easy-appointments.md) | Booking: self-hosted Easy!Appointments | Accepted | 2026-10-19 |
 | [0013](0013-mailboxes-zoho-mail-lite.md) | Mailboxes: Zoho Mail Lite (recommended provider) | Accepted | 2026-10-19 |
+| [0014](0014-logo-animation-web-copies-and-local-review.md) | Logo animation, web copies of the marks, and local design review | Accepted | 2026-10-19 |
+| [0015](0015-design-direction-model-i-list.md) | Design direction: „Model i list“ with a paper hero | Accepted | 2026-10-19 |
+| [0016](0016-figma-for-design-iterations.md) | Figma for quick design iterations | Accepted | 2026-10-19 |
+| [0017](0017-one-audit-call-to-action-per-page.md) | One free-audit button per page | Accepted | 2026-10-19 |
+| [0018](0018-drafting-for-architecture-and-construction.md) | Drafting: „Tehničko crtanje“ for architecture and construction | Accepted | 2026-10-19 |
+| [0019](0019-drafting-adds-3d-models.md) | The drafting offer adds 3D models | Accepted | 2026-10-19 |
+| [0020](0020-drawings-arrive-by-email.md) | Drawings and sketches arrive by email, not through the site | Accepted | 2026-10-20 |
+| [0021](0021-the-customer-owns-the-work.md) | The customer owns the code, drawings, domain and access | Accepted | 2026-10-20 |
+| [0022](0022-service-icons-on-home.md) | Service icons on Home, drawn as the line reaches them | Accepted; point 3 superseded by 0023, point 1 on phones by 0028 | 2026-10-20 |
+| [0023](0023-process-line-follows-the-screen.md) | The process line follows the screen continuously | Accepted | 2026-10-20 |
+| [0024](0024-independent-design-critique.md) | Independent design critique by a project agent | Accepted | 2026-10-20 |
+| [0025](0025-browser-details-and-critique-re-check.md) | Browser-drawn details in brand colours, and a re-check for critiques | Accepted | 2026-10-20 |
+| [0026](0026-emil-kowalski-skills-in-the-setup.md) | Four of Emil Kowalski's skills in the setup | Accepted | 2026-10-20 |
+| [0027](0027-taste-skill-ideas-in-the-setup.md) | Ideas from Taste Skill in the critic, the animate skill and phase 3 | Accepted | 2026-10-20 |
+| [0028](0028-service-icons-on-phones-beside-the-title.md) | On phones, a service's icon sits beside its title only | Accepted | 2026-10-21 |
 
-Next number: **0014**.
+Next number: **0029**.
 
 ## How to add one
 

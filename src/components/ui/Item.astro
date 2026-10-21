@@ -1,0 +1,104 @@
+---
+/**
+ * One item of a list: a title and a short text, such as a service.
+ * - "rule" (the default) is boxless, with a hairline above it: items read as
+ *   rows on the sheet, not as cards.
+ * - "panel" sits on the sunk surface with the 2 px radius, for content that
+ *   stands apart, such as a note or a form step.
+ *
+ * With `href` the title becomes a link that covers the whole item, and the
+ * item shows the grips on hover and keyboard focus (docs/motion.md,
+ * "Select"); the focus outline goes around the item.
+ */
+import Grips from "./Grips.astro";
+
+interface Props {
+  title: string;
+  href?: string;
+  /** The title's heading level, so it fits the page's outline. */
+  level?: 2 | 3 | 4 | 5;
+  variant?: "rule" | "panel";
+  as?: "li" | "div" | "article";
+  class?: string;
+}
+
+const {
+  title,
+  href,
+  level = 3,
+  variant = "rule",
+  as: Element = "div",
+  class: className,
+} = Astro.props;
+const Heading = `h${String(level)}` as "h2" | "h3" | "h4" | "h5";
+---
+
+<Element
+  class:list={[
+    "item",
+    `item--${variant}`,
+    { "has-grips": href !== undefined },
+    className,
+  ]}
+>
+  <Heading class="item__title">
+    {href === undefined ? (
+      title
+    ) : (
+      <a class="item__link stretched-link" href={href}>
+        {title}
+      </a>
+    )}
+  </Heading>
+  <div class="item__body">
+    <slot />
+  </div>
+  {href !== undefined && <Grips />}
+</Element>
+
+<style>
+  .item {
+    position: relative;
+    padding: var(--space-4) 0 var(--space-5);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .item--panel {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    border-top: 0;
+    border-radius: var(--radius);
+    background: var(--surface-sunk);
+  }
+
+  /* The heading's style at every level (h5 too), so every list of titles
+     on a page looks the same (critique 7). */
+  .item__title {
+    font-family: var(--font-heading);
+    font-size: var(--step-title);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  /* Underlined at rest, like every link (brand.md), 2 px on hover. */
+  .item__link {
+    color: var(--ink);
+  }
+
+  .item__body {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    color: var(--ink-muted);
+  }
+
+  /* The outline goes around the whole item, not just the title. */
+  .item:has(.item__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .item__link:focus-visible {
+    outline: none;
+  }
+</style>

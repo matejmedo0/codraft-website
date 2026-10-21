@@ -1,6 +1,7 @@
 ---
 // Placeholder copy; the real 404 copy (gap G27) arrives with the pages in
 // phase 3, through docs/content.md.
+import Zone from "../components/ui/Zone.astro";
 import type { Locale } from "../config/site.ts";
 import { t } from "../features/i18n/ui.ts";
 import { pathFor } from "../features/i18n/urls.ts";
@@ -12,9 +13,15 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<main>
-  <h1>{t(locale, "notFound.title")}</h1>
-  <p>
+<Zone labelledby="naslov" select={false}>
+  <h1 id="naslov">{t(locale, "notFound.title")}</h1>
+  <p class="not-found__link">
     <a href={pathFor("home", locale)}>{t(locale, "notFound.homeLink")}</a>
   </p>
-</main>
+</Zone>
+
+<style>
+  .not-found__link {
+    margin-top: var(--space-5);
+  }
+</style>

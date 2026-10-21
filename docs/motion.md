@@ -24,7 +24,7 @@ The client asked for animation that is high quality and **not generic**. The con
 - Services already above the screen (a reload mid-page, a jump from a link) show their icons complete at once, and the line jumps past them.
 - Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too. An IntersectionObserver switches the scroll handling on only while the section is near the screen; `will-change` is set only while the line moves.
 
-Options 1 and 2 on `/lab/sto-radimo` keep the earlier behaviour as their record: one stroke at a constant speed once the section reaches its trigger (batch 3), hidden from the first paint with `data-draw-wait` (`draw.ts`).
+The earlier behaviour of batch 3 (one stroke at a constant speed once the section reached its trigger) left the lab with its comparison page `/lab/sto-radimo` (review #108); it is in git history.
 
 ## Principles
 

@@ -1,8 +1,8 @@
 /*
  * "Što radimo" on Home: the parts its options share (the client's review,
- * batch 3; lab only): the chosen central axis (ServicesAxis.astro), the
- * earlier record on /lab/sto-radimo and the tabs in the archive. Each
- * places the chapters and the services in its own scoped styles.
+ * batch 3; lab only): the chosen central axis (ServicesAxis.astro) and the
+ * tabs in the archive. Each places the chapters and the services in its
+ * own scoped styles.
  */
 
 .svc {
@@ -58,25 +58,13 @@
   list-style: none;
 }
 
-/* The process line, one stretch per chapter, drawn as one stroke at a
-   constant speed (process-line.ts). Before its trigger it isn't there at
-   all; without JavaScript or with reduced motion it is complete. */
+/* The process line, one stretch per chapter: the line without JavaScript
+   or with reduced motion (ServicesAxis.astro). */
 .svc-rail {
   position: absolute;
   width: var(--rail);
   background: var(--accent);
   transform-origin: 50% 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .js .svc-line:not(.is-drawing) .svc-rail {
-    transform: scaleY(0);
-  }
-}
-
-.svc-line.is-drawing .svc-rail {
-  animation: motion-draw-y var(--rail-for, 600ms) linear var(--rail-at, 0ms)
-    both;
 }
 
 /* Option 3, the central axis: the line follows the screen and the service

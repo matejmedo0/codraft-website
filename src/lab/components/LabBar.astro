@@ -12,7 +12,6 @@ interface Props {
     | LabDirectionId
     | "style"
     | "pocetna"
-    | "sto-radimo"
     | "crtanje"
     | "ikone"
     | "tlocrt-3d"
@@ -45,13 +44,6 @@ const ROUNDS = [
     aria-current={current === "pocetna" ? "page" : undefined}
   >
     Početna
-  </a>
-  <a
-    class="lab-bar__style"
-    href="/lab/sto-radimo"
-    aria-current={current === "sto-radimo" ? "page" : undefined}
-  >
-    Što radimo: opcije
   </a>
   <a
     class="lab-bar__style"

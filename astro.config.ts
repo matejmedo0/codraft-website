@@ -15,7 +15,6 @@ const LAB_PAGES = [
   "e",
   "style",
   "pocetna",
-  "sto-radimo",
   "crtanje",
   "ikone",
   "tlocrt-3d",

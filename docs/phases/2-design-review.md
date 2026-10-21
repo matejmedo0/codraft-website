@@ -16,7 +16,7 @@ The fourth session (2026-10-21, batches 24–30) ran the critique and settled "�
 - **Branch:** `phase/2-design`, pushed; the last code commit of the session is `7c0c26d`, and CI was green on every push of the session.
 - **Lab pages** (`npm run dev`, then http://localhost:4321):
   - `/lab/pocetna`: Home in the chosen direction, on the production components, with every approved refinement: the hero as in the client's reference, "Što radimo" as the central axis with the client's icons (option B) and the line that follows the screen, the free audit, "Tehničko crtanje" (option C as refined in batches 8–9, without a button since #61, its floor plan rising into a 3D house with a roof in palette 1: #58, #64, #66), "Kako radimo" with the client's commitments, the team strip, and the centred navy closing call to action.
-  - `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje`: the comparisons, kept as the record; each says which option the client chose.
+  - `/lab/sto-radimo-2`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje`: the comparisons, kept as the record; each says which option the client chose. The older `/lab/sto-radimo` (batch 3) was deleted on the client's word (#108).
   - `/lab/style`, `/lab/a`–`/lab/e`: as before. D and E stay the round 2 record (they share the lab copy, so the client's wording shows there too).
 - **Code of the refinements:** `src/lab/home/`:
   - Home's zones (`HomeHero`, `HomeAudit`, `HomePrinciples`, `HomeTeam`, `HomeClosing`)
@@ -693,6 +693,16 @@ The client opened the fifth session with this message, verbatim:
 | 105 | "Najprije me pitaj smiješ li obrisati i stariju usporedbu /lab/sto-radimo (prve tri opcije iz skupine 3 …). Briši tek uz moje jasno „da“." | Asked before anything else. A deletion would remove the page `/lab/sto-radimo`, `ServicesChapters.astro`, `ServicesSchedule.astro` and `process-line.ts` in `src/lab/home/`, the page's entries in the lab bar, the lab index and `astro.config.ts`, and the mention in `services.css`'s comment. Lab D's chapters are another file (`src/lab/hybrid/ServicesChapters.astro`) and stay. | — | Deleting: only on the client's clear „da“ | Asked |
 | 106 | "Redoslijed rada: … 1. Ostatak kritike dizajna (dorada 92) … 2. Usklađivanje Figme s kodom (dorada 68). 3. Završne provjere i izvještaj (dorada 69) …" | The order of #92, #68 and #69 stands: group A 16–18 (with the grips on the header's links, #91), then B, then C, then the critic's re-check; then Figma; then the final checks, the report and PR #2. | [Handover](#handover-2026-10-21) | None | Recorded |
 | 107 | "Svaku moju poruku najprije doslovno zapiši …"; "Mijenjaj samo ono što tražim …"; "predloži rješenje i čekaj moj izričiti OK"; "Commitaj s git commit -F, a nakon svake skupine pushaj." | The rules of this review as before, plus a push after each batch. | — | None | Recorded |
+
+**Batch 32 (2026-10-21): the older comparison deleted**
+
+The client's answer to #105 ("Smijem li obrisati stariju usporedbu /lab/sto-radimo? …"), verbatim:
+
+> Da, obriši
+
+| # | The client's request | Change | Where | Decision | Status |
+|---|---|---|---|---|---|
+| 108 | "Da, obriši" | Deleted: the page `/lab/sto-radimo` (batch 3's options 1 „Poglavlja“ and 2 „Sastavnica“ beside the central axis), `ServicesChapters.astro`, `ServicesSchedule.astro` and `process-line.ts`, with the two rules in `services.css` that only `process-line.ts` drove; the page's link in the lab bar and the lab index, and its entry in `astro.config.ts`. All of it stays in git history (the last commit with it: `5234595`). Lab D's chapters (`src/lab/hybrid/ServicesChapters.astro`) stay. The other comparison pages stay as the record. | `src/lab/home/`, `src/lab/pages/`, `src/lab/components/LabBar.astro`, `astro.config.ts` | The client's OK | Done |
 
 ## After the refinements
 

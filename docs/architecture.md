@@ -52,7 +52,7 @@ codraft-website/
 └── CLAUDE.md · CONTRIBUTING.md · PROGRESS.md · README.md
 ```
 
-**The design lab (`src/lab/`).** The phase 2 prototypes (A–E, the record of both rounds), the style page (`/lab/style`), Home in the chosen direction (`/lab/pocetna`, built from the production components, where the client's review refinements are made) and the comparison of the "Što radimo" options (`/lab/sto-radimo`) live here, outside `src/pages`.
+**The design lab (`src/lab/`).** The phase 2 prototypes (A–E, the record of both rounds), the style page (`/lab/style`), Home in the chosen direction (`/lab/pocetna`, built from the production components, where the client's review refinements are made) and the review's comparison pages (`/lab/sto-radimo-2`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje`) live here, outside `src/pages`.
 - **When it exists:** an integration in `astro.config.ts` injects the `/lab/*` routes in `astro dev` and in builds made with `CODRAFT_LAB=1` (`npm run build:lab`), never in a normal production build.
 - **What it carries:** the pages have no route-map entry, so they are noindex. The style page is built from the production components; the prototypes keep their own, unlayered styles.
 - **Fonts:** the lab's fonts sit in `src/lab/fonts/` and are emitted only when a lab page uses them.

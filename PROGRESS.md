@@ -54,7 +54,7 @@
 Merge i faza 3 (izrada stranica) idu tek na vašu riječ („idemo dalje“).
 
 **Što pregledati:**
-- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/sto-radimo`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d` i `/lab/kuca-boje`; „Što radimo“ nakon usporedbe, s karticama iz arhive: `/lab/sto-radimo-2`.
+- **Početna s doradama:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Usporedbe opcija: `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d` i `/lab/kuca-boje`; „Što radimo“ nakon usporedbe, s karticama iz arhive: `/lab/sto-radimo-2`. Starija usporedba `/lab/sto-radimo` obrisana je na vašu riječ (dorada 108).
 - **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Snimke:** `docs/phases/screenshots/phase-2/system/`, uključujući sličice animacija usred pokreta, i `.../review/` (dorade, uz vašu referentnu snimku heroja).
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0

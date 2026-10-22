@@ -481,6 +481,154 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
+### Services, phase 3 (2026-10-22)
+
+The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"), put to the client on 2026-10-22 (M5) and **waiting for the client's OK**. Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) go into the locales as they are; the English ones with the suggestions Claude recommends below, if the client accepts them.
+
+Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects; **[G7]** is a line that exists only if the client shows prices or timelines (G7). Lines the client doesn't confirm are cut, not left as placeholders.
+
+**A · Hero**
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `services.title` (H1) | Što radimo | What we do | The client. The `seo` check: keep it; the keywords are in the intro, the `<title>`, the description and the eight service headings, and a keyword H1 would repeat the intro |
+| `services.intro` | Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke koje žele razumjeti što dobivaju. | Codraft is a studio that plans, builds and looks after websites, software and AI tools for businesses that want to understand what they get. | §2; EN with S17 and S18 |
+| `services.index.label` | Faze na ovoj stranici | Stages on this page | New: the accessible name of the index |
+| `services.index.plan` | Besplatna analiza i fiksna ponuda | Free audit and a fixed offer | New, from the stage's two rows |
+| `services.index.build` | Web stranice, aplikacije, integracije i AI | Websites, apps, integrations and AI | New, from the stage's four services |
+| `services.index.run` | Hosting, SEO i analitika | Hosting, SEO and analytics | New, from the stage's three services |
+| (the drafting path) | Tehničko crtanje za arhitekturu i građevinarstvo | Architectural drafting for architects and builders | `home.hero.drafting`, shared with Home |
+
+**B · 01 Planiranje** (`#planiranje` · `#plan`)
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `plan.title` · `plan.tagline` | (Home) | (Home) | The client |
+| `plan.body` | Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu. Zatim, prije početka bilo kakvog rada, dobivate fiksni opseg posla, rok i cijenu. | We begin with a free audit of your current website and Google visibility. You then get a fixed scope, timeline and price before any work starts. | §2; EN with S1 |
+| `plan.audit.title` | (Home) | (Home) | Glossary |
+| `services.plan.audit.body` | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. | We review your website and how customers find you on Google, or, if you don’t have a site yet, just your visibility on Google. | `home.audit.lead`, its first sentence |
+| `services.gets` (label) | Što dobivate | What you get | New |
+| `services.plan.audit.gets.1` | Provjeru brzine, prikaza na mobitelu, Profila tvrtke na Googleu, pristupačnosti i vidljivosti u AI tražilicama. | A check of speed, how the site works on mobile, your Google Business Profile, accessibility and visibility in AI search. | `home.audit.lead`; **confirm** (as on Home, M2) |
+| `services.plan.audit.gets.2` | Razgovor od 30 minuta o tome što smo našli. | A 30-minute call about what we found. | **confirm** (as on Home) |
+| `services.plan.audit.gets.3` | Pisani sažetak s prioritetima, bez obveze. | A written summary with priorities, with no obligation. | **confirm** (as on Home) |
+| `audit.cta` (the page's one audit button) | (Home) | (Home) | ADR 0017 |
+| `plan.scope.title` | (Home) | (Home) | From `plan.body` |
+| `services.plan.scope.body` | Prije početka rada dobivate pisanu ponudu. Cijena se ne mijenja dok se ne mijenja opseg. | Before any work starts, you get a written offer. The price doesn’t change unless the scope does. | From `plan.body`; the second sentence is what a fixed price means: **confirm** |
+| `services.offer` (label) | Što piše u ponudi | What the offer states | New |
+| `services.plan.scope.gets.1` | Opseg: što točno radimo i što nije uključeno. | Scope: exactly what we do, and what isn’t included. | From `plan.body` |
+| `services.plan.scope.gets.2` | Rok: kad je što gotovo i kad stranica ide uživo. | Timeline: when each part is done and when the site goes live. | From `plan.body` |
+| `services.plan.scope.gets.3` | Cijena: fiksni iznos za dogovoreni opseg. | Price: a fixed amount for the agreed scope. | From `plan.body` |
+
+**C · 02 Izrada** (`#izrada` · `#build`). Each service: the client's sentence, "Što dobivate" and, with G7, the timeline and price.
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `build.title` · `build.tagline` | (Home) | (Home) | The client |
+| `services.time` · `services.price` (labels) [G7] | Okvirni rok · Cijena | Typical timeline · Price | New; the timeline as a Dimension in weeks ("4–6 tjedana", "4–6 weeks"), the price "od 1.200 €" / "from €1,200" (glossary, typography) |
+| `build.websites.body` | Brze stranice i web trgovine, osmišljene najprije za mobitel, koje posjetitelje pretvaraju u pozive, rezervacije i narudžbe. | Fast, mobile-first sites and online stores built to turn visitors into calls, bookings and orders. | §2; EN with S2 |
+| `build.websites.gets.1` | Dizajn složen najprije za mobitel, s jasnim putem do poziva, rezervacije ili narudžbe. | A design made for mobile first, with a clear path to a call, a booking or an order. | From `build.websites.body` |
+| `build.websites.gets.2` | Brzinu izmjerenu prije objave, na mobitelu i na računalu. | Speed measured before launch, on mobile and on desktop. | From "Brze"; **confirm** |
+| `build.websites.gets.3` | Osnovni SEO od prvog dana: naslovi, opisi, strukturirani podaci i karta stranice za Google. | Basic SEO from day one: titles, descriptions, structured data and a sitemap for Google. | **confirm** |
+| `build.websites.gets.4` | Za web trgovinu: proizvode, košaricu, plaćanje i potvrdu narudžbe e-mailom. | For an online store: products, a basket, payment and order confirmation by email. | **confirm** (and which payment providers, if the client wants them named) |
+| `build.apps.body` | Portali, nadzorne ploče i administracijski alati po mjeri koji zamjenjuju tablice i ručna zaobilazna rješenja. | Custom portals, dashboards and admin tools that replace spreadsheets and manual workarounds. | §2, unchanged |
+| `build.apps.gets.1` | Najprije pregled toga kako sada radite i gdje gubite vrijeme. | First, a look at how you work now and where time is lost. | **confirm** |
+| `build.apps.gets.2` | Alat po mjeri vašeg posla: unos, preglede, izvještaje i prava pristupa po ulogama. | A tool made for your work: data entry, overviews, reports and access by role. | From `build.apps.body` |
+| `build.apps.gets.3` | Prijenos podataka iz vaših postojećih tablica. | Your data moved over from your existing spreadsheets. | **confirm** |
+| `build.apps.gets.4` | Rad u pregledniku, na računalu i mobitelu, bez instalacije. | It runs in the browser, on desktop and mobile, with nothing to install. | **confirm** |
+| `build.integrations.body` | Vaša web stranica povezana s kalendarima, plaćanjima i CRM-om, da svaki upit stigne do prave osobe. | Your website connected to calendars, payments and your CRM, so every enquiry reaches the right person. | §2; EN with S3 (accepted) and S4 |
+| `build.integrations.gets.1` | Online rezervacije povezane s vašim kalendarom, uz potvrdu e-mailom. | Online booking connected to your calendar, with confirmation by email. | From `build.integrations.*`; **confirm** |
+| `build.integrations.gets.2` | Plaćanje karticom na vašoj stranici. | Card payments on your site. | **confirm** |
+| `build.integrations.gets.3` | Upite s forme koji stižu ravno u vaš CRM ili e-mail, pravoj osobi. | Form enquiries that go straight to your CRM or inbox, to the right person. | From `build.integrations.body` |
+| `build.integrations.gets.4` | Povezivanje web trgovine s e-računima i fiskalizacijom. | Your online store connected to e-invoicing and fiscalisation. | Only with S16 (compliance C12) |
+| `build.ai.body` | Chatbotovi, jasno označeni kao AI, koji klijentima odgovaraju danonoćno, na temelju vašeg vlastitog sadržaja, i automatizacije koje s vas skidaju ponavljajuće zadatke. | Chatbots, clearly labelled as AI, that answer customers around the clock using your own content, plus automations that take repetitive tasks off your plate. | §2 with S12, in both languages (it changes the meaning) |
+| `build.ai.gets.1` | Chatbot koji odgovara samo iz vašeg sadržaja: stranice, cjenika i uputa. | A chatbot that answers only from your content: your site, price list and guides. | From `build.ai.body` |
+| `build.ai.gets.2` | Kad ne zna odgovor, kaže to i upit predaje vama. | When it doesn’t know the answer, it says so and passes the question to you. | **confirm** |
+| `build.ai.gets.3` | Automatizacije ponavljajućih zadataka, npr. razvrstavanje upita i prijenos podataka između alata. | Automations for repetitive tasks, such as sorting enquiries and moving data between tools. | From `build.ai.body` |
+| `build.ai.gets.4` | Pregled razgovora, da vidite što klijenti najčešće pitaju. | A log of the conversations, so you can see what customers ask most. | **confirm** |
+| `build.*.time` · `build.*.price` [G7] | X–Y tjedana · od X € | X–Y weeks · from €X | The client's numbers |
+
+**D · 03 Održavanje i rast** (`#odrzavanje-i-rast` · `#run-and-grow`). Each service: the client's sentence, "Što je uključeno" and, with G7, the monthly fee.
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `run.title` · `run.tagline` | (Home) | (Home) | The client |
+| `services.included` (label) | Što je uključeno | What’s included | New |
+| `services.monthly` [G7] | od X € mjesečno | from €X a month | The client's number |
+| `run.hosting.body` | Hosting o kojem brinemo mi, redovita ažuriranja, sigurnosne kopije i zakrpe, sve za fiksnu mjesečnu naknadu. | Managed hosting, updates, backups and security patches, all for a fixed monthly fee. | §2, unchanged |
+| `run.hosting.gets.1` | Hosting s HTTPS-om, na serveru u EU-u. | Hosting with HTTPS, on a server in the EU. | **confirm** |
+| `run.hosting.gets.2` | Redovita ažuriranja i sigurnosne zakrpe. | Regular updates and security patches. | `run.hosting.body` |
+| `run.hosting.gets.3` | Dnevne sigurnosne kopije i povrat stranice ako nešto pođe po zlu. | Daily backups, and your site restored if something goes wrong. | **confirm** (daily) |
+| `run.hosting.gets.4` | Nadzor dostupnosti i manje izmjene sadržaja. | Uptime monitoring and small content changes. | **confirm** (and how many hours a month, if any) |
+| `run.seo.body` | Kontinuirani rad na vašem položaju u tražilicama, Profilu tvrtke na Googleu i recenzijama, uključujući vidljivost u AI tražilicama. | Ongoing work on your search rankings, Google Business Profile and reviews, plus how you show up in AI search tools. | §2; EN with S7 |
+| `run.seo.gets.1` | Postavljanje i redovito ažuriranje Profila tvrtke na Googleu. | Your Google Business Profile set up and kept up to date. | `run.seo.body` |
+| `run.seo.gets.2` | Tehnički SEO i sadržaj za pretrage po kojima vas klijenti traže. | Technical SEO and content for the searches your customers make. | `run.seo.body` |
+| `run.seo.gets.3` | Kako tražiti recenzije od stvarnih klijenata i kako na njih odgovarati. | How to ask real customers for reviews, and how to reply to them. | `run.seo.body`; real reviews only (UCPD, information-architecture.md) |
+| `run.seo.gets.4` | Mjesečni izvještaj: položaj na Googleu, posjeti i upiti. | A monthly report: Google rankings, visits and enquiries. | **confirm** |
+| `run.analytics.body` | Analitika, privola za kolačiće i pristupačnost postavljene kako treba, da možete mjeriti rezultate i lakše ispuniti zahtjeve EU-a. | Analytics, cookie consent and accessibility, set up properly to measure results and help you meet EU requirements. | §2 with S6 in both languages ("lakše", "help you"), and S5 |
+| `run.analytics.gets.1` | Analitika koja se uključuje tek nakon privole posjetitelja. | Analytics that starts only after the visitor consents. | `run.analytics.body`; as on this site (ADR 0011) |
+| `run.analytics.gets.2` | Traka za kolačiće koja ništa ne učitava prije pristanka. | A cookie banner that loads nothing before consent. | As on this site |
+| `run.analytics.gets.3` | Provjera pristupačnosti prema WCAG 2.2 AA i popravci. | An accessibility check against WCAG 2.2 AA, and the fixes. | **confirm** |
+| `run.analytics.gets.4` | Pregled koji pokazuje odakle dolaze posjeti i upiti. | An overview of where your visits and enquiries come from. | `run.analytics.body` |
+
+**E · Tijek suradnje**
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `services.process.title` | Tijek suradnje | How a project runs | The outline |
+| `services.process.lead` | Nakon svakog koraka znate što ste dobili i što slijedi. | After each step, you know what you’ve got and what comes next. | New |
+| `services.process.audit.title` · `.body` | Analiza · Besplatan pregled i razgovor od 30 minuta. | Audit · A free review and a 30-minute call. | `plan.body`; the call as above (**confirm**) |
+| `services.process.offer.title` · `.body` | Ponuda · Pisana, s fiksnim opsegom, rokom i cijenom. | Offer · In writing, with a fixed scope, timeline and price. | `plan.body` |
+| `services.process.build.title` · `.body` | Izrada · Radimo prema ponudi i pokazujemo vam napredak. | Build · We work to the offer and show you the progress. | **confirm** |
+| `services.process.launch.title` · `.body` | Objava · Stranica ide uživo, a vi dobivate sve pristupe. | Launch · The site goes live and you get every login. | ADR 0021 |
+
+**F · Česta pitanja** (G8). Two answers have a version for each G7 choice.
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `services.faq.title` | Česta pitanja | Frequently asked questions | New |
+| `services.faq.price.q` · `.a` | Koliko košta? · With prices: Okvirnu cijenu vidite uz svaku uslugu. Točnu cijenu dobivate u pisanoj ponudi nakon besplatne analize, prije početka rada. · Without: Ovisi o opsegu. Nakon besplatne analize dobivate pisanu ponudu s fiksnim opsegom, rokom i cijenom, prije početka rada. | How much does it cost? · With prices: You can see a guide price next to each service. You get the exact price in a written offer after the free audit, before any work starts. · Without: It depends on the scope. After the free audit, you get a written offer with a fixed scope, timeline and price, before any work starts. | `plan.body`; G7 |
+| `services.faq.time.q` · `.a` | Koliko traje izrada? · With timelines: Okvirni rok vidite uz svaku uslugu, a točan piše u ponudi. · Without: Ovisi o opsegu, a točan rok piše u ponudi. | How long does it take? · With timelines: You can see a typical timeline next to each service; the exact one is in the offer. · Without: It depends on the scope; the exact timeline is in the offer. | G7 |
+| `services.faq.existing.q` · `.a` | Već imam web stranicu. Treba li mi nova? · Ne nužno. Analiza pokaže što vrijedi zadržati. Ako je dovoljno popraviti brzinu, prikaz na mobitelu ili SEO, reći ćemo vam to prije ponude. | I already have a website. Do I need a new one? · Not necessarily. The audit shows what’s worth keeping. If fixing the speed, the mobile layout or the SEO is enough, we’ll tell you before the offer. | The client's "Kažemo i kad nešto ne treba" |
+| `services.faq.ownership.q` · `.a` | Čiji su stranica, kod i domena? · Vaši. Kod, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje. Domenu registriramo na vaše ime. Licence tuđih alata, poput fontova i dodataka, ostaju pod njihovim uvjetima. | Who owns the site, the code and the domain? · You do. The code, the domain and every login belong to you, even if one day you go elsewhere. We register the domain in your name. Third-party licences, such as fonts and plugins, stay under their own terms. | [ADR 0021](decisions/0021-the-customer-owns-the-work.md) and its consequences |
+| `services.faq.maintenance.q` · `.a` | Moram li uzeti i održavanje? · Ne. Održavanje je zasebna mjesečna usluga, bez minimalnog trajanja. Ako ga ne uzmete ili kasnije odete, dobivate sve pristupe i kopiju stranice. | Do I have to take maintenance? · No. Maintenance is a separate monthly service, with no minimum term. If you don’t take it, or leave later, you get every login and a copy of your site. | ADR 0021; "bez minimalnog trajanja" and any notice period: **confirm** |
+| `services.faq.editing.q` · `.a` | Mogu li sadržaj mijenjati bez vas? · Da. Tekstove, slike i proizvode mijenjate sami, a mi vam pokažemo kako. Veće izmjene radimo mi. | Can I change the content without you? · Yes. You change the text, images and products yourself, and we show you how. Bigger changes we make for you. | **confirm** (whether every site has an editor) |
+| `services.faq.vat.q` · `.a` [G7] | Jesu li cijene s PDV-om? · (by the company's VAT status, item A) | Do prices include VAT? · (as in Croatian) | Only if prices are shown |
+
+**G · Closing call to action** (navy)
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `services.closing.title` | Niste sigurni odakle početi? | Not sure where to start? | New |
+| `services.closing.lead` | Opišite nam svoj posao i što vam treba, a mi ćemo vam predložiti prvi korak. | Tell us about your business and what you need, and we’ll suggest the first step. | New |
+| `services.closing.note` | Odgovaramo u roku od jednog radnog dana. | We reply within one working day. | `home.closing.note`, its first sentence; **confirm** (G23, as on Home) |
+| (the button) | Pošaljite upit | Send an enquiry | `home.closing.cta`, shared with Home (ADR 0017) |
+
+**Metadata and structured data** (G28)
+
+| Key | HR `draft` | EN `draft` | Source |
+|---|---|---|---|
+| `meta.services.title` | Usluge: web stranice, web trgovine, aplikacije i AI \| Codraft (61 characters) | Services: websites, online stores, apps and AI \| Codraft (56) | Keyword map (`/usluge`: the service cluster); distinct from Home's title |
+| `meta.services.description` | Web stranice i web trgovine, web aplikacije, integracije, AI asistenti, hosting, SEO i analitika. Opseg, rok i cijenu znate prije početka rada. (143) | Websites, online stores, web apps, integrations, AI assistants, hosting, SEO and analytics for businesses in Croatia, with a fixed price before work starts. (156) | `plan.body`; S15 |
+| `breadcrumb.home` | Početna | Home | The `BreadcrumbList` (Početna › Usluge) |
+
+The JSON-LD: a `Service` for each of the eight services (the free audit, the four Build services and the three Run & Grow services; the fixed offer is not a service of its own), each with its name, the client's sentence, its anchor's URL, `areaServed` Croatia and Home's organisation as the provider; prices as `offers` only with G7. No `FAQPage`: Google shows FAQ results only for government and health sites, so it adds nothing here.
+
+**English suggestions on this page** ([§3](#3-suggestions-for-the-english-copy)), with Claude's recommendation. S3, S15 and S20 are accepted ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)).
+
+| ID | Recommendation | Why |
+|---|---|---|
+| S1 | Accept | "Free audit" is the button's and the page's name |
+| S2 | Accept: "online stores" in both | One term; the title already says "Online Stores" |
+| S4 | Accept "your CRM"; no "online booking" in the body | The title already names booking |
+| S5 | Accept | Punctuation only |
+| S6 | Accept, in both languages | A technical setup alone isn't legal compliance; the HR says "lakše ispuniti" |
+| S7 | Accept | Plainer, and AI search reads as its own thing |
+| S11 | Reject on this page | The audit row right below covers a business without a site, as Home's audit lead does |
+| S12 | Accept, in both languages | The EU AI Act's Art. 50(1) has applied since 2 August 2026 (compliance C6), so the label is a duty that reads as a reason to trust |
+| S16 | Only if Codraft really connects stores to e-invoicing and fiscalisation | A strong local point (B2B e-invoices for VAT payers from 1 January 2026, compliance C12, medium confidence), but a new claim |
+| S17 | Accept | Matches the Croatian, where the client removed "mali" |
+| S18 | Accept | Matches the Croatian, which the client rewrote |
+
 ### UI strings of the base components (phase 2)
 
 The header, footer and skip link of the design system (ADR 0015) read these strings from `src/locales/{hr,en}.json`. Both languages are drafts (`draft`); the Croatian lines come from the glossary and the prototype copy, and the English lines are new (gap G27). The navigation labels follow the glossary, so they change with it.
@@ -564,6 +712,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.
 - **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
 - **2026-10-22 (phase 3, Home, the build):** The client approved Home's argument and asked to build (M2). "Home, phase 3" now holds every Home line with its locale key, in Croatian and in British English: the audit's lead without brackets (its facts confirmed by the client before launch), the closing call to action's note written by Claude at the client's request, and the team's names and roles from the client. Accepted: S3 (British English), S15 and S20, which changes the EN blocks `drafting.title` and `drafting.audience` and the slug to `/en/architectural-drafting` ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)); S19 rejected.
+- **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

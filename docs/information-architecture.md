@@ -149,6 +149,37 @@ Rules applied: no zone lacks a claim, so none is cut. A claim without proof at l
 6. **FAQ, 6–8 questions** (N, G8).
 7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
+**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M5; **waiting for the client's OK**). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)). The copy, with each line's key, is in [content.md](content.md) ("Services, phase 3").
+
+| Zone | Claim | Proof | Proof today |
+|---|---|---|---|
+| A · Hero | Everything Codraft does for businesses is on this page, in the order the work happens; you can go straight to what you need. Architects and builders see at once where their page is. | The index of the three stages, each with its services named and linking to its zone; the order is the process itself. The drafting path, as on Home. | In place |
+| B · 01 Planiranje | Starting costs nothing, and you know the scope, timeline and price before you pay for anything. | What the audit checks and what you get (G4, G19: the same facts as Home's audit lead); what the written offer states (scope, timeline, price); the page's one "Rezervirajte besplatnu analizu" (ADR 0017). | Partly: the audit's facts are Claude's drafts, which the client confirms before launch (M2), as on Home |
+| C · 02 Izrada | Each of the four build services delivers named things, and you can see roughly how long it takes (and what it costs) before you ask. | The client's sentence, 3–4 deliverables per service (G5), a typical timeline and/or "od X €" (G7). | **Missing:** G5 (the client confirms Claude's drafts), G7 (the client decides) |
+| D · 03 Održavanje i rast | After launch we stay, for a fixed monthly fee that covers named things, and you can leave with everything. | What each service includes (G6), the monthly fee (G7), and "Sve ostaje vaše" ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)) in the FAQ. | **Missing:** G6, G7 |
+| E · Tijek suradnje | You always know what comes next, and each step ends with something you get. | Four named steps, each with what you receive: the audit's summary, the written offer, the progress you see, every login at launch (ADR 0021). | Partly: "you see the progress" is a working practice the client confirms |
+| F · Česta pitanja | The usual worries (price, time, ownership, an existing site, being tied to maintenance) have straight answers. | Specific answers that follow the client's decisions (ADR 0021) and facts (G7, the terms of maintenance). | Partly: the price, time and maintenance answers wait for G7 |
+| G · Closing CTA | Not sure which service you need? Describe what you do, and we suggest the first step. | One clear step, "Pošaljite upit" to Contact; the reply time, as on Home (G23, the client confirms). | Partly |
+| H · Title block | Codraft is a real company you can check. | Item A, as on Home. | **Missing:** item A |
+
+Rules applied: every zone has a claim, so none is cut. Zones C and D launch with what G5–G7 confirm; a price or a timeline the client doesn't give is left out, not replaced by a placeholder.
+
+**Layout, zone by zone** (there is no lab design for Usluge; composed from the design system in `src/components/ui/` and Home's patterns, on the 12-column grid of Home's hero, audit and team). Differences from the outline above: the hero gets the stage index and the drafting path; "Tijek suradnje" has four steps, since maintenance is stage 03 right above it and five steps don't fit a row at 768 px (about 110 px each); the FAQ is always open.
+
+- **A · Hero** (paper): as Home's hero, the text on columns 1–7 (H1, `services.intro`, the drafting path link) and a drawing on graph paper on columns 8–12. The drawing is the page's index: the three stage bubbles of "Što radimo" (01, 02, 03) joined by the blue process line, each bubble with its stage's title and its services in one muted line, and each a link to its zone with the grips on hover and focus. Still, no animation (the mark's entrance stays on Home, ADR 0014). On phones the index follows the text, with the line down the left as in Home's narrow "Što radimo".
+- **B, C, D · the three stages** (paper), one zone each, `#planiranje`, `#izrada`, `#odrzavanje-i-rast` (EN `#plan`, `#build`, `#run-and-grow`):
+  - The stage head on columns 1–7: the bubble with its number beside the `h2` (the stage title), the tagline under it in muted lead type; stage 01 adds `plan.body` as its lead.
+  - Then each service as a row, under a hairline, like the rows of "Kako radimo": its icon and `h3` title on columns 1–4, and on columns 5–12 the client's sentence (lead type, full ink), a label ("Što dobivate", or "Što je uključeno" in stage 03), 3–4 short points in muted ink, and, if the client gives them (G7), the timeline as a Dimension (a kota in weeks, as the design system plans it) and the price. Each row has its anchor (`#web-stranice`, …), so Home's links land on it.
+  - The icons are still, as everywhere outside Home's process line.
+  - Stage 01's rows are "Besplatna analiza", which ends with the page's one button, and "Fiksni opseg, rok i cijena".
+  - On phones: the bubble beside the stage title; the icon beside the service's title and everything else under it at full width (ADR 0028).
+- **E · Tijek suradnje** (paper): the `h2` and a lead on columns 1–7, then `Steps` with four steps across the full width (stacked on phones, a row from 48rem), the line drawing from step to step as on Home's audit.
+- **F · Česta pitanja** (paper): the `h2` on columns 1–4 and the questions on columns 5–12, each an `Item` row (the question as `h3`, the answer under it), always open: no accordion and no script, and the answers stay readable for people and AI search.
+- **G · Closing CTA** (navy, the page's one navy surface): as Home's, centred: heading, lead, note, one button "Pošaljite upit".
+- **H · Title block**, as on every page.
+
+New in the design: only the short points' list (a small square marker in the line colour, not blue). Shared code: the stage bubble's style moves from Home's `services.css` to a shared place, and Home's closing call to action takes its text as props, both with no visible change on Home.
+
 ### Tehničko crtanje / Architectural Drafting (`/tehnicko-crtanje`)
 
 1. **Hero:** H1 "Tehničko crtanje za arhitekturu i građevinarstvo" (I); `drafting.tagline`, `drafting.audience` (P).

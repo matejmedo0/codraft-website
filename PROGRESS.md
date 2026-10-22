@@ -2,11 +2,11 @@
 
 **Trenutna faza:** 3 — Izrada stranica, od 22. 10. 2026., na grani `phase/3-pages`. Izvještaj faze je draft PR #3: https://github.com/matejmedo0/codraft-website/pull/3. Faza 2 (Dizajn) je gotova i odobrena: na vaše „idemo dalje“ 22. 10. 2026. spojena je u `main` (PR #2, merge commit).
 
-**Sljedeći korak:** stranica 2, Usluge, u novoj sesiji (vaša riječ, 22. 10. 2026., M4). Prompt za nju vam je predan, a sve što nova sesija treba je u `docs/phases/3-pages.md`, odjeljak „Start here (2026-10-22, page 2: Usluge)“. Početna je gotova na `/` i `/en`: po odobrenom argumentu (vaš OK, 22. 10. 2026.), s vrijednostima na skali tokena (nalaz 19), bez lokalnih veličina slova (#59, ADR 0030) i s popravcima iz `/check` koje ste odobrili. Prije objave za početnu još trebaju: vaša potvrda činjenica o besplatnoj analizi i roka odgovora, fotografije i privola tima, podaci o tvrtki i kontakt. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
+**Sljedeći korak:** vaš OK za Usluge (M5): argument stranice i raspored zona (`docs/information-architecture.md`, Usluge), tekstovi koji nedostaju na hrvatskom i engleskom te preporuke za engleske prijedloge (`docs/content.md`, „Services, phase 3“), i vaši odgovori o cijenama, rokovima, mjesečnoj naknadi i sadržaju usluga. Gradim tek nakon vašeg OK-a. Početna je gotova na `/` i `/en`: po odobrenom argumentu (vaš OK, 22. 10. 2026.), s vrijednostima na skali tokena (nalaz 19), bez lokalnih veličina slova (#59, ADR 0030) i s popravcima iz `/check` koje ste odobrili. Prije objave za početnu još trebaju: vaša potvrda činjenica o besplatnoj analizi i roka odgovora, fotografije i privola tima, podaci o tvrtki i kontakt. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
 
 Redoslijed stranica u fazi 3, svaka na hrvatskom i engleskom:
-1. Početna ← sada
-2. Usluge
+1. ✓ Početna
+2. Usluge ← sada
 3. Tehničko crtanje
 4. O nama
 5. Besplatna analiza (statični dijelovi; forma dolazi u fazi 4)

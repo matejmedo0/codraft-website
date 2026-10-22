@@ -1,6 +1,6 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna, is done (log M1–M3). Next: page 2, Usluge, in a new session; start at [Start here](#start-here-2026-10-22-page-2-usluge).
+- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna, is done (log M1–M3). Page 2, Usluge, started in the second session (M5): its argument, layout and copy wait for the client's OK.
 - **Branch:** `phase/3-pages`, created from `main` after the merge of PR #2. Draft PR #3 is the phase report.
 
 ## Start here (2026-10-22, page 2: Usluge)
@@ -244,3 +244,30 @@ Each of the client's messages is recorded here verbatim before anything changes.
     > azuriraj dokumentaciju i daj mi prompt za nastavak
   - **Handover** (M4): [Start here](#start-here-2026-10-22-page-2-usluge) is rewritten for the next session (page 2, Usluge: where things stand, Home's open items, how to do Usluge, the client's habits, the working notes of this session); `PROGRESS.md` points to it, and the phase 2 documents' links to the old section point to this log. The prompt for the next session went to the client.
   - **Open for the client** (put to the client with the page): the two local type sizes (#59); the MEDIUM findings above. Both answered in M3, below. The English footer's placeholder "Arrives before launch" takes two lines in the title block's narrow cells; it goes away with the company data.
+- **2026-10-22, second session of phase 3 (page 2: Usluge)**
+  - **M5**, the prompt that opens the session, verbatim:
+
+    > Nastavljamo fazu 3 (Izrada stranica), na hrvatskom. Početna je gotova na grani phase/3-pages (zadnji commit 416256f, pushano, CI zelen), a draft PR #3 je izvještaj faze.
+    >
+    > Prvo pročitaj PROGRESS.md i docs/phases/3-pages.md od odjeljka „Start here (2026-10-22, page 2: Usluge)“, pa dokumente na koje upućuje (information-architecture.md za Usluge, content.md §1–§4, ADR 0029 i 0030).
+    >
+    > Redoslijed rada:
+    > 1. Druga stranica su Usluge (/usluge, /en/services), prema koracima za svaku stranicu u 3-pages.md. Za Usluge nema dizajna u labu. Zato mi najprije pokaži:
+    >    - argument stranice (tvrdnja i dokaz po zoni), s rasporedom zona složenim od sustava dizajna i obrazaca s početne
+    >    - tekstove koji nedostaju, na hrvatskom i engleskom
+    >    - engleske prijedloge koji se tiču te stranice, svaki s preporukom
+    >    Gradi tek nakon mog OK-a.
+    > 2. Od mene traži samo ono što Usluge trebaju: prikazujemo li cijene ili okvirne rokove, mjesečnu naknadu za održavanje i što uključuje koja usluga. Ostale podatke traži kad ih stranica treba.
+    > 3. Nakon izrade: /check, snimke s builda na 375, 768 i 1440 px, pa moj pregled.
+    >
+    > Pravila:
+    > - Svaku moju poruku najprije doslovno zapiši u dnevnik u docs/phases/3-pages.md (M5, M6, …).
+    > - Mijenjaj samo ono što tražim; šire promjene mi ponudi kao opcije s preporukom.
+    > - Na pitanja tipa „kako da… / ili da…?“ predloži rješenje i čekaj moj izričiti OK.
+    > - Odluke iz faze 2 (ADR 0015–0028) i faze 3 (ADR 0029–0030) ostaju; početnu i sustav dizajna ne mijenjaj bez mene.
+    > - Dev server je na portu 4321 i ostaje upaljen za mene; build provjeravaj na portu 4322, kako piše u „Working notes“. Ako dev server ne odgovara, pokreni npm run dev u pozadini.
+    > - Commitaj s git commit -F, a nakon svake skupine pushaj.
+  - **Usluge, steps 1–2** (M5, item 1; skill loaded: `seo`): there is no lab design for Usluge, so the page's argument comes with a layout composed from the design system and Home's patterns, zone by zone, both in [information-architecture.md](../information-architecture.md) (Usluge, "The page's argument" and "Layout, zone by zone"). The missing copy, in Croatian and British English with each line's key, the facts the client confirms and the lines that depend on G7, is in [content.md](../content.md) ("Services, phase 3"), with a recommendation on each English suggestion that touches the page. Put to the client with what only the client can decide (M5, item 2): whether prices and timelines are shown (G7), the monthly fees and terms of Run & Grow, and what each service includes (G5, G6). Nothing is built before the client's OK.
+    - Differences from the outline: the hero gets an index of the three stages and the drafting path, as on Home; "Tijek suradnje" has four steps (maintenance is stage 03 right above it, and five steps would be about 110 px each at 768 px); the FAQ is always open, as `Item` rows.
+    - Shared code the build would touch, with no visible change on Home: the stage bubble's style moves out of Home's `services.css`, and Home's closing call to action takes its text as props. New in the design: only the list marker for the services' short points.
+    - The H1 stays "Što radimo" (the `seo` check): the keywords are in the intro, the title, the description and the eight service headings.

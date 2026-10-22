@@ -19,12 +19,18 @@
  * - An IntersectionObserver switches the scroll handling on only while the
  *   section is near the screen.
  *
+ * - The script takes the axis over (`is-live`); only then does the CSS hide
+ *   what it draws. If it comes later than the CSS's failsafe, which by then
+ *   shows the axis complete, it leaves the axis so. If motion is turned on
+ *   after the page has loaded, it takes over then. Before printing it
+ *   completes the axis (the /check of phase 3).
+ *
  * Only the line and the icons wait; the text never does. Without
  * JavaScript, or with reduced motion, the CSS shows them complete and this
  * script does nothing.
  */
 import { timeStrokes } from "../../features/services/icons/icon-draw.ts";
-import { DURATION_MS, prefersReducedMotion } from "../../styles/motion.ts";
+import { DURATION_MS, REDUCED_MOTION_QUERY } from "../../styles/motion.ts";
 
 /** The tip aims at this share of the screen's height. */
 const AIM = 0.85;
@@ -129,6 +135,12 @@ function startPassed(axis: Axis, instantUpTo: number): void {
 function init(root: HTMLElement): void {
   const line = root.querySelector<HTMLElement>("[data-axis-line]");
   if (line === null) return;
+  // Past its failsafe the CSS already shows the axis complete: leave it so.
+  const stroke = root.querySelector("[data-stroke]");
+  if (stroke !== null && getComputedStyle(stroke).visibility === "visible") {
+    return;
+  }
+  root.classList.add("is-live");
   const axis: Axis = {
     root,
     line,
@@ -207,12 +219,36 @@ function init(root: HTMLElement): void {
     window.removeEventListener("scroll", wake);
   }
 
+  // A printed page shows the axis complete.
+  window.addEventListener(
+    "beforeprint",
+    () => {
+      axis.aim = axis.length;
+      axis.tip = axis.length;
+      render(axis);
+      for (const service of axis.waiting) {
+        service.item.classList.add("is-drawn", "is-instant");
+      }
+      axis.waiting = [];
+      stop();
+    },
+    { once: true },
+  );
+
   near.observe(root);
   resize.observe(root);
 }
 
-if (!prefersReducedMotion()) {
+function start(): void {
   for (const root of document.querySelectorAll<HTMLElement>("[data-axis]")) {
     init(root);
   }
+}
+
+const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
+if (reducedMotion.matches) {
+  // Motion turned on after the page has loaded: the axis takes over then.
+  reducedMotion.addEventListener("change", start, { once: true });
+} else {
+  start();
 }

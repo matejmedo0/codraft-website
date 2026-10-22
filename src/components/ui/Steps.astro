@@ -50,9 +50,9 @@ const last = steps.length - 1;
 <style>
   .steps {
     --node: 1rem;
-    --step-heading: clamp(1.25rem, 1.15rem + 0.45vw, 1.625rem);
-    /* The node sits on the centre of the title's first line. */
-    --node-top: calc((var(--step-heading) * 1.2 - var(--node)) / 2);
+    /* The node sits on the centre of the title's first line (the titles
+       are on the type scale, #59 in phase 3). */
+    --node-top: calc((var(--step-title) * 1.2 - var(--node)) / 2);
     /* Grip, line, grip, line, grip: each line starts as its grip lands. */
     --step-interval: 750ms;
     --link-lag: 150ms;
@@ -102,7 +102,7 @@ const last = steps.length - 1;
 
   .step__title {
     grid-column: 2;
-    font-size: var(--step-heading);
+    font-size: var(--step-title);
     line-height: var(--leading-title);
   }
 

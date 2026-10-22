@@ -22,7 +22,7 @@ The client asked for animation that is high quality and **not generic**. The con
 - **The line** is one element from bubble 01 to bubble 03, scaled from its top. Its tip follows the screen continuously (batch 15): it reaches down to 85 % of the screen's height as you scroll, eased so that a fast scroll is caught up in about `--motion-follow` (280 ms), smoothly and never in a jerk. It only ever grows; nothing runs backwards when you scroll up. No scroll-jacking: the page scrolls as always, and the line only follows.
 - **The icon** starts as the tip of the line reaches it: its strokes run along their paths in drawing order, at most 60 ms apart, the blue drafting line last, then the grip snaps in (`--motion-fast`, `--ease-spring`). An icon takes at most 450 ms. The right icon of a row starts 40 ms after the left; if the tip passes several rows in one frame, each further row starts 60 ms later. The services below the line's end start when the screen's 85 % mark reaches them.
 - Services already above the screen (a reload mid-page, a jump from a link) show their icons complete at once, and the line jumps past them.
-- Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too. An IntersectionObserver switches the scroll handling on only while the section is near the screen; `will-change` is set only while the line moves.
+- Only the line and the icons wait; the text is always there. Their waiting state is set under the `js` class from the first paint. Without JavaScript the line and icons are complete; with reduced motion too. Once the script takes the axis over (`is-live`) it owns the waiting state; if it never does (it failed to load, or came after a 3 s failsafe), the line and icons show complete. When motion is turned on after the page has loaded, the script takes over then (phase 3, M3). An IntersectionObserver switches the scroll handling on only while the section is near the screen; `will-change` is set only while the line moves.
 
 The earlier behaviour of batch 3 (one stroke at a constant speed once the section reached its trigger) left the lab with its comparison page `/lab/sto-radimo` (review #108); it is in git history.
 
@@ -54,6 +54,8 @@ When `prefers-reduced-motion: reduce` is set:
 - Final states are shown immediately. The logo appears complete and the layers appear all on.
 - Grips still appear on focus, but without the scale animation.
 - Movement goes; meaning stays. Focus, hover, the open menu and every other change of state stay visible, at once or with a short fade, and nothing waits hidden for an animation that never runs ([ADR 0025](decisions/0025-browser-details-and-critique-re-check.md)).
+
+**Printing.** A printed page shows every part complete: before printing, `draw.ts` shows the waiting parts' final states and finishes the moving ones, and the axis in "Što radimo" completes (phase 3, M3).
 
 ## Tokens (built in phase 2, `src/styles/motion.css`)
 

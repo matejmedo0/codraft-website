@@ -2,7 +2,7 @@
 
 **Trenutna faza:** 3 — Izrada stranica, od 22. 10. 2026., na grani `phase/3-pages`. Izvještaj faze je draft PR #3: https://github.com/matejmedo0/codraft-website/pull/3. Faza 2 (Dizajn) je gotova i odobrena: na vaše „idemo dalje“ 22. 10. 2026. spojena je u `main` (PR #2, merge commit).
 
-**Sljedeći korak:** vaš pregled početne. Izrađena je na `/` i `/en` po odobrenom argumentu (vaš OK, 22. 10. 2026.), s vrijednostima na skali tokena (nalaz 19); `/check` nema CRITICAL ni HIGH nalaza. Čekam vaš pregled i odluku o dvije lokalne veličine slova (#59). Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
+**Sljedeći korak:** stranica 2, Usluge, na vašu riječ. Početna je izrađena na `/` i `/en` po odobrenom argumentu (vaš OK, 22. 10. 2026.), s vrijednostima na skali tokena (nalaz 19), bez lokalnih veličina slova (#59, ADR 0030) i s popravcima iz `/check` koje ste odobrili. Plan faze i koraci za svaku stranicu su u `docs/phases/3-pages.md`. Vaše poruke su doslovno u njegovu dnevniku, označene M1, M2, …
 
 Redoslijed stranica u fazi 3, svaka na hrvatskom i engleskom:
 1. Početna ← sada
@@ -24,7 +24,7 @@ Podatke od vas (tim, podaci o tvrtki, kontakt…) tražim tek kad ih stranica tr
 - prijedlozi iz procjene Kowalskijevih skillova: provjera preljeva na 320 px, najgori podaci u dokumentima faza, popis pravila za kod animacija, birač varijanti u labu
 - boja trake preglednika na mobitelu (`theme-color`), tamnoplava ili papirnata, isprobana na pravom Android mobitelu (dorada 51; Taste Skill ide u prilog papirnatoj, dorada 55)
 - naslov u heroju na laptopima od 1440 px (sada tri reda), kad sve stranice budu gotove
-- dvije lokalne veličine slova na početnoj
+- ✓ dvije lokalne veličine slova na početnoj (opcija A, ADR 0030)
 - skupina C prve kritike dizajna: hero na 1024 px (6), traka tima (14), vrijednosti izvan skale tokena (19) i tekst (22)
 - vaše čitanje i ispravljanje svih tekstova, na kraju faze 3, za sve stranice zajedno
 
@@ -242,6 +242,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-20 | Taste Skill ne instaliramo. Iz njega smo preuzeli:<br>- pet provjera za `design-critic` (okvir stranice, ideja do zadnje zone, test „kostima“, tri razine detalja u crtežima, hrvatske tipografske sitnice)<br>- animacije vezane uz skrol i prijelaze između stranica u skillu `animate`<br>- argument stranice (tvrdnja i dokaz po zoni) kao prvi korak svake stranice u fazi 3<br>Kod stranice se ne mijenja. | [ADR 0027](docs/decisions/0027-taste-skill-ideas-in-the-setup.md) |
 | 2026-10-21 | „Što radimo“ na mobitelu: ikona usluge stoji samo uz naslov, a opis ide ispod nje punom širinom (opcija B iz kritike); od 768 px sve ostaje kao u ADR 0022 | [ADR 0028](docs/decisions/0028-service-icons-on-phones-beside-the-title.md) |
 | 2026-10-22 | Engleski: tehničko crtanje se zove „Architectural Drafting“ (`/en/architectural-drafting`), britanski pravopis, „Croatia“ u engleskim naslovima stranica | [ADR 0029](docs/decisions/0029-english-naming-spelling-and-titles.md) |
+| 2026-10-22 | Bez lokalnih veličina slova: naslovi koraka na veličini ostalih naslova, retci usluga na veličini uvoda (opcija A, #59) | [ADR 0030](docs/decisions/0030-steps-and-service-lines-on-the-type-scale.md) |
 
 ## Sitemap
 

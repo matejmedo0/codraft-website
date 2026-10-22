@@ -7,8 +7,8 @@
 
 .svc {
   --bubble: 2.75rem;
-  /* The services' one line, larger than body text (review batch 3). */
-  --step-service: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  /* How long the line and the icons wait unseen for axis-line.ts. */
+  --axis-failsafe: 3s;
 }
 
 .svc > h2 {
@@ -76,12 +76,22 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* One line, set by the script, in place of the rails. */
-  .js [data-axis] .svc-rail {
+  /* Until axis-line.ts takes the axis over (`is-live`), the rails and the
+     icons wait unseen from the first paint, so they never flash complete.
+     If the script never takes over (it failed to load, or came later than
+     --axis-failsafe), they show complete then (the /check of phase 3). */
+  .js [data-axis]:not(.is-live) :is(.svc-rail, [data-stroke]) {
+    visibility: hidden;
+    animation: axis-failsafe 0s var(--axis-failsafe) forwards;
+  }
+
+  /* Once the script has the axis: one line, set by it, in place of the
+     rails. */
+  [data-axis].is-live .svc-rail {
     display: none;
   }
 
-  .js .axis__line {
+  [data-axis].is-live .axis__line {
     display: block;
     transform: scaleY(var(--progress, 0));
   }
@@ -89,7 +99,7 @@
   /* An icon isn't there until its row starts; then its strokes run along
      their paths (icon-draw.ts) and the grip snaps in. Once drawn, a stroke
      is plain again. */
-  .js [data-axis-item]:not(.is-drawn) [data-stroke] {
+  [data-axis].is-live [data-axis-item]:not(.is-drawn) [data-stroke] {
     opacity: 0;
   }
 
@@ -104,6 +114,20 @@
     transform-origin: center;
     animation: icon-grip var(--motion-fast) var(--ease-spring) var(--at, 0ms)
       backwards;
+  }
+}
+
+/* A printed page shows the axis complete; axis-line.ts completes a live
+   one before printing. */
+@media print {
+  .js [data-axis]:not(.is-live) :is(.svc-rail, [data-stroke]) {
+    visibility: visible;
+  }
+}
+
+@keyframes axis-failsafe {
+  to {
+    visibility: visible;
   }
 }
 

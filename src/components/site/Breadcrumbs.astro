@@ -45,9 +45,11 @@ const { locale, current, class: className } = Astro.props;
   }
 
   /* A slash between the steps, as in a file path; screen readers skip it
-     (the empty alternative text). */
+     (the empty alternative text). A browser without alternative text
+     keeps the first declaration. */
   .breadcrumbs__list li + li::before {
     margin-right: var(--space-2);
+    content: "/";
     content: "/" / "";
   }
 

@@ -1,12 +1,13 @@
 ---
 /**
  * Zone F of /usluge, "Česta pitanja" (G8): straight answers to the usual
- * worries, in the layout of Home's "Kako radimo" (the h2 on columns 1-4,
- * the questions on 5-12). Always open, with no accordion and no script, so
- * the answers read the same for people and for AI search. No FAQPage
- * markup: Google shows it only for government and health sites.
+ * worries, in the layout of Home's "Kako radimo" (HomePrinciples.astro):
+ * the h2 on columns 1-4, the questions on 5-12, each question beside its
+ * answer from 64rem, so the answers reach the rules' right edge (the
+ * critique of Usluge, DC-03). Always open, with no accordion and no
+ * script, so the answers read the same for people and for AI search. No
+ * FAQPage markup: Google shows it only for government and health sites.
  */
-import Item from "../../components/ui/Item.astro";
 import Zone from "../../components/ui/Zone.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
@@ -36,9 +37,10 @@ const questions = (
   <h2 id="cesta-pitanja">{t(locale, "services.faq.title")}</h2>
   <ul class="faq__list">
     {questions.map(({ question, answer }) => (
-      <Item title={question} as="li" class="faq__item">
+      <li class="faq__item">
+        <h3>{question}</h3>
         <p>{answer}</p>
-      </Item>
+      </li>
     ))}
   </ul>
 </Zone>
@@ -49,6 +51,18 @@ const questions = (
     margin: var(--space-6) 0 0;
     padding: 0;
     list-style: none;
+  }
+
+  .faq__item {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5) 0;
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .faq__item p {
+    max-width: var(--measure);
+    color: var(--ink-muted);
   }
 
   @media (min-width: 64rem) {
@@ -68,7 +82,12 @@ const questions = (
       margin: 0;
     }
 
-    .faq__list > :global(.faq__item:first-child) {
+    .faq__item {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+      gap: var(--gap);
+    }
+
+    .faq__item:first-child {
       padding-top: var(--space-2);
       border-top: 0;
     }

@@ -27,7 +27,7 @@ const steps = (["audit", "offer", "build", "launch"] as const).map((step) => ({
     <h2 id="tijek-suradnje">{t(locale, "services.process.title")}</h2>
     <p class="process__lead">{t(locale, "services.process.lead")}</p>
   </div>
-  <Steps steps={steps} class="process__steps" />
+  <Steps steps={steps} wide class="process__steps" />
 </Zone>
 
 <style>

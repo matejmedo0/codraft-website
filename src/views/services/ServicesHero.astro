@@ -8,6 +8,8 @@
  * the mark's entrance is Home's alone (ADR 0014). The drafting clients get
  * their own path, as on Home (ADR 0018).
  */
+import "../../features/services/stages.css";
+
 import Breadcrumbs from "../../components/site/Breadcrumbs.astro";
 import Grips from "../../components/ui/Grips.astro";
 import Zone from "../../components/ui/Zone.astro";
@@ -48,7 +50,7 @@ const { locale } = Astro.props;
             class="services-index__link stretched-link"
             href={`#${stage.anchor[locale]}`}
           >
-            <span class="visually-hidden">{stage.number}</span>
+            <span class="visually-hidden">{stage.number}</span>{" "}
             {t(locale, stage.title)}
           </a>
           <span class="services-index__services">{t(locale, stage.index)}</span>

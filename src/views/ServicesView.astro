@@ -36,19 +36,24 @@ const country = t(locale, "meta.country");
 // Eight services (the fixed offer is part of the free audit's stage, not a
 // service of its own), each at its anchor, with its guide prices.
 const services = STAGES.flatMap((stage) =>
-  stage.services
-    .filter((entry) => entry.detail !== undefined)
-    .filter((entry) => entry.detail?.offering !== false)
-    .map((entry) =>
-      service({
-        locale,
-        name: t(locale, entry.title),
-        description: t(locale, entry.detail?.body ?? entry.short),
-        url: `${page}#${(entry.anchor ?? stage.anchor)[locale]}`,
-        country,
-        prices: (entry.detail?.prices ?? []).map((line) => PRICES[line.price]),
-      }),
-    ),
+  stage.services.flatMap(({ title, anchor, detail }) =>
+    detail === undefined || detail.offering === false
+      ? []
+      : [
+          service({
+            locale,
+            name: t(locale, title),
+            description: t(locale, detail.body),
+            url: `${page}#${(anchor ?? stage.anchor)[locale]}`,
+            country,
+            prices: (detail.prices ?? []).map((line) => ({
+              price: PRICES[line.price],
+              name:
+                line.label === undefined ? undefined : t(locale, line.label),
+            })),
+          }),
+        ],
+  ),
 );
 const structuredData = jsonLdText(
   graph([

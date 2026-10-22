@@ -8,9 +8,14 @@
  * Only next to real numbers: a measured size, a timeline in weeks, a page
  * weight. Never as decoration.
  *
+ * With `above`, the value stands above the line, left-aligned, as on a
+ * drawing where the line is too short to hold it; the line can then be
+ * drawn to a scale (its container's width) and still keep its value.
+ *
  * Once, when it scrolls into view, the line draws from the first extension
- * line to the second (--motion-slow) and the value appears. Reduced motion
- * and no JavaScript show it complete.
+ * line to the second (--motion-slow). The value is there from the start:
+ * it is data, and text never waits for a drawing (the critique of Usluge,
+ * DC-01). Reduced motion and no JavaScript show it complete.
  */
 interface Props {
   /** The value with its unit, e.g. "48 px". */
@@ -18,14 +23,21 @@ interface Props {
   /** For a value that already stands in the text nearby: hide the
       dimension from assistive technology. */
   decorative?: boolean;
+  /** The value above the line instead of in a gap in it. */
+  above?: boolean;
   class?: string;
 }
 
-const { value, decorative = false, class: className } = Astro.props;
+const {
+  value,
+  decorative = false,
+  above = false,
+  class: className,
+} = Astro.props;
 ---
 
 <span
-  class:list={["dimension", className]}
+  class:list={["dimension", { "dimension--above": above }, className]}
   data-draw
   aria-hidden={decorative ? "true" : undefined}
 >
@@ -111,16 +123,34 @@ const { value, decorative = false, class: className } = Astro.props;
     transform: scaleX(0);
   }
 
-  .dimension.is-pending .dimension__value {
-    opacity: 0;
-  }
-
   .dimension.is-drawing .dimension__line {
     animation: motion-draw-x var(--motion-slow) var(--ease-pen) both;
   }
 
-  .dimension.is-drawing .dimension__value {
-    animation: motion-fade-in var(--motion-base) var(--ease-standard)
-      var(--motion-slow) both;
+  /* The value above: the extension lines and the line keep to a strip
+     under it. */
+  .dimension--above {
+    --strip: 0.75rem;
+
+    display: block;
+    min-height: 0;
+    padding-bottom: var(--strip);
+  }
+
+  .dimension--above::before,
+  .dimension--above::after {
+    top: auto;
+    height: var(--strip);
+  }
+
+  .dimension--above .dimension__line {
+    top: auto;
+    bottom: calc((var(--strip) - var(--rule)) / 2);
+  }
+
+  .dimension--above .dimension__value {
+    display: block;
+    padding: 0 0 var(--space-1);
+    background: none;
   }
 </style>

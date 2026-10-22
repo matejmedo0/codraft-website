@@ -3,8 +3,11 @@
  * Zones B, C and D of /usluge: one stage of "Što radimo" each, at its
  * anchor (#planiranje, #izrada, #odrzavanje-i-rast), so Home's links land
  * on it. The stage's head on columns 1-7: its bubble beside the h2, the
- * tagline, and stage 01's lead; then its services as rows (ServiceRow).
- * Stages with prices end with a note on what the prices are.
+ * tagline, and stage 01's lead in lead type, the page's central promise;
+ * then its services (ServiceRow), each stage in the shape of its content
+ * (the critique of Usluge, DC-02): stage 01's two items side by side, as
+ * on Home; stage 02's four long services as rows; stage 03's three monthly
+ * services as columns to compare.
  */
 import "../../features/services/stages.css";
 
@@ -12,25 +15,29 @@ import Zone from "../../components/ui/Zone.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import type { Stage } from "../../features/services/services.ts";
-import ServiceRow from "./ServiceRow.astro";
+import ServiceRow, { type ServiceLayout } from "./ServiceRow.astro";
 
 interface Props {
   locale: Locale;
   stage: Stage;
 }
 
+const LAYOUTS: Record<string, ServiceLayout> = {
+  "01": "pair",
+  "02": "rows",
+  "03": "columns",
+};
+
 const { locale, stage } = Astro.props;
 const id = stage.anchor[locale];
 const headingId = `${id}-naslov`;
-const hasPrices = stage.services.some(
-  (service) => (service.detail?.prices ?? []).length > 0,
-);
+const layout = LAYOUTS[stage.number] ?? "rows";
 ---
 
 <Zone labelledby={headingId} id={id} class="stage">
   <div class="stage__head">
     <h2 class="stage__title" id={headingId}>
-      <span class="svc-bubble stage__bubble">{stage.number}</span>
+      <span class="svc-bubble stage__bubble">{stage.number}</span>{" "}
       {t(locale, stage.title)}
     </h2>
     <p class="svc-tagline stage__tagline">{t(locale, stage.tagline)}</p>
@@ -38,19 +45,16 @@ const hasPrices = stage.services.some(
       <p class="stage__body">{t(locale, stage.body)}</p>
     )}
   </div>
-  <ul class="stage__services">
+  <ul class:list={["stage__services", `stage__services--${layout}`]}>
     {stage.services.map((service) => (
-      <ServiceRow locale={locale} service={service} />
+      <ServiceRow locale={locale} service={service} layout={layout} />
     ))}
   </ul>
-  {hasPrices && <p class="stage__note">{t(locale, "services.priceNote")}</p>}
 </Zone>
 
 <style>
   .stage {
     --bubble: 2.75rem;
-
-    scroll-margin-top: 0;
   }
 
   .stage__head {
@@ -74,7 +78,9 @@ const hasPrices = stage.services.some(
 
   .stage__body {
     max-width: var(--measure);
-    margin-top: var(--space-4);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
   }
 
   .stage__services {
@@ -84,17 +90,18 @@ const hasPrices = stage.services.some(
     list-style: none;
   }
 
-  .stage__note {
-    max-width: var(--measure);
-    padding-top: var(--space-4);
-    border-top: var(--rule) solid var(--line);
-    color: var(--ink-muted);
-    font-size: var(--step-small);
+  @media (min-width: 64rem) {
+    .stage__services--pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--gap);
+    }
   }
 
-  @media (min-width: 64rem) {
-    .stage__note {
-      margin-left: calc((100% + var(--gap)) / 3);
+  @media (min-width: 80rem) {
+    .stage__services--columns {
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--gap);
     }
   }
 </style>

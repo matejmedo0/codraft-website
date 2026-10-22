@@ -63,20 +63,35 @@ function provider(locale: Locale): JsonLd {
   };
 }
 
-/** A guide price as a schema.org offer: a starting price, maybe monthly. */
-function offer(price: GuidePrice): JsonLd {
+/** A guide price on a page, with the label that tells it from the others. */
+export interface PricedOffer {
+  price: GuidePrice;
+  /** E.g. "Web trgovina" beside "Web stranica", in the page's language. */
+  name?: string | undefined;
+}
+
+/**
+ * A guide price as a schema.org offer: a starting price, with its unit when
+ * it has one (a month, a drawing sheet).
+ */
+function offer({ price, name }: PricedOffer): JsonLd {
+  const unit =
+    price.monthly === true
+      ? { unitCode: "MON" }
+      : price.perSheet === true
+        ? { unitText: "sheet" }
+        : undefined;
   return {
     "@type": "Offer",
+    ...(name === undefined ? {} : { name }),
     priceCurrency: "EUR",
     priceSpecification: {
       "@type":
-        price.monthly === true
-          ? "UnitPriceSpecification"
-          : "PriceSpecification",
+        unit === undefined ? "PriceSpecification" : "UnitPriceSpecification",
       minPrice: price.from,
       priceCurrency: "EUR",
       valueAddedTaxIncluded: PRICES_INCLUDE_VAT,
-      ...(price.monthly === true ? { unitCode: "MON" } : {}),
+      ...unit,
     },
   };
 }
@@ -91,7 +106,7 @@ export interface ServiceInput {
   /** The country served, in the page's language. */
   country: string;
   /** Its guide prices (src/config/pricing.ts), if the page shows them. */
-  prices?: readonly GuidePrice[];
+  prices?: readonly PricedOffer[];
 }
 
 /**
@@ -116,7 +131,6 @@ export function service({
     url,
     provider: provider(locale),
     areaServed: { "@type": "Country", name: country },
-    availableLanguage: ["hr", "en"],
     ...(offers.length === 0
       ? {}
       : { offers: offers.length === 1 ? offers[0] : offers }),

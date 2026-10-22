@@ -113,7 +113,7 @@ describe("service", () => {
 
   it("gives a starting price, and a monthly fee its unit", () => {
     expect(
-      service({ ...base, prices: [{ from: 29, monthly: true }] }),
+      service({ ...base, prices: [{ price: { from: 29, monthly: true } }] }),
     ).toMatchObject({
       offers: {
         "@type": "Offer",
@@ -125,8 +125,40 @@ describe("service", () => {
         },
       },
     });
-    const two = service({ ...base, prices: [{ from: 990 }, { from: 1990 }] });
-    expect(two.offers).toHaveLength(2);
+  });
+
+  it("names each of several offers", () => {
+    const two = service({
+      ...base,
+      prices: [
+        { price: { from: 890 }, name: "Web stranica" },
+        { price: { from: 1390 }, name: "Web trgovina" },
+      ],
+    });
+    expect(two.offers).toEqual([
+      expect.objectContaining({
+        name: "Web stranica",
+        priceSpecification: expect.objectContaining({
+          "@type": "PriceSpecification",
+          minPrice: 890,
+        }) as unknown,
+      }),
+      expect.objectContaining({ name: "Web trgovina" }),
+    ]);
+  });
+
+  it("prices a drawing sheet per sheet", () => {
+    expect(
+      service({ ...base, prices: [{ price: { from: 65, perSheet: true } }] }),
+    ).toMatchObject({
+      offers: {
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          minPrice: 65,
+          unitText: "sheet",
+        },
+      },
+    });
   });
 });
 

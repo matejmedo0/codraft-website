@@ -57,6 +57,12 @@
     text-wrap: pretty;
   }
 
+  /* List items and cells wrap like paragraphs, so a line never ends with
+     one word alone (the critique of Usluge, DC-07). */
+  :is(li, dd, th, td) {
+    text-wrap: pretty;
+  }
+
   a {
     color: var(--link);
     text-decoration-thickness: 1px;

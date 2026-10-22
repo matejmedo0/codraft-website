@@ -90,28 +90,42 @@ for (const { path, lang, other, h1, title, description, graph } of PAGES) {
       .locator('script[type="application/ld+json"]')
       .textContent();
     const data = JSON.parse(text ?? "{}") as {
-      "@graph"?: { "@type": string }[];
+      "@graph"?: { "@type": string; url?: string }[];
     };
     const counts: Record<string, number> = {};
     for (const node of data["@graph"] ?? []) {
       counts[node["@type"]] = (counts[node["@type"]] ?? 0) + 1;
     }
     expect(counts).toEqual(graph);
+    // Every service's URL points at an anchor on this page.
+    for (const node of data["@graph"] ?? []) {
+      if (node["@type"] !== "Service" || node.url === undefined) continue;
+      const url = new URL(node.url);
+      expect(url.pathname).toBe(path);
+      await expect(page.locator(url.hash)).toHaveCount(1);
+    }
 
     await expectNoSeriousA11yViolations(page);
     expect(errors).toEqual([]);
   });
 }
 
-test("Home's service links land on their rows on /usluge", async ({ page }) => {
-  await page.goto("/");
-  const links = page.locator('a[href^="/usluge#"]');
-  const targets = await links.evaluateAll((anchors) =>
-    anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).hash),
-  );
-  expect(targets.length).toBeGreaterThan(0);
-  await page.goto("/usluge");
-  for (const hash of targets) {
-    await expect(page.locator(hash)).toHaveCount(1);
-  }
-});
+for (const [home, services] of [
+  ["/", "/usluge"],
+  ["/en", "/en/services"],
+] as const) {
+  test(`Home's service links land on their rows on ${services}`, async ({
+    page,
+  }) => {
+    await page.goto(home);
+    const links = page.locator(`a[href^="${services}#"]`);
+    const targets = await links.evaluateAll((anchors) =>
+      anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).hash),
+    );
+    expect(targets.length).toBeGreaterThan(0);
+    await page.goto(services);
+    for (const hash of targets) {
+      await expect(page.locator(hash)).toHaveCount(1);
+    }
+  });
+}

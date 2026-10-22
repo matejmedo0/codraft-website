@@ -122,13 +122,11 @@
   "services.offer": "Što piše u ponudi",
   "services.included": "Što je uključeno",
   "services.time": "Okvirni rok",
-  "services.price": "Cijena",
   "services.from": "od",
   "services.perMonth": "mjesečno",
   "services.weeks.one": "tjedan",
   "services.weeks.few": "tjedna",
   "services.weeks.other": "tjedana",
-  "services.priceNote": "Cijene su okvirne početne cijene, bez PDV-a. Točnu cijenu i rok dobivate u pisanoj ponudi, prije početka rada.",
   "services.plan.audit.body": "Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu.",
   "services.plan.audit.gets.1": "Provjeru brzine, prikaza na mobitelu, Profila tvrtke na Googleu, pristupačnosti i vidljivosti u AI tražilicama.",
   "services.plan.audit.gets.2": "Razgovor od 30 minuta o tome što smo našli.",
@@ -204,6 +202,7 @@
   "services.closing.lead": "Opišite nam svoj posao i što vam treba, a mi ćemo vam predložiti prvi korak.",
   "services.closing.note": "Odgovaramo u roku od jednog radnog dana.",
   "build.ai.setup": "Izrada asistenta",
-  "services.priceColumn": "Što",
-  "services.perSheet": "po listu"
+  "services.perSheet": "po listu",
+  "services.terms": "Okvirno, bez PDV-a",
+  "services.startingPrice": "Početna cijena"
 }

@@ -40,6 +40,8 @@ export type PriceId = keyof typeof PRICES;
 /**
  * Whether the prices on the site include VAT. The company's VAT status is
  * part of the company data the client sends (PROGRESS.md, item A); until
- * then the site states its prices without VAT.
+ * then the site states its prices without VAT. It drives the JSON-LD only:
+ * when it changes, change the copy that says so too (`services.terms`,
+ * `services.faq.vat.a`; ADR 0032).
  */
 export const PRICES_INCLUDE_VAT = false;

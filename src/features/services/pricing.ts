@@ -23,12 +23,14 @@ export function formatEuro(amount: number, locale: Locale): string {
 }
 
 /**
- * A guide price as the page shows it: HR "od 990 €", "od 29 € mjesečno";
- * EN "from €990", "from €29 a month".
+ * A guide price as the page shows it: HR "od 990 €", "od 29 € mjesečno",
+ * "od 65 € po listu"; EN "from €990", "from €29 a month", "from €65 per
+ * sheet".
  */
 export function formatGuidePrice(price: GuidePrice, locale: Locale): string {
   const parts = [t(locale, "services.from"), formatEuro(price.from, locale)];
   if (price.monthly === true) parts.push(t(locale, "services.perMonth"));
+  if (price.perSheet === true) parts.push(t(locale, "services.perSheet"));
   return parts.join(" ");
 }
 

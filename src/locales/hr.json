@@ -204,5 +204,6 @@
   "services.closing.lead": "Opišite nam svoj posao i što vam treba, a mi ćemo vam predložiti prvi korak.",
   "services.closing.note": "Odgovaramo u roku od jednog radnog dana.",
   "build.ai.setup": "Izrada asistenta",
-  "services.priceColumn": "Što"
+  "services.priceColumn": "Što",
+  "services.perSheet": "po listu"
 }

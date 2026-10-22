@@ -30,6 +30,17 @@ describe("formatGuidePrice", () => {
   });
 });
 
+describe("formatGuidePrice per sheet", () => {
+  it("names the drawing sheet", () => {
+    expect(formatGuidePrice({ from: 65, perSheet: true }, "hr")).toBe(
+      `od 65${NBSP}€ po listu`,
+    );
+    expect(formatGuidePrice({ from: 65, perSheet: true }, "en")).toBe(
+      "from €65 per sheet",
+    );
+  });
+});
+
 describe("formatWeeks", () => {
   it("agrees the Croatian word with the last number", () => {
     expect(formatWeeks([1, 2], "hr")).toBe(`1–2${NBSP}tjedna`);

@@ -197,24 +197,24 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 
 | ID | Block | Now | Suggested | Changes meaning? | Status |
 |---|---|---|---|---|---|
-| S1 | `plan.body` | "free review" | "free audit", to match the CTA | No | pending |
-| S2 | `build.websites.*` | "Online Stores" in the title, "e-shops" in the body | One term in both, e.g. "online stores" | No | pending |
+| S1 | `plan.body` | "free review" | "free audit", to match the CTA | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
+| S2 | `build.websites.*` | "Online Stores" in the title, "e-shops" in the body | One term in both, e.g. "online stores" | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
 | S3 | `build.integrations.body` | "inquiry" (US spelling) | "enquiry", if British English is chosen (the brand README uses "colour") | No (spelling convention to decide) | accepted 2026-10-22: British English ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
-| S4 | `build.integrations.body` | "payments and CRM" | "payments and your CRM"; consider naming "online booking" for search | No | pending |
-| S5 | `run.analytics.body` | "…accessibility set up properly, so you can…" | "…accessibility, set up properly so you can…" | No | pending |
-| S6 | `run.analytics.body` | "meet EU requirements" | "help you meet EU requirements". A technical setup is not legal compliance. | **Yes** | pending |
-| S7 | `run.seo.body` | "including visibility in AI search tools" | "plus how you show up in AI search tools" | No | pending |
+| S4 | `build.integrations.body` | "payments and CRM" | "payments and your CRM"; consider naming "online booking" for search | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
+| S5 | `run.analytics.body` | "…accessibility set up properly, so you can…" | "…accessibility, set up properly so you can…" | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
+| S6 | `run.analytics.body` | "meet EU requirements" | "help you meet EU requirements". A technical setup is not legal compliance. | **Yes** | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
+| S7 | `run.seo.body` | "including visibility in AI search tools" | "plus how you show up in AI search tools" | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
 | S8 | `drafting.tagline` | "delivered on deadline" | "delivered on time" or "delivered by your deadline" | No | pending |
 | S9 | `drafting.docs.body` | "ready to hand over" | "ready for handover" | No | pending |
 | S10 | `drafting.docs.body` | "Clear specifications and drawing sets…" | Add "…prepared from your engineers' input". This positions Codraft as drafting support (see [compliance.md](compliance.md)). | **Yes** | pending |
-| S11 | `plan.body` | "your current website" | Add "…or your Google presence, if you don't have a website yet" | **Yes** | pending |
-| S12 | `build.ai.body` | — | Add "clearly labelled as AI". EU AI Act Art. 50 then becomes a selling point. | **Yes** | pending |
+| S11 | `plan.body` | "your current website" | Add "…or your Google presence, if you don't have a website yet" | **Yes** | not applied on /usluge (2026-10-22, M6): the audit row covers a business without a site |
+| S12 | `build.ai.body` | — | Add "clearly labelled as AI". EU AI Act Art. 50 then becomes a selling point. | **Yes** | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
 | S13 | `drafting.cad.body` | "in AutoCAD" | "in AutoCAD (DWG)"; confirm the versions you deliver | No | pending |
 | S14 | all | — | Typographic apostrophes and quotes everywhere on the site; Croatian uses „…“ | No | pending |
 | S15 | page metadata only | — | Add "Croatia" to English page titles and meta descriptions, not to body copy | No | accepted 2026-10-22 ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
-| S16 | `build.integrations.body` | — | Local angle: mention e-invoicing (eRačun) and fiscalisation integrations for Croatian businesses | **Yes** (new claim) | pending |
-| S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | pending |
-| S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | pending |
+| S16 | `build.integrations.body` | — | Local angle: mention e-invoicing (eRačun) and fiscalisation integrations for Croatian businesses | **Yes** (new claim) | open: only if Codraft connects stores to e-invoicing and fiscalisation (a new claim, the client's decision) |
+| S17 | `services.intro` | "Codraft is a small studio that…" | "Codraft is a studio that…", to match the Croatian, where the client removed "mali" (2026-10-19) | No | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
+| S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
 | S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | rejected 2026-10-22: S20 instead; its audience line is kept |
 | S20 | `drafting.title`, `nav.drafting`, the EN slug (2026-10-22, an alternative to S19) | "Engineering Drafting" (`/en/engineering-drafting`) | "Architectural Drafting" (slug `/en/architectural-drafting`), with S19's audience line. It is the term architects and builders search for in English ("architectural drafting services"); "Technical Drawing" reads as the school subject or general engineering, and "Engineering Drafting" suggests engineering, which ADR 0018 leaves out | **Yes** | accepted 2026-10-22 ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 
@@ -483,9 +483,9 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 
 ### Services, phase 3 (2026-10-22)
 
-The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"), put to the client on 2026-10-22 (M5) and **waiting for the client's OK**. Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) go into the locales as they are; the English ones with the suggestions Claude recommends below, if the client accepts them.
+The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
 
-Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects; **[G7]** is a line that exists only if the client shows prices or timelines (G7). Lines the client doesn't confirm are cut, not left as placeholders.
+Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects before launch; **[G7]** is a line about prices or timelines. G7 is decided: the page shows guide prices about 10% below the market ([ADR 0032](decisions/0032-guide-prices-below-the-market.md); figures in `src/config/pricing.ts`, sources in [the pricing research](research/2026-10-22-pricing.md)).
 
 **A · Hero**
 
@@ -524,7 +524,14 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | Key | HR `draft` | EN `draft` | Source |
 |---|---|---|---|
 | `build.title` · `build.tagline` | (Home) | (Home) | The client |
-| `services.time` · `services.price` (labels) [G7] | Okvirni rok · Cijena | Typical timeline · Price | New; the timeline as a Dimension in weeks ("4–6 tjedana", "4–6 weeks"), the price "od 1.200 €" / "from €1,200" (glossary, typography) |
+| `services.time` · `services.price` (labels) [G7] | Okvirni rok · Cijena | Typical timeline · Price | New; the timeline as a Dimension in weeks ("4–6 tjedana", "4–6 weeks"), the price "od 1.390 €" / "from €1,390" (glossary, typography) |
+| `services.priceColumn` (hidden header of the price table's first column) | Što | What | New |
+| `services.from` · `services.perMonth` · `services.perSheet` [G7] | od · mjesečno · po listu | from · a month · per sheet | New; with the amount: "od 890 €", "od 35 € mjesečno", "od 65 € po listu"; "from €890", "from €35 a month", "from €65 per sheet" |
+| `services.weeks.one` · `.few` · `.other` [G7] | tjedan · tjedna · tjedana | week · weeks · weeks | New; the word agrees with the last number ("1–2 tjedna", "3–5 tjedana") |
+| `services.priceNote` [G7] | Cijene su okvirne početne cijene, bez PDV-a. Točnu cijenu i rok dobivate u pisanoj ponudi, prije početka rada. | Prices are guide starting prices, excluding VAT. You get the exact price and timeline in a written offer, before any work starts. | New; under stages 02 and 03; the VAT part follows the company's status (item A, ADR 0032) |
+| `build.websites.site` · `build.websites.shop` [G7] | Web stranica · Web trgovina | Website · Online store | New; the two price lines of the first service |
+| `build.ai.setup` · `build.ai.monthly` [G7] | Izrada asistenta · Rad asistenta | Building the assistant · Running the assistant | New; the AI service's two price lines |
+| `run.analytics.setup` [G7] | Postavljanje | Setup | New; analytics is a one-off setup |
 | `build.websites.body` | Brze stranice i web trgovine, osmišljene najprije za mobitel, koje posjetitelje pretvaraju u pozive, rezervacije i narudžbe. | Fast, mobile-first sites and online stores built to turn visitors into calls, bookings and orders. | §2; EN with S2 |
 | `build.websites.gets.1` | Dizajn složen najprije za mobitel, s jasnim putem do poziva, rezervacije ili narudžbe. | A design made for mobile first, with a clear path to a call, a booking or an order. | From `build.websites.body` |
 | `build.websites.gets.2` | Brzinu izmjerenu prije objave, na mobitelu i na računalu. | Speed measured before launch, on mobile and on desktop. | From "Brze"; **confirm** |
@@ -545,7 +552,7 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | `build.ai.gets.2` | Kad ne zna odgovor, kaže to i upit predaje vama. | When it doesn’t know the answer, it says so and passes the question to you. | **confirm** |
 | `build.ai.gets.3` | Automatizacije ponavljajućih zadataka, npr. razvrstavanje upita i prijenos podataka između alata. | Automations for repetitive tasks, such as sorting enquiries and moving data between tools. | From `build.ai.body` |
 | `build.ai.gets.4` | Pregled razgovora, da vidite što klijenti najčešće pitaju. | A log of the conversations, so you can see what customers ask most. | **confirm** |
-| `build.*.time` · `build.*.price` [G7] | X–Y tjedana · od X € | X–Y weeks · from €X | The client's numbers |
+| The prices and timelines [G7] | Web stranica od 890 € (3–4 tjedna), web trgovina od 1.390 € (4–6 tjedana), web aplikacije od 2.690 € (4–8 tjedana), integracije od 190 € (1–2 tjedna), AI asistent od 690 € (1–3 tjedna) i od 45 € mjesečno | Formatted per language from `src/config/pricing.ts` | [ADR 0032](decisions/0032-guide-prices-below-the-market.md) |
 
 **D · 03 Održavanje i rast** (`#odrzavanje-i-rast` · `#run-and-grow`). Each service: the client's sentence, "Što je uključeno" and, with G7, the monthly fee.
 
@@ -553,7 +560,7 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 |---|---|---|---|
 | `run.title` · `run.tagline` | (Home) | (Home) | The client |
 | `services.included` (label) | Što je uključeno | What’s included | New |
-| `services.monthly` [G7] | od X € mjesečno | from €X a month | The client's number |
+| The monthly fees [G7] | Hosting i održavanje od 35 € mjesečno, SEO od 260 € mjesečno; analitika i usklađenost od 290 € jednokratno (1–2 tjedna) | Formatted per language from `src/config/pricing.ts` | [ADR 0032](decisions/0032-guide-prices-below-the-market.md) |
 | `run.hosting.body` | Hosting o kojem brinemo mi, redovita ažuriranja, sigurnosne kopije i zakrpe, sve za fiksnu mjesečnu naknadu. | Managed hosting, updates, backups and security patches, all for a fixed monthly fee. | §2, unchanged |
 | `run.hosting.gets.1` | Hosting s HTTPS-om, na serveru u EU-u. | Hosting with HTTPS, on a server in the EU. | **confirm** |
 | `run.hosting.gets.2` | Redovita ažuriranja i sigurnosne zakrpe. | Regular updates and security patches. | `run.hosting.body` |
@@ -586,13 +593,13 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | Key | HR `draft` | EN `draft` | Source |
 |---|---|---|---|
 | `services.faq.title` | Česta pitanja | Frequently asked questions | New |
-| `services.faq.price.q` · `.a` | Koliko košta? · With prices: Okvirnu cijenu vidite uz svaku uslugu. Točnu cijenu dobivate u pisanoj ponudi nakon besplatne analize, prije početka rada. · Without: Ovisi o opsegu. Nakon besplatne analize dobivate pisanu ponudu s fiksnim opsegom, rokom i cijenom, prije početka rada. | How much does it cost? · With prices: You can see a guide price next to each service. You get the exact price in a written offer after the free audit, before any work starts. · Without: It depends on the scope. After the free audit, you get a written offer with a fixed scope, timeline and price, before any work starts. | `plan.body`; G7 |
-| `services.faq.time.q` · `.a` | Koliko traje izrada? · With timelines: Okvirni rok vidite uz svaku uslugu, a točan piše u ponudi. · Without: Ovisi o opsegu, a točan rok piše u ponudi. | How long does it take? · With timelines: You can see a typical timeline next to each service; the exact one is in the offer. · Without: It depends on the scope; the exact timeline is in the offer. | G7 |
+| `services.faq.price.q` · `.a` | Koliko košta? · Okvirnu početnu cijenu vidite uz svaku uslugu. Točnu cijenu dobivate u pisanoj ponudi nakon besplatne analize, prije početka rada. | How much does it cost? · You can see a guide starting price next to each service. You get the exact price in a written offer after the free audit, before any work starts. | `plan.body`; G7 (ADR 0032) |
+| `services.faq.time.q` · `.a` | Koliko traje izrada? · Okvirni rok vidite uz svaku uslugu, a točan piše u ponudi. Rok teče od dana kad imamo sve što nam treba od vas, poput tekstova i fotografija. | How long does it take? · You can see a typical timeline next to each service; the exact one is in the offer. It runs from the day we have everything we need from you, such as text and photos. | G7; the second sentence: **confirm** |
 | `services.faq.existing.q` · `.a` | Već imam web stranicu. Treba li mi nova? · Ne nužno. Analiza pokaže što vrijedi zadržati. Ako je dovoljno popraviti brzinu, prikaz na mobitelu ili SEO, reći ćemo vam to prije ponude. | I already have a website. Do I need a new one? · Not necessarily. The audit shows what’s worth keeping. If fixing the speed, the mobile layout or the SEO is enough, we’ll tell you before the offer. | The client's "Kažemo i kad nešto ne treba" |
 | `services.faq.ownership.q` · `.a` | Čiji su stranica, kod i domena? · Vaši. Kod, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje. Domenu registriramo na vaše ime. Licence tuđih alata, poput fontova i dodataka, ostaju pod njihovim uvjetima. | Who owns the site, the code and the domain? · You do. The code, the domain and every login belong to you, even if one day you go elsewhere. We register the domain in your name. Third-party licences, such as fonts and plugins, stay under their own terms. | [ADR 0021](decisions/0021-the-customer-owns-the-work.md) and its consequences |
-| `services.faq.maintenance.q` · `.a` | Moram li uzeti i održavanje? · Ne. Održavanje je zasebna mjesečna usluga, bez minimalnog trajanja. Ako ga ne uzmete ili kasnije odete, dobivate sve pristupe i kopiju stranice. | Do I have to take maintenance? · No. Maintenance is a separate monthly service, with no minimum term. If you don’t take it, or leave later, you get every login and a copy of your site. | ADR 0021; "bez minimalnog trajanja" and any notice period: **confirm** |
+| `services.faq.maintenance.q` · `.a` | Moram li uzeti i održavanje? · Ne. Održavanje je zasebna mjesečna usluga, bez minimalnog trajanja i s otkazom do kraja mjeseca. Ako ga ne uzmete ili kasnije odete, dobivate sve pristupe i kopiju stranice. | Do I have to take maintenance? · No. Maintenance is a separate monthly service, with no minimum term, and you can cancel by the end of any month. If you don’t take it, or leave later, you get every login and a copy of your site. | ADR 0021; "bez minimalnog trajanja" and the notice "do kraja mjeseca": **confirm** |
 | `services.faq.editing.q` · `.a` | Mogu li sadržaj mijenjati bez vas? · Da. Tekstove, slike i proizvode mijenjate sami, a mi vam pokažemo kako. Veće izmjene radimo mi. | Can I change the content without you? · Yes. You change the text, images and products yourself, and we show you how. Bigger changes we make for you. | **confirm** (whether every site has an editor) |
-| `services.faq.vat.q` · `.a` [G7] | Jesu li cijene s PDV-om? · (by the company's VAT status, item A) | Do prices include VAT? · (as in Croatian) | Only if prices are shown |
+| `services.faq.vat.q` · `.a` [G7] | Jesu li cijene s PDV-om? · Cijene na ovoj stranici su bez PDV-a. U ponudi i na računu PDV je iskazan zasebno, ako ga obračunavamo. | Do prices include VAT? · The prices on this page exclude VAT. If we charge VAT, the offer and the invoice show it separately. | Until the company's VAT status arrives (item A); then one plain sentence (ADR 0032) |
 
 **G · Closing call to action** (navy)
 
@@ -609,11 +616,12 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 |---|---|---|---|
 | `meta.services.title` | Usluge: web stranice, web trgovine, aplikacije i AI \| Codraft (61 characters) | Services: websites, online stores, apps and AI \| Codraft (56) | Keyword map (`/usluge`: the service cluster); distinct from Home's title |
 | `meta.services.description` | Web stranice i web trgovine, web aplikacije, integracije, AI asistenti, hosting, SEO i analitika. Opseg, rok i cijenu znate prije početka rada. (143) | Websites, online stores, web apps, integrations, AI assistants, hosting, SEO and analytics for businesses in Croatia, with a fixed price before work starts. (156) | `plan.body`; S15 |
-| `breadcrumb.home` | Početna | Home | The `BreadcrumbList` (Početna › Usluge) |
+| `breadcrumb.home` | Početna | Home | The visible trail above the H1 and the `BreadcrumbList` (Početna / Usluge), on every inner page |
+| `breadcrumb.label` | Putanja | Breadcrumb | New: the trail's accessible name |
 
-The JSON-LD: a `Service` for each of the eight services (the free audit, the four Build services and the three Run & Grow services; the fixed offer is not a service of its own), each with its name, the client's sentence, its anchor's URL, `areaServed` Croatia and Home's organisation as the provider; prices as `offers` only with G7. No `FAQPage`: Google shows FAQ results only for government and health sites, so it adds nothing here.
+The JSON-LD: a `Service` for each of the eight services (the free audit, the four Build services and the three Run & Grow services; the fixed offer is not a service of its own), each with its name, the client's sentence, its anchor's URL, `areaServed` Croatia and Home's organisation as the provider, and its guide prices as `offers` (a starting price, monthly where it is). No `FAQPage`: Google shows FAQ results only for government and health sites, so it adds nothing here.
 
-**English suggestions on this page** ([§3](#3-suggestions-for-the-english-copy)), with Claude's recommendation. S3, S15 and S20 are accepted ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)).
+**English suggestions on this page** ([§3](#3-suggestions-for-the-english-copy)), with Claude's recommendation, **applied** on 2026-10-22 under M6 (ADR 0031); the client can revert any of them in the final review. S3, S15 and S20 are accepted ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)).
 
 | ID | Recommendation | Why |
 |---|---|---|
@@ -712,6 +720,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-20 (phase 2, review refinements, #58):** "The floor plan's 3D view on Home" added under "Prototype copy": the title block's "3D model stana" and the accessible name with the 3D view. No copy block changed.
 - **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
 - **2026-10-22 (phase 3, Home, the build):** The client approved Home's argument and asked to build (M2). "Home, phase 3" now holds every Home line with its locale key, in Croatian and in British English: the audit's lead without brackets (its facts confirmed by the client before launch), the closing call to action's note written by Claude at the client's request, and the team's names and roles from the client. Accepted: S3 (British English), S15 and S20, which changes the EN blocks `drafting.title` and `drafting.audience` and the slug to `/en/architectural-drafting` ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)); S19 rejected.
+- **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)

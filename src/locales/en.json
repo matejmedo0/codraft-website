@@ -204,5 +204,6 @@
   "services.closing.lead": "Tell us about your business and what you need, and we’ll suggest the first step.",
   "services.closing.note": "We reply within one working day.",
   "build.ai.setup": "Building the assistant",
-  "services.priceColumn": "What"
+  "services.priceColumn": "What",
+  "services.perSheet": "per sheet"
 }

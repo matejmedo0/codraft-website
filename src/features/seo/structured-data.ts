@@ -1,4 +1,5 @@
 import { type Company, COMPANY } from "../../config/company.ts";
+import { type GuidePrice, PRICES_INCLUDE_VAT } from "../../config/pricing.ts";
 import { type Locale, SITE_NAME, SITE_URL } from "../../config/site.ts";
 import { urlFor } from "../i18n/urls.ts";
 
@@ -17,6 +18,9 @@ export interface OrganizationInput {
 /** The brand's square icon from the favicon set (public/), as the logo. */
 const LOGO_PATH = "/icon-512.png";
 
+/** Home's organisation, one identity in both languages. */
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
 /**
  * Home's ProfessionalService (docs/phases/3-pages.md, "SEO specifics"),
  * with only what is true today (ADR 0004): the name, the site, the
@@ -34,7 +38,7 @@ export function organization({
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "@id": `${SITE_URL}/#organization`,
+    "@id": ORGANIZATION_ID,
     name: SITE_NAME,
     url: urlFor("home", locale),
     logo,
@@ -47,6 +51,99 @@ export function organization({
     ...(company.email === null ? {} : { email: company.email }),
     ...(company.phone === null ? {} : { telephone: company.phone }),
   };
+}
+
+/** A reference to Home's organisation, as a service's provider. */
+function provider(locale: Locale): JsonLd {
+  return {
+    "@type": "ProfessionalService",
+    "@id": ORGANIZATION_ID,
+    name: SITE_NAME,
+    url: urlFor("home", locale),
+  };
+}
+
+/** A guide price as a schema.org offer: a starting price, maybe monthly. */
+function offer(price: GuidePrice): JsonLd {
+  return {
+    "@type": "Offer",
+    priceCurrency: "EUR",
+    priceSpecification: {
+      "@type":
+        price.monthly === true
+          ? "UnitPriceSpecification"
+          : "PriceSpecification",
+      minPrice: price.from,
+      priceCurrency: "EUR",
+      valueAddedTaxIncluded: PRICES_INCLUDE_VAT,
+      ...(price.monthly === true ? { unitCode: "MON" } : {}),
+    },
+  };
+}
+
+export interface ServiceInput {
+  locale: Locale;
+  name: string;
+  /** The service's sentence, in the page's language. */
+  description: string;
+  /** Where the page describes it, anchor included. */
+  url: string;
+  /** The country served, in the page's language. */
+  country: string;
+  /** Its guide prices (src/config/pricing.ts), if the page shows them. */
+  prices?: readonly GuidePrice[];
+}
+
+/**
+ * One offering as a `Service` (docs/phases/3-pages.md, "SEO specifics"):
+ * eight on /usluge, three on the drafting page. Home's organisation is the
+ * provider; a guide price is an offer with a starting price.
+ */
+export function service({
+  locale,
+  name,
+  description,
+  url,
+  country,
+  prices = [],
+}: ServiceInput): JsonLd {
+  const offers = prices.map(offer);
+  return {
+    "@type": "Service",
+    "@id": url,
+    name,
+    description,
+    url,
+    provider: provider(locale),
+    areaServed: { "@type": "Country", name: country },
+    availableLanguage: ["hr", "en"],
+    ...(offers.length === 0
+      ? {}
+      : { offers: offers.length === 1 ? offers[0] : offers }),
+  };
+}
+
+export interface Crumb {
+  name: string;
+  url: string;
+}
+
+/** An inner page's trail, Home first (src/components/site/Breadcrumbs.astro). */
+export function breadcrumbList(crumbs: readonly Crumb[]): JsonLd {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: crumb.url,
+    })),
+  };
+}
+
+/** Several JSON-LD objects in one script, as a graph. */
+export function graph(nodes: readonly JsonLd[]): JsonLd {
+  return { "@context": "https://schema.org", "@graph": nodes };
 }
 
 /**

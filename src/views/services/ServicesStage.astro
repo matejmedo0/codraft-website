@@ -1,0 +1,100 @@
+---
+/**
+ * Zones B, C and D of /usluge: one stage of "Što radimo" each, at its
+ * anchor (#planiranje, #izrada, #odrzavanje-i-rast), so Home's links land
+ * on it. The stage's head on columns 1-7: its bubble beside the h2, the
+ * tagline, and stage 01's lead; then its services as rows (ServiceRow).
+ * Stages with prices end with a note on what the prices are.
+ */
+import "../../features/services/stages.css";
+
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import type { Stage } from "../../features/services/services.ts";
+import ServiceRow from "./ServiceRow.astro";
+
+interface Props {
+  locale: Locale;
+  stage: Stage;
+}
+
+const { locale, stage } = Astro.props;
+const id = stage.anchor[locale];
+const headingId = `${id}-naslov`;
+const hasPrices = stage.services.some(
+  (service) => (service.detail?.prices ?? []).length > 0,
+);
+---
+
+<Zone labelledby={headingId} id={id} class="stage">
+  <div class="stage__head">
+    <h2 class="stage__title" id={headingId}>
+      <span class="svc-bubble stage__bubble">{stage.number}</span>
+      {t(locale, stage.title)}
+    </h2>
+    <p class="svc-tagline stage__tagline">{t(locale, stage.tagline)}</p>
+    {stage.body !== undefined && (
+      <p class="stage__body">{t(locale, stage.body)}</p>
+    )}
+  </div>
+  <ul class="stage__services">
+    {stage.services.map((service) => (
+      <ServiceRow locale={locale} service={service} />
+    ))}
+  </ul>
+  {hasPrices && <p class="stage__note">{t(locale, "services.priceNote")}</p>}
+</Zone>
+
+<style>
+  .stage {
+    --bubble: 2.75rem;
+
+    scroll-margin-top: 0;
+  }
+
+  .stage__head {
+    max-width: 44rem;
+  }
+
+  .stage__title {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .stage__bubble {
+    flex: none;
+  }
+
+  .stage__tagline {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+  }
+
+  .stage__body {
+    max-width: var(--measure);
+    margin-top: var(--space-4);
+  }
+
+  .stage__services {
+    display: grid;
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stage__note {
+    max-width: var(--measure);
+    padding-top: var(--space-4);
+    border-top: var(--rule) solid var(--line);
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  @media (min-width: 64rem) {
+    .stage__note {
+      margin-left: calc((100% + var(--gap)) / 3);
+    }
+  }
+</style>

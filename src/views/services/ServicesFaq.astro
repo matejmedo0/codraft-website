@@ -1,0 +1,76 @@
+---
+/**
+ * Zone F of /usluge, "Česta pitanja" (G8): straight answers to the usual
+ * worries, in the layout of Home's "Kako radimo" (the h2 on columns 1-4,
+ * the questions on 5-12). Always open, with no accordion and no script, so
+ * the answers read the same for people and for AI search. No FAQPage
+ * markup: Google shows it only for government and health sites.
+ */
+import Item from "../../components/ui/Item.astro";
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const questions = (
+  [
+    "price",
+    "time",
+    "existing",
+    "ownership",
+    "maintenance",
+    "editing",
+    "vat",
+  ] as const
+).map((id) => ({
+  question: t(locale, `services.faq.${id}.q`),
+  answer: t(locale, `services.faq.${id}.a`),
+}));
+---
+
+<Zone labelledby="cesta-pitanja" class="faq">
+  <h2 id="cesta-pitanja">{t(locale, "services.faq.title")}</h2>
+  <ul class="faq__list">
+    {questions.map(({ question, answer }) => (
+      <Item title={question} as="li" class="faq__item">
+        <p>{answer}</p>
+      </Item>
+    ))}
+  </ul>
+</Zone>
+
+<style>
+  .faq__list {
+    display: grid;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 64rem) {
+    .faq {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    .faq > h2 {
+      grid-column: 1 / span 4;
+    }
+
+    .faq__list {
+      grid-column: 5 / -1;
+      margin: 0;
+    }
+
+    .faq__list > :global(.faq__item:first-child) {
+      padding-top: var(--space-2);
+      border-top: 0;
+    }
+  }
+</style>

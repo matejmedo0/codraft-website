@@ -271,3 +271,28 @@ Each of the client's messages is recorded here verbatim before anything changes.
     - Differences from the outline: the hero gets an index of the three stages and the drafting path, as on Home; "Tijek suradnje" has four steps (maintenance is stage 03 right above it, and five steps would be about 110 px each at 768 px); the FAQ is always open, as `Item` rows.
     - Shared code the build would touch, with no visible change on Home: the stage bubble's style moves out of Home's `services.css`, and Home's closing call to action takes its text as props. New in the design: only the list marker for the services' short points.
     - The H1 stays "Što radimo" (the `seo` check): the keywords are in the intro, the title, the description and the eight service headings.
+  - **M6**, the client's answer, verbatim:
+
+    > Trenutno smo u **fazi 3**. Želim da od ovog trenutka radiš maksimalno autonomno, koristeći postojeći plan, dokumentaciju, projektna pravila, skillove, hookove i specijalizirane agente.
+    >
+    > **Glavni cilj:** Implementiraj što više projekta bez nepotrebnog traženja mojih odluka. Vjerujem tvojoj tehničkoj procjeni — ako postoji razumno i kvalitetno rješenje, samostalno ga odaberi i realiziraj.
+    >
+    > **Smjernice:**
+    > - Dovršavaj cijele stranice (pages), ne samo osnovne strukture. Implementiraj dizajn, responsive layout, navigaciju, interakcije, funkcionalne komponente, forme, animacije i prijelaze.
+    > - Slike zasad zamijeni odgovarajućim placeholderima. Tekstove i opise slobodno samostalno generiraj. Sve to možemo naknadno pregledati i prilagoditi.
+    > - Animacije i UX detalje implementiraj **sada**, nemoj ih odgađati samo zato što nedostaju finalne slike ili sadržaj.
+    > - Za cijene usluga istraži aktualne tržišne cijene usporedivih usluga i postavi okvirno 10 % niže cijene. Dokumentiraj izvore i pretpostavke.
+    > - Samostalno donosi dizajnerske, arhitekturne, tehničke i manje poslovne odluke, uz dosljednost postojećem projektu.
+    > - Aktivno koristi odgovarajuće custom agente, skillove i hookove. Nemoj duplicirati ono što već postoji.
+    > - Kontinuirano pokreći relevantne testove, lint, typecheck, build i druge provjere. Otkrivene probleme ispravljaj i ponovno provjeravaj.
+    > - Radi iterativno: implementacija → provjera → ispravci → sljedeći zadatak. Nemoj stati nakon jedne uspješno dovršene cjeline.
+    > - Poštuj postojeću arhitekturu i izbjegavaj nepotrebne refaktore ili kvarenje funkcionalnosti koje već rade.
+    >
+    > **Nemoj me pitati za sitnice, privremeni sadržaj, tekstove, slike, boje, rasporede ili standardne implementacijske odluke.** Pitaj isključivo ako je odluka zaista nepovratna ili kritična.
+    >
+    > Nastavi kroz fazu 3 i, kada je dovršiš, prijeđi na sljedeće planirane zadatke (faze) - skroz do launch-a ako treba. Ne ostavljaj nepotrebne TODO-ove ako ih možeš odmah riješiti.
+    >
+    > **Želim maksimalan konkretan napredak, a ne stalne konzultacije.** Na kraju mi sažeto prikaži što je napravljeno, što je provjereno i što eventualno zahtijeva moju odluku.
+  - **M7**, sent while the work above ran, verbatim:
+
+    > BTW Isto tako ako trebaš working tree napraviti ili bilo šta ne moraš me pitati imaš odobrenje

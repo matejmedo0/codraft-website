@@ -1,0 +1,57 @@
+---
+/**
+ * The way back on an inner page: Home, then the page itself, in label type
+ * above the H1, like the reference line above a drawing's title. The same
+ * trail is the page's `BreadcrumbList` (src/features/seo/structured-data.ts).
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+  /** The current page's name, as in the navigation. */
+  current: string;
+  class?: string;
+}
+
+const { locale, current, class: className } = Astro.props;
+---
+
+<nav
+  class:list={["breadcrumbs t-label", className]}
+  aria-label={t(locale, "breadcrumb.label")}
+>
+  <ol class="breadcrumbs__list">
+    <li>
+      <a href={pathFor("home", locale)}>{t(locale, "breadcrumb.home")}</a>
+    </li>
+    <li aria-current="page">{current}</li>
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    color: var(--ink-muted);
+  }
+
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A slash between the steps, as in a file path; screen readers skip it
+     (the empty alternative text). */
+  .breadcrumbs__list li + li::before {
+    margin-right: var(--space-2);
+    content: "/" / "";
+  }
+
+  .breadcrumbs a {
+    color: var(--ink);
+  }
+</style>

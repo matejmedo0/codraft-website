@@ -1,0 +1,255 @@
+---
+/**
+ * One service on /usluge, a row under a hairline as in Home's "Kako radimo":
+ * its icon and title on columns 1-4, and on 5-12 the client's sentence, a
+ * label with 3-4 short points, and its guide prices (G7) in a small table,
+ * each timeline drawn as a dimension in weeks (Dimension.astro). The icon is
+ * still (ADR 0022 draws it only on Home's process line); on phones it sits
+ * beside the title, and the rest runs under both (ADR 0028).
+ */
+import Button from "../../components/ui/Button.astro";
+import Dimension from "../../components/ui/Dimension.astro";
+import { PRICES } from "../../config/pricing.ts";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import {
+  formatGuidePrice,
+  formatWeeks,
+} from "../../features/services/pricing.ts";
+import type { ServiceEntry } from "../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+  service: ServiceEntry;
+}
+
+const { locale, service } = Astro.props;
+const { detail } = service;
+const id = service.anchor?.[locale];
+const pointsId = `${id ?? service.title.replaceAll(".", "-")}-tocke`;
+const prices = (detail?.prices ?? []).map((line) => {
+  const price = PRICES[line.price];
+  return {
+    label: line.label === undefined ? undefined : t(locale, line.label),
+    weeks: "weeks" in price ? formatWeeks(price.weeks, locale) : undefined,
+    price: formatGuidePrice(price, locale),
+  };
+});
+const hasLabels = prices.some((line) => line.label !== undefined);
+const hasWeeks = prices.some((line) => line.weeks !== undefined);
+---
+
+<li class="service-row" id={id}>
+  <div class="service-row__head">
+    {service.icon !== undefined && (
+      <ServiceIcon icon={service.icon} class="service-row__icon" />
+    )}
+    <h3 class="service-row__title">{t(locale, service.title)}</h3>
+  </div>
+  {detail !== undefined && (
+    <div class="service-row__detail">
+      <p class="service-row__body">{t(locale, detail.body)}</p>
+      <p class="service-row__label t-label" id={pointsId}>
+        {t(locale, detail.pointsLabel)}
+      </p>
+      <ul class="points" aria-labelledby={pointsId}>
+        {detail.points.map((point) => (
+          <li>{t(locale, point)}</li>
+        ))}
+      </ul>
+      {prices.length > 0 && (
+        <table class="terms">
+          <thead>
+            <tr>
+              {hasLabels && (
+                <th scope="col">
+                  <span class="visually-hidden">
+                    {t(locale, "services.priceColumn")}
+                  </span>
+                </th>
+              )}
+              {hasWeeks && (
+                <th scope="col" class="t-label">
+                  {t(locale, "services.time")}
+                </th>
+              )}
+              <th scope="col" class="t-label terms__price">
+                {t(locale, "services.price")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {prices.map((line) => (
+              <tr>
+                {hasLabels && <th scope="row">{line.label}</th>}
+                {hasWeeks && (
+                  <td class="terms__time">
+                    {line.weeks !== undefined && (
+                      <Dimension value={line.weeks} />
+                    )}
+                  </td>
+                )}
+                <td class="terms__price">{line.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {detail.auditCta === true && (
+        <div class="service-row__actions">
+          <Button href={pathFor("audit", locale)}>
+            {t(locale, "audit.cta")}
+          </Button>
+        </div>
+      )}
+    </div>
+  )}
+</li>
+
+<style>
+  .service-row {
+    --icon: 2.5rem;
+
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5) 0 var(--space-6);
+    border-top: var(--rule) solid var(--line);
+    scroll-margin-top: var(--space-5);
+  }
+
+  .service-row__head {
+    display: grid;
+    grid-template-columns: var(--icon) minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-items: center;
+  }
+
+  .service-row__title {
+    font-size: var(--step-title);
+    line-height: var(--leading-title);
+  }
+
+  .service-row__body {
+    max-width: var(--measure);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .service-row__label {
+    margin-top: var(--space-5);
+    color: var(--ink-muted);
+  }
+
+  /* The short points: a small hollow square in the muted ink, a grip
+     without the blue (the one new mark of this page). */
+  .points {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--measure);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    color: var(--ink-muted);
+    list-style: none;
+  }
+
+  .points li {
+    position: relative;
+    padding-left: var(--space-5);
+  }
+
+  .points li::before {
+    position: absolute;
+    top: calc(0.775em - 3.5px);
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid var(--ink-muted);
+    content: "";
+  }
+
+  /* The guide prices: a small table like a title block's cells. */
+  .terms {
+    width: 100%;
+    max-width: 36rem;
+    margin-top: var(--space-6);
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .terms th,
+  .terms td {
+    padding: var(--space-2) var(--space-4) var(--space-2) 0;
+    border-bottom: var(--rule) solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .terms thead th {
+    padding-top: 0;
+    color: var(--ink-muted);
+    font-weight: var(--weight-medium);
+  }
+
+  .terms tbody th {
+    font-weight: var(--weight-medium);
+  }
+
+  .terms__time {
+    width: 11rem;
+  }
+
+  .terms .terms__price {
+    padding-right: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .terms td.terms__price {
+    font-weight: var(--weight-strong);
+  }
+
+  .service-row__actions {
+    display: grid;
+    justify-items: start;
+    margin-top: var(--space-6);
+  }
+
+  /* On phones the three columns share about 330 px: a narrower
+     dimension leaves the names room for a line. */
+  @media (max-width: 29.99rem) {
+    .terms th,
+    .terms td {
+      padding-right: var(--space-3);
+    }
+
+    .terms__time {
+      width: 6.5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .service-row {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      padding-block: var(--space-6) var(--space-7);
+    }
+
+    /* The icon above the title, as a column of its own; it stays in
+       view while the row's detail scrolls past. */
+    .service-row__head {
+      position: sticky;
+      top: var(--space-6);
+      align-self: start;
+      grid-column: 1 / span 4;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-4);
+      align-content: start;
+    }
+
+    .service-row__detail {
+      grid-column: 5 / -1;
+    }
+  }
+</style>

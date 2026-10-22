@@ -1,8 +1,8 @@
 /*
- * "Što radimo" on Home (HomeServices.astro): the stages' bubbles, titles and
- * taglines, the process line and the icons' drawing. Global, because the
- * icons' strokes live in ServiceIcon.astro; every class here is the zone's
- * own.
+ * "Što radimo" on Home (HomeServices.astro): the process line and the icons'
+ * drawing; the stages' bubbles, titles and taglines are shared with /usluge
+ * (src/features/services/stages.css). Global, because the icons' strokes
+ * live in ServiceIcon.astro; every class here is the zone's own.
  */
 
 .svc {
@@ -13,36 +13,6 @@
 
 .svc > h2 {
   margin-bottom: var(--space-6);
-}
-
-/* A grid bubble, as at the end of a drawing's grid line. */
-.svc-bubble {
-  display: grid;
-  place-items: center;
-  width: var(--bubble);
-  height: var(--bubble);
-  border: 1.5px solid var(--ink);
-  border-radius: 50%;
-  background: var(--surface);
-  font-size: var(--step-label);
-  font-stretch: var(--width-label);
-  font-weight: var(--weight-strong);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
-  line-height: 1;
-}
-
-.svc-title {
-  font-size: var(--step-chapter);
-  font-weight: var(--weight-chapter);
-  line-height: var(--leading-heading);
-  letter-spacing: var(--tracking-section);
-}
-
-.svc-tagline {
-  color: var(--ink-muted);
-  font-size: var(--step-lead);
-  line-height: var(--leading-lead);
 }
 
 .svc-items {

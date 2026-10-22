@@ -8,10 +8,11 @@ import { t } from "../features/i18n/ui.ts";
 import { staticPathsFor } from "../features/i18n/urls.ts";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import HomeView from "../views/HomeView.astro";
+import ServicesView from "../views/ServicesView.astro";
 
 /** A page's view, which gets the locale, and its metadata (G28). */
 interface PageEntry {
-  view: typeof HomeView;
+  view: typeof HomeView | typeof ServicesView;
   title: UiKey;
   description: UiKey;
 }
@@ -24,6 +25,11 @@ export const getStaticPaths = (() =>
       view: HomeView,
       title: "meta.home.title",
       description: "meta.home.description",
+    },
+    services: {
+      view: ServicesView,
+      title: "meta.services.title",
+      description: "meta.services.description",
     },
   })) satisfies GetStaticPaths;
 

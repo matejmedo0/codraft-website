@@ -1,58 +1,50 @@
 # Phase 3: Pages (Izrada stranica)
 
-- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna: built in both languages, critique 19 and #59 done (ADR 0030), the /check fixes the client approved done (M3); waiting for the client's word on Home before page 2, Usluge.
+- **Status:** In progress, from 2026-10-22. Phase 2 was approved and merged into `main` (PR #2). Page 1, Početna, is done (log M1–M3). Next: page 2, Usluge, in a new session; start at [Start here](#start-here-2026-10-22-page-2-usluge).
 - **Branch:** `phase/3-pages`, created from `main` after the merge of PR #2. Draft PR #3 is the phase report.
 
-## Start here (2026-10-21)
+## Start here (2026-10-22, page 2: Usluge)
 
-The handover from phase 2. Phase 2 ended with the client's review refinements, the design critique and its re-check, the Figma sync and the final checks ([2-design-review.md](2-design-review.md), batches 1–40). The client asked for this handover with: „sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)“ (#134).
+The handover after page 1. The first session of phase 3 opened the phase (the gate of PR #2), built Home in both languages and answered the client's review (log M1–M4). The client asked for this handover with: „azuriraj dokumentaciju i daj mi prompt za nastavak“ (M4).
 
-**1. The phase gate, first** ([codraft-workflow.md](../../.claude/rules/codraft-workflow.md#phase-gate), step 7). The prompt that opens the session carries the client's „idemo dalje“. Then:
-1. Check that `phase/2-design` is clean and pushed, and that CI on PR #2 is green for its last commit, the handover (`docs: hand over to phase 3`).
-2. Merge PR #2 into `main` with a merge commit (`gh pr merge 2 --merge`), then `git checkout main && git pull`.
-3. Create `phase/3-pages` from `main` and push it.
-4. Update the docs:
-   - `PROGRESS.md`: current phase 3; phase 2 ticked
-   - [2-design.md](2-design.md): status done and approved
-   - this document: status in progress, a log entry
-5. Open a draft PR for phase 3 early, so CI checks every push (as in phase 2).
+**1. Where things stand**
+- **Branch** `phase/3-pages`; **draft PR #3** is the phase report, updated after each page. CI green on its last commit.
+- **Home is done** at `/` and `/en` (log M1–M3): the zones in `src/views/home/`, the services' catalogue and icons in `src/features/services/`, the JSON-LD in `src/features/seo/`, the team in `src/config/team.ts`, every line a locale key listed in [content.md](../content.md) ("Home, phase 3"). Screenshots: [screenshots/phase-3/](screenshots/phase-3/).
+- **Decisions of this session:** [ADR 0029](../decisions/0029-english-naming-spelling-and-titles.md) ("Architectural Drafting" at `/en/architectural-drafting`, British English, "Croatia" in English titles) and [ADR 0030](../decisions/0030-steps-and-service-lines-on-the-type-scale.md) (no local type sizes).
+- **Home's open items before launch** (none blocks the next page):
+  - the free audit's facts in its lead (what is checked, the 30-minute call, the written summary, "bez obveze") and the closing note's reply time ("u roku od jednog radnog dana"): Claude's drafts, which the client confirms before launch (M2)
+  - the team's photos, bios and written consent (item C)
+  - the company data (item A) and contact (item B): asked for with the Impresum and Kontakt pages; until then the title block says "Stiže prije objave"
+  - the OG images: generated per page later in the phase; that likely needs a new dependency, so ask first
 
-If the prompt doesn't say „idemo dalje“ (or similar), ask before merging.
+**2. Next: page 2, Usluge** (`/usluge`, `/en/services`), on the client's word. Follow [Steps for each page](#steps-for-each-page):
+1. **The page's argument and the missing copy first** (as for Home, M1): a claim and its proof per zone, into the page's outline in [information-architecture.md](../information-architecture.md#usluge--services-usluge); the gap copy (G4–G8) into [content.md](../content.md) with each line's locale key. Show the client both and build only after the client's OK.
+2. **There is no lab design for Usluge.** Lay it out from the design system (`src/components/ui/`: Zone, Item, Steps, Button, …) and Home's patterns (stages with numbered bubbles and the service icons, rows like "Kako radimo", Steps for "Tijek suradnje"), and describe the layout zone by zone with the argument, so the client approves the structure before the build. The client reviews it live on the dev server.
+3. **What already exists:** `STAGES` in `src/features/services/services.ts` (the stages and services with their anchors in both languages, their icons and title keys; `Stage.anchor` was added for this page); the client's full sentences in [content.md §2](../content.md#2-copy-blocks-en-source--hr-draft) (`*.body`, not in the locales yet); the anchors in the glossary (§1).
+4. **Ask the client only for what this page needs** (`PROGRESS.md`, "Trebamo od vas", item E; gaps G4–G7): whether prices are shown, and if so a typical timeline or "od X €" per Build service and the monthly fee for Run & Grow; what each service delivers or includes (G5, G6: Claude drafts from the client's input); the audit's scope (G4) is already drafted on Home. Claude drafts the FAQ (G8).
+5. **English for this page:** put the pending suggestions that touch its blocks to the client with a recommendation each: S1, S2, S4–S7, S11, S12, S16, S17, S18 ([content.md §3](../content.md#3-suggestions-for-the-english-copy)). S3, S15 and S20 are accepted (ADR 0029).
+6. **SEO:** `Service` JSON-LD × 8 and `BreadcrumbList`; the title and meta description per language through the view registry in `src/pages/[...slug].astro`; the H1 wording (`services.title`) checked with the `seo` skill.
+7. Then `/check`, screenshots at 375, 768 and 1440 px from the build, and the client's review.
 
-**2. The first page: Početna.** The approved design is the lab page `/lab/pocetna`; the production Home, `src/views/HomeView.astro`, is still a placeholder (the H1 only). Site code never imports from `src/lab/` (CLAUDE.md, Architecture), so phase 3 ports Home out of the lab:
-- **Where the design lives:**
-  - the zones: `src/lab/home/` — `HomeHero`, `ServicesAxis` with `ServiceItem`, `axis-line.ts`, `chapters.ts`, `services.css`; `HomeAudit`; `drafting/DraftingLegend` with `PlanDrawing`, `plan-*.ts`; `HomePrinciples`, `HomeTeam`, `HomeClosing`
-  - the icons: `src/lab/home/icons/`
-  - the copy: `src/lab/copy.ts`
-  - the page: `src/lab/pages/pocetna.astro`
-  - the design-system parts it uses are already in production (`src/components/ui/`, `src/components/site/`)
-- **Where it goes:** the view in `src/views/`, its parts beside it or in `src/components/` as [architecture.md](../architecture.md) describes; UI strings in `src/locales/{hr,en}.json` through `content.md` first.
-- **What changes on the way:**
-  - the copy moves from `copy.ts` to the locales, with the English (#70)
-  - values off the token scale map to tokens (critique 19)
-  - the two local type sizes are decided (#59)
-  - JSON-LD and metadata (SEO specifics below)
-  - the page's argument comes first (step 1 below)
-- **What doesn't change:** the client's decisions of the review (the hero as in `screenshots/phase-2/review/hero-reference-client.png`; the central axis; the drafting zone, option C; the house in palette 1; the motion rules in [motion.md](../motion.md)), and ADR 0015–0028.
-- **The lab after the port:** `/lab/pocetna` and the comparison pages stay the record. Removing lab code needs the client's OK.
+**3. Still carried over from phase 2** ([below](#carried-over-from-phase-2)): the Kowalski proposals (#71) and the browser bar's colour (#72) are for the client to choose while the pages are built (not yet asked); the hero's line count (#74) with critique 6 once every page is built; critique 14 with the real photos; critique 22 and the no-break spaces with the client's proofreading (#73) at the end of the phase; real layer switches on the drafting page (page 3).
 
-**3. The client's inputs.** Ask for each only when its page needs it ([PROGRESS.md](../../PROGRESS.md), „Trebamo od vas“, items A–G): Home needs the team (C: names, roles, photos) and shows the company data (A) in the title block. Until they arrive, the placeholders stay as in the lab.
-
-**4. How the review worked, kept for phase 3** (the client's habits):
-- Record each of the client's messages verbatim in this document's log before changing anything.
-- Change only what the client asks; offer wider changes as options.
-- A question such as „kako da… / ili da…?“ asks for a proposal; wait for an explicit OK.
-- The client reviews live on the dev server (port 4321), with Windows "Animation effects" on.
+**4. How the client works** (kept from phase 2, and confirmed in this session):
+- Record each of the client's messages verbatim in this document's log (M5, M6, …) before changing anything.
+- Change only what the client asks; offer wider changes as options with a recommendation.
+- A question such as „kako da… / ili da…?“ asks for a proposal; wait for an explicit OK. "Ako preporučaš, popravi" (M3) authorises the fixes Claude recommended, no more.
+- Ask for the client's data only when the page needs it; placeholders stay until it arrives, as long as nothing blocks the phase (M2).
+- The client reviews live on the dev server (port 4321), with Windows "Animation effects" on. Talk to the client in Croatian.
 - Commit with `git commit -F` and push after each batch or page.
 
-**5. Working notes that still apply:** [2-design-review.md](2-design-review.md#handover-2026-10-21) („Working notes“) and [Pitfalls from this phase](2-design-review.md#pitfalls-from-this-phase). In short:
-- a component's `<script>` renders in place
-- the CSP blocks inline styles, so per-element values go in through the CSSOM
-- Playwright scripts live in `.playwright-mcp/`; run them with `MSYS_NO_PATHCONV=1` in Git Bash
-- the lab build checks run on port 4322
-- E2E needs port 4321 free
-- a new lab page needs `astro.config.ts` touched
-- the floor plan keeps its own pace (`data-draw-steady`), so a slow-scroll check waits about 10 s where it is on the page
+**5. Working notes**
+- **Phase 2's notes still apply** ([2-design-review.md](2-design-review.md#pitfalls-from-this-phase)): a component's `<script>` renders in place; the CSP blocks inline styles, so per-element values go in through the CSSOM; the floor plan keeps its own pace, so a slow-scroll check waits about 10 s.
+- **The dev server on 4321 stays up for the client.** Check the build on port 4322 instead: `npm run build`, then `HOST=127.0.0.1 PORT=4322 node ./dist/server/entry.mjs` in the background; E2E against it with `npx playwright test -c .playwright-mcp/pw-4322.config.ts`.
+- **Check scripts** in `.playwright-mcp/` (ignored by git, on this machine only; run with `MSYS_NO_PATHCONV=1` in Git Bash): `check-pages.mjs` (full-page screenshots, console, overflow, axe; `BASE`, `PAGES`, `WIDTHS`, `OUT`, `MOTION`), `draw-check.mjs` (slow scroll and no JavaScript), `zone-heights.mjs` (zone heights before and after a change), `compare-home.mjs` (a page against its lab design, zone by zone), `axis-failsafe.mjs`.
+- **A new page:** its view in `src/views/` (its zones in a folder beside it), its entry in the view registry of `[...slug].astro` with the title and description keys, its copy in both locale files (same keys; a unit test checks), and the E2E smoke test.
+- **Pitfalls of this session:**
+  - Playwright's loader can't import the locale JSON through `t()`; E2E tests read the files with `fs` (`tests/e2e/smoke.spec.ts`).
+  - Python's `write_text` writes CRLF on this machine; the repository is LF. Edit by script with `write_bytes`.
+  - Home's production zones are copies of the lab, trimmed to the client's choices; the lab stays unchanged as the record, but it shares the design-system components, so a change there shows in the lab too.
 
 ## Goal
 
@@ -90,7 +82,7 @@ The AI asistenti page is built in phase 4.
 
 The client moved these items from the phase 2 review to this phase (review batch 23, 2026-10-21, and #59; [2-design-review.md](2-design-review.md#refinements)):
 
-- **English copy** (#70): S17–S19 and every Croatian change of the review, aligned page by page as each page is built in both languages. The changes are listed in [content.md](../content.md) ("Prototype copy" and the changelog): the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the floor plan's title block and accessible names (#58, #63–64). The English changes only through suggestions the client approves.
+- **English copy** (#70): ✓ Home done on 2026-10-22 (S19 replaced by S20, ADR 0029); the other pages as they are built. S17–S18 and every Croatian change of the review, aligned page by page as each page is built in both languages. The changes are listed in [content.md](../content.md) ("Prototype copy" and the changelog): the hero lead, the one-line services, `drafting.3d.*`, the drafting zone of batch 9, "Kako radimo" of batch 10, the closing call to action of batch 11, the floor plan's title block and accessible names (#58, #63–64). The English changes only through suggestions the client approves.
 - **Home's two local type sizes** (#59): ✓ decided on 2026-10-22, option A ([ADR 0030](../decisions/0030-steps-and-service-lines-on-the-type-scale.md)). When "Što radimo" moves out of the lab, decide whether `--step-service` (19 px at 1440, `src/lab/home/services.css`) and `--step-heading` (25 px, `Steps.astro`) become steps of the type scale or merge into their neighbours; with `--step-title` at 22 px they are three sizes 3 px apart ([inspector's note](../research/2026-10-20-taste-skill-inspect.md#measured-and-real-but-not-defects)).
 - **The Kowalski proposals** (#71), for the client to choose from while the pages are built: a 320 px overflow check, worst-case data in the phase documents, a motion-code checklist, a variant picker with replay ([research note](../research/2026-10-20-emil-kowalski-skills.md#proposed-for-the-client)).
 - **The browser bar's colour** (#72): navy `#0F1B2D` from the brand package, or the header's paper `#F6F5F1`. Try both on a real Android phone (DevTools can't show the bar), changing only the meta tag and the manifest copy in `public/`, never the brand masters; the client decides ([ADR 0026](../decisions/0026-emil-kowalski-skills-in-the-setup.md)).
@@ -247,4 +239,8 @@ Each of the client's messages is recorded here verbatim before anything changes.
     - Printing: before printing, `draw.ts` shows every waiting part's final state and finishes the moving ones (the plan, the steps, the zones' selections, on every page), and the axis completes; a print rule covers an axis the script never took over. Documented in [motion.md](../motion.md).
     - Checked on the dev server and on the build under the CSP: with the axis script blocked, the rails and icons appear complete after 3.5 s; with reduced motion at load and motion turned on after, the script takes over and draws everything on the way down; before printing at the top of the page, nothing is hidden or pending and the line is complete. The normal path is unchanged: every part draws after a slow scroll, nothing is hidden without JavaScript, no console errors, axe clean, no overflow at 375, 768 and 1440 px; `npm run verify` (178 unit tests, 4.2 KB of JavaScript on Home); E2E 51 on the build.
     - The screenshots in [screenshots/phase-3/](screenshots/phase-3/) are retaken from this build.
+  - **M4**, verbatim:
+
+    > azuriraj dokumentaciju i daj mi prompt za nastavak
+  - **Handover** (M4): [Start here](#start-here-2026-10-22-page-2-usluge) is rewritten for the next session (page 2, Usluge: where things stand, Home's open items, how to do Usluge, the client's habits, the working notes of this session); `PROGRESS.md` points to it, and the phase 2 documents' links to the old section point to this log. The prompt for the next session went to the client.
   - **Open for the client** (put to the client with the page): the two local type sizes (#59); the MEDIUM findings above. Both answered in M3, below. The English footer's placeholder "Arrives before launch" takes two lines in the title block's narrow cells; it goes away with the company data.

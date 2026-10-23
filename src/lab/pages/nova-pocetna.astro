@@ -5,10 +5,10 @@
 // follows the screen (M11). No route-map page, so noindex; only in
 // `astro dev` and lab builds (astro.config.ts).
 import Footer from "../../components/site/Footer.astro";
-import Header from "../../components/site/Header.astro";
 import SkipLink from "../../components/ui/SkipLink.astro";
 import { t } from "../../features/i18n/ui.ts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewHomeHeader from "../../views/new-home/NewHomeHeader.astro";
 import NewHomeSheet from "../../views/new-home/NewHomeSheet.astro";
 import NewHomeView from "../../views/new-home/NewHomeView.astro";
 
@@ -19,7 +19,7 @@ const MAIN_ID = "main";
 <BaseLayout locale={locale} title="Nova početna | Laboratorij dizajna">
   <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
   <NewHomeSheet>
-    <Header locale={locale} />
+    <NewHomeHeader locale={locale} />
     <main id={MAIN_ID}>
       <NewHomeView />
     </main>

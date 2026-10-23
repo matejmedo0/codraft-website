@@ -43,3 +43,9 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - On arrival the visitor sees the header and the hero only; the next zone comes in with the scroll.
 - The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
 - It sits on the main background, Midnight `#0B181D`. It is empty for now.
+
+## 5. The header: links in the centre, a lighter weight (M16)
+
+The new page has its own header, `NewHomeHeader.astro`, a copy of the site's; the site header is unchanged.
+- From 64rem the header has three columns: the wordmark on the left, the links in the header's centre, the language (EN) at the right edge. The links centre on the whole header, not on the space beside the wordmark.
+- The links and the language are at the text weight, 400, on every width, the phone menu included (the site's header uses 500). 400 is the lightest weight the site's Archivo files carry. The menu button keeps its 600.

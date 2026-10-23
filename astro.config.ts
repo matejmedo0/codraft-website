@@ -21,6 +21,7 @@ const LAB_PAGES = [
   "kuca-boje",
   "sto-radimo-2",
   "pocetna-stara",
+  "nova-pocetna",
 ] as const;
 
 /**

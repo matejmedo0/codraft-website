@@ -1,0 +1,12 @@
+---
+// The new Home, apart from the current one (M9 in docs/phases/3-pages.md):
+// the real pages' frame with an empty sheet, built step by step by the
+// client's rules. No route-map page, so noindex; only in `astro dev` and lab
+// builds (astro.config.ts).
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import NewHomeView from "../../views/new-home/NewHomeView.astro";
+---
+
+<SiteLayout locale="hr" title="Nova početna | Laboratorij dizajna">
+  <NewHomeView />
+</SiteLayout>

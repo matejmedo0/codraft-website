@@ -344,3 +344,22 @@ Each of the client's messages is recorded here verbatim before anything changes.
 
     > Odlično sada centriraj ovo , logo ostaje lijevo a engleski desno , i smanji weight fonta da je više premium
   - **The header** (M16, `src/views/new-home/NewHomeHeader.astro`, a copy of `Header.astro`; rule 5 in [new-home-rules.md](../new-home-rules.md)): from 64rem a three-column grid (`1fr auto 1fr`), the nav spanning the last two through a subgrid, so the links centre on the header with the wordmark on the left and EN on the right; the links and EN at weight 400 (was 500), the lightest the self-hosted Archivo carries (400–700). Measured at 1024–2880 px: the links 0 px off the header's centre, the header's height unchanged (67 px), so the hero still ends 2–4 px below the fold. The phone menu opens and closes as before. Console clean, no overflow, axe clean but for the missing `h1`.
+  - **M17**, verbatim: a pasted recommendation, then the client's instruction.
+
+    > 1. Da, povećao bih font u navigaciji
+    > Na slici je navigacija vizualno presitna u odnosu na širinu zaslona. Logo također može biti malo dominantniji.
+    > Element	Moja preporuka
+    > Logo Codraft	26–30 px
+    > Navigacijske poveznice	14–15 px, medium
+    > EN oznaka	13–14 px
+    > Visina navigacije	76–84 px
+    > Razmak poveznica	28–36 px
+    > Boja navigacije	#BEC8CA
+    > Hover / aktivna poveznica	#ECEDEA
+    >
+    > Ne bih išao na 17–18 px navigaciju. Premium dizajn ne zahtijeva velike navigacijske elemente, nego dobro odmjerenu tipografsku hijerarhiju.
+    >
+    > I još jedna bitna promjena: iz navigacije bih uklonio zasebnu stavku Tehničko crtanje.
+    >
+    > Odradi ovako
+  - **What M17 changed** (the pasted recommendation, applied as written; rule 5 in [new-home-rules.md](../new-home-rules.md) rewritten): Tehničko crtanje is out of the new header's links (the phone menu too); from 64rem the header is 77.5 px tall (`padding-block: var(--space-4)`), the wordmark 28.5 px tall (`--wordmark-width: 8.25rem`), the links 15 px (`--step-small`) and EN 13 px (`--step-label`), both on the type scale, the links 32 px apart (`--space-6`); the links and EN medium (500, in place of M16's 400) in a new navigation colour `#BEC8CA` (`--nav-ink`, 11:1), ivory on hover and for the current page. The links were 17 px before, so 15 px is smaller in pixels, as the recommendation's numbers say ("Ne bih išao na 17–18 px"); the taller header and the larger wordmark give the bar its weight. Below 64rem the sizes stay the site's, so the header keeps one line at 320 px. The hero takes off 4.75rem from 64rem for the taller header: 0.5–2.7 px below the fold at 1024–1920 px, 50% zoom and 150% text. Console clean, no overflow, axe clean but for the missing `h1`.

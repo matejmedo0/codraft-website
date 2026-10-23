@@ -44,8 +44,20 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
 - It sits on the main background, Midnight `#0B181D`. It is empty for now.
 
-## 5. The header: links in the centre, a lighter weight (M16)
+## 5. The header (M16, M17)
 
 The new page has its own header, `NewHomeHeader.astro`, a copy of the site's; the site header is unchanged.
-- From 64rem the header has three columns: the wordmark on the left, the links in the header's centre, the language (EN) at the right edge. The links centre on the whole header, not on the space beside the wordmark.
-- The links and the language are at the text weight, 400, on every width, the phone menu included (the site's header uses 500). 400 is the lightest weight the site's Archivo files carry. The menu button keeps its 600.
+- **Links:** Usluge, O nama, Kontakt. Tehničko crtanje is not in the navigation (M17); the page itself stays in the sitemap.
+- **From 64rem, three columns:** the wordmark on the left, the links in the header's centre, the language (EN) at the right edge. The links centre on the whole header, not on the space beside the wordmark (M16).
+- **Sizes from 64rem (M17):**
+
+  | | Value | M17's range |
+  |---|---|---|
+  | Header height | 77.5 px | 76–84 px |
+  | Wordmark height | 28.5 px (`--wordmark-width: 8.25rem`) | 26–30 px |
+  | Links | 15 px (`--step-small`), medium (500) | 14–15 px, medium |
+  | EN | 13 px (`--step-label`), medium | 13–14 px |
+  | Space between links | 32 px (`--space-6`) | 28–36 px |
+
+  Below 64rem the header and the phone menu keep the site's sizes, so the header still fits one line at 320 px.
+- **Colour:** links and EN in the navigation colour `#BEC8CA` (11:1 on the background), ivory `#ECEDEA` on hover and for the current page, on every width. M17's medium weight replaces M16's 400.

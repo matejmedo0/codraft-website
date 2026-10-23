@@ -44,12 +44,12 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
 - It sits on the main background, Midnight `#0B181D`. It is empty for now.
 
-## 5. The header (M16–M22)
+## 5. The header (M16–M23)
 
 The new page has its own header, `NewHomeHeader.astro`, a copy of the site's; the site header is unchanged.
 - **Links:** Usluge, O nama, Kontakt. Tehničko crtanje is not in the navigation (M17); the page itself stays in the sitemap.
 - **From 64rem, one row with the links in the centre (M19, M20):** the three links sit in the header's centre and the wordmark just left of them, 48 px away times the factor below (54 px now); the links 32 px apart times the factor (36 px). Only the links centre, not the whole row, since the wordmark is wider than EN. Below 64rem the wordmark stays on the left and the menu button on the right.
-- **The language as a floating circle (M22):** from 64rem EN floats at the header's top right, on a circle in ivory `#ECEDEA` with midnight text (15.4:1), teal `#82BBC5` on hover (8.5:1), the teal focus ring around it. The circle is 44 px times the factor (50 px now), lined up with the wordmark's row and the header's right padding. Below 64rem it stays in the phone menu, since the header has no room for it beside the wordmark and the menu button at 320 px.
+- **The language as a floating glass circle (M22, M23):** from 64rem EN floats at the header's top right, on a circle of glass: a tenth of ivory over the header, blurred behind (`backdrop-filter: blur(12px)`), a fine ivory rim, ivory text (12:1); a teal tint on hover (9.9:1), the teal focus ring around it. The circle is 40 px times the factor (45 px now), centred on the wordmark's row and at the header's right padding. Below 64rem it stays in the phone menu, since the header has no room for it beside the wordmark and the menu button at 320 px.
 - **No rule below the header** (M19): the header runs into the hero, on every width.
 - **Sizes from 64rem:** M17's sizes, all times one factor, `--topbar-scale` in `NewHomeView.astro` (M18: "a bit more visible, but not too much"). At 1.125:
 

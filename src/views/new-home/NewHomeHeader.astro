@@ -279,30 +279,38 @@ function current(target: PageId): "page" | undefined {
       font-size: calc(var(--step-small) * var(--topbar-scale, 1));
     }
 
-    /* The language as a floating circle at the top right (M22): midnight
-       on ivory (15.4:1), on teal when hovered (8.5:1). It is as tall as
-       the wordmark's row (2.78rem times the factor) and starts at the
-       header's padding, so it lines up with the wordmark in one row or
-       two. */
+    /* The language as a floating circle at the top right (M22), of
+       glass (M23): a tenth of ivory over the header, blurred behind, with
+       a fine light rim; ivory text (12:1), a teal tint on hover (9.9:1).
+       Centred on the wordmark's row (2.78rem times the factor), so it
+       lines up with the wordmark in one row or two. */
     .site-header__nav :global(.site-header__language) {
+      --language-size: 2.5rem;
+
       position: absolute;
-      top: calc(var(--space-4) * var(--topbar-scale, 1));
+      top: calc(
+        (var(--space-4) + (2.78rem - var(--language-size)) / 2) *
+          var(--topbar-scale, 1)
+      );
       right: var(--pad);
       display: grid;
       place-items: center;
-      width: calc(2.75rem * var(--topbar-scale, 1));
-      height: calc(2.75rem * var(--topbar-scale, 1));
+      width: calc(var(--language-size) * var(--topbar-scale, 1));
+      height: calc(var(--language-size) * var(--topbar-scale, 1));
       padding: 0;
-      border: 0;
+      border: var(--rule) solid color-mix(in srgb, var(--ink) 30%, transparent);
       border-radius: 50%;
-      background: var(--ink);
-      color: var(--surface);
+      background: color-mix(in srgb, var(--ink) 10%, transparent);
+      box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 18%, transparent);
+      color: var(--ink);
       font-size: calc(var(--step-label) * var(--topbar-scale, 1));
+      backdrop-filter: blur(12px);
     }
 
     .site-header__nav :global(.site-header__language):hover {
-      background: var(--accent);
-      color: var(--surface);
+      border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+      background: color-mix(in srgb, var(--accent) 22%, transparent);
+      color: var(--ink);
       text-decoration: none;
     }
   }

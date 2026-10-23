@@ -1,0 +1,129 @@
+---
+/**
+ * The new Home's drawing sheet (M11 in docs/phases/3-pages.md), apart from
+ * the site's Sheet.astro: the frame follows the screen's edges at every
+ * width and zoom, with no maximum width. Its references follow the screen
+ * too: numbers along the top edge and letters down the left edge, one
+ * field per --field or so, so zooming out adds fields and zooming in takes
+ * them away; phones get two at least. The rows' letters replace the zones'
+ * own letters. Decorative and hidden from assistive technology.
+ */
+
+/** Enough for a 4K screen at 25% zoom; fields that don't fit are clipped. */
+const FIELD_COUNT = 80;
+const fields = Array.from({ length: FIELD_COUNT }, (_, index) => index + 1);
+---
+
+<div class="sheet">
+  <ol class="sheet__ruler sheet__ruler--top" aria-hidden="true">
+    {fields.map((number) => (
+      <li>{number}</li>
+    ))}
+  </ol>
+  <ol class="sheet__ruler sheet__ruler--left" aria-hidden="true">
+    {fields.map(() => (
+      <li />
+    ))}
+  </ol>
+  <slot />
+</div>
+
+<style>
+  .sheet {
+    /* At 1440 px this gives six fields along the top, as on the site. */
+    --field: 200px;
+    /* Phones too need a margin wide enough for the references; 12 px still
+       keeps the title block's cells as they were at 375 px. */
+    --sheet-margin: var(--space-3);
+
+    position: relative;
+    margin: var(--sheet-margin);
+    border: var(--rule) solid var(--frame);
+  }
+
+  @media (min-width: 48rem) {
+    .sheet {
+      --sheet-margin: var(--space-5);
+    }
+  }
+
+  .sheet :global(.zone-mark__letter) {
+    display: none;
+  }
+
+  /* As many fields as fit, stretched to fill the edge; the fields that
+     don't fit wrap onto a track of no size and are clipped. */
+  .sheet__ruler {
+    position: absolute;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: var(--ink-muted);
+    font-size: 0.6875rem;
+    font-stretch: var(--width-label);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    list-style: none;
+  }
+
+  .sheet__ruler li {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .sheet__ruler li + li::before {
+    position: absolute;
+    background: var(--frame);
+    content: "";
+  }
+
+  .sheet__ruler--top {
+    top: calc(var(--sheet-margin) * -1);
+    right: 0;
+    left: 0;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--field), 50%), 1fr)
+    );
+    grid-template-rows: 100%;
+    grid-auto-rows: 0;
+    height: var(--sheet-margin);
+  }
+
+  /* A tick between two fields, as on a drawing's border. */
+  .sheet__ruler--top li + li::before {
+    bottom: 0;
+    left: 0;
+    width: var(--rule);
+    height: var(--space-2);
+  }
+
+  .sheet__ruler--left {
+    top: 0;
+    bottom: 0;
+    left: calc(var(--sheet-margin) * -1);
+    grid-template-rows: repeat(auto-fit, minmax(var(--field), 1fr));
+    grid-template-columns: 100%;
+    grid-auto-rows: 0;
+    width: var(--sheet-margin);
+    counter-reset: row;
+  }
+
+  .sheet__ruler--left li {
+    counter-increment: row;
+  }
+
+  .sheet__ruler--left li::after {
+    content: counter(row, upper-alpha);
+  }
+
+  .sheet__ruler--left li + li::before {
+    top: 0;
+    right: 0;
+    width: var(--space-2);
+    height: var(--rule);
+  }
+</style>

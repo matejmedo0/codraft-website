@@ -1,12 +1,28 @@
 ---
 // The new Home, apart from the current one (M9 in docs/phases/3-pages.md):
 // the real pages' frame with an empty sheet, built step by step by the
-// client's rules. No route-map page, so noindex; only in `astro dev` and lab
-// builds (astro.config.ts).
-import SiteLayout from "../../layouts/SiteLayout.astro";
+// client's rules. Composed like SiteLayout, but on its own sheet, which
+// follows the screen (M11). No route-map page, so noindex; only in
+// `astro dev` and lab builds (astro.config.ts).
+import Footer from "../../components/site/Footer.astro";
+import Header from "../../components/site/Header.astro";
+import SkipLink from "../../components/ui/SkipLink.astro";
+import { t } from "../../features/i18n/ui.ts";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewHomeSheet from "../../views/new-home/NewHomeSheet.astro";
 import NewHomeView from "../../views/new-home/NewHomeView.astro";
+
+const locale = "hr";
+const MAIN_ID = "main";
 ---
 
-<SiteLayout locale="hr" title="Nova početna | Laboratorij dizajna">
-  <NewHomeView />
-</SiteLayout>
+<BaseLayout locale={locale} title="Nova početna | Laboratorij dizajna">
+  <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
+  <NewHomeSheet>
+    <Header locale={locale} />
+    <main id={MAIN_ID}>
+      <NewHomeView />
+    </main>
+    <Footer locale={locale} />
+  </NewHomeSheet>
+</BaseLayout>

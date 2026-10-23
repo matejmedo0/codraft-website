@@ -28,12 +28,12 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 | `#11252C` | Deep teal navy | Cards and sections | `--surface-sunk` |
 | `#193139` | Elevated surface | Raised parts; disabled buttons | `--button-disabled-bg` |
 | `#23414A` | Interactive surface | Hover; selected text | `--button-secondary-bg-hover`, `--selection` |
-| `#ECEDEA` | Soft ivory | Main text; primary button hover | `--ink`, `--drawing-ink`, secondary button text |
+| `#ECEDEA` | Soft ivory | Main text, the wordmark's lettering; primary button hover | `--ink`, `--drawing-ink`, secondary button text |
 | `#AAB8BB` | Muted silver | Muted text: labels, notes, the frame's numbers and letters | `--ink-muted` |
-| `#82BBC5` | Muted teal | Accent: links' accent text, the current page's line, focus ring, grips, primary buttons | `--accent`, `--accent-text`, `--link`, `--focus`, `--button-primary-bg` |
+| `#82BBC5` | Muted teal | Accent: the wordmark's details, links' accent text, the current page's line, focus ring, grips, primary buttons | `--accent`, `--accent-text`, `--link`, `--focus`, `--button-primary-bg` |
 | `#28434C` | Subtle border | Every line: the sheet's frame, rules, cell borders, button outlines | `--frame`, `--line`, `--line-strong`, `--button-secondary-border` |
 
 - **The ratio** of visual presence is about 65% background, 20% surfaces, 10% text and 5% accent. The client calls it illustrative, not a strict rule.
-- **The wordmark** keeps its brand blue `#2F6BFF` (its lettering takes the text colour), as in every palette at `/lab/paleta`, by the client's word there.
+- **The wordmark** takes the palette (M14, [ADR 0034](decisions/0034-new-home-wordmark-in-the-palette.md)): ivory lettering (15.4:1) and its three accent details (the arc, the drafting line, the grip) in muted teal (8.5:1), in place of the brand blue `#2F6BFF`.
 - **Contrast**, checked on all four surfaces: ivory 9.3–15.4:1, silver 5.3–8.8:1, teal 5.1–8.5:1, so all three pass AA for body text on any of them; midnight on a teal button 8.5:1. The border is 1.7:1 on the background: it is decorative, never the only sign of a control.
 - **Sections** use `--surface-sunk`, not `.surface-navy`, which still holds the site's old navy.

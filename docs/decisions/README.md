@@ -38,9 +38,10 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0030](0030-steps-and-service-lines-on-the-type-scale.md) | The steps' titles and the services' lines on the type scale | Accepted | 2026-10-22 |
 | [0031](0031-autonomous-work-from-phase-3.md) | Claude works autonomously from the middle of phase 3 | Accepted | 2026-10-22 |
 | [0032](0032-guide-prices-below-the-market.md) | Guide prices on the site, about 10% below the market | Accepted | 2026-10-22 |
-| [0033](0033-new-home-by-the-clients-rules.md) | A new Home, built apart by the client's rules, on the Midnight palette | Accepted | 2026-10-23 |
+| [0033](0033-new-home-by-the-clients-rules.md) | A new Home, built apart by the client's rules, on the Midnight palette | Accepted (wordmark: 0034) | 2026-10-23 |
+| [0034](0034-new-home-wordmark-in-the-palette.md) | The new Home's wordmark in the Midnight palette | Accepted | 2026-10-23 |
 
-Next number: **0034**.
+Next number: **0035**.
 
 ## How to add one
 

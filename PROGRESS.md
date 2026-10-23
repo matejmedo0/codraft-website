@@ -246,6 +246,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-22 | Engleski: tehničko crtanje se zove „Architectural Drafting“ (`/en/architectural-drafting`), britanski pravopis, „Croatia“ u engleskim naslovima stranica | [ADR 0029](docs/decisions/0029-english-naming-spelling-and-titles.md) |
 | 2026-10-22 | Bez lokalnih veličina slova: naslovi koraka na veličini ostalih naslova, retci usluga na veličini uvoda (opcija A, #59) | [ADR 0030](docs/decisions/0030-steps-and-service-lines-on-the-type-scale.md) |
 | 2026-10-23 | Stranice radimo korak po korak po vašim pravilima. Nova početna nastaje odvojeno od sadašnje, na `/lab/nova-pocetna`; okvir prati rub ekrana, a paleta je Midnight. Pravila su u `docs/new-home-rules.md`. | [ADR 0033](docs/decisions/0033-new-home-by-the-clients-rules.md) |
+| 2026-10-23 | Logo na novoj početnoj u boji palete: slova bjelokosna `#ECEDEA`, detalji (luk, crta, kvadratić) teal `#82BBC5` umjesto brand plave | [ADR 0034](docs/decisions/0034-new-home-wordmark-in-the-palette.md) |
 
 ## Sitemap
 

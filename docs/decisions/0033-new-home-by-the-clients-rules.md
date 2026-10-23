@@ -1,6 +1,6 @@
 # 0033. A new Home, built apart by the client's rules, on the Midnight palette
 
-- **Status:** Accepted
+- **Status:** Accepted; the wordmark's colour superseded by [0034](0034-new-home-wordmark-in-the-palette.md)
 - **Date:** 2026-10-23
 - **Deciders:** client (Codraft team), Claude
 

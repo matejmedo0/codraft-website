@@ -1,57 +1,61 @@
 ---
 /**
  * The new Home, built step by step by the client's rules (M8, M9 in
- * docs/phases/3-pages.md), apart from the current Home: its zones go in
- * this folder and its copy gets its own locale keys. Empty for now; shown
- * at /lab/nova-pocetna.
+ * docs/phases/3-pages.md; the rules in docs/new-home-rules.md), apart from
+ * the current Home: its zones go in this folder and its copy gets its own
+ * locale keys. Empty for now; shown at /lab/nova-pocetna.
  */
 ---
 
 <style is:global>
-  /* The whole page on the new palette's dark navy (M10; the tones from
-     /lab/paleta, 2026-10-23). Loaded only on this page; unlayered, so it
-     wins over tokens.css. The roles are .surface-navy's, and the sheet's
-     frame turns light so it stays visible. The accent keeps the brand blue,
-     as the wordmark does in every palette. */
+  /* The page's palette, "Midnight" (M13, docs/new-home-rules.md), on the
+     design system's roles. Loaded only on this page; unlayered, so it wins
+     over tokens.css. Every text colour passes AA on every surface; the
+     border is decorative. The wordmark keeps its brand blue. */
   :root {
-    --color-paper: #f2f1ef;
-    --color-paper-hover: #d7e1e4;
-    --color-navy: #11252c;
-    --color-navy-raised: #1a343d;
-    --color-navy-hover: #26454f;
-    --color-blue-on-navy: #7dbed4;
-    --color-grey-on-navy: #babcbd;
-    --color-selection-on-navy: #266073;
+    --color-midnight: #0b181d;
+    --color-deep-teal: #11252c;
+    --color-elevated: #193139;
+    --color-interactive: #23414a;
+    --color-ivory: #ecedea;
+    --color-silver: #aab8bb;
+    --color-teal: #82bbc5;
+    --color-border: #28434c;
 
-    --frame: var(--color-paper);
-    --surface: var(--color-navy);
-    --surface-sunk: var(--color-navy-raised);
-    --ink: var(--color-paper);
-    --ink-muted: var(--color-grey-on-navy);
-    --line: color-mix(in srgb, var(--color-paper) 16%, var(--color-navy));
-    --line-strong: var(--color-paper);
-    --link: var(--color-blue-on-navy);
-    --accent-text: var(--color-blue-on-navy);
-    --selection: var(--color-selection-on-navy);
-    --grip-fill: var(--color-navy);
+    --surface: var(--color-midnight);
+    --surface-sunk: var(--color-deep-teal);
+    --ink: var(--color-ivory);
+    --ink-muted: var(--color-silver);
+    --frame: var(--color-border);
+    --line: var(--color-border);
+    --line-strong: var(--color-border);
+    --link: var(--color-teal);
+    --accent: var(--color-teal);
+    --accent-text: var(--color-teal);
+    --focus: var(--color-teal);
+    --selection: var(--color-interactive);
+    --grip-fill: var(--color-midnight);
+    --wordmark-accent: #2f6bff;
 
-    --button-primary-bg: var(--color-paper);
-    --button-primary-bg-hover: var(--color-paper-hover);
-    --button-primary-fg: var(--color-navy);
-    --button-secondary-border: var(--color-paper);
-    --button-secondary-fg: var(--color-paper);
-    --button-secondary-bg-hover: var(--color-navy-raised);
+    --button-primary-bg: var(--color-teal);
+    --button-primary-bg-hover: var(--color-ivory);
+    --button-primary-fg: var(--color-midnight);
+    --button-secondary-border: var(--color-border);
+    --button-secondary-fg: var(--color-ivory);
+    --button-secondary-bg-hover: var(--color-interactive);
+    --button-disabled-bg: var(--color-elevated);
+    --button-disabled-fg: var(--color-silver);
 
-    --grid-major: color-mix(in srgb, var(--color-paper) 10%, transparent);
-    --grid-minor: color-mix(in srgb, var(--color-paper) 4%, transparent);
+    --grid-major: color-mix(in srgb, var(--color-ivory) 10%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-ivory) 4%, transparent);
 
-    --drawing-ink: var(--color-paper);
+    --drawing-ink: var(--color-ivory);
     --drawing-muted: color-mix(
       in srgb,
-      var(--color-paper) 45%,
-      var(--color-navy)
+      var(--color-ivory) 45%,
+      var(--color-midnight)
     );
-    --drawing-fill: var(--color-navy);
+    --drawing-fill: var(--color-midnight);
 
     /* Dark scrollbars and form controls to match. */
     color-scheme: dark;

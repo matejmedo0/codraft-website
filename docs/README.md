@@ -16,6 +16,7 @@ This folder is the project's durable memory. A new person or a new Claude sessio
 | [information-architecture.md](information-architecture.md) | Sitemap and URLs (HR/EN), navigation, i18n rules, section outline of every page, keyword map, trust strategy without a portfolio |
 | [content.md](content.md) | All site copy: rules, glossary, EN source (verbatim) and HR draft per block, suggestions, content gaps, editorial notes, changelog |
 | [brand.md](brand.md) | Brand marks and usage, web copies, colours and contrast, text tokens, typography (Archivo), imagery rules, logo animation and C2PA |
+| [new-home-rules.md](new-home-rules.md) | The new Home's rules, set by the client step by step (from 2026-10-23): apart from the current Home, the frame that follows the screen, the Midnight palette and its roles |
 | [motion.md](motion.md) | The motion concept (CAD actions), principles, reduced motion, the motion tokens, what is ruled out |
 | [design-critique.md](design-critique.md) | The independent design critic (`.claude/agents/design-critic.md`) and the capture it works from (`npm run design:capture`): criteria, lenses, how to run a critique, what happens to its findings |
 | [compliance.md](compliance.md) | Croatian and EU requirements with sources and confidence; copy guardrails; checks by phase |

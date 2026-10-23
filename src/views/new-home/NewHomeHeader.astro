@@ -31,9 +31,11 @@ import LanguageSwitcher from "../../components/site/LanguageSwitcher.astro";
 interface Props {
   locale: Locale;
   page?: PageId | undefined;
+  /** From 64rem: one row, or the wordmark above the links (M21, a preview). */
+  layout?: "row" | "stacked";
 }
 
-const { locale, page } = Astro.props;
+const { locale, page, layout = "row" } = Astro.props;
 const MENU_ID = "site-menu";
 // The drafting page is left out of the new Home's navigation (M17).
 const NAV = MAIN_NAV.filter(({ page: target }) => target !== "drafting");
@@ -43,7 +45,9 @@ function current(target: PageId): "page" | undefined {
 }
 ---
 
-<header class="site-header">
+<header
+  class:list={["site-header", { "site-header--stacked": layout === "stacked" }]}
+>
   <a
     class="site-header__home"
     href={pathFor("home", locale)}
@@ -256,6 +260,17 @@ function current(target: PageId): "page" | undefined {
     .site-header__nav :global(.site-header__language) {
       align-self: center;
       justify-self: start;
+    }
+
+    /* Two rows (M21): the wordmark centred above, the links and the
+       language below as in one row. */
+    .site-header--stacked {
+      row-gap: calc(var(--space-2) * var(--topbar-scale, 1));
+    }
+
+    .site-header--stacked .site-header__home {
+      grid-column: 1 / -1;
+      justify-self: center;
     }
 
     .site-header__links {

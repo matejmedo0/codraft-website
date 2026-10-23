@@ -44,20 +44,22 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
 - It sits on the main background, Midnight `#0B181D`. It is empty for now.
 
-## 5. The header (M16, M17)
+## 5. The header (M16–M19)
 
 The new page has its own header, `NewHomeHeader.astro`, a copy of the site's; the site header is unchanged.
 - **Links:** Usluge, O nama, Kontakt. Tehničko crtanje is not in the navigation (M17); the page itself stays in the sitemap.
-- **From 64rem, three columns:** the wordmark on the left, the links in the header's centre, the language (EN) at the right edge. The links centre on the whole header, not on the space beside the wordmark (M16).
+- **From 64rem, one centred group (M19, the client's choice "Sve u jednoj grupi"):** the wordmark, the links and the language (EN) in one row in the header's centre; 48 px between the three parts and 32 px between the links, both times the factor below (54 and 36 px now). It replaces M16's three columns. Below 64rem the wordmark stays on the left and the menu button on the right.
+- **No rule below the header** (M19): the header runs into the hero, on every width.
 - **Sizes from 64rem:** M17's sizes, all times one factor, `--topbar-scale` in `NewHomeView.astro` (M18: "a bit more visible, but not too much"). At 1.125:
 
   | | M17 (factor 1) | Now (1.125) |
   |---|---|---|
-  | Header height | 77.5 px | 87 px |
+  | Header height | 77.5 px | 86 px (no rule) |
   | Wordmark height | 28.5 px | 32 px |
   | Links, medium (500) | 15 px (`--step-small`) | 16.9 px |
   | EN, medium | 13 px (`--step-label`) | 14.6 px |
   | Space between links | 32 px (`--space-6`) | 36 px |
+  | Space between the wordmark, the links and EN | 48 px (`--space-8`) | 54 px |
 
   The factor changes them all together; the hero reads it too, so it stays at the fold.
   Below 64rem the header and the phone menu keep the site's sizes, so the header still fits one line at 320 px.

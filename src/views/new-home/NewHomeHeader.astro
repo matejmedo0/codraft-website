@@ -1,12 +1,12 @@
 ---
 /**
- * The new Home's header (M16, M17 in docs/phases/3-pages.md, rule 5 in
+ * The new Home's header (M16–M19 in docs/phases/3-pages.md, rule 5 in
  * docs/new-home-rules.md), a copy of src/components/site/Header.astro:
- * without the drafting page's link; the links and the language in the
- * navigation colour, ivory on hover and for the current page. From 64rem
- * the links sit in the header's centre, between a larger wordmark on the
- * left and the language on the right, in a taller header. The rest is the
- * site header's:
+ * without the drafting page's link or a rule below; the links and the
+ * language in the navigation colour, ivory on hover and for the current
+ * page. From 64rem the wordmark, the links and the language sit together
+ * in the header's centre, larger, in a taller header. The rest is the site
+ * header's:
  *
  * The site header, on paper at the top of the sheet (ADR 0015): the static
  * wordmark (only the home hero's mark moves, ADR 0014), the main navigation
@@ -101,8 +101,8 @@ function current(target: PageId): "page" | undefined {
     flex-wrap: wrap;
     gap: var(--space-3) var(--space-5);
     align-items: center;
+    /* No rule below the header: it runs into the hero (M19). */
     padding: var(--space-3) var(--pad);
-    border-bottom: var(--rule) solid var(--frame);
     background: var(--surface);
     view-transition-name: site-header;
   }
@@ -221,38 +221,36 @@ function current(target: PageId): "page" | undefined {
     }
   }
 
-  /* Three columns: the wordmark, the links in the header's centre, the
-     language at the right edge. The nav spans the last two through a
-     subgrid, so the links centre on the header, not on what's left of it. */
+  /* One group in the header's centre (M19): the wordmark, the links and
+     the language in a row, 48 px apart, the links 32 px apart, both times
+     --topbar-scale. */
   @media (min-width: 64rem) {
     /* M17's sizes (a 77.5 px header, a 28.5 px wordmark, 15 and 13 px
-       text, links 32 px apart), all times --topbar-scale (M18,
-       NewHomeView.astro): at 1.125, an 87 px header and a 32 px wordmark. */
+       text), all times --topbar-scale (M18, NewHomeView.astro): at 1.125,
+       an 86 px header and a 32 px wordmark. */
     .site-header {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      flex-wrap: nowrap;
+      gap: calc(var(--space-8) * var(--topbar-scale, 1));
+      justify-content: center;
       padding-block: calc(var(--space-4) * var(--topbar-scale, 1));
     }
 
     .site-header__home {
       --wordmark-width: calc(8.25rem * var(--topbar-scale, 1));
 
-      justify-self: start;
       padding-block: calc(var(--space-2) * var(--topbar-scale, 1));
     }
 
     .site-header__nav {
-      display: grid;
-      grid-column: 2 / 4;
-      grid-template-columns: subgrid;
-      gap: normal;
+      flex-basis: auto;
+      flex-direction: row;
+      gap: calc(var(--space-8) * var(--topbar-scale, 1));
       align-items: center;
       padding: 0;
     }
 
     .site-header__nav :global(.site-header__language) {
       align-self: center;
-      justify-self: end;
     }
 
     .site-header__links {

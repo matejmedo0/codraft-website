@@ -225,16 +225,17 @@ function current(target: PageId): "page" | undefined {
     }
   }
 
-  /* One row (M19, M20): the links in the header's centre, the wordmark
-     just left of them and the language just right, both 48 px away; the
-     links 32 px apart; all spacing times --topbar-scale. Three columns,
-     the nav spanning the last two through a subgrid, so the links centre
-     on the header whatever the wordmark's width. */
+  /* One row (M19, M20): the links in the header's centre and the wordmark
+     just left of them, 48 px away; the links 32 px apart; all spacing
+     times --topbar-scale. Three columns, the nav spanning the last two
+     through a subgrid, so the links centre on the header whatever the
+     wordmark's width. The language floats at the top right (M22). */
   @media (min-width: 64rem) {
     /* M17's sizes (a 77.5 px header, a 28.5 px wordmark, 15 and 13 px
        text), all times --topbar-scale (M18, NewHomeView.astro): at 1.125,
        an 86 px header and a 32 px wordmark. */
     .site-header {
+      position: relative;
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       gap: calc(var(--space-8) * var(--topbar-scale, 1));
@@ -257,13 +258,7 @@ function current(target: PageId): "page" | undefined {
       padding: 0;
     }
 
-    .site-header__nav :global(.site-header__language) {
-      align-self: center;
-      justify-self: start;
-    }
-
-    /* Two rows (M21): the wordmark centred above, the links and the
-       language below as in one row. */
+    /* Two rows (M21): the wordmark centred above, the links below. */
     .site-header--stacked {
       row-gap: calc(var(--space-2) * var(--topbar-scale, 1));
     }
@@ -278,15 +273,37 @@ function current(target: PageId): "page" | undefined {
       gap: calc(var(--space-6) * var(--topbar-scale, 1));
     }
 
-    .site-header__links a,
-    .site-header__nav :global(.site-header__language) {
+    .site-header__links a {
       padding: var(--space-2) 0;
       border: 0;
       font-size: calc(var(--step-small) * var(--topbar-scale, 1));
     }
 
+    /* The language as a floating circle at the top right (M22): midnight
+       on ivory (15.4:1), on teal when hovered (8.5:1). It is as tall as
+       the wordmark's row (2.78rem times the factor) and starts at the
+       header's padding, so it lines up with the wordmark in one row or
+       two. */
     .site-header__nav :global(.site-header__language) {
+      position: absolute;
+      top: calc(var(--space-4) * var(--topbar-scale, 1));
+      right: var(--pad);
+      display: grid;
+      place-items: center;
+      width: calc(2.75rem * var(--topbar-scale, 1));
+      height: calc(2.75rem * var(--topbar-scale, 1));
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--surface);
       font-size: calc(var(--step-label) * var(--topbar-scale, 1));
+    }
+
+    .site-header__nav :global(.site-header__language):hover {
+      background: var(--accent);
+      color: var(--surface);
+      text-decoration: none;
     }
   }
 </style>

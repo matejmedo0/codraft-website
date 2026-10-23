@@ -32,6 +32,7 @@ Sve je zapisano u `docs/phases/3-pages.md` (odjeljak „Carried over from phase 
 
 **Što pregledati:**
 - **Odobreni dizajn početne:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Prava početna nastaje na http://localhost:4321/ i http://localhost:4321/en. Usporedbe iz faze 2 ostaju kao zapis: `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje` i `/lab/sto-radimo-2`.
+- **Stara početna (arhiva):** http://localhost:4321/lab/pocetna-stara. To je prava početna kakva je bila 23. 10. 2026. (`src/lab/archive/home-v1/`), a nova početna na `/` kreće od nje (M8).
 - **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
 - **Animacije:** vidljive su samo kad su Windowsovi „Animacijski efekti“ uključeni (Postavke → Pristupačnost → Vizualni efekti → Animacijski efekti). Drugi način je DevTools → Rendering → „prefers-reduced-motion: no-preference“.

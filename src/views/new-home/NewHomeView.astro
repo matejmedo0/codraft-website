@@ -6,3 +6,54 @@
  * at /lab/nova-pocetna.
  */
 ---
+
+<style is:global>
+  /* The whole page on the new palette's dark navy (M10; the tones from
+     /lab/paleta, 2026-10-23). Loaded only on this page; unlayered, so it
+     wins over tokens.css. The roles are .surface-navy's, and the sheet's
+     frame turns light so it stays visible. The accent keeps the brand blue,
+     as the wordmark does in every palette. */
+  :root {
+    --color-paper: #f2f1ef;
+    --color-paper-hover: #d7e1e4;
+    --color-navy: #11252c;
+    --color-navy-raised: #1a343d;
+    --color-navy-hover: #26454f;
+    --color-blue-on-navy: #7dbed4;
+    --color-grey-on-navy: #babcbd;
+    --color-selection-on-navy: #266073;
+
+    --frame: var(--color-paper);
+    --surface: var(--color-navy);
+    --surface-sunk: var(--color-navy-raised);
+    --ink: var(--color-paper);
+    --ink-muted: var(--color-grey-on-navy);
+    --line: color-mix(in srgb, var(--color-paper) 16%, var(--color-navy));
+    --line-strong: var(--color-paper);
+    --link: var(--color-blue-on-navy);
+    --accent-text: var(--color-blue-on-navy);
+    --selection: var(--color-selection-on-navy);
+    --grip-fill: var(--color-navy);
+
+    --button-primary-bg: var(--color-paper);
+    --button-primary-bg-hover: var(--color-paper-hover);
+    --button-primary-fg: var(--color-navy);
+    --button-secondary-border: var(--color-paper);
+    --button-secondary-fg: var(--color-paper);
+    --button-secondary-bg-hover: var(--color-navy-raised);
+
+    --grid-major: color-mix(in srgb, var(--color-paper) 10%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-paper) 4%, transparent);
+
+    --drawing-ink: var(--color-paper);
+    --drawing-muted: color-mix(
+      in srgb,
+      var(--color-paper) 45%,
+      var(--color-navy)
+    );
+    --drawing-fill: var(--color-navy);
+
+    /* Dark scrollbars and form controls to match. */
+    color-scheme: dark;
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+/**
+ * The new Home's hero (M15 in docs/phases/3-pages.md), empty for now: as
+ * tall as the screen below the header, inside the sheet, so a visitor first
+ * sees the header and the hero only, and the next zone comes in with the
+ * scroll.
+ */
+---
+
+<section class="hero"></section>
+
+<style>
+  .hero {
+    /* The header is 4.2–4.3rem tall at every width (67–69 px at 16 px);
+       taking off a little less keeps the hero's bottom just below the
+       fold, so the next zone never peeks in, at any zoom or text size.
+       svh: the screen with a phone's browser bars shown. */
+    min-height: calc(100svh - var(--sheet-margin) - 4.125rem);
+    padding: var(--zone-pad) var(--pad);
+  }
+</style>

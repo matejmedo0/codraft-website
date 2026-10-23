@@ -37,3 +37,9 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - **The wordmark** takes the palette (M14, [ADR 0034](decisions/0034-new-home-wordmark-in-the-palette.md)): ivory lettering (15.4:1) and its three accent details (the arc, the drafting line, the grip) in muted teal (8.5:1), in place of the brand blue `#2F6BFF`.
 - **Contrast**, checked on all four surfaces: ivory 9.3–15.4:1, silver 5.3–8.8:1, teal 5.1–8.5:1, so all three pass AA for body text on any of them; midnight on a teal button 8.5:1. The border is 1.7:1 on the background: it is decorative, never the only sign of a control.
 - **Sections** use `--surface-sunk`, not `.surface-navy`, which still holds the site's old navy.
+
+## 4. The hero fills the first screen (M15)
+
+- On arrival the visitor sees the header and the hero only; the next zone comes in with the scroll.
+- The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
+- It sits on the main background, Midnight `#0B181D`. It is empty for now.

@@ -44,11 +44,11 @@ The client's "new, simpler palette" replaces the dark navy of M10. The colours s
 - The hero stays inside the sheet, under the header, and is as tall as the screen less the sheet's top margin and the header (`NewHomeHero.astro`). Its bottom edge falls 1–4 px below the fold at every width and zoom, so the next zone never peeks in.
 - It sits on the main background, Midnight `#0B181D`. It is empty for now.
 
-## 5. The header (M16–M19)
+## 5. The header (M16–M20)
 
 The new page has its own header, `NewHomeHeader.astro`, a copy of the site's; the site header is unchanged.
 - **Links:** Usluge, O nama, Kontakt. Tehničko crtanje is not in the navigation (M17); the page itself stays in the sitemap.
-- **From 64rem, one centred group (M19, the client's choice "Sve u jednoj grupi"):** the wordmark, the links and the language (EN) in one row in the header's centre; 48 px between the three parts and 32 px between the links, both times the factor below (54 and 36 px now). It replaces M16's three columns. Below 64rem the wordmark stays on the left and the menu button on the right.
+- **From 64rem, one row with the links in the centre (M19, M20):** the three links sit in the header's centre; the wordmark is just left of them and the language (EN) just right, each 48 px away times the factor below (54 px now); the links 32 px apart times the factor (36 px). Only the links centre, not the whole row, since the wordmark is wider than EN. Below 64rem the wordmark stays on the left and the menu button on the right.
 - **No rule below the header** (M19): the header runs into the hero, on every width.
 - **Sizes from 64rem:** M17's sizes, all times one factor, `--topbar-scale` in `NewHomeView.astro` (M18: "a bit more visible, but not too much"). At 1.125:
 

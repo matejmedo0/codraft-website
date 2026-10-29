@@ -1,30 +1,201 @@
 ---
 /**
- * The new Home's hero (M15 in docs/phases/3-pages.md), empty for now: as
- * tall as the screen below the header, inside the sheet, so a visitor first
- * sees the header and the hero only, and the next zone comes in with the
- * scroll.
+ * The new Home's hero: the headline and the lead beside the site drawing
+ * (SiteDrawing.astro), which drafts itself on load. As tall as the first
+ * screen below the header, so a visitor first sees the header and the hero
+ * only, and the next zone comes in with the scroll.
+ *
+ * The hero orients and doesn't sell: its one button leads to the services,
+ * and the drafting clients get their own link below it. The free audit is
+ * asked for once, in its own zone.
+ *
+ * As the hero leaves the screen, from 64rem, the drawing drifts up a little
+ * faster than the text and both fade, like a sheet sliding off the board;
+ * phones get no such depth (docs/motion.md, mobile).
  */
+import Button from "../../components/ui/Button.astro";
+import { type Locale, SITE_NAME } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import SiteDrawing from "./SiteDrawing.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
 
-<section class="hero"></section>
+<section class="hero" aria-labelledby="naslov">
+  <div class="hero__text">
+    <h1 id="naslov">
+      <span class="hero__line">{t(locale, "home.hero.titleLine1")}</span>{" "}
+      <span class="hero__line">{t(locale, "home.hero.titleLine2")}</span>
+    </h1>
+    <p class="hero__lead">{t(locale, "home.hero.lead")}</p>
+    <div class="hero__actions">
+      <Button href={pathFor("services", locale)}>
+        {t(locale, "home.hero.cta")}
+      </Button>
+    </div>
+    <p class="hero__drafting">
+      <a href={pathFor("drafting", locale)}>
+        {t(locale, "home.hero.drafting")}
+      </a>
+    </p>
+  </div>
+  <div class="hero__drawing graph-paper">
+    <SiteDrawing locale={locale} />
+    <div class="hero__title-block t-label" aria-hidden="true">
+      <span class="hero__title-cell hero__title-cell--strong">
+        {t(locale, "newHome.drawing.title")}
+      </span>
+      <span class="hero__title-cell">{t(locale, "newHome.drawing.units")}</span>
+      <span class="hero__title-cell hero__title-cell--strong">{SITE_NAME}</span>
+      <span class="hero__title-cell">{t(locale, "drawing.note")}</span>
+    </div>
+  </div>
+</section>
 
 <style>
   .hero {
-    /* The header is 4.25rem tall below 64rem (68 px at 16 px) and from 64rem
-       4.78rem times --topbar-scale (NewHomeHeader.astro), with no rule;
-       taking off a little less keeps the hero's bottom just below the fold,
-       so the next zone never peeks in, at any zoom or text size. svh: the
-       screen with a phone's browser bars shown. */
+    display: grid;
+    gap: var(--space-8);
+    align-content: center;
+    /* The header is 4.25rem tall below 64rem and from 64rem 4.78rem times
+       --topbar-scale (NewHomeHeader.astro). svh: the screen with a phone's
+       browser bars shown. */
     min-height: calc(100svh - var(--sheet-margin) - 4.125rem);
-    padding: var(--zone-pad) var(--pad);
+    padding: var(--space-8) var(--pad) var(--zone-pad);
+    view-timeline: --hero block;
+  }
+
+  .hero__text {
+    container-type: inline-size;
+  }
+
+  /* The H1's two lines: from a 54rem column each half is a line of its own,
+     and the size eases just enough for the first to fit. */
+  @container (min-width: 54rem) {
+    .hero h1 {
+      font-size: min(var(--step-display), 100cqi / 14.2);
+    }
+
+    .hero__line {
+      display: block;
+    }
+  }
+
+  .hero__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero__drafting {
+    margin-top: var(--space-5);
+  }
+
+  .hero__drafting a {
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  /* The drawing's sheet: a container, so the drawing can drop its drawn
+     title block when the sheet is narrow; then the same cells are set
+     under the drawing at the label size, as under the house plan. */
+  .hero__drawing {
+    padding: var(--space-4);
+    container-type: inline-size;
+  }
+
+  .hero__title-block {
+    display: none;
+    grid-template-columns: auto auto;
+    width: fit-content;
+    margin: var(--space-3) 0 0 auto;
+    border: 1px solid var(--drawing-ink);
+    color: var(--drawing-ink);
+    line-height: 1.2;
+  }
+
+  @container (max-width: 25.99rem) {
+    .hero__title-block {
+      display: grid;
+    }
+  }
+
+  .hero__title-cell {
+    padding: 0.3125rem 0.5rem;
+  }
+
+  .hero__title-cell:nth-child(odd) {
+    border-right: 1px solid var(--drawing-ink);
+  }
+
+  .hero__title-cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--drawing-ink);
+  }
+
+  .hero__title-cell--strong {
+    font-weight: var(--weight-strong);
   }
 
   @media (min-width: 64rem) {
     .hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: center;
       min-height: calc(
         100svh - var(--sheet-margin) - 4.75rem * var(--topbar-scale, 1)
       );
+      padding-block: var(--space-8);
+    }
+
+    .hero__text {
+      grid-column: 1 / span 7;
+    }
+
+    .hero__drawing {
+      grid-column: 8 / -1;
+    }
+
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .hero__drawing {
+          animation: hero-drawing-exit linear both;
+          animation-timeline: --hero;
+          animation-range: exit 0% exit 100%;
+        }
+
+        .hero__text {
+          animation: hero-text-exit linear both;
+          animation-timeline: --hero;
+          animation-range: exit 0% exit 100%;
+        }
+      }
+    }
+  }
+
+  @keyframes hero-drawing-exit {
+    to {
+      opacity: 0;
+      translate: 0 -14vh;
+    }
+  }
+
+  @keyframes hero-text-exit {
+    to {
+      opacity: 0;
+      translate: 0 -5vh;
     }
   }
 </style>

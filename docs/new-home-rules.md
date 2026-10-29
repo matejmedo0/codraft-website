@@ -2,6 +2,8 @@
 
 From 2026-10-23 the pages are made step by step by the client's rules, one instruction at a time (M8 in [phases/3-pages.md](phases/3-pages.md); [ADR 0033](decisions/0033-new-home-by-the-clients-rules.md)). The first page is a new Home. This document holds its rules; each new rule is added here, with the client's message it comes from.
 
+> **2026-10-29 (M25):** the client asked for the whole page at once, as an animated scroll-based page, setting these rules aside ([ADR 0035](decisions/0035-new-home-drawn-by-the-scroll.md)). Rules 1–3 and 5 still describe the page (the folder, the frame, the palette, the header); rule 4 (an empty hero) and building one instruction at a time are superseded. New rules from the client's review are still added here.
+
 - **Where:** `src/views/new-home/`, shown at `/lab/nova-pocetna` (the dev server and lab builds only, noindex).
 - **The current Home** stays at `/` and `/en`, unchanged; its copy as of 2026-10-23 is in the lab archive (`src/lab/archive/home-v1/`, `/lab/pocetna-stara`).
 

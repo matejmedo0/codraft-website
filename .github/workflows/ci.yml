@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
@@ -24,21 +24,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # The production version, from .nvmrc.
-          - node: "24"
-            node-version-file: .nvmrc
-          # The next LTS (from 2026-10-28): verify only, no E2E.
-          - node: "26"
-            node-version: "26"
+        # 24 is the production version, from .nvmrc. 26 is the next LTS (from
+        # 2026-10-28) and runs only on the way to main; dev gets the basic run.
+        node: ${{ fromJSON((github.base_ref == 'main' || github.ref == 'refs/heads/main') && '["24", "26"]' || '["24"]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ matrix.node-version }}
-          node-version-file: ${{ matrix.node-version-file }}
+          node-version: ${{ matrix.node != '24' && matrix.node || '' }}
+          node-version-file: ${{ matrix.node == '24' && '.nvmrc' || '' }}
           cache: npm
       - name: Install
         run: npm ci
@@ -59,6 +55,8 @@ jobs:
 
   e2e:
     name: E2E (Chromium)
+    # Full suite only on the way to main; dev gets the basic run.
+    if: github.base_ref == 'main' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:

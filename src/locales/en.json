@@ -204,8 +204,5 @@
   "build.ai.setup": "Building the assistant",
   "services.perSheet": "per sheet",
   "services.terms": "Guide figures, excl. VAT",
-  "services.startingPrice": "Starting price",
-  "newHome.drawing.label": "Illustration: a website layout drawn as a technical drawing, with dimensions in pixels.",
-  "newHome.drawing.title": "Website drawing",
-  "newHome.drawing.units": "Units: px"
+  "services.startingPrice": "Starting price"
 }

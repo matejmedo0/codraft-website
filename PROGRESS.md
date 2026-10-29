@@ -32,7 +32,7 @@ Sve je zapisano u `docs/phases/3-pages.md` (odjeljak „Carried over from phase 
 
 **Što pregledati:**
 - **Odobreni dizajn početne:** pokrenite `npm run dev` u mapi projekta i otvorite http://localhost:4321/lab/pocetna. Prava početna nastaje na http://localhost:4321/ i http://localhost:4321/en. Usporedbe iz faze 2 ostaju kao zapis: `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje` i `/lab/sto-radimo-2`.
-- **Nova početna:** http://localhost:4321/lab/nova-pocetna. Od 29. 10. 2026. složena odjednom kao animirana, scroll‑vođena stranica (M25, ADR 0035): skrol je olovka koja crta list. Okvir, paleta i zaglavlje ostaju po vašim pravilima (`docs/new-home-rules.md`). Animacije se vide samo s uključenim animacijskim efektima (vidi dolje).
+- **Nova početna:** http://localhost:4321/lab/nova-pocetna. Gradi se korak po korak po vašim pravilima (`docs/new-home-rules.md`).
 - **Stara početna (arhiva):** http://localhost:4321/lab/pocetna-stara. To je prava početna kakva je bila 23. 10. 2026. (`src/lab/archive/home-v1/`), a nova početna na `/` kreće od nje (M8).
 - **Stranica sa stilovima:** http://localhost:4321/lab/style. Na njoj su tokeni, komponente i hero složen kao na početnoj. Bez pokrenutog dev servera stranica javlja `ERR_CONNECTION_REFUSED`.
 - **Figma knjižnica „Codraft sustav dizajna“:** https://www.figma.com/design/pWypJUUuwNZv9iTSDVFBV0
@@ -247,7 +247,6 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-22 | Bez lokalnih veličina slova: naslovi koraka na veličini ostalih naslova, retci usluga na veličini uvoda (opcija A, #59) | [ADR 0030](docs/decisions/0030-steps-and-service-lines-on-the-type-scale.md) |
 | 2026-10-23 | Stranice radimo korak po korak po vašim pravilima. Nova početna nastaje odvojeno od sadašnje, na `/lab/nova-pocetna`; okvir prati rub ekrana, a paleta je Midnight. Pravila su u `docs/new-home-rules.md`. | [ADR 0033](docs/decisions/0033-new-home-by-the-clients-rules.md) |
 | 2026-10-23 | Logo na novoj početnoj u boji palete: slova bjelokosna `#ECEDEA`, detalji (luk, crta, kvadratić) teal `#82BBC5` umjesto brand plave | [ADR 0034](docs/decisions/0034-new-home-wordmark-in-the-palette.md) |
-| 2026-10-29 | Nova početna složena odjednom kao scroll‑vođena stranica: olovka na lijevom rubu lista, hero crtež koji se sam nacrta, ljepljivi naslovi faza, tlocrt koji skrol crta i diže u 3D (pinned scena), završna crtaća linija s gripom. CSS scroll‑driven animacije, bez biblioteka; bez animacija stranica je gotova i statična. Za ovu stranicu ne vrijede zabrane pinned scena i dubine iz `docs/motion.md`. | [ADR 0035](docs/decisions/0035-new-home-drawn-by-the-scroll.md) |
 
 ## Sitemap
 

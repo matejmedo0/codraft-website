@@ -1,0 +1,141 @@
+---
+/**
+ * Butter's footer: link columns with small labels, then the wordmark across
+ * the whole width, then one line at the foot. It sits on the sunk ground,
+ * under the page's rounded corners. The company data arrives from the
+ * client (PROGRESS.md, item A); until then it says so, as the title block
+ * does.
+ */
+import LanguageSwitcher from "../../components/site/LanguageSwitcher.astro";
+import Wordmark from "../../components/ui/Wordmark.astro";
+import { COMPANY } from "../../config/company.ts";
+import { type Locale, SITE_NAME } from "../../config/site.ts";
+import { LEGAL_NAV, MAIN_NAV } from "../../features/i18n/navigation.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const pending = t(locale, "footer.pending");
+const year = new Date().getFullYear();
+---
+
+<footer class="bf">
+  <div class="bf__columns b-wrap">
+    <nav class="bf__column" aria-labelledby="bf-site">
+      <h2 id="bf-site" class="b-eyebrow">
+        {SITE_NAME}
+      </h2>
+      <ul>
+        {MAIN_NAV.map(({ page, label }) => (
+          <li>
+            <a href={pathFor(page, locale)}>{t(locale, label)}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="bf__column">
+      <h2 class="b-eyebrow">{t(locale, "footer.contact")}</h2>
+      <p>
+        {COMPANY.email === null ? (
+          <span class="bf__pending">{pending}</span>
+        ) : (
+          <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+        )}
+      </p>
+    </div>
+    <nav class="bf__column" aria-labelledby="bf-legal">
+      <h2 id="bf-legal" class="b-eyebrow">
+        {t(locale, "footer.legal")}
+      </h2>
+      <ul>
+        {LEGAL_NAV.map(({ page, label }) => (
+          <li>
+            <a href={pathFor(page, locale)}>{t(locale, label)}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="bf__column">
+      <h2 class="b-eyebrow">{t(locale, "footer.language")}</h2>
+      <p>
+        <LanguageSwitcher locale={locale} />
+      </p>
+    </div>
+  </div>
+
+  <div class="bf__mark b-wrap">
+    <Wordmark />
+  </div>
+
+  <div class="bf__base b-wrap">
+    <p>
+      © {year} {SITE_NAME}
+    </p>
+    <p>
+      {t(locale, "footer.companyName")}:{" "}
+      <span class="bf__pending">{COMPANY.legalName ?? pending}</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .bf {
+    padding-top: var(--b-section);
+    background: var(--surface-sunk);
+  }
+
+  .bf__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-5);
+  }
+
+  .bf__column ul {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Global, so the language switcher's link takes it too. */
+  .bf__column :global(a) {
+    color: var(--ink);
+    font-size: var(--step-lead);
+    text-decoration: none;
+  }
+
+  .bf__column :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .bf__pending {
+    color: var(--ink-muted);
+  }
+
+  .bf__mark {
+    margin-top: var(--b-section);
+    color: var(--ink);
+    --wordmark-width: 100%;
+  }
+
+  .bf__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-7);
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  @media (min-width: 64rem) {
+    .bf__columns {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

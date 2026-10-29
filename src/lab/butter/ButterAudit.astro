@@ -1,0 +1,172 @@
+---
+/**
+ * Butter's "Create more, faster", for the free audit: the text at the foot
+ * of the left column, as Butter sets it, with the page's one audit button
+ * (ADR 0017); on the right a large card with the booking's three steps,
+ * the first done, the second under way, as a booking screen would show
+ * them.
+ */
+import Button from "../../components/ui/Button.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const STEPS = ["form", "slot", "confirmation"] as const;
+---
+
+<section class="audit b-wrap b-section" aria-labelledby="audit-title">
+  <div class="audit__text">
+    <p class="b-eyebrow">01&nbsp;&nbsp;{t(locale, "plan.title")}</p>
+    <h2 id="audit-title" class="b-display">
+      {t(locale, "home.audit.title")}
+    </h2>
+    <p class="b-lead audit__lead">{t(locale, "home.audit.lead")}</p>
+    <Button class="audit__cta" href={pathFor("audit", locale)}>
+      {t(locale, "audit.cta")}
+    </Button>
+  </div>
+
+  <div class="audit__card b-card b-reveal">
+    <div class="audit__screen">
+      <p class="audit__screen-title">
+        <span class="b-tile">
+          <ServiceIcon icon="besplatna-analiza" />
+        </span>
+        {t(locale, "plan.audit.title")}
+      </p>
+      <ol class="audit__steps">
+        {STEPS.map((id, index) => (
+          <li
+            class:list={[
+              "audit__step",
+              { "is-done": index === 0, "is-current": index === 1 },
+            ]}
+          >
+            <span class="audit__grip" aria-hidden="true">
+              {String(index + 1)}
+            </span>
+            <span>
+              <span class="audit__step-title">
+                {t(locale, `audit.step.${id}.title`)}
+              </span>
+              <span class="audit__step-body">
+                {t(locale, `audit.step.${id}.body`)}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .audit {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .audit__lead {
+    margin-top: var(--space-5);
+  }
+
+  .audit__text :global(.audit__cta) {
+    margin-top: var(--space-6);
+  }
+
+  .audit__card {
+    display: grid;
+    place-items: center;
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .audit__screen {
+    width: 100%;
+    max-width: 26rem;
+    padding: var(--space-5);
+    border-radius: var(--b-radius);
+    background: var(--surface);
+    box-shadow: 0 1.5rem 3rem -1.5rem
+      color-mix(in srgb, var(--color-navy) 30%, transparent);
+  }
+
+  .audit__screen-title {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    font-size: var(--step-title);
+    font-weight: var(--weight-medium);
+  }
+
+  .audit__steps {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .audit__step {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--b-radius-small);
+  }
+
+  .audit__step.is-current {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  /* The step's number in a grip: filled when done. */
+  .audit__grip {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 2px solid var(--accent);
+    font-size: var(--step-label);
+    font-weight: var(--weight-strong);
+  }
+
+  .is-done .audit__grip {
+    background: var(--color-blue-on-paper);
+    border-color: var(--color-blue-on-paper);
+    color: var(--color-paper);
+  }
+
+  .audit__step-title,
+  .audit__step-body {
+    display: block;
+  }
+
+  .audit__step-title {
+    font-weight: var(--weight-medium);
+  }
+
+  .audit__step-body {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  @media (min-width: 64rem) {
+    .audit {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-10);
+      align-items: end;
+    }
+
+    .audit__card {
+      min-height: 36rem;
+    }
+  }
+</style>

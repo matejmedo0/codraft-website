@@ -1,0 +1,239 @@
+---
+/**
+ * One of Butter's three stories, for one stage of "Što radimo": the text on
+ * one side, sticky, and a tall navy panel on the other, like a screen of
+ * the product. The panel lists the stage's services as a properties panel
+ * in CAD: each service's icon, title and line, and its guide price and
+ * timeline from src/config/pricing.ts, as on /usluge. The sides alternate
+ * down the page, as Butter's do.
+ */
+import { PRICES } from "../../config/pricing.ts";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import {
+  formatGuidePrice,
+  formatWeeks,
+} from "../../features/services/pricing.ts";
+import type { Stage } from "../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+  stage: Stage;
+  /** The panel's side from 64rem. */
+  panel: "left" | "right";
+}
+
+const { locale, stage, panel } = Astro.props;
+const headingId = `stage-${stage.number}`;
+const services = pathFor("services", locale);
+
+/** Each service with its prices ("Web stranica od 890 €") and timeline. */
+const rows = stage.services.map((service) => {
+  const lines = service.detail?.prices ?? [];
+  const timed = lines
+    .map(({ price }) => PRICES[price])
+    .find((price) => "weeks" in price);
+  return {
+    ...service,
+    values: [
+      ...lines.map(({ price, label }) =>
+        [label && t(locale, label), formatGuidePrice(PRICES[price], locale)]
+          .filter(Boolean)
+          .join(" "),
+      ),
+      ...(timed && "weeks" in timed ? [formatWeeks(timed.weeks, locale)] : []),
+    ],
+  };
+});
+const priced = rows.some(({ values }) => values.length > 0);
+---
+
+<section
+  class:list={["stage b-wrap b-section", `stage--panel-${panel}`]}
+  aria-labelledby={headingId}
+>
+  <div class="stage__text">
+    <h2 id={headingId} class="b-eyebrow">
+      {stage.number}&nbsp;&nbsp;{t(locale, stage.title)}
+    </h2>
+    <p class="b-display">{t(locale, stage.tagline)}</p>
+    {stage.body !== undefined && (
+      <p class="b-lead stage__body">{t(locale, stage.body)}</p>
+    )}
+    <a class="stage__more" href={`${services}#${stage.anchor[locale]}`}>
+      {t(locale, "home.hero.cta")}
+    </a>
+  </div>
+
+  <div class="stage__panel b-panel surface-navy b-reveal">
+    <p class="stage__chip">
+      {t(locale, "nav.services")}&ensp;|&ensp;{t(locale, stage.title)}
+    </p>
+    <ul class="stage__rows">
+      {rows.map((row) => (
+        <li class="stage__row">
+          {row.icon !== undefined && (
+            <span class="b-tile stage__tile">
+              <ServiceIcon icon={row.icon} />
+            </span>
+          )}
+          <span class="stage__row-text">
+            <span class="stage__name">{t(locale, row.title)}</span>
+            <span class="stage__short">{t(locale, row.short)}</span>
+          </span>
+          {row.values.length > 0 && (
+            <span class="stage__values">
+              {row.values.map((value) => (
+                <span class="stage__value">{value}</span>
+              ))}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+    {priced && <p class="stage__terms">{t(locale, "services.terms")}</p>}
+  </div>
+</section>
+
+<style>
+  .stage {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .stage__body {
+    margin-top: var(--space-6);
+  }
+
+  .stage__more {
+    display: inline-block;
+    margin-top: var(--space-6);
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  .stage__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-5);
+  }
+
+  /* Butter's "Library | Text Blocks" chip. */
+  .stage__chip {
+    align-self: flex-start;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--space-2);
+    background: var(--surface-sunk);
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .stage__rows {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stage__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3) var(--space-4);
+    align-items: center;
+    padding: var(--space-4);
+    border-radius: var(--b-radius-small);
+    background: var(--surface-sunk);
+  }
+
+  .stage__tile {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--surface);
+  }
+
+  .stage__row-text {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .stage__name {
+    font-size: var(--step-title);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-title);
+  }
+
+  .stage__short {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+    line-height: var(--leading-lead);
+  }
+
+  /* The values sit under the text, then in a column of their own. */
+  .stage__values {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: var(--space-2);
+  }
+
+  .stage__value {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--space-2);
+    background: var(--surface);
+    font-size: var(--step-small);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .stage__terms {
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+  }
+
+  @media (min-width: 40rem) {
+    .stage__row {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .stage__values {
+      flex-direction: column;
+      align-items: flex-end;
+      grid-column: auto;
+    }
+  }
+
+  /* From 64rem: side by side, the text held in view while the panel
+     scrolls past. */
+  @media (min-width: 64rem) {
+    .stage {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-10);
+      align-items: start;
+    }
+
+    .stage__text {
+      position: sticky;
+      top: 30vh;
+    }
+
+    .stage__panel {
+      min-height: 80svh;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+
+    .stage--panel-left .stage__panel {
+      grid-row: 1;
+      grid-column: 1;
+    }
+  }
+</style>

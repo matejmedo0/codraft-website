@@ -1,0 +1,261 @@
+---
+/**
+ * Butter's timeline, in a navy panel: here the four steps of working with
+ * Codraft (`services.process.*`), laid on tracks like clips in an editor,
+ * each starting where the one before ends. The ruler counts the steps, not
+ * weeks: how long each takes depends on the service. A playhead with a grip
+ * crosses the steps as the page scrolls, where the browser ties animation
+ * to scrolling; elsewhere, and with reduced motion, there is none.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t, type UiKey } from "../../features/i18n/ui.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import type { ServiceIconId } from "../../features/services/icons/service-icons.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const STEPS: readonly { id: string; icon: ServiceIconId }[] = [
+  { id: "audit", icon: "besplatna-analiza" },
+  { id: "offer", icon: "fiksni-opseg" },
+  { id: "build", icon: "web-stranice" },
+  { id: "launch", icon: "hosting" },
+];
+const key = (id: string, part: "title" | "body"): UiKey =>
+  `services.process.${id}.${part}` as UiKey;
+const number = (index: number): string => String(index + 1).padStart(2, "0");
+---
+
+<section class="process b-wrap b-section" aria-labelledby="process-title">
+  <div class="process__panel b-panel surface-navy b-reveal">
+    <div class="process__bar">
+      <span class="process__mark" aria-hidden="true"></span>
+      <h2 id="process-title" class="process__title">
+        {t(locale, "services.process.title")}
+      </h2>
+      <p class="process__lead">{t(locale, "services.process.lead")}</p>
+    </div>
+
+    <div class="process__stage">
+      <div class="process__ruler" aria-hidden="true">
+        {STEPS.map((_, index) => (
+          <span>{number(index)}</span>
+        ))}
+      </div>
+      <ol class="process__track">
+        {STEPS.map(({ id, icon }, index) => (
+          <li class="process__clip">
+            <span class="b-tile process__tile">
+              <ServiceIcon icon={icon} />
+            </span>
+            <span class="process__text">
+              <span class="process__number">{number(index)}</span>
+              <h3 class="process__name">{t(locale, key(id, "title"))}</h3>
+              <span class="process__body">{t(locale, key(id, "body"))}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+      <span class="process__head" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process__panel {
+    padding: var(--space-5);
+  }
+
+  .process__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    padding-bottom: var(--space-5);
+  }
+
+  /* Butter's pause button: a hollow grip in a raised square. */
+  .process__mark {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--b-radius-small);
+    background: var(--surface-sunk);
+  }
+
+  .process__mark::after {
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 2px solid var(--accent);
+    content: "";
+  }
+
+  .process__title {
+    font-size: var(--step-title);
+    font-weight: var(--weight-medium);
+  }
+
+  .process__lead {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  .process__stage {
+    position: relative;
+    container-type: inline-size;
+  }
+
+  .process__ruler {
+    display: none;
+  }
+
+  .process__track {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process__clip {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-3);
+    border-radius: var(--b-radius-small);
+    background: var(--surface-sunk);
+  }
+
+  .process__tile {
+    background: var(--surface);
+  }
+
+  .process__text {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .process__number {
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+    font-stretch: var(--width-label);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .process__name {
+    font-size: var(--step-title);
+  }
+
+  .process__body {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+    line-height: var(--leading-lead);
+  }
+
+  .process__head {
+    display: none;
+  }
+
+  /* From 48rem: a ruler, and the clips step down across four columns. */
+  @media (min-width: 48rem) {
+    .process__panel {
+      padding: var(--space-6);
+    }
+
+    .process__bar {
+      flex-wrap: nowrap;
+    }
+
+    .process__lead {
+      padding-left: var(--space-5);
+      border-left: var(--rule) solid var(--line);
+    }
+
+    .process__ruler {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      height: 2.5rem;
+      margin-bottom: var(--space-4);
+      padding: var(--space-2) 0 0;
+      border-radius: var(--space-2);
+      color: var(--ink-muted);
+      font-size: var(--step-label);
+      font-stretch: var(--width-label);
+      font-weight: var(--weight-medium);
+      font-variant-numeric: tabular-nums;
+      /* A tick every sixteenth, a long one every quarter. */
+      background:
+        repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 25%)
+          0 100% / 100% 70% no-repeat,
+        repeating-linear-gradient(
+            90deg,
+            var(--line) 0 1px,
+            transparent 1px 6.25%
+          )
+          0 100% / 100% 30% no-repeat;
+    }
+
+    .process__ruler span {
+      padding-left: var(--space-2);
+    }
+
+    .process__track {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .process__clip:nth-child(2) {
+      grid-area: 2 / 2;
+    }
+
+    .process__clip:nth-child(3) {
+      grid-area: 3 / 3;
+    }
+
+    .process__clip:nth-child(4) {
+      grid-area: 4 / 4;
+    }
+  }
+
+  @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .process__head {
+        position: absolute;
+        inset-block: 0;
+        left: 0;
+        display: block;
+        width: 2px;
+        background: var(--accent);
+        animation: process-head linear both;
+        animation-timeline: view();
+        animation-range: cover 20% cover 80%;
+        pointer-events: none;
+      }
+
+      .process__head::before {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 0.875rem;
+        height: 0.875rem;
+        border: 2px solid var(--accent);
+        background: var(--surface);
+        content: "";
+        translate: -50% -50%;
+      }
+    }
+  }
+
+  @keyframes process-head {
+    from {
+      translate: 0;
+    }
+
+    to {
+      translate: calc(100cqw - 2px);
+    }
+  }
+</style>

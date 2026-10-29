@@ -1,0 +1,202 @@
+---
+/**
+ * The study's header, as Butter's: two floating pills over the page. On the
+ * left the wordmark and the links, on the right the language and Kontakt as
+ * a navy pill. There is no audit button (ADR 0017). Below 64rem the links
+ * fold into a menu, a native disclosure, so it works without JavaScript.
+ */
+import LanguageSwitcher from "../../components/site/LanguageSwitcher.astro";
+import Wordmark from "../../components/ui/Wordmark.astro";
+import type { Locale } from "../../config/site.ts";
+import { MAIN_NAV } from "../../features/i18n/navigation.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const navLabel = t(locale, "header.navLabel");
+// Kontakt is the navy pill on the right, so the left pill leaves it out.
+const pillLinks = MAIN_NAV.filter(({ page }) => page !== "contact");
+---
+
+<header class="bh">
+  <div class="bh__pill">
+    <a class="bh__home" href={pathFor("home", locale)}>
+      <Wordmark label={t(locale, "header.home")} />
+    </a>
+    <nav class="bh__nav" aria-label={navLabel}>
+      <ul>
+        {pillLinks.map(({ page, label }) => (
+          <li>
+            <a href={pathFor(page, locale)}>{t(locale, label)}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="bh__pill bh__pill--end">
+    <LanguageSwitcher locale={locale} display="code" />
+    <a class="bh__contact" href={pathFor("contact", locale)}>
+      {t(locale, "nav.contact")}
+    </a>
+    <details class="bh__menu">
+      <summary>
+        <span class="visually-hidden">{t(locale, "header.menu")}</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="5" r="1.75" />
+          <circle cx="12" cy="12" r="1.75" />
+          <circle cx="12" cy="19" r="1.75" />
+        </svg>
+      </summary>
+      <nav class="bh__sheet" aria-label={navLabel}>
+        <ul>
+          {MAIN_NAV.map(({ page, label }) => (
+            <li>
+              <a href={pathFor(page, locale)}>{t(locale, label)}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .bh {
+    position: fixed;
+    inset: var(--space-4) var(--b-gutter) auto;
+    z-index: 10;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    pointer-events: none;
+  }
+
+  .bh__pill {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 3.5rem;
+    padding: var(--space-2);
+    border-radius: 1.125rem;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    box-shadow: 0 0.5rem 1.5rem -0.75rem
+      color-mix(in srgb, var(--color-navy) 30%, transparent);
+    backdrop-filter: blur(12px);
+    pointer-events: auto;
+  }
+
+  .bh__home {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    color: var(--ink);
+    --wordmark-width: 6.5rem;
+  }
+
+  .bh__nav {
+    display: none;
+  }
+
+  .bh ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Global, so the language switcher's link takes it too. */
+  .bh :global(a:not(.bh__home)) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    border-radius: var(--b-radius-small);
+    color: var(--ink);
+    font-size: var(--step-small);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .bh :global(a:not(.bh__home, .bh__contact):hover) {
+    background: var(--surface-sunk);
+  }
+
+  /* Butter's "Try for free": here Kontakt, from 64rem. */
+  .bh .bh__contact {
+    display: none;
+    background: var(--button-primary-bg);
+    color: var(--button-primary-fg);
+  }
+
+  .bh .bh__contact:hover {
+    background: var(--button-primary-bg-hover);
+  }
+
+  .bh__menu {
+    position: relative;
+  }
+
+  .bh__menu summary {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--b-radius-small);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .bh__menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bh__menu summary:hover,
+  .bh__menu[open] summary {
+    background: var(--surface-sunk);
+  }
+
+  .bh__menu svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+  }
+
+  .bh__sheet {
+    position: absolute;
+    top: calc(100% + var(--space-3));
+    right: calc(var(--space-2) * -1);
+    min-width: 15rem;
+    padding: var(--space-2);
+    border-radius: 1.125rem;
+    background: var(--surface-sunk);
+    box-shadow: 0 1rem 2rem -1rem
+      color-mix(in srgb, var(--color-navy) 35%, transparent);
+  }
+
+  .bh__sheet ul {
+    flex-direction: column;
+  }
+
+  .bh__sheet a:not(.bh__home) {
+    display: flex;
+    min-height: 3rem;
+    font-size: var(--step-body);
+  }
+
+  @media (min-width: 64rem) {
+    .bh__nav,
+    .bh .bh__contact {
+      display: inline-flex;
+    }
+
+    .bh__menu {
+      display: none;
+    }
+  }
+</style>

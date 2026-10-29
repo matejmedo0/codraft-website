@@ -1,0 +1,53 @@
+---
+// The Butter study: Codraft's Home laid out like butter.video, at the
+// client's request (2026-10-29), with the site's approved copy, prices and
+// team. A lab page apart from Home and the new Home: no route-map page, so
+// noindex; only in `astro dev` and lab builds (astro.config.ts).
+import "../butter/butter.css";
+
+import SkipLink from "../../components/ui/SkipLink.astro";
+import { t } from "../../features/i18n/ui.ts";
+import { STAGES } from "../../features/services/services.ts";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ButterAudit from "../butter/ButterAudit.astro";
+import ButterClosing from "../butter/ButterClosing.astro";
+import ButterDrafting from "../butter/ButterDrafting.astro";
+import ButterFaq from "../butter/ButterFaq.astro";
+import ButterFooter from "../butter/ButterFooter.astro";
+import ButterHeader from "../butter/ButterHeader.astro";
+import ButterHero from "../butter/ButterHero.astro";
+import ButterPrinciples from "../butter/ButterPrinciples.astro";
+import ButterProcess from "../butter/ButterProcess.astro";
+import ButterStage from "../butter/ButterStage.astro";
+import ButterStatement from "../butter/ButterStatement.astro";
+import ButterTicker from "../butter/ButterTicker.astro";
+
+const locale = "hr";
+const MAIN_ID = "main";
+---
+
+<BaseLayout locale={locale} title="Početna po Butteru | Laboratorij dizajna">
+  <div class="butter">
+    <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
+    <ButterHeader locale={locale} />
+    <main id={MAIN_ID} class="b-main">
+      <ButterHero locale={locale} />
+      <ButterTicker locale={locale} />
+      <ButterStatement locale={locale} />
+      <ButterProcess locale={locale} />
+      {STAGES.map((stage, index) => (
+        <ButterStage
+          locale={locale}
+          stage={stage}
+          panel={index % 2 === 0 ? "right" : "left"}
+        />
+      ))}
+      <ButterDrafting locale={locale} />
+      <ButterPrinciples locale={locale} />
+      <ButterFaq locale={locale} />
+      <ButterAudit locale={locale} />
+      <ButterClosing locale={locale} />
+    </main>
+    <ButterFooter locale={locale} />
+  </div>
+</BaseLayout>

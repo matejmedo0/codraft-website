@@ -1,0 +1,245 @@
+---
+/**
+ * Butter's feature cards ("Your new all-in-one video editor"), for "Kako
+ * radimo": the heading with a link on the right, and the three principles
+ * as cards, navy and paper in turn, each with a small scene above its title.
+ * The scenes use real content only: the team as it is (src/config/team.ts),
+ * and two questions from Usluge's FAQ with the first words of their answers.
+ */
+import { TEAM } from "../../config/team.ts";
+import type { Locale } from "../../config/site.ts";
+import { t, type UiKey } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+/** The first sentence of a text: "Ne nužno. Analiza pokaže…" → "Ne nužno." */
+const firstSentence = (text: string): string =>
+  /^.*?[.!?](?=\s|$)/.exec(text)?.[0] ?? text;
+
+const initials = (name: string): string =>
+  name
+    .split(" ")
+    .map((part) => part.charAt(0))
+    .join("");
+
+const CARDS: readonly {
+  id: "direct" | "honest" | "yours";
+  question?: { q: UiKey; a: UiKey };
+}[] = [
+  { id: "direct" },
+  {
+    id: "honest",
+    question: { q: "services.faq.existing.q", a: "services.faq.existing.a" },
+  },
+  {
+    id: "yours",
+    question: { q: "services.faq.ownership.q", a: "services.faq.ownership.a" },
+  },
+];
+---
+
+<section class="principles b-wrap b-section" aria-labelledby="principles-title">
+  <div class="principles__head">
+    <h2 id="principles-title" class="b-display">
+      {t(locale, "home.principles.title")}
+    </h2>
+    <a class="principles__more" href={pathFor("about", locale)}>
+      {t(locale, "home.team.more")}
+      <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <path d="M3 10h13M11 5l5 5-5 5" />
+      </svg>
+    </a>
+  </div>
+
+  <ul class="principles__cards">
+    {CARDS.map(({ id, question }, index) => (
+      <li class="principles__card b-reveal">
+        <div
+          class:list={[
+            "principles__scene b-card",
+            { "b-panel surface-navy": index % 2 === 0 },
+          ]}
+          aria-hidden="true"
+        >
+          {question === undefined ? (
+            <ul class="principles__people">
+              {TEAM.map(({ id: member, name }) => (
+                <li class="principles__person">
+                  <span class="principles__avatar">{initials(name)}</span>
+                  <span>
+                    <span class="principles__name">{name}</span>
+                    <span class="principles__role">
+                      {t(locale, `team.${member}.role` as const)}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div class="principles__chat">
+              <p class="principles__bubble">{t(locale, question.q)}</p>
+              <p class="principles__bubble principles__bubble--reply">
+                {firstSentence(t(locale, question.a))}
+              </p>
+            </div>
+          )}
+        </div>
+        <h3 class="principles__title">
+          {t(locale, `principles.${id}.title` as const)}
+        </h3>
+        <p class="principles__body">
+          {t(locale, `principles.${id}.body` as const)}
+        </p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .principles__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  /* Butter's "View All Features →". */
+  .principles__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 3.5rem;
+    padding: 0 var(--space-6);
+    border-radius: var(--b-radius-small);
+    background: var(--surface-sunk);
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .principles__more:hover {
+    background: var(--color-paper-hover);
+  }
+
+  .principles__more svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+  }
+
+  .principles__cards {
+    display: grid;
+    gap: var(--space-8) var(--space-5);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .principles__scene {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 5 / 4;
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .principles__people {
+    display: grid;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 22rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .principles__person {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-3);
+    border-radius: var(--b-radius-small);
+    background: var(--surface);
+  }
+
+  .principles__avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 2px solid var(--accent);
+    font-size: var(--step-small);
+    font-weight: var(--weight-strong);
+  }
+
+  .principles__name,
+  .principles__role {
+    display: block;
+  }
+
+  .principles__name {
+    font-weight: var(--weight-medium);
+  }
+
+  .principles__role {
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+    line-height: var(--leading-title);
+  }
+
+  .principles__chat {
+    display: grid;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 22rem;
+  }
+
+  .principles__bubble {
+    justify-self: start;
+    max-width: 85%;
+    padding: var(--space-3) var(--space-4);
+    border-radius: 1rem 1rem 1rem 0.25rem;
+    background: var(--surface);
+    font-size: var(--step-small);
+    line-height: var(--leading-title);
+  }
+
+  .principles__bubble--reply {
+    justify-self: end;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+    background: var(--button-primary-bg);
+    color: var(--button-primary-fg);
+    font-weight: var(--weight-medium);
+  }
+
+  .principles__title {
+    margin-top: var(--space-5);
+    font-size: var(--step-title);
+    font-weight: var(--weight-medium);
+  }
+
+  .principles__body {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .principles__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .principles__scene {
+      aspect-ratio: 6 / 5;
+    }
+  }
+</style>

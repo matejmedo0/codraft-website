@@ -1,0 +1,125 @@
+---
+/**
+ * Butter's logo strip, without logos: Codraft has no clients to show yet
+ * and invents none (ADR 0004). The strip runs through what Codraft does
+ * instead, the services of stages 02 and 03 and drafting. It moves only
+ * with the scroll, where the browser ties animation to scrolling, so it
+ * never moves on its own (WCAG 2.2.2). Elsewhere, and with reduced motion,
+ * the names sit still in centred lines.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { DRAFTING_SERVICES, STAGES } from "../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const names = [
+  ...STAGES.slice(1).flatMap(({ services }) => services),
+  ...DRAFTING_SERVICES,
+].map(({ title }) => t(locale, title));
+---
+
+<section class="ticker" aria-labelledby="ticker-title">
+  <h2 id="ticker-title" class="ticker__label">
+    {t(locale, "services.title")}
+  </h2>
+  <div class="ticker__window">
+    <div class="ticker__track">
+      {[false, true].map((copy) => (
+        <ul class="ticker__list" aria-hidden={copy ? "true" : undefined}>
+          {names.map((name) => (
+            <li>{name}</li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ticker {
+    padding-block: var(--space-8) 0;
+  }
+
+  .ticker__label {
+    color: var(--ink-muted);
+    font-family: var(--font-text);
+    font-size: var(--step-lead);
+    font-stretch: var(--width-text);
+    font-weight: var(--weight-text);
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .ticker__window {
+    margin-top: var(--space-6);
+    overflow: hidden;
+  }
+
+  .ticker__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3) var(--space-8);
+    margin: 0;
+    padding: 0 var(--b-gutter);
+    list-style: none;
+    font-family: var(--font-heading);
+    font-size: var(--step-chapter);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-section);
+    white-space: nowrap;
+  }
+
+  /* A hollow grip between the names. */
+  .ticker__list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .ticker__list li::before {
+    width: 0.4em;
+    height: 0.4em;
+    border: 2px solid var(--accent);
+    content: "";
+  }
+
+  .ticker__list[aria-hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .ticker__track {
+        display: flex;
+        width: max-content;
+        animation: ticker linear both;
+        animation-timeline: view();
+      }
+
+      .ticker__list {
+        flex-wrap: nowrap;
+        padding: 0 var(--space-8) 0 0;
+      }
+
+      .ticker__list[aria-hidden] {
+        display: flex;
+      }
+    }
+  }
+
+  @keyframes ticker {
+    from {
+      translate: 0;
+    }
+
+    to {
+      translate: -50%;
+    }
+  }
+</style>

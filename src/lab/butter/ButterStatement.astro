@@ -1,0 +1,88 @@
+---
+/**
+ * Butter's statement: one large centred sentence with small icons set in
+ * its words. Here it is the sentence that introduces Usluge
+ * (`services.intro`), with the service icons after the words they stand
+ * for. A word missing from the sentence (another locale, a changed text)
+ * simply gets no icon. The icons are decorative.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import type { ServiceIconId } from "../../features/services/icons/service-icons.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+type Part = { text: string } | { word: string; icon: ServiceIconId };
+
+const { locale } = Astro.props;
+const sentence = t(locale, "services.intro");
+
+const MARKS: readonly { word: string; icon: ServiceIconId }[] = [
+  { word: "planira", icon: "besplatna-analiza" },
+  { word: "održava", icon: "hosting" },
+  { word: "web stranice", icon: "web-stranice" },
+  { word: "softver", icon: "web-aplikacije" },
+  { word: "AI alate", icon: "ai-asistenti" },
+];
+
+/** The sentence cut after each marked word, in order. */
+const parts: Part[] = [];
+let rest = sentence;
+for (const { word, icon } of MARKS) {
+  const at = rest.indexOf(word);
+  if (at === -1) continue;
+  // A comma or full stop right after the word goes before its icon.
+  const end =
+    at + word.length + (/^[,.]/.test(rest.slice(at + word.length)) ? 1 : 0);
+  parts.push({ text: rest.slice(0, at) }, { word: rest.slice(at, end), icon });
+  rest = rest.slice(end);
+}
+parts.push({ text: rest });
+---
+
+<section class="statement b-wrap b-section">
+  <p class="statement__text b-reveal">
+    {parts.map((part) =>
+      "icon" in part ? (
+        <span class="statement__word">
+          {part.word}
+          <span class="b-tile statement__tile">
+            <ServiceIcon icon={part.icon} />
+          </span>
+        </span>
+      ) : (
+        part.text
+      ),
+    )}
+  </p>
+</section>
+
+<style>
+  .statement__text {
+    max-width: 32ch;
+    margin-inline: auto;
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 1rem + 2.9vw, 3.5rem);
+    font-stretch: var(--width-heading);
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  /* A word and its icon never part at a line break. */
+  .statement__word {
+    white-space: nowrap;
+  }
+
+  .statement__tile {
+    width: 1em;
+    height: 1em;
+    margin-inline: 0.18em 0.05em;
+    border-radius: 0.24em;
+    vertical-align: -0.2em;
+  }
+</style>

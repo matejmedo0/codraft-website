@@ -1,0 +1,171 @@
+---
+/**
+ * Butter's "Create in 3 ways", for drafting: on one side a large card with
+ * the floor plan that draws itself and rises into a house (PlanDrawing, as
+ * on Home), on the other the three drafting services as large words, one
+ * open at a time. The others step back in grey, as Butter's do. A native
+ * exclusive accordion (`<details name>`), so it needs no JavaScript.
+ */
+import { type PriceId, PRICES } from "../../config/pricing.ts";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import {
+  formatGuidePrice,
+  formatWeeks,
+} from "../../features/services/pricing.ts";
+import { DRAFTING_SERVICES } from "../../features/services/services.ts";
+import PlanDrawing from "../../views/home/plan/PlanDrawing.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const drafting = pathFor("drafting", locale);
+// The guide prices of the three drafting services, in their order.
+const PRICE_IDS: readonly PriceId[] = [
+  "drafting2d",
+  "drafting3d",
+  "draftingDocs",
+];
+const items = DRAFTING_SERVICES.map((service, index) => {
+  const id = PRICE_IDS[index];
+  if (id === undefined) return { ...service, values: [] };
+  const price = PRICES[id];
+  return {
+    ...service,
+    values: [
+      formatGuidePrice(price, locale),
+      ...("weeks" in price ? [formatWeeks(price.weeks, locale)] : []),
+    ],
+  };
+});
+---
+
+<section class="drafting b-wrap b-section" aria-labelledby="drafting-title">
+  <div class="drafting__visual b-card b-reveal">
+    <PlanDrawing locale={locale} idPrefix="butter-plan" />
+  </div>
+
+  <div class="drafting__text">
+    <h2 id="drafting-title" class="b-eyebrow">
+      {t(locale, "drafting.title")}
+    </h2>
+    <div class="drafting__list">
+      {items.map((item, index) => (
+        <details class="drafting__item" name="drafting" open={index === 0}>
+          <summary>
+            <h3>{t(locale, item.title)}</h3>
+          </summary>
+          <p class="drafting__short">{t(locale, item.short)}</p>
+          {item.values.length > 0 && (
+            <p class="drafting__values">
+              {item.values.map((value) => (
+                <span>{value}</span>
+              ))}
+            </p>
+          )}
+        </details>
+      ))}
+    </div>
+    <p class="b-lead drafting__lead">{t(locale, "home.drafting.lead")}</p>
+    <p class="drafting__terms">{t(locale, "services.terms")}</p>
+    <a class="drafting__more" href={drafting}>
+      {t(locale, "home.hero.drafting")}
+    </a>
+  </div>
+</section>
+
+<style>
+  .drafting {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .drafting__visual {
+    padding: var(--space-4);
+  }
+
+  .drafting__list {
+    display: grid;
+  }
+
+  .drafting__item summary {
+    padding-block: var(--space-2);
+    color: var(--b-ink-faint);
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .drafting__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .drafting__item summary:hover,
+  .drafting__item[open] summary {
+    color: var(--ink);
+  }
+
+  .drafting__item h3 {
+    font-size: clamp(2.25rem, 1.3rem + 3.6vw, 4.5rem);
+    font-weight: var(--weight-text);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .drafting__short {
+    max-width: var(--measure-lead);
+    padding-top: var(--space-2);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .drafting__values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-block: var(--space-4) var(--space-5);
+  }
+
+  .drafting__values span {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--space-2);
+    background: var(--surface-sunk);
+    font-size: var(--step-small);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .drafting__lead {
+    margin-top: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .drafting__terms {
+    margin-top: var(--space-3);
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+  }
+
+  .drafting__more {
+    display: inline-block;
+    margin-top: var(--space-5);
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  @media (min-width: 64rem) {
+    .drafting {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-10);
+      align-items: center;
+    }
+
+    .drafting__visual {
+      padding: var(--space-6);
+    }
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+/**
+ * Butter's template gallery, without made-up work: Codraft shows no
+ * projects before it has real ones (ADR 0004). The gallery holds Usluge's
+ * frequent questions instead, one card each, navy and paper in turn, in a
+ * row that scrolls sideways and snaps to each card. The row takes keyboard
+ * focus, so the arrow keys scroll it.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const QUESTIONS = [
+  "price",
+  "time",
+  "existing",
+  "ownership",
+  "maintenance",
+  "editing",
+  "vat",
+] as const;
+---
+
+<section class="faq b-section" aria-labelledby="faq-title">
+  <div class="faq__head b-wrap">
+    <p class="b-eyebrow">{t(locale, "nav.services")}</p>
+    <h2 id="faq-title" class="b-display">
+      {t(locale, "services.faq.title")}
+    </h2>
+  </div>
+
+  <div class="b-wrap">
+    {/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- the
+        row scrolls sideways, so it takes focus for the arrow keys
+        (WCAG 2.1.1; WAI's labelled scrolling region) */}
+    <div
+      class="faq__frame b-card"
+      role="region"
+      aria-labelledby="faq-title"
+      tabindex="0"
+    >
+      {/* eslint-enable astro/jsx-a11y/no-noninteractive-tabindex */}
+      <ul class="faq__track">
+        {QUESTIONS.map((id, index) => (
+          <li
+            class:list={[
+              "faq__card",
+              { "b-panel surface-navy": index % 2 === 0 },
+            ]}
+          >
+            <h3 class="faq__q">{t(locale, `services.faq.${id}.q`)}</h3>
+            <p class="faq__a">{t(locale, `services.faq.${id}.a`)}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__head {
+    margin-bottom: var(--space-8);
+    text-align: center;
+  }
+
+  .faq__frame {
+    padding: var(--space-6) 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--space-5);
+    scrollbar-color: var(--line) transparent;
+  }
+
+  .faq__track {
+    display: flex;
+    gap: var(--space-4);
+    width: max-content;
+    margin: 0;
+    padding: 0 var(--space-5);
+    list-style: none;
+  }
+
+  .faq__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    width: min(19rem, 78vw);
+    min-height: 20rem;
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--b-radius);
+    background: var(--surface);
+    scroll-snap-align: start;
+  }
+
+  .faq__q {
+    font-size: var(--step-chapter);
+    font-weight: var(--weight-text);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .faq__a {
+    margin-top: auto;
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+    line-height: var(--leading-lead);
+  }
+
+  @media (min-width: 64rem) {
+    .faq__frame {
+      padding-block: var(--space-8);
+      scroll-padding-inline: var(--space-8);
+    }
+
+    .faq__track {
+      gap: var(--space-5);
+      padding-inline: var(--space-8);
+    }
+
+    .faq__card {
+      width: 22rem;
+      min-height: 23rem;
+    }
+  }
+</style>

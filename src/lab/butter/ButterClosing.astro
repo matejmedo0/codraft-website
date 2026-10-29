@@ -1,0 +1,163 @@
+---
+/**
+ * Butter's two cards side by side, for the team and the closing question.
+ * The team card links to O nama with Butter's round arrow and frames each
+ * person's photo, which arrives with their consent (PROGRESS.md, item C);
+ * until then the frame holds the initials. The closing card is the page's
+ * navy one, as on Home, with the button to Kontakt.
+ */
+import Button from "../../components/ui/Button.astro";
+import { TEAM } from "../../config/team.ts";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const initials = (name: string): string =>
+  name
+    .split(" ")
+    .map((part) => part.charAt(0))
+    .join("");
+---
+
+<div class="duo b-wrap b-section">
+  <section class="duo__card b-card b-reveal" aria-labelledby="team-title">
+    <div class="duo__top">
+      <h2 id="team-title" class="duo__title">
+        {t(locale, "home.team.title")}
+      </h2>
+      <a class="b-arrow" href={pathFor("about", locale)}>
+        <span class="visually-hidden">{t(locale, "home.team.more")}</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3 10h13M11 5l5 5-5 5" />
+        </svg>
+      </a>
+    </div>
+    <ul class="duo__team">
+      {TEAM.map(({ id, name }) => (
+        <li>
+          <span class="duo__photo graph-paper" aria-hidden="true">
+            {initials(name)}
+          </span>
+          <span class="duo__name">{name}</span>
+          <span class="duo__role">{t(locale, `team.${id}.role`)}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="duo__note">{t(locale, "home.team.pending")}</p>
+  </section>
+
+  <section
+    class="duo__card b-panel surface-navy b-reveal"
+    aria-labelledby="closing-title"
+  >
+    <h2 id="closing-title" class="duo__title">
+      {t(locale, "home.closing.title")}
+    </h2>
+    <p class="b-lead duo__lead">{t(locale, "home.closing.lead")}</p>
+    <div class="duo__action">
+      <Button href={pathFor("contact", locale)}>
+        {t(locale, "home.closing.cta")}
+      </Button>
+      <p class="duo__note">{t(locale, "home.closing.note")}</p>
+    </div>
+  </section>
+</div>
+
+<style>
+  .duo {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .duo__card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .duo__top {
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .duo__title {
+    max-width: 16ch;
+    font-size: var(--step-section);
+    font-weight: var(--weight-text);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .duo .b-arrow svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+  }
+
+  .duo__team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .duo__photo {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    margin-bottom: var(--space-3);
+    border-radius: var(--b-radius-small);
+    color: var(--ink-muted);
+    font-size: var(--step-chapter);
+    font-weight: var(--weight-text);
+  }
+
+  .duo__name,
+  .duo__role {
+    display: block;
+  }
+
+  .duo__name {
+    font-weight: var(--weight-medium);
+  }
+
+  .duo__role {
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+    line-height: var(--leading-title);
+  }
+
+  .duo__note {
+    margin-top: var(--space-5);
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+
+  .duo__lead {
+    margin-top: var(--space-5);
+  }
+
+  .duo__action {
+    margin-top: auto;
+    padding-top: var(--space-8);
+  }
+
+  @media (min-width: 64rem) {
+    .duo {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .duo__card {
+      padding: var(--space-8);
+    }
+  }
+</style>

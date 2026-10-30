@@ -1,8 +1,7 @@
 /*
- * Design tokens (ADR 0015, docs/brand.md): colour, type, space and shape.
- * Motion tokens are in motion.css. Components use the role tokens (--ink,
- * --surface, --line, …), never the palette directly, so the same component
- * works on paper and on navy.
+ * Design tokens: colour, type, space and shape. Motion tokens are in
+ * motion.css. Components use the role tokens (--ink, --surface, --line, …),
+ * never the palette directly, so the same component works on both surfaces.
  *
  * Breakpoints (custom properties can't be used in media queries):
  * 40rem (640 px), 48rem (768 px), 64rem (1024 px), 80rem (1280 px).
@@ -12,66 +11,63 @@
 
 @layer tokens {
   :root {
-    /* The palette. Blue is for graphics only: lines, grips, dimensions, the
-       focus ring. Its text tints are the two --color-blue-on-* values. */
-    --color-paper: #f6f5f1;
-    --color-paper-sunk: #edebe5;
-    --color-navy: #0f1b2d;
-    --color-navy-raised: #18273e;
-    --color-navy-hover: #27364f;
-    --color-blue: #2f6bff;
-    --color-blue-on-paper: #2457d6;
-    --color-blue-on-navy: #77a0ff;
-    /* 7.11:1 on paper; darker at the client's request (review batch 10). */
-    --color-grey-on-paper: #4a5362;
-    --color-grey-on-navy: #a7b0bd;
-    --color-paper-hover: #dde3ec;
-    /* Selected text: a tint of the brand blue, like a selection in CAD; the
-       text keeps its surface's ink (base.css). */
-    --color-selection-on-paper: #c4d3f5;
-    --color-selection-on-navy: #1d3f8c;
+    /* The palette: Obsidian Copper, a near-black, slightly cold ground.
+       Copper is for calls to action, small marks and interactive details,
+       never large areas; the technical teal for lines, grids and drawings. */
+    --color-obsidian: #080d10; /* background */
+    --color-petrol: #111b1f; /* surface */
+    --color-petrol-raised: #19282c; /* elevated surface */
+    --color-bone: #f1eeea; /* headings */
+    --color-mist: #9dadb0; /* body text */
+    --color-copper: #d6a075;
+    --color-copper-hover: #e2b48f;
+    --color-teal: #668a90; /* technical accent */
+    /* Selected text: a copper tint; the text keeps its ink (base.css). */
+    --color-selection: #504033;
 
-    /* The sheet's frame, zone rules and title block: navy ink on every
-       surface, like the border of a drawing. */
-    --frame: var(--color-navy);
+    /* The sheet's frame, zone rules and title block: the same rule on every
+       surface. */
+    --frame: color-mix(in srgb, var(--color-teal) 30%, var(--color-obsidian));
 
-    /* Roles on the current surface: paper here, navy inside .surface-navy. */
-    --surface: var(--color-paper);
-    --surface-sunk: var(--color-paper-sunk);
-    --ink: var(--color-navy);
-    --ink-muted: var(--color-grey-on-paper);
-    --line: color-mix(in srgb, var(--color-navy) 16%, var(--color-paper));
-    --line-strong: var(--color-navy);
-    --link: var(--color-blue-on-paper);
-    --accent: var(--color-blue);
-    --accent-text: var(--color-blue-on-paper);
-    --focus: var(--color-blue);
-    --selection: var(--color-selection-on-paper);
+    /* Roles on the current surface: obsidian here, petrol inside
+       .surface-navy (named for the old palette). Body copy is --ink-muted,
+       headings --ink (base.css). */
+    --surface: var(--color-obsidian);
+    --surface-sunk: var(--color-petrol);
+    --ink: var(--color-bone);
+    --ink-muted: var(--color-mist);
+    --line: color-mix(in srgb, var(--color-teal) 30%, var(--color-obsidian));
+    --line-strong: var(--color-teal);
+    --link: var(--color-copper);
+    --accent: var(--color-copper);
+    --accent-text: var(--color-copper);
+    --focus: var(--color-copper);
+    --selection: var(--color-selection);
     --grip-fill: var(--surface);
 
-    --button-primary-bg: var(--color-navy);
-    --button-primary-bg-hover: var(--color-navy-hover);
-    --button-primary-fg: var(--color-paper);
-    --button-secondary-border: var(--color-navy);
-    --button-secondary-fg: var(--color-navy);
-    --button-secondary-bg-hover: var(--color-paper-sunk);
-    --button-disabled-bg: var(--color-paper-sunk);
-    --button-disabled-fg: var(--color-grey-on-paper);
+    --button-primary-bg: var(--color-copper);
+    --button-primary-bg-hover: var(--color-copper-hover);
+    --button-primary-fg: var(--color-obsidian);
+    --button-secondary-border: var(--color-bone);
+    --button-secondary-fg: var(--color-bone);
+    --button-secondary-bg-hover: var(--color-petrol-raised);
+    --button-disabled-bg: var(--color-petrol-raised);
+    --button-disabled-fg: var(--color-mist);
 
     /* Graph paper: a major line every 40 px, a minor one every 8 px. */
-    --grid-major: color-mix(in srgb, var(--color-navy) 11%, transparent);
-    --grid-minor: color-mix(in srgb, var(--color-navy) 5%, transparent);
+    --grid-major: color-mix(in srgb, var(--color-teal) 14%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-teal) 6%, transparent);
     --grid-major-size: 40px;
     --grid-minor-size: 8px;
 
     /* Drawings: outlines, centre lines and hatching, dimensions. */
-    --drawing-ink: var(--color-navy);
+    --drawing-ink: var(--color-teal);
     --drawing-muted: color-mix(
       in srgb,
-      var(--color-navy) 45%,
-      var(--color-paper)
+      var(--color-teal) 50%,
+      var(--color-obsidian)
     );
-    --drawing-fill: var(--color-paper);
+    --drawing-fill: var(--color-obsidian);
 
     /* Type: Archivo only (fonts.css). Headings use the semi-condensed width,
        labels the condensed one. */
@@ -168,38 +164,15 @@
     }
   }
 
-  /* The navy surface: used once on a page, for the closing call to action. */
+  /* The raised petrol surface, alternating with obsidian for depth without
+     hard edges between sections. The class keeps the old palette's name. */
   .surface-navy {
-    --surface: var(--color-navy);
-    --surface-sunk: var(--color-navy-raised);
-    --ink: var(--color-paper);
-    --ink-muted: var(--color-grey-on-navy);
-    --line: color-mix(in srgb, var(--color-paper) 16%, var(--color-navy));
-    --line-strong: var(--color-paper);
-    --link: var(--color-blue-on-navy);
-    --accent-text: var(--color-blue-on-navy);
-    --selection: var(--color-selection-on-navy);
-    --grip-fill: var(--color-navy);
-
-    --button-primary-bg: var(--color-paper);
-    --button-primary-bg-hover: var(--color-paper-hover);
-    --button-primary-fg: var(--color-navy);
-    --button-secondary-border: var(--color-paper);
-    --button-secondary-fg: var(--color-paper);
-    --button-secondary-bg-hover: var(--color-navy-raised);
-
-    --grid-major: color-mix(in srgb, var(--color-paper) 10%, transparent);
-    --grid-minor: color-mix(in srgb, var(--color-paper) 4%, transparent);
-
-    --drawing-ink: var(--color-paper);
-    --drawing-muted: color-mix(
-      in srgb,
-      var(--color-paper) 45%,
-      var(--color-navy)
-    );
-    --drawing-fill: var(--color-navy);
+    --surface: var(--color-petrol);
+    --surface-sunk: var(--color-petrol-raised);
+    --line: color-mix(in srgb, var(--color-teal) 30%, var(--color-petrol));
+    --grip-fill: var(--color-petrol);
+    --drawing-fill: var(--color-petrol);
 
     background: var(--surface);
-    color: var(--ink);
   }
 }

@@ -1,0 +1,169 @@
+---
+/**
+ * Silk waves: flowing ribbons like draped silk, drawn by a WebGL2 shader
+ * (silk-waves.ts) on a canvas that fills its positioned parent. Our own
+ * take on React Bits Pro's Silk Waves, with the same props and defaults.
+ * Without `colors` the ramp comes from the palette (tokens.css), from
+ * obsidian through petrol to the technical teal. Around the pointer the
+ * silk bends a little and catches more light. Without WebGL2 the canvas
+ * stays empty and the parent's surface shows.
+ */
+interface Props {
+  /** Animation speed multiplier. */
+  speed?: number;
+  /** Zoom of the wave pattern: higher shows more silk. */
+  scale?: number;
+  /** Wave amplitude and swirl. */
+  distortion?: number;
+  /** How tightly the waves bend. */
+  curve?: number;
+  /** How close the bands run. */
+  frequency?: number;
+  /** Warp passes, 0.5 to 2: more gives finer folds. */
+  complexity?: number;
+  /** How sharp a band's edge is. */
+  contrast?: number;
+  /** Overall brightness multiplier. */
+  brightness?: number;
+  /** Overall opacity, 0 to 1. */
+  opacity?: number;
+  /** Rotation of the pattern, in degrees. */
+  rotation?: number;
+  /** Horizontal pan of the pattern. */
+  offsetX?: number;
+  /** Vertical pan of the pattern. */
+  offsetY?: number;
+  /** Eight hex colours, from the ground to the lit core. */
+  colors?: string[];
+  class?: string;
+}
+
+const {
+  speed = 1,
+  scale = 2,
+  distortion = 1,
+  curve = 1,
+  frequency = 1,
+  complexity = 1,
+  contrast = 1,
+  brightness = 1,
+  opacity = 1,
+  rotation = 0,
+  offsetX = 0,
+  offsetY = 0,
+  colors,
+  class: className,
+} = Astro.props;
+const options = JSON.stringify({
+  speed,
+  scale,
+  distortion,
+  curve,
+  frequency,
+  complexity,
+  contrast,
+  brightness,
+  opacity,
+  rotation,
+  offsetX,
+  offsetY,
+  colors,
+});
+---
+
+<canvas
+  class:list={["silk-waves", className]}
+  data-silk-waves={options}
+  aria-hidden="true"
+></canvas>
+
+<script>
+  import { gsap } from "../../lib/scroll";
+  import {
+    createSilkWaves,
+    hexToRgb,
+    type Rgb,
+    type SilkOptions,
+  } from "./silk-waves";
+
+  type Data = Omit<SilkOptions, "colors"> & { colors?: string[] };
+
+  function mix(a: Rgb, b: Rgb, amount: number): Rgb {
+    return [
+      a[0] + (b[0] - a[0]) * amount,
+      a[1] + (b[1] - a[1]) * amount,
+      a[2] + (b[2] - a[2]) * amount,
+    ];
+  }
+
+  /** The palette's ramp: obsidian, the petrols, then up to the teal. */
+  function paletteRamp(): Rgb[] {
+    const style = getComputedStyle(document.documentElement);
+    const [obsidian, petrol, raised, teal, bone] = [
+      "obsidian",
+      "petrol",
+      "petrol-raised",
+      "teal",
+      "bone",
+    ].map((name) => hexToRgb(style.getPropertyValue(`--color-${name}`))) as [
+      Rgb,
+      Rgb,
+      Rgb,
+      Rgb,
+      Rgb,
+    ];
+    return [
+      obsidian,
+      petrol,
+      raised,
+      mix(raised, teal, 0.35),
+      mix(raised, teal, 0.6),
+      mix(raised, teal, 0.8),
+      teal,
+      mix(teal, bone, 0.15),
+    ];
+  }
+
+  function start(canvas: HTMLCanvasElement): void {
+    const data = JSON.parse(canvas.dataset.silkWaves ?? "{}") as Data;
+    const render = createSilkWaves(canvas, {
+      ...data,
+      colors: data.colors?.map(hexToRgb) ?? paletteRamp(),
+    });
+    if (!render) return;
+
+    // The pointer eases after the cursor, so the bend trails behind it.
+    const target = { x: 0, y: 0, strength: 0 };
+    const pointer = { x: 0, y: 0, strength: 0 };
+    window.addEventListener("pointermove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      target.x = event.clientX - rect.left;
+      target.y = event.clientY - rect.top;
+      target.strength = 1;
+    });
+    document.documentElement.addEventListener("pointerleave", () => {
+      target.strength = 0;
+    });
+
+    // shortcut: renders even off screen; pause it with an IntersectionObserver in the optimisation phase (ADR 0035).
+    gsap.ticker.add((seconds) => {
+      pointer.x += (target.x - pointer.x) * 0.06;
+      pointer.y += (target.y - pointer.y) * 0.06;
+      pointer.strength += (target.strength - pointer.strength) * 0.04;
+      render(seconds, pointer);
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLCanvasElement>("canvas[data-silk-waves]")
+    .forEach(start);
+</script>
+
+<style>
+  .silk-waves {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

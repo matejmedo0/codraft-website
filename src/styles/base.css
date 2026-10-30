@@ -1,7 +1,8 @@
 /*
- * Element defaults on the paper sheet (ADR 0015): technical lettering in
- * Archivo, navy ink, underlined links, and a real focus outline everywhere.
- * Components refine these with their own (scoped) styles.
+ * Element defaults: technical lettering in Archivo, body copy in the muted
+ * ink and headings in the full ink, underlined links, and a real focus
+ * outline everywhere. Components refine these with their own (scoped)
+ * styles.
  */
 
 @layer base {
@@ -9,7 +10,7 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     background: var(--surface);
-    color: var(--ink);
+    color: var(--ink-muted);
   }
 
   body {
@@ -22,6 +23,7 @@
 
   :is(h1, h2, h3, h4) {
     margin: 0;
+    color: var(--ink);
     font-family: var(--font-heading);
     font-stretch: var(--width-heading);
     font-weight: var(--weight-heading);
@@ -88,8 +90,7 @@
   }
 
   /* What the browser draws itself takes the brand's colours too: selected
-     text in a tint of the blue, in the surface's ink, and a blue text
-     cursor (docs/brand.md#colour). */
+     text in a copper tint, in the full ink, and a copper text cursor. */
   ::selection {
     background-color: var(--selection);
     color: var(--ink);

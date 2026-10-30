@@ -7,6 +7,9 @@ import { collectErrors } from "./helpers.ts";
 /** Below 64rem the navigation folds behind the menu button. */
 const DESKTOP_WIDTH = 1024;
 
+/** Home is bare for now (ADR 0035): the chrome is checked on Services. */
+const CHROME_PAGE = pathFor("services", "hr");
+
 function isNarrow(page: Page): boolean {
   return (page.viewportSize()?.width ?? DESKTOP_WIDTH) < DESKTOP_WIDTH;
 }
@@ -27,7 +30,7 @@ test("the skip link comes first and leads to the main content", async ({
 test("the header links every main page and asks for nothing", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto(CHROME_PAGE);
   const nav = page.getByRole("navigation", { name: "Glavna navigacija" });
   if (isNarrow(page)) {
     await page.getByRole("button", { name: "Izbornik" }).click();
@@ -42,16 +45,17 @@ test("the header links every main page and asks for nothing", async ({
   await expect(
     page.locator(`header a[href="${pathFor("audit", "hr")}"]`),
   ).toHaveCount(0);
-  await expect(
-    page.getByRole("link", { name: "Codraft, početna stranica" }),
-  ).toHaveAttribute("aria-current", "page");
+  await expect(nav.locator(`a[href="${CHROME_PAGE}"]`)).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
 });
 
 test("the menu opens, and Escape closes it and returns focus", async ({
   page,
 }) => {
   const errors = collectErrors(page);
-  await page.goto("/");
+  await page.goto(CHROME_PAGE);
   const toggle = page.getByRole("button", { name: "Izbornik" });
   const nav = page.getByRole("navigation", { name: "Glavna navigacija" });
 
@@ -81,7 +85,7 @@ test.describe("without JavaScript", () => {
   test("the navigation stays open and the menu button hidden", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(CHROME_PAGE);
 
     await expect(
       page.getByRole("navigation", { name: "Glavna navigacija" }),
@@ -91,8 +95,8 @@ test.describe("without JavaScript", () => {
 });
 
 for (const { from, to, lang } of [
-  { from: "/", to: "/en", lang: "en" },
-  { from: "/en", to: "/", lang: "hr" },
+  { from: "/usluge", to: "/en/services", lang: "en" },
+  { from: "/en/services", to: "/usluge", lang: "hr" },
   { from: "/nepostojeca-stranica", to: "/en", lang: "en" },
 ]) {
   test(`the language switcher on ${from} leads to ${to}`, async ({ page }) => {
@@ -113,7 +117,7 @@ for (const locale of ["hr", "en"] as const) {
   test(`the title block links the legal pages (${locale})`, async ({
     page,
   }) => {
-    await page.goto(pathFor("home", locale));
+    await page.goto(pathFor("services", locale));
     const footer = page.getByRole("contentinfo");
 
     for (const { page: target } of LEGAL_NAV) {

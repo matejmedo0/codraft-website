@@ -1,12 +1,15 @@
 ---
 /**
- * "Što radimo" on the new Home: the three stages one under the other, each
- * with its services as rows. From 64rem a stage's head (its number, title
- * and tagline) stays on screen while its services scroll past, then the
- * next stage pushes it away: a reader always knows which stage a service
- * belongs to. Each row's rule is drawn from the left and its icon draws
- * stroke by stroke as the row arrives (new-home.css); the text is always
- * there.
+ * "Što radimo" on the new Home: the three stages one under the other, as a
+ * zig-zag the scroll pulls in (M26 in docs/phases/3-pages.md). A stage's
+ * head (its number, title and tagline) comes in from the left as it
+ * arrives, and its services alternate: the first from the right, the next
+ * from the left, and so on, each on its own side of the sheet from 64rem.
+ * The slides follow the scroll itself (view timelines), so scrolling back
+ * slides them out again, and the icon draws stroke by stroke as its row
+ * lands (new-home.css). The text is always there: without scroll-driven
+ * animations, with reduced motion or without JavaScript the rows stand
+ * still, in place.
  *
  * The services of stages 02 and 03 link to their anchors on /usluge; the
  * two items of stage 01 don't, since the free audit asks once, in the zone
@@ -35,29 +38,37 @@ const services = pathFor("services", locale);
     <p class="svc__intro">{t(locale, "services.intro")}</p>
   </div>
   {STAGES.map((stage) => (
-    <div class="stage nh-grid">
-      <div class="stage__head">
-        <h3 class="stage__title">
-          <span class="stage__number">{stage.number}</span>
-          {t(locale, stage.title)}
-        </h3>
-        <p class="stage__tagline">{t(locale, stage.tagline)}</p>
+    <div class="stage">
+      <div class="stage__head svc-slide">
+        <p class="stage__number" aria-hidden="true">
+          {stage.number}
+        </p>
+        <div class="stage__text">
+          <h3 class="stage__title">
+            <span class="visually-hidden">{stage.number} </span>
+            {t(locale, stage.title)}
+          </h3>
+          <p class="stage__tagline">{t(locale, stage.tagline)}</p>
+        </div>
       </div>
       <ul class="stage__items">
-        {stage.services.map((service) => {
+        {stage.services.map((service, index) => {
           const href =
             service.anchor === undefined
               ? undefined
               : `${services}#${service.anchor[locale]}`;
+          const side = index % 2 === 0 ? "right" : "left";
           return (
             <li
               class:list={[
                 "svc-item",
+                `svc-item--${side}`,
+                "svc-slide",
+                `svc-slide--${side}`,
                 "nh-draw",
                 { "has-grips": href !== undefined },
               ]}
             >
-              <span class="nh-rule" aria-hidden="true" />
               {service.icon !== undefined && (
                 <ServiceIcon icon={service.icon} class="svc-item__icon" />
               )}
@@ -81,6 +92,15 @@ const services = pathFor("services", locale);
 </section>
 
 <style>
+  .svc {
+    /* How far a row comes in from: a step on phones, a long slide from
+       64rem. The slides are clipped at the zone's edge, so the page never
+       scrolls sideways. */
+    --svc-slide: 16vw;
+
+    overflow-x: clip;
+  }
+
   .svc__head {
     align-items: end;
     margin-bottom: var(--space-8);
@@ -94,9 +114,30 @@ const services = pathFor("services", locale);
   }
 
   .stage {
-    gap: var(--space-5);
-    padding-block: var(--space-7);
+    padding-block: var(--space-8);
     border-top: var(--rule) solid var(--line);
+  }
+
+  .stage__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-5);
+    align-items: baseline;
+    margin-bottom: var(--space-6);
+  }
+
+  /* The stage's number, large and in the accent: the sequence is the point
+     of this zone, as a drawing numbers its sheets. The heading carries it
+     for assistive technology. */
+  .stage__number {
+    color: var(--accent-text);
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-display);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
   }
 
   .stage__title {
@@ -104,18 +145,9 @@ const services = pathFor("services", locale);
     letter-spacing: var(--tracking-section);
   }
 
-  /* The stage's number on the heading's own line, at its size, in the
-     accent: the sequence is the point of this zone, as a drawing numbers
-     its sheets. */
-  .stage__number {
-    margin-right: 0.3em;
-    color: var(--accent-text);
-    font-variant-numeric: tabular-nums;
-  }
-
   .stage__tagline {
     max-width: var(--measure-lead);
-    margin-top: var(--space-3);
+    margin-top: var(--space-2);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
     color: var(--ink-muted);
@@ -131,29 +163,24 @@ const services = pathFor("services", locale);
   .svc-item {
     position: relative;
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
+    grid-template-columns: 3.5rem minmax(0, 1fr);
     column-gap: var(--space-5);
     align-items: start;
-    padding: var(--space-5) 0;
+    padding: var(--space-6) 0;
+    border-top: var(--rule) solid var(--line);
   }
 
-  .svc-item:first-child {
-    padding-top: 0;
-  }
-
-  .svc-item:first-child > :global(.nh-rule) {
-    display: none;
-  }
-
-  .svc-item__icon {
+  .svc-item .svc-item__icon {
     grid-row: 1 / span 2;
+    width: 3.5rem;
+    height: 3.5rem;
     color: var(--ink);
   }
 
-  /* A row without an icon keeps the column, so its text lines up. */
   .svc-item__title {
     grid-column: 2;
-    font-size: var(--step-title);
+    font-size: var(--step-chapter);
+    font-weight: var(--weight-chapter);
     line-height: var(--leading-title);
   }
 
@@ -165,6 +192,8 @@ const services = pathFor("services", locale);
     grid-column: 2;
     max-width: var(--measure);
     margin-top: var(--space-2);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
     color: var(--ink-muted);
   }
 
@@ -178,7 +207,52 @@ const services = pathFor("services", locale);
     outline: none;
   }
 
+  /* The slides: a head or a row comes in from its side as far as the
+     scroll has brought it, and settles as it reaches the screen's lower
+     third. */
+  @keyframes svc-from-left {
+    from {
+      opacity: 0;
+      translate: calc(var(--svc-slide) * -1) 0;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes svc-from-right {
+    from {
+      opacity: 0;
+      translate: var(--svc-slide) 0;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .svc-slide {
+        animation: svc-from-left var(--ease-standard) both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+      }
+
+      .svc-slide--right {
+        animation-name: svc-from-right;
+      }
+    }
+  }
+
   @media (min-width: 64rem) {
+    .svc {
+      --svc-slide: 24vw;
+    }
+
     .svc__title {
       grid-column: 1 / span 5;
     }
@@ -192,24 +266,33 @@ const services = pathFor("services", locale);
     }
 
     .stage__head {
-      position: sticky;
-      top: var(--space-8);
-      grid-column: 1 / span 5;
-      align-self: start;
+      margin-bottom: var(--space-7);
     }
 
-    .stage__items {
-      grid-column: 7 / -1;
-    }
-
+    /* Each row on its own side of the sheet, on the page's grid: the first
+       on the right, the next on the left, a zig-zag down the zone. */
     .svc-item {
-      column-gap: var(--space-6);
-      padding-block: var(--space-6);
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      padding-block: var(--space-7);
     }
 
+    .svc-item .svc-item__icon {
+      grid-column: 1;
+    }
+
+    .svc-item__title,
     .svc-item__body {
-      font-size: var(--step-lead);
-      line-height: var(--leading-lead);
+      grid-column: 2 / span 5;
+    }
+
+    .svc-item--right .svc-item__icon {
+      grid-column: 7;
+    }
+
+    .svc-item--right .svc-item__title,
+    .svc-item--right .svc-item__body {
+      grid-column: 8 / -1;
     }
   }
 </style>

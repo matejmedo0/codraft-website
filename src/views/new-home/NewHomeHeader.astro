@@ -277,6 +277,11 @@ function current(target: PageId): "page" | undefined {
       padding: var(--space-2) 0;
       border: 0;
       font-size: calc(var(--step-small) * var(--topbar-scale, 1));
+      /* M32: condensed capitals, a little tracked. */
+      font-stretch: 75%;
+      font-weight: var(--weight-strong);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     /* The language as a floating circle at the top right (M22), of

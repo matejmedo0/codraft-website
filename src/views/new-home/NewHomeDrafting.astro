@@ -32,12 +32,14 @@ const drafting = pathFor("drafting", locale);
 
 <section class="cad nh-zone" aria-labelledby="crtanje" data-building-scene>
   <div class="cad__text">
-    <h2 id="crtanje">{t(locale, "drafting.title")}</h2>
+    <h2 class="cad__title nk-display" id="crtanje">
+      {t(locale, "drafting.title")}
+    </h2>
     <p class="cad__lead">{t(locale, "home.drafting.lead")}</p>
     <ul class="cad__list">
       {DRAFTING_SERVICES.map((service) => (
         <li class="cad-item has-grips">
-          <h3 class="cad-item__title">
+          <h3 class="cad-item__title nk-display">
             <a
               class="cad-item__link stretched-link"
               href={
@@ -110,9 +112,13 @@ const drafting = pathFor("drafting", locale);
     border-top: var(--rule) solid var(--line);
   }
 
+  .cad__title {
+    font-size: clamp(3rem, 1.5rem + 4.6vw, 6.5rem);
+  }
+
   .cad-item__title {
-    font-size: var(--step-title);
-    line-height: var(--leading-title);
+    font-size: var(--nk-row);
+    line-height: 1;
   }
 
   .cad-item__link {

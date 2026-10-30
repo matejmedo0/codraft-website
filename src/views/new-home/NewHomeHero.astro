@@ -27,7 +27,7 @@ const { locale } = Astro.props;
 
 <section class="hero" aria-labelledby="naslov" data-hero>
   <div class="hero__text">
-    <h1 id="naslov">
+    <h1 class="hero__title nk-display" id="naslov">
       <span class="hero__line">
         <span class="hero__rise">{t(locale, "home.hero.titleLine1")}</span>
       </span>{" "}
@@ -70,7 +70,15 @@ const { locale } = Astro.props;
   .hero__text {
     display: grid;
     justify-items: center;
-    max-width: 100%;
+    width: 100%;
+    container-type: inline-size;
+  }
+
+  /* As large as lets the first line fit the sheet (about 16.5 em in these
+     capitals). */
+  .hero__title {
+    font-size: clamp(2.5rem, 100cqi / 16.5, 7rem);
+    line-height: 0.88;
   }
 
   /* Each line of the headline is its own block, clipped at its baseline,
@@ -88,7 +96,7 @@ const { locale } = Astro.props;
   /* Two lines on wide screens. */
   .hero__lead {
     max-width: 66ch;
-    margin-top: var(--space-5);
+    margin-top: var(--space-6);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
     text-wrap: balance;

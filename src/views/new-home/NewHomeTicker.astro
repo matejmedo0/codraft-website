@@ -1,0 +1,152 @@
+---
+/**
+ * A strip of what Codraft does, running across the sheet between the hero
+ * and "Što radimo" (M32): the services' names in display capitals,
+ * filled and outlined in turn, each followed by a grip. It runs slowly
+ * and endlessly; a button pauses it (WCAG 2.2.2), and with reduced motion
+ * it stands still. The names repeat the services' titles below, so the
+ * strip itself is hidden from assistive technology.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { DRAFTING_SERVICES, STAGES } from "../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const names = [
+  ...STAGES.flatMap((stage) => stage.services),
+  ...DRAFTING_SERVICES,
+].map((service) => t(locale, service.title));
+---
+
+<section class="ticker" data-ticker>
+  <div class="ticker__track" aria-hidden="true">
+    {[0, 1].map(() => (
+      <ul class="ticker__run">
+        {names.map((name, index) => (
+          <li class="ticker__item">
+            <span
+              class:list={[
+                "ticker__name",
+                "nk-display",
+                { "nk-outline": index % 2 === 1 },
+              ]}
+            >
+              {name}
+            </span>
+            <span class="ticker__grip" />
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+  <button
+    class="ticker__toggle nk-label"
+    type="button"
+    aria-pressed="false"
+    data-ticker-toggle
+    data-pause={t(locale, "newHome.ticker.pause")}
+    data-play={t(locale, "newHome.ticker.play")}
+  >
+    {t(locale, "newHome.ticker.pause")}
+  </button>
+</section>
+
+<script>
+  for (const ticker of document.querySelectorAll<HTMLElement>(
+    "[data-ticker]",
+  )) {
+    const button = ticker.querySelector<HTMLButtonElement>(
+      "[data-ticker-toggle]",
+    );
+    button?.addEventListener("click", () => {
+      const paused = ticker.classList.toggle("is-paused");
+      button.setAttribute("aria-pressed", String(paused));
+      button.textContent =
+        (paused ? button.dataset.play : button.dataset.pause) ?? "";
+    });
+  }
+</script>
+
+<style>
+  .ticker {
+    position: relative;
+    padding-block: var(--space-6) var(--space-5);
+    overflow: clip;
+    border-block: var(--rule) solid var(--line);
+  }
+
+  .ticker__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .ticker__run {
+    display: flex;
+    flex: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticker__item {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+    padding-right: var(--space-6);
+  }
+
+  .ticker__name {
+    font-size: clamp(2.5rem, 1.5rem + 4vw, 6rem);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ticker__grip {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    border: var(--grip-stroke) solid var(--accent);
+  }
+
+  .ticker__toggle {
+    position: absolute;
+    right: var(--pad);
+    bottom: var(--space-2);
+    min-height: 1.5rem;
+    padding: 0 var(--space-2);
+    border: 0;
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .ticker__toggle:hover {
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ticker__track {
+      animation: ticker-run 60s linear infinite;
+    }
+
+    .ticker.is-paused .ticker__track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Reduced motion: still, and nothing to pause. */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__toggle {
+      display: none;
+    }
+  }
+
+  @keyframes ticker-run {
+    to {
+      translate: -50% 0;
+    }
+  }
+</style>

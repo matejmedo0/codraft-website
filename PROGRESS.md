@@ -251,6 +251,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-30 | Na novoj početnoj „Tehničko crtanje” i „Što radimo” animiraju se jednom, kad dođu na ekran, a ne sa skrolom. Umjesto kuće stambena zgrada (prizemlje, 3 kata, penthouse; dvorište s bazenom, parkiralište), zatim presjeci A–A i B–B i tablica bruto površine i kubature (1.312 m², 3.936 m³), sve kao ilustracija. | [ADR 0036](docs/decisions/0036-new-home-building-scene-on-arrival.md) |
 | 2026-10-30 | Hero nove početne: tekst centriran i animiran pri učitavanju, a ispod njega editor u kojem se kod tipka red po red i preglednik u kojem iz tog koda nastaje web stranica. Crtež web stranice zdesna je uklonjen. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md) |
 | 2026-10-30 | Hero: uvod u dva reda; na prvi skrol prozori editora i preglednika jednom narastu na cijeli ekran i postanu hero; u pregledniku animirani Codraft logo umjesto slike. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md), dopuna |
+| 2026-10-30 | Hero: narasli prozori su nešto manji (do 76rem širine, 76 % visine ekrana), a kad se vratite na vrh stranice, opet se smanje. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md), dopuna |
 
 ## Sitemap
 

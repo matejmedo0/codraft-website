@@ -15,6 +15,8 @@
  * stage is hidden from assistive technology. The page shown is a sample,
  * not client work.
  */
+import Wordmark from "../../../components/ui/Wordmark.astro";
+
 interface Token {
   /** tag, attr, value, text or punct: the syntax colours. */
   kind: "tag" | "attr" | "value" | "text" | "punct";
@@ -147,7 +149,9 @@ const LINES: Line[] = [
             Upit
           </span>
         </div>
-        <span class="site__image" data-after-line="7"></span>
+        <span class="site__image graph-paper" data-after-line="7">
+          <Wordmark class="site__logo-mark" />
+        </span>
       </div>
       <div class="site__cards" data-after-line="14">
         <span class="site__card" data-after-line="11">
@@ -190,6 +194,8 @@ const LINES: Line[] = [
   .cts__browser {
     position: relative;
     min-width: 0;
+    min-height: 0;
+    transition: min-height 1100ms cubic-bezier(0.16, 1, 0.3, 1);
     border: var(--rule) solid var(--line);
     border-radius: var(--radius);
     background: var(--panel);
@@ -342,24 +348,18 @@ const LINES: Line[] = [
     font-weight: var(--weight-strong);
   }
 
-  /* The image: a hatched frame, as an image is drawn on a sheet. */
+  /* The image: the Codraft wordmark on graph paper, drawn in as the
+     image's line is typed (see the animation below). */
   .site__image {
+    display: grid;
+    place-items: center;
     aspect-ratio: 4 / 3;
-    border: var(--rule) solid var(--line-strong);
-    background:
-      linear-gradient(
-        to top right,
-        transparent calc(50% - 0.5px),
-        var(--line) 50%,
-        transparent calc(50% + 0.5px)
-      ),
-      linear-gradient(
-        to bottom right,
-        transparent calc(50% - 0.5px),
-        var(--line) 50%,
-        transparent calc(50% + 0.5px)
-      ),
-      var(--surface);
+    padding: 0 14%;
+    color: var(--ink);
+  }
+
+  .site__image :global(.site__logo-mark) {
+    --wordmark-width: 100%;
   }
 
   .site__cards {
@@ -376,6 +376,52 @@ const LINES: Line[] = [
     font-weight: var(--weight-medium);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .cts__editor,
+    .cts__browser {
+      transition: none;
+    }
+  }
+
+  /* The hero taken by the windows (is-big, hero-expand.ts): from 48rem
+     they grow with the stage, and from 64rem to the screen's height. */
+  @media (min-width: 48rem) {
+    .cts__browser {
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    :global(.is-big) .cts__page {
+      align-content: space-evenly;
+      padding: var(--space-6);
+      font-size: clamp(0.75rem, 1.3cqi, 1.25rem);
+    }
+
+    :global(.is-big) .cts__code {
+      --code-size: clamp(0.75rem, 1.25cqi, 1.25rem);
+
+      padding-top: var(--space-5);
+      line-height: 1.9;
+    }
+
+    :global(.is-big) .site__title {
+      font-size: clamp(1.375rem, 3.2cqi, 3rem);
+    }
+
+    :global(.is-big) .site__hero {
+      gap: var(--space-6);
+    }
+  }
+
+  /* The full screen's height only where the windows sit side by side on a
+     wide screen; a tall tablet would leave them empty. */
+  @media (min-width: 64rem) {
+    :global(.is-big) .cts__editor,
+    :global(.is-big) .cts__browser {
+      min-height: calc(100svh - var(--space-10));
+    }
+  }
+
   .cts__grips {
     opacity: 1;
   }
@@ -387,7 +433,7 @@ const LINES: Line[] = [
 
   @media (min-width: 48rem) {
     .cts {
-      --code-size: 0.75rem;
+      --code-size: clamp(0.75rem, 1.05cqi, 1.0625rem);
 
       grid-template-columns: minmax(0, 1fr) var(--space-9) minmax(0, 1fr);
       gap: 0;
@@ -422,11 +468,11 @@ const LINES: Line[] = [
     }
 
     .cts__page {
-      font-size: 0.75rem;
+      font-size: clamp(0.75rem, 1.05cqi, 1.0625rem);
     }
 
     .site__title {
-      font-size: 1.375rem;
+      font-size: clamp(1.375rem, 2cqi, 2.25rem);
     }
   }
 
@@ -476,6 +522,108 @@ const LINES: Line[] = [
 
   /* A clip from the right, so the line ends exactly where its text does,
      whatever the monospace's real advance. */
+  /* The wordmark draws as its image appears: the lettering rises in, the
+     arc and the drafting line draw, the grip snaps in. When the windows
+     grow into the hero (is-big) it draws once more. */
+  .site__image :global(:is(.wordmark__line, .wordmark__grip, .wordmark__arc)) {
+    transform-box: fill-box;
+  }
+
+  .site__image :global(.wordmark__line) {
+    transform-origin: 0 50%;
+  }
+
+  .site__image :global(:is(.wordmark__grip, .wordmark__arc)) {
+    transform-origin: 50% 50%;
+  }
+
+  :global(.is-live) .site__image :global(.wordmark__ink) {
+    animation: cts-ink 600ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--at) + 150ms) both;
+  }
+
+  :global(.is-live) .site__image :global(.wordmark__arc) {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      calc(var(--at) + 450ms) both;
+  }
+
+  :global(.is-live) .site__image :global(.wordmark__line) {
+    animation: motion-draw-x var(--motion-draw) var(--ease-pen)
+      calc(var(--at) + 600ms) both;
+  }
+
+  :global(.is-live) .site__image :global(.wordmark__grip) {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap)
+      calc(var(--at) + 1300ms) both;
+  }
+
+  :global(.is-big .is-live) .site__image :global(.wordmark__ink) {
+    animation-name: cts-ink-again;
+    animation-delay: 500ms;
+  }
+
+  :global(.is-big .is-live) .site__image :global(.wordmark__arc) {
+    animation-name: cts-snap-again;
+    animation-delay: 800ms;
+  }
+
+  :global(.is-big .is-live) .site__image :global(.wordmark__line) {
+    animation-name: cts-draw-again;
+    animation-delay: 950ms;
+  }
+
+  :global(.is-big .is-live) .site__image :global(.wordmark__grip) {
+    animation-name: cts-snap-again;
+    animation-delay: 1650ms;
+  }
+
+  @keyframes cts-ink {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* The same motions under new names, so a replay restarts them. */
+  @keyframes cts-ink-again {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes cts-draw-again {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes cts-snap-again {
+    from {
+      opacity: 0;
+      scale: 0.6;
+    }
+
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
   @keyframes cts-type {
     from {
       clip-path: inset(0 100% 0 0);

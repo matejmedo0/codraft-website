@@ -109,23 +109,3 @@ for (const { path, lang, other, h1, title, description, graph } of PAGES) {
     expect(errors).toEqual([]);
   });
 }
-
-for (const [home, services] of [
-  ["/", "/usluge"],
-  ["/en", "/en/services"],
-] as const) {
-  test(`Home's service links land on their rows on ${services}`, async ({
-    page,
-  }) => {
-    await page.goto(home);
-    const links = page.locator(`a[href^="${services}#"]`);
-    const targets = await links.evaluateAll((anchors) =>
-      anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).hash),
-    );
-    expect(targets.length).toBeGreaterThan(0);
-    await page.goto(services);
-    for (const hash of targets) {
-      await expect(page.locator(hash)).toHaveCount(1);
-    }
-  });
-}

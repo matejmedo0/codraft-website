@@ -30,5 +30,5 @@ The removed documents stay in git history, in the commit before this ADR.
 ## Consequences
 
 - Pages need JavaScript for their motion. GSAP, ScrollTrigger, SplitText and Lenis add about 52 KB gzip, accepted until the optimisation phase.
-- Pages not yet rebuilt keep the old design and its code; comments there may point at the removed ADRs. Old code, and tests of it such as the reduced-motion check in `site-chrome.spec.ts`, go when their page is rebuilt.
+- Pages not yet rebuilt keep the old design and its code; comments there may point at the removed ADRs. When a page is rebuilt, its old code and tests move to `archive/`, which nothing builds, lints or tests. The old Home, the unfinished Midnight Home and their E2E tests are there already.
 - The visual details in the page outlines of `docs/information-architecture.md` describe the old design; its sitemap and URLs still hold.

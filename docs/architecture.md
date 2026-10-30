@@ -46,7 +46,7 @@ codraft-website/
 │   ├── locales/           UI strings: hr.json and en.json
 │   ├── pages/             [...slug].astro (every route-map page), 404.astro, en/404.astro, api/health.ts
 │   ├── styles/            global.css with tokens.css, motion.css, fonts.css, base.css, utilities.css; motion.ts
-│   └── views/             One view per page: HomeView (its zones and the floor plan in home/), NotFoundView
+│   └── views/             One view per page: HomeView (being rebuilt, ADR 0035), ServicesView, NotFoundView
 ├── tests/e2e/             Playwright tests
 ├── astro.config.ts · tsconfig.json · eslint.config.js · prettier.config.mjs · vitest.config.ts · playwright.config.ts
 └── CLAUDE.md · README.md

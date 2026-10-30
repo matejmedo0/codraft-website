@@ -128,18 +128,6 @@ for (const locale of ["hr", "en"] as const) {
   });
 }
 
-test("with reduced motion nothing waits to be drawn", async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: "reduce" });
-  const page = await context.newPage();
-  await page.goto("/");
-  await page.evaluate(() => {
-    window.scrollTo(0, document.documentElement.scrollHeight);
-  });
-
-  await expect(page.locator(".is-pending")).toHaveCount(0);
-  await context.close();
-});
-
 test("the favicon set is served without C2PA metadata", async ({ request }) => {
   for (const path of [
     "/favicon.ico",

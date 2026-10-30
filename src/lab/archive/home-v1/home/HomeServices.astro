@@ -1,0 +1,279 @@
+---
+/**
+ * Zone B, "Što radimo": the central axis (the client's review, batches 3
+ * and 4), with one short line per service (the full sentences are for
+ * /usluge). On wide screens the process line runs down the middle of the
+ * sheet: each stage's bubble sits on it with the title and tagline centred
+ * below, and its services stand left and right of the line, the left ones
+ * aligned to it. The stage head covers the line where it passes behind the
+ * title. An odd last service is centred under its stage. On narrow screens
+ * the line runs down the left.
+ *
+ * The process line joins the bubbles 01 → 02 → 03. It follows the scroll
+ * row by row, and each service's icon draws as the line reaches it, once
+ * and only forwards (ADR 0023; axis-line.ts). Without JavaScript or with
+ * reduced motion the stages' rails draw it complete.
+ *
+ * Each service shows its icon beside its title and its line, on the side
+ * facing the line (ADR 0022); on phones beside the title only (ADR 0028).
+ * The services' type is a step larger on wide screens (review #102).
+ */
+import "../../../../features/services/stages.css";
+import "./services.css";
+
+import Zone from "../../../../components/ui/Zone.astro";
+import type { Locale } from "../../../../config/site.ts";
+import { t } from "../../../../features/i18n/ui.ts";
+import { pathFor } from "../../../../features/i18n/urls.ts";
+import { STAGES } from "../../../../features/services/services.ts";
+import ServiceItem from "./ServiceItem.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const headingId = "usluge";
+const services = pathFor("services", locale);
+---
+
+<Zone labelledby={headingId} class="svc">
+  <h2 id={headingId}>{t(locale, "services.title")}</h2>
+  <div class="axis axis--icons" data-axis>
+    <span class="axis__line" data-axis-line aria-hidden="true"></span>
+    {STAGES.map((stage) => (
+      <div class="axis-stage" data-axis-stage>
+        <span class="svc-rail axis-stage__rail" aria-hidden="true" />
+        <div class="axis-stage__head">
+          <h3 class="svc-title axis-stage__title">
+            <span class="svc-bubble axis-stage__bubble" data-axis-mark>
+              {stage.number}
+            </span>
+            {t(locale, stage.title)}
+          </h3>
+          <p class="svc-tagline axis-stage__tagline">
+            {t(locale, stage.tagline)}
+          </p>
+        </div>
+        <ul class="svc-items axis-stage__items">
+          {stage.services.map((service) => (
+            <ServiceItem
+              title={t(locale, service.title)}
+              body={t(locale, service.short)}
+              href={
+                service.anchor === undefined
+                  ? undefined
+                  : `${services}#${service.anchor[locale]}`
+              }
+              icon={service.icon}
+              class="axis-stage__item"
+              data-axis-item
+            />
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <script>
+    import "./axis-line.ts";
+  </script>
+</Zone>
+
+<style>
+  .axis {
+    --icon: 2.5rem;
+    --item-pad: var(--space-4);
+
+    position: relative;
+  }
+
+  /* Narrow screens: the line down the left, as in option 1. */
+  .axis__line {
+    left: calc((var(--bubble) - var(--rail)) / 2);
+  }
+
+  .axis-stage {
+    --stage-top: var(--space-5);
+
+    position: relative;
+    padding: var(--stage-top) 0 var(--space-6)
+      calc(var(--bubble) + var(--space-4));
+  }
+
+  .axis-stage__title {
+    padding-top: max(0px, (var(--bubble) - 1lh) / 2);
+  }
+
+  .axis-stage__bubble {
+    position: absolute;
+    z-index: 1;
+    top: var(--stage-top);
+    left: 0;
+  }
+
+  .axis-stage__tagline {
+    max-width: 30ch;
+    margin-top: var(--space-2);
+  }
+
+  .axis-stage__rail {
+    top: 0;
+    bottom: 0;
+    left: calc((var(--bubble) - var(--rail)) / 2);
+  }
+
+  .axis-stage:first-of-type .axis-stage__rail {
+    top: calc(var(--stage-top) + var(--bubble) / 2);
+  }
+
+  .axis-stage:last-child .axis-stage__rail {
+    bottom: auto;
+    height: calc(var(--stage-top) + var(--bubble) / 2);
+  }
+
+  .axis-stage__items {
+    margin-top: var(--space-4);
+  }
+
+  .axis-stage__item {
+    padding: var(--item-pad) 0 var(--space-5);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  /* The icons (review batch 13): beside the title and its line, in a column
+     of its own (ADR 0022). */
+  .axis--icons .axis-stage__item {
+    display: grid;
+    grid-template-columns: var(--icon) minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-content: start;
+    align-items: start;
+  }
+
+  .axis--icons .axis-stage__item :global(.service__icon) {
+    grid-row: 1 / span 2;
+  }
+
+  .axis--icons .axis-stage__item :global(:is(.service__title, .service__body)) {
+    grid-column: 2;
+  }
+
+  /* On phones the icon sits beside the title only, and the line runs under
+     both at the column's full width, so it isn't squeezed to 21-24
+     characters (critique 5, review #121; ADR 0028). */
+  @media (max-width: 47.99rem) {
+    .axis--icons
+      .axis-stage__item
+      :global(:is(.service__icon, .service__title)) {
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .axis--icons .axis-stage__item :global(.service__body) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    /* The line down the middle, and the services' titles a step larger for
+       easier reading (#102). */
+    .axis {
+      --step-title: clamp(1.25rem, 1.1rem + 0.45vw, 1.625rem);
+    }
+
+    .axis .axis-stage {
+      --stage-top: var(--space-5);
+
+      padding: var(--stage-top) 0 var(--space-5);
+    }
+
+    .axis .axis-stage:last-child {
+      padding-bottom: 0;
+    }
+
+    /* The head covers the line where it passes behind the title. */
+    .axis .axis-stage__head {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      width: fit-content;
+      max-width: 36rem;
+      margin-inline: auto;
+      padding-bottom: var(--space-3);
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .axis .axis-stage__title {
+      display: grid;
+      gap: var(--space-3);
+      justify-items: center;
+      padding-top: 0;
+    }
+
+    .axis .axis-stage__bubble {
+      position: static;
+    }
+
+    .axis .axis-stage__tagline {
+      margin-top: var(--space-3);
+    }
+
+    .axis :is(.axis__line, .axis-stage__rail) {
+      left: calc(50% - var(--rail) / 2);
+    }
+
+    .axis .axis-stage__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-10);
+      margin-top: var(--space-6);
+    }
+
+    /* The left column leans on the line. */
+    .axis .axis-stage__item:nth-child(odd) {
+      text-align: right;
+    }
+
+    .axis .axis-stage__item:nth-child(odd) :global(.service__body) {
+      margin-left: auto;
+    }
+
+    .axis .axis-stage__item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: min(100%, 36rem);
+      text-align: center;
+    }
+
+    .axis .axis-stage__item:last-child:nth-child(odd) :global(.service__body) {
+      margin-inline: auto;
+    }
+
+    /* The icons face the line, and the centred last service has its icon
+       centred above it. */
+    .axis.axis--icons .axis-stage__item:nth-child(odd) {
+      grid-template-columns: minmax(0, 1fr) var(--icon);
+    }
+
+    .axis.axis--icons .axis-stage__item:nth-child(odd) :global(.service__icon) {
+      grid-column: 2;
+    }
+
+    .axis.axis--icons
+      .axis-stage__item:nth-child(odd)
+      :global(:is(.service__title, .service__body)) {
+      grid-column: 1;
+    }
+
+    .axis.axis--icons .axis-stage__item:last-child:nth-child(odd) {
+      display: block;
+    }
+
+    .axis.axis--icons
+      .axis-stage__item:last-child:nth-child(odd)
+      :global(.service__icon) {
+      margin: 0 auto var(--space-3);
+    }
+  }
+</style>

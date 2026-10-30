@@ -1,0 +1,189 @@
+---
+/**
+ * The free audit on the new Home: one panel on the sunk surface with the
+ * heading, the lead and the page's one "Rezervirajte besplatnu analizu",
+ * and beside them the three steps (form → time slot → confirmation). Each
+ * step is a grip, and the drafting line grows from one grip to the next as
+ * the panel scrolls in: the brand's "line through steps", scrubbed by the
+ * scroll (new-home.css). The text is always there.
+ */
+import Button from "../../components/ui/Button.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const steps = (["form", "slot", "confirmation"] as const).map((step) => ({
+  title: t(locale, `audit.step.${step}.title`),
+  body: t(locale, `audit.step.${step}.body`),
+}));
+const last = steps.length - 1;
+---
+
+<section class="audit nh-zone" aria-labelledby="analiza">
+  <div class="audit__panel">
+    <div class="audit__text">
+      <h2 id="analiza">{t(locale, "home.audit.title")}</h2>
+      <p class="audit__lead">{t(locale, "home.audit.lead")}</p>
+      <div class="audit__actions">
+        <Button href={pathFor("audit", locale)}>
+          {t(locale, "audit.cta")}
+        </Button>
+      </div>
+    </div>
+    <ol class="audit__steps">
+      {steps.map((step, index) => (
+        <li class="astep">
+          <span class="astep__node" aria-hidden="true" />
+          {index < last && <span class="astep__link" aria-hidden="true" />}
+          <h3 class="astep__title">
+            <span class="astep__number" aria-hidden="true">
+              {index + 1}
+            </span>
+            {step.title}
+          </h3>
+          <p class="astep__body">{step.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .audit__panel {
+    display: grid;
+    gap: var(--space-8);
+    padding: var(--space-7) var(--space-5);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface-sunk);
+    view-timeline: --audit block;
+  }
+
+  .audit__lead {
+    max-width: var(--measure);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .audit__actions {
+    margin-top: var(--space-6);
+  }
+
+  .audit__steps {
+    --node: 1rem;
+    /* The node sits on the centre of the title's first line. */
+    --node-top: calc((var(--step-title) * 1.2 - var(--node)) / 2);
+
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .astep {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--node) minmax(0, 1fr);
+    align-content: start;
+    column-gap: var(--space-5);
+    padding-bottom: var(--space-7);
+  }
+
+  .astep:last-child {
+    padding-bottom: 0;
+  }
+
+  .astep:nth-child(1) {
+    --k: 0;
+  }
+
+  .astep:nth-child(2) {
+    --k: 1;
+  }
+
+  .astep:nth-child(3) {
+    --k: 2;
+  }
+
+  .astep__node {
+    position: relative;
+    z-index: 1;
+    grid-row: 1 / span 2;
+    width: var(--node);
+    height: var(--node);
+    margin-top: var(--node-top);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+  }
+
+  .astep__link {
+    position: absolute;
+    top: calc(var(--node-top) + var(--node));
+    bottom: calc(var(--node-top) * -1);
+    left: calc((var(--node) - var(--rail)) / 2);
+    width: var(--rail);
+    background: var(--accent);
+    transform-origin: 50% 0;
+  }
+
+  .astep__title {
+    grid-column: 2;
+    font-size: var(--step-title);
+    line-height: var(--leading-title);
+  }
+
+  .astep__number {
+    margin-right: var(--space-2);
+    color: var(--accent-text);
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .astep__body {
+    grid-column: 2;
+    margin-top: var(--space-1);
+    color: var(--ink-muted);
+  }
+
+  /* The grips land one after the other and each line grows as its grip
+     lands, all within the panel's own travel through the screen. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .astep__node {
+        animation: motion-snap-in var(--ease-snap) both;
+        animation-timeline: --audit;
+        animation-range-start: cover calc(12% + var(--k) * 13%);
+        animation-range-end: cover calc(17% + var(--k) * 13%);
+      }
+
+      .astep__link {
+        animation: motion-draw-y var(--ease-pen) both;
+        animation-timeline: --audit;
+        animation-range-start: cover calc(16% + var(--k) * 13%);
+        animation-range-end: cover calc(26% + var(--k) * 13%);
+      }
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .audit__panel {
+      padding: var(--space-8) var(--space-7);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .audit__panel {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      column-gap: var(--space-10);
+      align-items: center;
+      padding: var(--space-9) var(--space-8);
+    }
+  }
+</style>

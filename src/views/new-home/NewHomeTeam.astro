@@ -1,0 +1,136 @@
+---
+/**
+ * The team on the new Home: the two people with their names and roles, and
+ * the full team on About. Until the photos arrive, each photo is a drafting
+ * placeholder, a frame whose diagonals are drawn as it scrolls in
+ * (new-home.css), and a note says the photos come before launch; no stock
+ * or generated people stand in for the team (docs/brand.md, "Imagery").
+ */
+import type { Locale } from "../../config/site.ts";
+import { TEAM } from "../../config/team.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const members = TEAM.map(({ id, name }) => ({
+  name,
+  role: t(locale, `team.${id}.role`),
+}));
+---
+
+<section class="team nh-zone nh-grid" aria-labelledby="tim">
+  <div class="team__head">
+    <h2 id="tim">{t(locale, "home.team.title")}</h2>
+    <p class="team__note">{t(locale, "home.team.pending")}</p>
+    <a class="team__more" href={pathFor("about", locale)}>
+      {t(locale, "home.team.more")}
+    </a>
+  </div>
+  <ul class="team__list">
+    {members.map((member) => (
+      <li class="member nh-draw">
+        <span class="member__photo" aria-hidden="true">
+          <svg viewBox="0 0 80 100" focusable="false">
+            <path d="M0 0L80 100" pathLength="1" data-stroke="ink" />
+            <path d="M80 0L0 100" pathLength="1" data-stroke="ink" />
+          </svg>
+        </span>
+        <span class="member__name">{member.name}</span>
+        <span class="member__role">{member.role}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .team {
+    align-items: start;
+  }
+
+  .team__note {
+    max-width: 30ch;
+    margin-top: var(--space-3);
+    color: var(--ink-muted);
+  }
+
+  .team__more {
+    display: inline-block;
+    margin-top: var(--space-4);
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  .team__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .member {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+  }
+
+  .member__photo {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    margin-bottom: var(--space-3);
+    border: var(--rule) solid var(--line);
+    background: var(--surface-sunk);
+  }
+
+  .member__photo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The frame is 4:5 like its drawing, so the diagonals meet its corners.
+     The stroke is in drawing units (no non-scaling-stroke: that breaks the
+     dash the scroll draws them with), about 1 px on screen. */
+  .member__photo path {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 0.3;
+  }
+
+  .member__name {
+    font-size: var(--step-title);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-title);
+  }
+
+  .member__role {
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .team__list {
+      gap: var(--space-5);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .team__head {
+      position: sticky;
+      top: var(--space-8);
+      grid-column: 1 / span 4;
+    }
+
+    .team__list {
+      grid-column: 5 / span 7;
+      gap: var(--gap);
+    }
+  }
+</style>

@@ -34,8 +34,14 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0026](0026-emil-kowalski-skills-in-the-setup.md) | Four of Emil Kowalski's skills in the setup | Accepted | 2026-10-20 |
 | [0027](0027-taste-skill-ideas-in-the-setup.md) | Ideas from Taste Skill in the critic, the animate skill and phase 3 | Accepted | 2026-10-20 |
 | [0028](0028-service-icons-on-phones-beside-the-title.md) | On phones, a service's icon sits beside its title only | Accepted | 2026-10-21 |
+| [0029](0029-english-naming-spelling-and-titles.md) | English: "Architectural Drafting", British spelling, "Croatia" in titles | Accepted | 2026-10-22 |
+| [0030](0030-steps-and-service-lines-on-the-type-scale.md) | The steps' titles and the services' lines on the type scale | Accepted | 2026-10-22 |
+| [0031](0031-autonomous-work-from-phase-3.md) | Claude works autonomously from the middle of phase 3 | Accepted | 2026-10-22 |
+| [0032](0032-guide-prices-below-the-market.md) | Guide prices on the site, about 10% below the market | Accepted | 2026-10-22 |
+| [0033](0033-new-home-by-the-clients-rules.md) | A new Home, built apart by the client's rules, on the Midnight palette | Accepted (wordmark: 0034) | 2026-10-23 |
+| [0034](0034-new-home-wordmark-in-the-palette.md) | The new Home's wordmark in the Midnight palette | Accepted | 2026-10-23 |
 
-Next number: **0029**.
+Next number: **0035**.
 
 ## How to add one
 

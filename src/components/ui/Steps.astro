@@ -16,15 +16,20 @@ interface Props {
   steps: Step[];
   /** The step titles' heading level, so they fit the page's outline. */
   level?: 3 | 4;
+  /** In a row only from 64rem: for four or more steps across the page. */
+  wide?: boolean;
   class?: string;
 }
 
-const { steps, level = 3, class: className } = Astro.props;
+const { steps, level = 3, wide = false, class: className } = Astro.props;
 const Heading = `h${String(level)}` as "h3" | "h4";
 const last = steps.length - 1;
 ---
 
-<div class:list={["steps", className]} data-draw="late">
+<div
+  class:list={["steps", { "steps--wide": wide }, className]}
+  data-draw="late"
+>
   <ol class="steps__list">
     {steps.map((step, index) => (
       <li class="step">
@@ -50,9 +55,9 @@ const last = steps.length - 1;
 <style>
   .steps {
     --node: 1rem;
-    --step-heading: clamp(1.25rem, 1.15rem + 0.45vw, 1.625rem);
-    /* The node sits on the centre of the title's first line. */
-    --node-top: calc((var(--step-heading) * 1.2 - var(--node)) / 2);
+    /* The node sits on the centre of the title's first line (the titles
+       are on the type scale, #59 in phase 3). */
+    --node-top: calc((var(--step-title) * 1.2 - var(--node)) / 2);
     /* Grip, line, grip, line, grip: each line starts as its grip lands. */
     --step-interval: 750ms;
     --link-lag: 150ms;
@@ -71,7 +76,7 @@ const last = steps.length - 1;
     display: grid;
     grid-template-columns: var(--node) minmax(0, 1fr);
     align-content: start;
-    column-gap: 1.125rem;
+    column-gap: var(--space-4);
     padding-bottom: var(--space-6);
   }
 
@@ -102,7 +107,7 @@ const last = steps.length - 1;
 
   .step__title {
     grid-column: 2;
-    font-size: var(--step-heading);
+    font-size: var(--step-title);
     line-height: var(--leading-title);
   }
 
@@ -153,24 +158,27 @@ const last = steps.length - 1;
       calc(var(--step-at, 0ms) + var(--link-lag)) both;
   }
 
+  /* In a row from 48rem; `wide` steps (four or more short captions) stay
+     stacked until 64rem, so no caption runs at 10-16 characters a line
+     (the critique of Usluge, DC-08). */
   @media (min-width: 48rem) {
-    .steps__list {
+    .steps:not(.steps--wide) .steps__list {
       grid-auto-columns: minmax(0, 1fr);
       grid-auto-flow: column;
       column-gap: var(--space-5);
     }
 
-    .step {
+    .steps:not(.steps--wide) .step {
       grid-template-columns: minmax(0, 1fr);
       padding: 0;
     }
 
-    .step__node {
+    .steps:not(.steps--wide) .step__node {
       grid-row: auto;
-      margin: 0 0 1.25rem;
+      margin: 0 0 var(--space-4);
     }
 
-    .step__link {
+    .steps:not(.steps--wide) .step__link {
       top: calc((var(--node) - var(--rail)) / 2);
       right: calc(var(--space-5) * -1);
       bottom: auto;
@@ -180,16 +188,57 @@ const last = steps.length - 1;
       transform-origin: 0 50%;
     }
 
-    .step__title,
-    .step__body {
+    .steps:not(.steps--wide) .step__title,
+    .steps:not(.steps--wide) .step__body {
       grid-column: 1;
     }
 
-    .steps.is-pending .step__link {
+    .steps:not(.steps--wide).is-pending .step__link {
       transform: scaleX(0);
     }
 
-    .steps.is-drawing .step__link {
+    .steps:not(.steps--wide).is-drawing .step__link {
+      animation-name: motion-draw-x;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .steps--wide .steps__list {
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      column-gap: var(--space-5);
+    }
+
+    .steps--wide .step {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0;
+    }
+
+    .steps--wide .step__node {
+      grid-row: auto;
+      margin: 0 0 var(--space-4);
+    }
+
+    .steps--wide .step__link {
+      top: calc((var(--node) - var(--rail)) / 2);
+      right: calc(var(--space-5) * -1);
+      bottom: auto;
+      left: var(--node);
+      width: auto;
+      height: var(--rail);
+      transform-origin: 0 50%;
+    }
+
+    .steps--wide .step__title,
+    .steps--wide .step__body {
+      grid-column: 1;
+    }
+
+    .steps--wide.is-pending .step__link {
+      transform: scaleX(0);
+    }
+
+    .steps--wide.is-drawing .step__link {
       animation-name: motion-draw-x;
     }
   }

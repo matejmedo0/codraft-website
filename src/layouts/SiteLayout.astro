@@ -18,14 +18,15 @@ import BaseLayout from "./BaseLayout.astro";
 interface Props {
   locale: Locale;
   title: string;
+  description?: string | undefined;
   page?: PageId | undefined;
 }
 
-const { locale, title, page } = Astro.props;
+const { locale, title, description, page } = Astro.props;
 const MAIN_ID = "main";
 ---
 
-<BaseLayout locale={locale} title={title} page={page}>
+<BaseLayout locale={locale} title={title} description={description} page={page}>
   <slot name="head" slot="head" />
   <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
   <Sheet>

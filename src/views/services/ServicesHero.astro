@@ -1,0 +1,182 @@
+---
+/**
+ * Zone A of /usluge: the H1 and the intro beside the page's index, on
+ * graph paper as Home's hero (the page's argument, docs/information-
+ * architecture.md). The index is "Što radimo" in short: the three stage
+ * bubbles on the blue process line, each with its services in one line and
+ * a link to its zone, with the grips on hover and focus. It stays still;
+ * the mark's entrance is Home's alone (ADR 0014). The drafting clients get
+ * their own path, as on Home (ADR 0018).
+ */
+import "../../features/services/stages.css";
+
+import Breadcrumbs from "../../components/site/Breadcrumbs.astro";
+import Grips from "../../components/ui/Grips.astro";
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { STAGES } from "../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Zone labelledby="naslov" select={false} class="services-hero">
+  <div class="services-hero__text">
+    <Breadcrumbs locale={locale} current={t(locale, "nav.services")} />
+    <h1 id="naslov">{t(locale, "services.title")}</h1>
+    <p class="services-hero__lead">{t(locale, "services.intro")}</p>
+    <p class="services-hero__drafting">
+      <a href={pathFor("drafting", locale)}>
+        {t(locale, "home.hero.drafting")}
+      </a>
+    </p>
+  </div>
+  <nav
+    class="services-index graph-paper"
+    aria-label={t(locale, "services.index.label")}
+  >
+    <ol class="services-index__list">
+      {STAGES.map((stage) => (
+        <li class="services-index__stage has-grips">
+          <span class="svc-bubble services-index__bubble" aria-hidden="true">
+            {stage.number}
+          </span>
+          <a
+            class="services-index__link stretched-link"
+            href={`#${stage.anchor[locale]}`}
+          >
+            <span class="visually-hidden">{stage.number}</span>{" "}
+            {t(locale, stage.title)}
+          </a>
+          <span class="services-index__services">{t(locale, stage.index)}</span>
+          <Grips />
+        </li>
+      ))}
+    </ol>
+  </nav>
+</Zone>
+
+<style>
+  .services-hero {
+    --bubble: 2.75rem;
+
+    display: grid;
+    gap: var(--space-7);
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .services-hero h1 {
+    margin-top: var(--space-5);
+  }
+
+  .services-hero__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .services-hero__drafting {
+    margin-top: var(--space-5);
+  }
+
+  .services-hero__drafting a {
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  /* The index: the line runs down from bubble to bubble, as Home's
+     "Što radimo" does on narrow screens. */
+  .services-index {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .services-index__list {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .services-index__stage {
+    display: grid;
+    grid-template-columns: var(--bubble) minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-items: center;
+  }
+
+  .services-index__bubble {
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  /* The process line, from this bubble down to the next one. */
+  .services-index__stage:not(:last-child)::before {
+    position: absolute;
+    top: var(--bubble);
+    bottom: calc(var(--space-6) * -1);
+    left: calc((var(--bubble) - var(--rail)) / 2);
+    width: var(--rail);
+    background: var(--accent);
+    content: "";
+  }
+
+  .services-index__link {
+    align-self: end;
+    color: var(--ink);
+    font-family: var(--font-heading);
+    font-size: var(--step-title);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .services-index__services {
+    grid-column: 2;
+    color: var(--ink-muted);
+  }
+
+  /* The outline goes around the whole stage, not just its title. */
+  .services-index__stage:has(.services-index__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .services-index__link:focus-visible {
+    outline: none;
+  }
+
+  @media (min-width: 64rem) {
+    .services-hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: center;
+      /* As Home's hero (review #19), with the trail above the H1. */
+      padding-block: var(--space-8) var(--space-10);
+    }
+
+    .services-hero__text {
+      grid-column: 1 / span 7;
+    }
+
+    .services-index {
+      grid-column: 8 / -1;
+      padding: var(--space-8) var(--space-7);
+    }
+
+    .services-index__list {
+      gap: var(--space-7);
+    }
+
+    .services-index__stage:not(:last-child)::before {
+      bottom: calc(var(--space-7) * -1);
+    }
+  }
+</style>

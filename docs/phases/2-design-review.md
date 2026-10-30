@@ -1,7 +1,7 @@
 # Phase 2 review: refinements before phase 3 (brief)
 
 > **Status (2026-10-21, end of the fifth refinements session): the review is done.** Every step of the [Handover](#handover-2026-10-21) is done: the rest of the critique and its re-check, the Figma sync, and the final checks with the report. PR #2's description has the „Review refinements“ section. Five sessions brought 39 batches (refinements 1–132); the fifth (2026-10-21) brought batches 31–39 (refinements 105–132).
-> - **Next:** the client's word, which the prompt for the new session carries (#134). On „idemo dalje“: merge PR #2 into `main` with a merge commit, create `phase/3-pages` from `main`, start phase 3 at [3-pages.md, Start here](3-pages.md#start-here-2026-10-21), as the [phase gate](../../.claude/rules/codraft-workflow.md) says.
+> - **Done:** on the client's „idemo dalje“ (2026-10-22) PR #2 was merged into `main` and phase 3 started on `phase/3-pages` ([3-pages.md, log](3-pages.md#log)).
 > - **The rules of this review** stay for any late refinement: record it under [Refinements](#refinements) first; change only what the client asks for; make the change in code, check it, then bring the Figma library in line.
 
 ## Handover (2026-10-21)
@@ -818,7 +818,7 @@ The client's message, verbatim:
 
 | # | The client's request | Change | Where | Decision | Status |
 |---|---|---|---|---|---|
-| 134 | "sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)" | The documentation tidied for a fresh session: [3-pages.md](3-pages.md#start-here-2026-10-21) gets a „Start here“ section (the phase gate, Home first, what exists where, the working notes that still apply), `PROGRESS.md` points to it, and this brief's status says the review is closed. The prompt for the new session went to the client. PR #2 is not merged in this session: the prompt carries the client's „idemo dalje“, so the new session merges it (merge commit), creates `phase/3-pages` from `main` and starts phase 3, as the phase gate says. | `docs/phases/3-pages.md`, `PROGRESS.md`, this brief | None | Done |
+| 134 | "sredi dokumentaciju i daj mi prompt onda za novu sesiju ( fazu 3)" | The documentation tidied for a fresh session: [3-pages.md](3-pages.md#log) gets a „Start here“ section (the phase gate, Home first, what exists where, the working notes that still apply; replaced on 2026-10-22 by the handover for page 2), `PROGRESS.md` points to it, and this brief's status says the review is closed. The prompt for the new session went to the client. PR #2 is not merged in this session: the prompt carries the client's „idemo dalje“, so the new session merges it (merge commit), creates `phase/3-pages` from `main` and starts phase 3, as the phase gate says. | `docs/phases/3-pages.md`, `PROGRESS.md`, this brief | None | Done |
 
 ## After the refinements
 

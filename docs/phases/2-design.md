@@ -1,11 +1,11 @@
 # Phase 2: Design (Dizajn)
 
-- **Status:** Done, with the review refinements (2026-10-19 to 21), at the phase gate. PR #2 is the phase report, with a „Review refinements“ section. Five sessions, batches 1–39 (refinements 1–132), the design critique and its re-check, the Figma sync and the final checks; [2-design-review.md](2-design-review.md) has every refinement. Waiting for the client's „idemo dalje“.
+- **Status:** Done and approved. The client gave the word („idemo dalje“) on 2026-10-22, and PR #2 was merged into `main` with a merge commit (`1f36f82`). PR #2 is the phase report, with a „Review refinements“ section. The review took five sessions: batches 1–40 (refinements 1–134), the design critique and its re-check, the Figma sync and the final checks; [2-design-review.md](2-design-review.md) has every refinement. Phase 3 continues on `phase/3-pages` ([3-pages.md](3-pages.md)).
   - **Round 1 (steps 1–2) is done** and was reviewed by the client on 2026-10-19: three prototypes, described in [2-design-directions.md](2-design-directions.md). None is taken as is.
   - **Round 2 is done:** two hybrids with more motion, D „Model i list“ and E „Nacrt s pojasom“, described in [2-design-round-2.md](2-design-round-2.md).
   - **The client chose** D with a paper header and hero ([ADR 0015](../decisions/0015-design-direction-model-i-list.md)) and Figma for quick iterations ([ADR 0016](../decisions/0016-figma-for-design-iterations.md)); the answers are in [2-design-system.md](2-design-system.md).
   - **Steps 3–8 are done:** tokens, fonts, motion, brand assets in code, base components, the style page (`/lab/style`) and the Figma library.
-- **Branch:** `phase/2-design`
+- **Branch:** `phase/2-design`, merged into `main` (PR #2).
 
 ## Goal
 
@@ -374,3 +374,5 @@ Load `frontend-a11y` for the menu, focus states and skip link.
   - **The critic's re-check** (ADR 0025): all four lenses "Ready"; four regressions verified and fixed on the client's word (the footer's edge, the queue's reading order, the steady plan, a one-letter line end to the proofreading; #125–131). The footer fix wrapped placeholder values on wide screens, which the session's own check found; on the client's answer the cells keep 24 px only below 64rem (#131).
   - **The Figma sync** (#132): variables, text styles, the header, the title block, Stavka, the nine icons, Usluga, Oznaka faze, the example page rebuilt as in the code with the house as vectors.
   - **Final checks:** the lab build under the CSP on every lab page at 375, 768 and 1440 px (axe, console, overflow, drawing after a slow scroll, keyboard, reduced motion, no JavaScript); `npm run verify` (161 unit tests, 1.7 KB of JavaScript per page); `npm run test:e2e` (51); CI green. Report screenshots: `screenshots/phase-2/review/final-pocetna-{375,768,1440,1920}.png`. PR #2's description has the „Review refinements“ section.
+- **2026-10-21, handover** (batch 40, refinement 134): the documentation tidied for a fresh session; phase 3 started from a „Start here“ section in [3-pages.md](3-pages.md#log), since replaced by the handover for page 2.
+- **2026-10-22, phase gate:** the client's „idemo dalje“ came with the prompt of the first phase 3 session (recorded verbatim as M1 in [3-pages.md](3-pages.md#log)). CI on PR #2 was green for `509c1e7`; PR #2 was merged into `main` with a merge commit (`1f36f82`), and phase 3 continues on `phase/3-pages`.

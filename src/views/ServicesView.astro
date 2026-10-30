@@ -1,0 +1,81 @@
+---
+/**
+ * Usluge (`/usluge`, `/en/services`): every service in the order the work
+ * happens, the three stages at their anchors, how a project runs, the FAQ
+ * and the closing call to action. There is no lab design for it: the page
+ * is composed from the design system and Home's patterns. Its argument and
+ * layout, zone by zone, are in docs/information-architecture.md (Usluge);
+ * its copy, with each line's key, in docs/content.md ("Services, phase 3");
+ * the guide prices in src/config/pricing.ts.
+ */
+import { PRICES } from "../config/pricing.ts";
+import type { Locale } from "../config/site.ts";
+import { t } from "../features/i18n/ui.ts";
+import { urlFor } from "../features/i18n/urls.ts";
+import {
+  breadcrumbList,
+  graph,
+  jsonLdText,
+  service,
+} from "../features/seo/structured-data.ts";
+import { STAGES } from "../features/services/services.ts";
+import ServicesFaq from "./services/ServicesFaq.astro";
+import ServicesHero from "./services/ServicesHero.astro";
+import ServicesProcess from "./services/ServicesProcess.astro";
+import ServicesStage from "./services/ServicesStage.astro";
+import ClosingZone from "./shared/ClosingZone.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const page = urlFor("services", locale);
+const country = t(locale, "meta.country");
+
+// Eight services (the fixed offer is part of the free audit's stage, not a
+// service of its own), each at its anchor, with its guide prices.
+const services = STAGES.flatMap((stage) =>
+  stage.services.flatMap(({ title, anchor, detail }) =>
+    detail === undefined || detail.offering === false
+      ? []
+      : [
+          service({
+            locale,
+            name: t(locale, title),
+            description: t(locale, detail.body),
+            url: `${page}#${(anchor ?? stage.anchor)[locale]}`,
+            country,
+            prices: (detail.prices ?? []).map((line) => ({
+              price: PRICES[line.price],
+              name:
+                line.label === undefined ? undefined : t(locale, line.label),
+            })),
+          }),
+        ],
+  ),
+);
+const structuredData = jsonLdText(
+  graph([
+    breadcrumbList([
+      { name: t(locale, "breadcrumb.home"), url: urlFor("home", locale) },
+      { name: t(locale, "nav.services"), url: page },
+    ]),
+    ...services,
+  ]),
+);
+---
+
+<ServicesHero locale={locale} />
+{STAGES.map((stage) => (
+  <ServicesStage locale={locale} stage={stage} />
+))}
+<ServicesProcess locale={locale} />
+<ServicesFaq locale={locale} />
+<ClosingZone
+  locale={locale}
+  title={t(locale, "services.closing.title")}
+  lead={t(locale, "services.closing.lead")}
+  note={t(locale, "services.closing.note")}
+/>
+<script type="application/ld+json" is:inline set:html={structuredData} />

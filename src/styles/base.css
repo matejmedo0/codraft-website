@@ -48,12 +48,18 @@
   }
 
   h4 {
-    font-size: 1.125rem;
-    line-height: 1.25;
+    font-size: var(--step-lead);
+    line-height: var(--leading-title);
   }
 
   p {
     margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* List items and cells wrap like paragraphs, so a line never ends with
+     one word alone (the critique of Usluge, DC-07). */
+  :is(li, dd, th, td) {
     text-wrap: pretty;
   }
 

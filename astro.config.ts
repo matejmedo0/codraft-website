@@ -20,6 +20,9 @@ const LAB_PAGES = [
   "tlocrt-3d",
   "kuca-boje",
   "sto-radimo-2",
+  "pocetna-stara",
+  "nova-pocetna",
+  "nova-pocetna-dva-reda",
 ] as const;
 
 /**

@@ -394,18 +394,18 @@ const LINES: Line[] = [
     :global(.is-big) .cts__page {
       align-content: space-evenly;
       padding: var(--space-6);
-      font-size: clamp(0.75rem, 1.3cqi, 1.25rem);
+      font-size: clamp(0.75rem, 1.2cqi, 1.125rem);
     }
 
     :global(.is-big) .cts__code {
-      --code-size: clamp(0.75rem, 1.25cqi, 1.25rem);
+      --code-size: clamp(0.75rem, 1.15cqi, 1.125rem);
 
       padding-top: var(--space-5);
       line-height: 1.9;
     }
 
     :global(.is-big) .site__title {
-      font-size: clamp(1.375rem, 3.2cqi, 3rem);
+      font-size: clamp(1.375rem, 2.9cqi, 2.75rem);
     }
 
     :global(.is-big) .site__hero {
@@ -413,12 +413,13 @@ const LINES: Line[] = [
     }
   }
 
-  /* The full screen's height only where the windows sit side by side on a
-     wide screen; a tall tablet would leave them empty. */
+  /* Most of the screen's height (M31: a little short of all of it), only
+     where the windows sit side by side on a wide screen; a tall tablet
+     would leave them empty. */
   @media (min-width: 64rem) {
     :global(.is-big) .cts__editor,
     :global(.is-big) .cts__browser {
-      min-height: calc(100svh - var(--space-10));
+      min-height: 76svh;
     }
   }
 
@@ -575,6 +576,15 @@ const LINES: Line[] = [
   :global(.is-big .is-live) .site__image :global(.wordmark__grip) {
     animation-name: cts-snap-again;
     animation-delay: 1650ms;
+  }
+
+  /* Shrunk back after growing: the wordmark stays drawn, with no replay. */
+  :global(.was-big:not(.is-big) .is-live)
+    .site__image
+    :global(
+      :is(.wordmark__ink, .wordmark__arc, .wordmark__line, .wordmark__grip)
+    ) {
+    animation: none;
   }
 
   @keyframes cts-ink {

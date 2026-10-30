@@ -19,6 +19,7 @@ ADR 0035 put a technical drawing of a website beside the new Home's headline, dr
 - The lead is set on two lines on wide screens.
 - On the first scroll down the two windows grow, once, into the hero itself: the stage to the sheet's width and, from 64rem, the windows to the screen's height, their contents growing with them (`hero/hero-expand.ts`). It does not follow the scroll.
 - The sample page's image is the Codraft wordmark, drawn in as its line is typed and once more when the windows grow.
+- M31: grown, the stage is at most 76rem wide and the windows 76% of the screen's height; back at the page's top they shrink again.
 
 ## Consequences
 

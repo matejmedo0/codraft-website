@@ -117,8 +117,9 @@ const { locale } = Astro.props;
     transition: width 1100ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Grown, a little short of the sheet's width (M31). */
   .hero.is-big .hero__stage {
-    width: 100%;
+    width: min(100%, 76rem);
   }
 
   @media (min-width: 64rem) {

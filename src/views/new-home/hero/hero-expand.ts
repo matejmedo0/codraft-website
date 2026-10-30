@@ -1,25 +1,36 @@
 /**
- * On the first scroll down, the hero's two windows grow into the hero
- * itself (M30 in docs/phases/3-pages.md): `is-big` on the hero widens the
- * stage to the sheet and the windows to the screen's height, once, with a
- * transition (NewHomeHero.astro, CodeToSite.astro). Nothing follows the
- * scroll; it plays once and stays. A page loaded already scrolled starts
- * big. With reduced motion the change is at once, without the transition.
+ * The hero's two windows grow into the hero when the page is scrolled
+ * down from its top, and shrink back when it returns to the top (M30, M31
+ * in docs/phases/3-pages.md): `is-big` on the hero widens the stage and
+ * heightens the windows with a transition (NewHomeHero.astro,
+ * CodeToSite.astro). It doesn't follow the scroll: it is one state or the
+ * other, by whether the page is at its top. `was-big` stays once the
+ * windows have grown, so the wordmark's replay only runs on growing. With
+ * reduced motion the change is at once, without the transition.
  */
 const hero = document.querySelector<HTMLElement>("[data-hero]");
 
+/** How far down counts as scrolled; back above it counts as the top. */
+const DOWN_PX = 8;
+const TOP_PX = 2;
+
 if (hero !== null) {
-  const grow = (): void => {
-    hero.classList.add("is-big");
+  let frame = 0;
+  const update = (): void => {
+    frame = 0;
+    const { scrollY } = window;
+    if (scrollY > DOWN_PX && !hero.classList.contains("is-big")) {
+      hero.classList.add("is-big", "was-big");
+    } else if (scrollY <= TOP_PX) {
+      hero.classList.remove("is-big");
+    }
   };
-  if (window.scrollY > 0) {
-    grow();
-  } else {
-    const onScroll = (): void => {
-      if (window.scrollY <= 0) return;
-      window.removeEventListener("scroll", onScroll);
-      grow();
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (frame === 0) frame = requestAnimationFrame(update);
+    },
+    { passive: true },
+  );
+  update();
 }

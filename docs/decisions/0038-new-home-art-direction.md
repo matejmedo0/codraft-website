@@ -16,6 +16,10 @@ The client asked for the whole new Home to be made "as if for Nike: modern and e
 - **Controls:** the page's buttons are pills.
 - **Kept:** the copy, the links, the Midnight palette, the wordmark, the header's layout, the sheet frame and every approved animation (the hero's code-to-page, the zig-zag stages, the building scene).
 
+## Amendment (2026-10-30, M33)
+
+The client found the display type too large and the hero's windows too big: the type is a size smaller throughout (zone titles to 5.25rem, the hero's headline to 4.5rem, the closing question to 6rem), and the windows are at most 60rem wide at rest and 66rem wide and 64% of the screen's height grown.
+
 ## Consequences
 
 - The system lives in `src/views/new-home/new-home.css` (`.nk-display`, `.nk-title`, `.nk-outline`, `.nk-label`, `.nk-inverse`) and is loaded only on the new Home; the shared components and the current Home are unchanged.

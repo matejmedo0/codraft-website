@@ -5,49 +5,6 @@ import { defineConfig } from "astro/config";
 
 import { DEFAULT_LOCALE, LOCALES, SITE_URL } from "./src/config/site.ts";
 
-/** The design-lab pages in src/lab/pages, served under /lab. */
-const LAB_PAGES = [
-  "index",
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "style",
-  "pocetna",
-  "crtanje",
-  "ikone",
-  "tlocrt-3d",
-  "kuca-boje",
-  "sto-radimo-2",
-] as const;
-
-/**
- * The phase 2 design lab (docs/phases/2-design.md): the prototypes and the
- * style page under /lab. They exist in `astro dev` and in builds made with
- * CODRAFT_LAB=1 (`npm run build:lab`), never in a normal production build.
- * They have no route-map entry, so BaseLayout marks them noindex.
- */
-function designLab(): AstroIntegration {
-  return {
-    name: "codraft:design-lab",
-    hooks: {
-      "astro:config:setup": ({ command, injectRoute }) => {
-        if (command !== "dev" && process.env.CODRAFT_LAB !== "1") return;
-        for (const page of LAB_PAGES) {
-          injectRoute({
-            pattern: page === "index" ? "/lab" : `/lab/${page}`,
-            entrypoint: new URL(
-              `./src/lab/pages/${page}.astro`,
-              import.meta.url,
-            ),
-          });
-        }
-      },
-    },
-  };
-}
-
 /**
  * Adds a `js` class to <html> before the first paint, so components can
  * style their no-script fallback: without JavaScript the header's menu stays
@@ -78,12 +35,12 @@ export default defineConfig({
   output: "static",
   adapter: node({
     mode: "standalone",
-    // The forms (phase 4) post small bodies; the default limit is 1 GB.
+    // The forms post small bodies; the default limit is 1 GB.
     bodySizeLimit: 32 * 1024,
   }),
 
   // React only for islands: forms, the CAD layer viewer, the chatbot.
-  integrations: [react(), jsClass(), designLab()],
+  integrations: [react(), jsClass()],
 
   // URLs without a trailing slash: /usluge, /en/services. The directory
   // format keeps /en working on the Node server ('file' would write en.html
@@ -100,7 +57,7 @@ export default defineConfig({
 
   security: {
     // Hash-based CSP in a <meta> tag on every prerendered page. Header-only
-    // directives (frame-ancestors, report-to) come from Caddy (phase 7).
+    // directives (frame-ancestors, report-to) come from Caddy.
     // The CSP is not active in `astro dev`; test it on the production build.
     csp: {
       directives: [
@@ -118,7 +75,7 @@ export default defineConfig({
 
   env: {
     // Every environment variable is declared here and documented in
-    // .env.example. Phase 1 has none; phase 4 adds the email, booking and
+    // .env.example. None yet; the forms add the email, booking and
     // Anthropic API settings.
     schema: {},
     validateSecrets: true,

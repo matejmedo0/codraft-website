@@ -6,7 +6,7 @@
 
 ## Context
 
-Phase 2 opened with three questions for the client ([phases/2-design.md](../phases/2-design.md), inputs).
+Phase 2 opened with three questions for the client (phases/2-design.md, inputs).
 
 **Logo animation.** The brand package README forbids effects on the marks. The motion concept ([motion.md](../motion.md)) proposes one exception: a one-time entrance in which the blue drafting line draws and completes the "f" and "t" crossbars, then the grip snaps in, always ending on the exact mark.
 

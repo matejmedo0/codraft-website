@@ -11,7 +11,6 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:lab": "node scripts/build-lab.mjs",
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint .",
@@ -21,7 +20,6 @@
     "test:e2e": "playwright test",
     "check:budget": "node scripts/check-js-budget.mjs",
     "check:guardrails": "node scripts/check-guardrails.mjs",
-    "design:capture": "node scripts/design-capture/capture.mjs",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run build && npm run check:budget && npm run check:guardrails"
   },
   "dependencies": {

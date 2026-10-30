@@ -36,7 +36,7 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 
-# Claude Code: personal settings stay local; project rules (.claude/rules/) are tracked
+# Claude Code: personal settings stay local; the project settings are tracked
 .claude/settings.local.json
 
 # Raw media (e.g. original team photos); only optimised copies are committed

@@ -30,7 +30,7 @@ describe("urlFor", () => {
   it("builds absolute URLs on the site origin", () => {
     expect(urlFor("home", "hr")).toBe(`${SITE_URL}/`);
     expect(urlFor("drafting", "en")).toBe(
-      `${SITE_URL}/en/engineering-drafting`,
+      `${SITE_URL}/en/architectural-drafting`,
     );
   });
 });

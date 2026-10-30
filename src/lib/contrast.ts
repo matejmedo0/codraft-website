@@ -1,6 +1,6 @@
 /**
  * WCAG 2.x contrast ratio between two sRGB colours, for the token tests
- * and the colour tables of the style page and the lab specimens.
+ * and the colour tables.
  * https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio
  */
 

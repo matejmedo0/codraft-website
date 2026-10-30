@@ -1,0 +1,74 @@
+---
+/**
+ * The new Home, built step by step by the client's rules (the
+ * rules are in docs/new-home-rules.md), apart from
+ * the current Home: its zones go in this folder and its copy gets its own
+ * locale keys. Not routed yet.
+ */
+import NewHomeHero from "./NewHomeHero.astro";
+---
+
+<NewHomeHero />
+
+<style is:global>
+  /* The page's palette, "Midnight" (M13, docs/new-home-rules.md), on the
+     design system's roles. Loaded only on this page; unlayered, so it wins
+     over tokens.css. Every text colour passes AA on every surface; the
+     border is decorative. The wordmark takes the palette too: ivory
+     lettering and the teal accent (M14). */
+  :root {
+    --color-midnight: #0b181d;
+    --color-deep-teal: #11252c;
+    --color-elevated: #193139;
+    --color-interactive: #23414a;
+    --color-ivory: #ecedea;
+    --color-silver: #aab8bb;
+    --color-teal: #82bbc5;
+    --color-border: #28434c;
+    /* The navigation's links, between silver and ivory (M17). */
+    --color-nav: #bec8ca;
+
+    --surface: var(--color-midnight);
+    --surface-sunk: var(--color-deep-teal);
+    --ink: var(--color-ivory);
+    --ink-muted: var(--color-silver);
+    --nav-ink: var(--color-nav);
+
+    /* One knob for the header's sizes from 64rem (M18): the wordmark, the
+       links, EN, their spacing and the header's height grow together.
+       1 = M17's sizes. The hero reads it too, to stay at the fold. */
+    --topbar-scale: 1.125;
+    --frame: var(--color-border);
+    --line: var(--color-border);
+    --line-strong: var(--color-border);
+    --link: var(--color-teal);
+    --accent: var(--color-teal);
+    --accent-text: var(--color-teal);
+    --focus: var(--color-teal);
+    --selection: var(--color-interactive);
+    --grip-fill: var(--color-midnight);
+
+    --button-primary-bg: var(--color-teal);
+    --button-primary-bg-hover: var(--color-ivory);
+    --button-primary-fg: var(--color-midnight);
+    --button-secondary-border: var(--color-border);
+    --button-secondary-fg: var(--color-ivory);
+    --button-secondary-bg-hover: var(--color-interactive);
+    --button-disabled-bg: var(--color-elevated);
+    --button-disabled-fg: var(--color-silver);
+
+    --grid-major: color-mix(in srgb, var(--color-ivory) 10%, transparent);
+    --grid-minor: color-mix(in srgb, var(--color-ivory) 4%, transparent);
+
+    --drawing-ink: var(--color-ivory);
+    --drawing-muted: color-mix(
+      in srgb,
+      var(--color-ivory) 45%,
+      var(--color-midnight)
+    );
+    --drawing-fill: var(--color-midnight);
+
+    /* Dark scrollbars and form controls to match. */
+    color-scheme: dark;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+/**
+ * Zone G: Home's closing call to action (src/views/shared/ClosingZone.astro),
+ * with the client's question and lead (review batch 11) and a note on the
+ * reply time and on sketches by email (phase 3, M2; ADR 0020).
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import ClosingZone from "../shared/ClosingZone.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ClosingZone
+  locale={locale}
+  title={t(locale, "home.closing.title")}
+  lead={t(locale, "home.closing.lead")}
+  note={t(locale, "home.closing.note")}
+/>

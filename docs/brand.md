@@ -82,7 +82,7 @@ Selected text always takes the surface's ink (navy on paper, off-white on navy),
 
 ## Typography
 
-The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. **Chosen in phase 2: Archivo, the only family** ([ADR 0015](decisions/0015-design-direction-model-i-list.md)), at three widths: 100 % for text, 87.5 % for headings, 75 % for labels and title-block data. It is self-hosted in two files split by `unicode-range` (a 36.5 KB core file for English and Croatian, preloaded) with size-adjusted Arial fallbacks; details in [research/2026-10-19-design-system.md](research/2026-10-19-design-system.md). It met these requirements:
+The wordmark is a custom geometric face drawn as outlines, so the site needs web fonts for text. **Chosen in phase 2: Archivo, the only family** ([ADR 0015](decisions/0015-design-direction-model-i-list.md)), at three widths: 100 % for text, 87.5 % for headings, 75 % for labels and title-block data. It is self-hosted in two files split by `unicode-range` (a 36.5 KB core file for English and Croatian, preloaded) with size-adjusted Arial fallbacks; details in research/2026-10-19-design-system.md. It met these requirements:
 
 **Croatian coverage**
 - Full Latin Extended-A, including Č č Ć ć Đ đ Š š Ž ž, plus „ “ ‚ ‘ – — €.

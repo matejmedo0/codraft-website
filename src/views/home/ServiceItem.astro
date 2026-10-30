@@ -1,0 +1,94 @@
+---
+/**
+ * One service on Home (the client's review, batch 3): its title and its one
+ * line. The line is larger than body text and in full ink, so it reads as
+ * clearly as the title. With `href` the whole item links to its anchor on
+ * its page and shows the grips on hover and keyboard focus; the outline
+ * goes around the item. "Što radimo" and the drafting zone place the items
+ * their own way.
+ *
+ * With `icon` the item starts with its service icon (review batch 13); the
+ * zone places it.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+import Grips from "../../components/ui/Grips.astro";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import type { ServiceIconId } from "../../features/services/icons/service-icons.ts";
+
+interface Props extends HTMLAttributes<"li"> {
+  title: string;
+  body: string;
+  href?: string | undefined;
+  icon?: ServiceIconId | undefined;
+  /** The title's level under the zone's headings. */
+  level?: "h3" | "h4";
+}
+
+const {
+  title,
+  body,
+  href,
+  icon,
+  level = "h4",
+  class: className,
+  ...attributes
+} = Astro.props;
+const Heading = level;
+---
+
+<li
+  class:list={["service", { "has-grips": href !== undefined }, className]}
+  {...attributes}
+>
+  {icon !== undefined && <ServiceIcon icon={icon} class="service__icon" />}
+  <Heading class="service__title">
+    {href === undefined ? (
+      title
+    ) : (
+      <a class="service__link stretched-link" href={href}>
+        {title}
+      </a>
+    )}
+  </Heading>
+  <p class="service__body">{body}</p>
+  {href !== undefined && <Grips />}
+</li>
+
+<style>
+  .service {
+    position: relative;
+  }
+
+  /* The heading's width, weight and tracking come from base.css, as in
+     "Kako radimo" (critique 7). */
+  .service__title {
+    font-size: var(--step-title);
+    line-height: var(--leading-title);
+  }
+
+  /* Underlined at rest, like every link (brand.md), 2 px on hover: a title
+     that links must look like one on a phone too (critique 2). */
+  .service__link {
+    color: var(--ink);
+  }
+
+  /* Balanced, so a short line never ends on one word (critique 8). */
+  .service__body {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+    text-wrap: balance;
+  }
+
+  /* The outline goes around the whole item, not just the title. */
+  .service:has(.service__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .service__link:focus-visible {
+    outline: none;
+  }
+</style>

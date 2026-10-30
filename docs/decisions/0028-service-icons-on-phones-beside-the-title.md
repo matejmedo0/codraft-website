@@ -6,7 +6,7 @@
 
 ## Context
 
-[ADR 0022](0022-service-icons-on-home.md) point 1 puts each service icon in "Što radimo" beside its title and its line, in a column of its own. On desktop the column faces the central line and works. On phones the line runs down the left, so its indent and the icon column together left the services' text 209 px of a 325 px column at 375 px: 21–24 characters a line, most lines in three rows. The first design critique raised it (finding 5, [research note](../research/2026-10-21-design-critique-home.md#verified-findings)). The client saw two previews (review #116): the icon beside the title with the line below it (B), and the icon above the title (C, about 300 px taller), and chose B (review #121).
+[ADR 0022](0022-service-icons-on-home.md) point 1 puts each service icon in "Što radimo" beside its title and its line, in a column of its own. On desktop the column faces the central line and works. On phones the line runs down the left, so its indent and the icon column together left the services' text 209 px of a 325 px column at 375 px: 21–24 characters a line, most lines in three rows. The first design critique raised it (finding 5, research note). The client saw two previews (review #116): the icon beside the title with the line below it (B), and the icon above the title (C, about 300 px taller), and chose B (review #121).
 
 ## Decision
 

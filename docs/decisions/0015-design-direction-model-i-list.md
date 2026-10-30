@@ -6,11 +6,11 @@
 
 ## Context
 
-Phase 2 explored the visual direction in two rounds of coded prototypes ([ADR 0005](0005-design-review-with-coded-prototypes.md)):
-- **Round 1:** three directions, A "Nacrt", B "Noćni nacrt" and C "Studio". The client took none as is ([phases/2-design-directions.md](../phases/2-design-directions.md)).
-- **Round 2:** two hybrids on A's drawing sheet, D „Model i list“ and E „Nacrt s pojasom“ ([phases/2-design-round-2.md](../phases/2-design-round-2.md)). D has a navy header and hero, "Što radimo" as chapters on a process line, the free audit on paper and a navy closing call to action. E has a paper hero, "Što radimo" in three columns and a navy band for the free audit.
+Phase 2 explored the visual direction in two rounds of coded prototypes (ADR 0005):
+- **Round 1:** three directions, A "Nacrt", B "Noćni nacrt" and C "Studio". The client took none as is (phases/2-design-directions.md).
+- **Round 2:** two hybrids on A's drawing sheet, D „Model i list“ and E „Nacrt s pojasom“ (phases/2-design-round-2.md). D has a navy header and hero, "Što radimo" as chapters on a process line, the free audit on paper and a navy closing call to action. E has a paper hero, "Što radimo" in three columns and a navy band for the free audit.
 
-Open with the choice were the motion, the number of people in the team strip, the fonts and the corner radius ([phases/2-design-system.md](../phases/2-design-system.md)).
+Open with the choice were the motion, the number of people in the team strip, the fonts and the corner radius (phases/2-design-system.md).
 
 ## Decision
 
@@ -23,7 +23,7 @@ The client decided on 2026-10-19.
    - The free audit sits on paper, with its three steps as grips joined by a line.
    - The CAD section shows the drawing on graph paper, built layer by layer.
    - **Navy as a surface appears once on a page, as the closing call to action.** Everywhere else navy is the ink: lettering, lines, the frame and the primary buttons.
-2. **Motion: all four moments, as built in round 2.** The logo entrance in the hero, the CAD drawing in layers (3.2 s), the section transitions (a CAD selection of the zone rule, about 2 s) and the lines through the steps. Each plays once, in its own section, and reduced motion shows the final states. The timings are in [phases/2-design-round-2.md](../phases/2-design-round-2.md) and become the motion tokens.
+2. **Motion: all four moments, as built in round 2.** The logo entrance in the hero, the CAD drawing in layers (3.2 s), the section transitions (a CAD selection of the zone rule, about 2 s) and the lines through the steps. Each plays once, in its own section, and reduced motion shows the final states. The timings are in phases/2-design-round-2.md and become the motion tokens.
 3. **The team strip on Home shows two people.**
 4. **Fonts: Archivo is the only family.** One self-hosted variable WOFF2, with the width axis narrowed to 75–100 % and the weight axis to 400–700. Headings use the semi-condensed width, labels the condensed one.
 5. **Corner radius: 2 px** on controls and panels: buttons, form fields, the menu button, panels and cards. The drawing vocabulary stays square: the sheet frame, zone rules, the title block, grips and drawing boxes. Grid bubbles stay circles.

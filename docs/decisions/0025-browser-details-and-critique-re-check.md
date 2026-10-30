@@ -6,7 +6,7 @@
 
 ## Context
 
-The client asked for a critical evaluation of the outside skill Impeccable ([research/2026-10-20-impeccable-skill.md](../research/2026-10-20-impeccable-skill.md)) before adding it. Its writing is strong, but as a package it doesn't fit:
+The client asked for a critical evaluation of the outside skill Impeccable (research/2026-10-20-impeccable-skill.md) before adding it. Its writing is strong, but as a package it doesn't fit:
 - Its new-design flow assumes an open direction, and the direction is chosen (ADR 0015).
 - Its taste and detector work against recorded decisions: the graph paper, 01/02/03, the paper ground, several moments of motion.
 - It calls an outside API, with telemetry on by default.

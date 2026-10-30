@@ -11,7 +11,7 @@ The site needs basic visitor statistics without third-party requests before cons
 - AZOP's guidance
 - EDPB Guidelines 2/2023
 
-(See [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md#82-consent-rules-in-croatia).) So "cookieless" buys data minimisation, not a site without a consent banner.
+(See research/2026-10-19-hosting.md.) So "cookieless" buys data minimisation, not a site without a consent banner.
 
 The site runs on our own EU VPS ([ADR 0009](0009-hosting-ovhcloud-vps-eu.md)), with a budget ceiling of €10 a month. Options considered:
 

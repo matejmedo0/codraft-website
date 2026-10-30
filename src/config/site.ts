@@ -18,6 +18,12 @@ export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE = "hr" satisfies Locale;
 
+/** Open Graph locales: Croatian, and British English (ADR 0029). */
+export const OG_LOCALES = {
+  hr: "hr_HR",
+  en: "en_GB",
+} as const satisfies Record<Locale, string>;
+
 /**
  * hreflang `x-default` points to English, so visitors who read neither
  * language (e.g. foreign drafting clients) get the English page.

@@ -1,0 +1,48 @@
+---
+/**
+ * Zone E of /usluge, "Tijek suradnje": four steps, each ending with
+ * something you get (the page's argument). Maintenance isn't a fifth step:
+ * it is stage 03 right above. The h2 and the lead on columns 1-7, then the
+ * steps across the width, the line drawing from grip to grip once, as in
+ * Home's audit zone (Steps.astro).
+ */
+import Steps from "../../components/ui/Steps.astro";
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const steps = (["audit", "offer", "build", "launch"] as const).map((step) => ({
+  title: t(locale, `services.process.${step}.title`),
+  body: t(locale, `services.process.${step}.body`),
+}));
+---
+
+<Zone labelledby="tijek-suradnje" class="process">
+  <div class="process__intro">
+    <h2 id="tijek-suradnje">{t(locale, "services.process.title")}</h2>
+    <p class="process__lead">{t(locale, "services.process.lead")}</p>
+  </div>
+  <Steps steps={steps} wide class="process__steps" />
+</Zone>
+
+<style>
+  .process__intro {
+    max-width: 44rem;
+  }
+
+  .process__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-4);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .process :global(.process__steps) {
+    margin-top: var(--space-8);
+  }
+</style>

@@ -25,6 +25,10 @@
  * R2). A part with `data-draw-steady` keeps its own pace: it never hurries,
  * so a part behind it waits for the whole of it (the floor plan, R3).
  *
+ * A printed page shows every part complete: before printing, the parts
+ * still waiting show their final state and the moving ones finish (the
+ * /check of phase 3).
+ *
  * Imported by the components' scripts; a module runs once per page however
  * many components import it.
  */
@@ -305,9 +309,24 @@ function initWordmarkEntrances(): void {
   }
 }
 
+/** Before printing, every part shows its final state. */
+function initPrint(): void {
+  window.addEventListener("beforeprint", () => {
+    waiting.length = 0;
+    requested.clear();
+    for (const part of document.querySelectorAll(".is-pending")) {
+      if (!part.classList.contains("is-drawing")) {
+        part.classList.remove("is-pending");
+      }
+    }
+    for (const part of moving.keys()) finish(part);
+  });
+}
+
 if (!prefersReducedMotion()) {
   initDraws();
   initBottomOfPage();
   initReplays();
   initWordmarkEntrances();
+  initPrint();
 }

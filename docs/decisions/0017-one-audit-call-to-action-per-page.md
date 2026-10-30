@@ -27,6 +27,6 @@ Reviewing the design system, the client said: "Previše se nameće gumb rezervir
 
 - [information-architecture.md](../information-architecture.md) follows: the header, the hero and closing call to action on Home, the closing call to action on Usluge and O nama. O nama's primary call to action becomes "Pošaljite upit".
 - The production header loses its button and the `header.cta` string; its E2E test checks that the header doesn't link to the audit page.
-- The Figma library follows: the component Zaglavlje and the example page Početna ([ADR 0016](0016-figma-for-design-iterations.md)).
+- The Figma library follows: the component Zaglavlje and the example page Početna (ADR 0016).
 - Lab D and E keep their five calls to action as the round 2 record. `/lab/pocetna` shows the rule.
 - Fewer ways into the audit. After launch, the analytics ([ADR 0011](0011-analytics-goatcounter-after-consent.md)) show whether visitors still find it; if not, this is revisited with a new ADR.

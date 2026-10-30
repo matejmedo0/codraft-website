@@ -1,0 +1,133 @@
+/*
+ * "Što radimo" on Home (HomeServices.astro): the process line and the icons'
+ * drawing; the stages' bubbles, titles and taglines are shared with /usluge
+ * (src/features/services/stages.css). Global, because the icons' strokes
+ * live in ServiceIcon.astro; every class here is the zone's own.
+ */
+
+.svc {
+  --bubble: 2.75rem;
+  /* How long the line and the icons wait unseen for axis-line.ts. */
+  --axis-failsafe: 3s;
+}
+
+.svc > h2 {
+  margin-bottom: var(--space-6);
+}
+
+.svc-items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The process line, one stretch per stage: the line without JavaScript or
+   with reduced motion. */
+.svc-rail {
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+}
+
+/* The central axis: the line follows the screen and the service icons draw
+   as it reaches them (review batches 14 and 15; axis-line.ts eases the line
+   frame by frame). The text never waits. Without JavaScript, or with
+   reduced motion, the stages' rails draw the line complete and the icons
+   are complete. */
+.axis__line {
+  display: none;
+  position: absolute;
+  width: var(--rail);
+  background: var(--accent);
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Until axis-line.ts takes the axis over (`is-live`), the rails and the
+     icons wait unseen from the first paint, so they never flash complete.
+     If the script never takes over (it failed to load, or came later than
+     --axis-failsafe), they show complete then (the /check of phase 3). */
+  .js [data-axis]:not(.is-live) :is(.svc-rail, [data-stroke]) {
+    visibility: hidden;
+    animation: axis-failsafe 0s var(--axis-failsafe) forwards;
+  }
+
+  /* Once the script has the axis: one line, set by it, in place of the
+     rails. */
+  [data-axis].is-live .svc-rail {
+    display: none;
+  }
+
+  [data-axis].is-live .axis__line {
+    display: block;
+    transform: scaleY(var(--progress, 0));
+  }
+
+  /* An icon isn't there until its row starts; then its strokes run along
+     their paths (icon-draw.ts) and the grip snaps in. Once drawn, a stroke
+     is plain again. */
+  [data-axis].is-live [data-axis-item]:not(.is-drawn) [data-stroke] {
+    opacity: 0;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant)
+    :is([data-stroke="ink"], [data-stroke="line"]) {
+    animation: icon-stroke var(--for, 220ms) var(--ease-pen) var(--at, 0ms)
+      backwards;
+  }
+
+  [data-axis-item].is-drawn:not(.is-instant) [data-stroke="grip"] {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: icon-grip var(--motion-fast) var(--ease-spring) var(--at, 0ms)
+      backwards;
+  }
+}
+
+/* A printed page shows the axis complete; axis-line.ts completes a live
+   one before printing. */
+@media print {
+  .js [data-axis]:not(.is-live) :is(.svc-rail, [data-stroke]) {
+    visibility: visible;
+  }
+}
+
+@keyframes axis-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
+/* Hidden at the very start, so a square cap never shows as a dot. */
+@keyframes icon-stroke {
+  0% {
+    opacity: 0;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes icon-grip {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

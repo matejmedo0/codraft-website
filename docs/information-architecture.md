@@ -18,7 +18,7 @@
 |---|---|---|---|---|---|---|
 | 1 | Početna / Home | `/` | `/en` | Explain the offer in 5 seconds; send drafting clients down their own path | Rezervirajte besplatnu analizu (once, in the free audit teaser) | 3 |
 | 2 | Usluge / Services | `/usluge` | `/en/services` | All 8 services in 3 stages (Plan, four Build, three Run & Grow), how we work together, FAQ | Rezervirajte besplatnu analizu (once, in `#planiranje`) | 3 |
-| 3 | Tehničko crtanje / Engineering Drafting | `/tehnicko-crtanje` | `/en/engineering-drafting` | B2B drafting offer for architecture and construction | Zatražite ponudu | 3 |
+| 3 | Tehničko crtanje / Architectural Drafting | `/tehnicko-crtanje` | `/en/architectural-drafting` | B2B drafting offer for architecture and construction | Zatražite ponudu | 3 |
 | 4 | O nama / About | `/o-nama` | `/en/about` | Code + Draft story, team, how we work, how this site was built | Pošaljite upit | 3 |
 | 5 | Besplatna analiza / Free audit | `/besplatna-analiza` | `/en/free-audit` | What we check and what you get; form, then time slot | Nastavite na odabir termina (form submit, leads to booking) | 3 (form: 4) |
 | 6 | Kontakt / Contact | `/kontakt` | `/en/contact` | General enquiries and drafting quote requests | Pošaljite upit | 3 (form: 4) |
@@ -60,7 +60,7 @@ Planned order:
 
 **Header**
 - HR: Usluge · Tehničko crtanje · O nama · Kontakt · EN
-- EN: Services · Engineering Drafting · About · Contact · HR
+- EN: Services · Architectural Drafting · About · Contact · HR
 - No button: the header serves both audiences, so it offers no sales action ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)).
 - The language switcher links to the *same page* in the other language; it does not go to the home page.
 - No "Radovi" item until real case studies exist.
@@ -69,7 +69,7 @@ Planned order:
 - Legal links: Privatnost, Kolačići, Impresum, Izjava o pristupačnosti.
 - "Postavke kolačića" reopens the consent dialog.
 - Contact details.
-- Company data (OIB, MBS or craft register number). In design direction A this is styled as a drawing title block (see [phases/2-design.md](phases/2-design.md)).
+- Company data (OIB, MBS or craft register number). It is styled as a drawing title block.
 
 ## Internationalisation and URLs
 
@@ -118,6 +118,21 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 7. **Team strip:** photos, names, roles (N, G3).
 8. **Closing CTA:** the client's heading "Imate skicu, stranicu ili samo ideju?" and lead (review batch 11, [content.md](content.md) "Prototype copy"), and one button, "Pošaljite upit" (ADR 0017).
 
+**The page's argument** (phase 3 step 1, ADR 0027; put to the client on 2026-10-22, M1; **approved** by the client the same day: „Odobravam uglavnom kreni s izradom“, M2). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
+
+| Zone | Claim | Proof | Proof today |
+|---|---|---|---|
+| Hero | Codraft plans, builds and looks after websites, software and AI tools; you know the scope, timeline and price before work starts, and the team stays after launch. Architects and builders see their own path at once. | A specific commitment about how the work is done, which "Što radimo" backs: stage 01 (fixed scope, timeline and price first) and stage 03 (maintenance for a fixed monthly fee). The drafting link is inside the first screen at every width (critique, communication lens). | In place |
+| Što radimo | One team covers the whole way, plan → build → run and grow, and you can see exactly what you can get. | Nine services named concretely, each with one line and a link to its full description on `/usluge`; the order of the stages is the process itself. | In place (the full descriptions arrive with `/usluge`) |
+| Besplatna analiza | The first step costs nothing, commits you to nothing and is worth your time. | What the audit checks (G4) and what you get from it (G19); three steps to a time slot. | **Missing:** G4 and G19 (the client's facts). Today a placeholder note. |
+| Tehničko crtanje | Architecture practices and construction companies can hand us their drawings when there are more drawings than hands; we draw in their layers and with their title block, in 2D and 3D. | The work itself, shown large: the floor plan drawn layer by layer and raised into a 3D model of a house, labelled "Ilustracija". How the work is done, stated specifically: "u vašim slojevima i s vašim zaglavljem". The real sample sheets (G10) and formats (G13) belong to `/tehnicko-crtanje`. | In place for Home |
+| Kako radimo | Working with Codraft is simple and honest. | Three commitments in the client's words; "Sve ostaje vaše" names what exactly (code, drawings, domain, access; [ADR 0021](decisions/0021-the-customer-owns-the-work.md)). "Razgovarate s onima koji rade" is proved by the team strip right below it. | In place (leans on Tim) |
+| Tim | Real people with names and faces do the work, the same people you talk to. | Real photos, full names and roles (G3); the link to About for the bios and LinkedIn. | **Missing:** G3 (the client's data). Today placeholder frames. |
+| Closing CTA | Whatever you have (a sketch, a site or just an idea), sending it is easy, and you get a proposal back. | One clear step, "Pošaljite upit" to Contact. When you hear back (G23) and where a sketch goes ([ADR 0020](decisions/0020-drawings-arrive-by-email.md): by email) are not on the page yet. | Partly |
+| Title block (footer) | Codraft is a real company you can check. | OIB, MBS and registered office (item A), checkable on sudreg or poslovna.hr. | **Missing:** item A; "Stiže prije objave" until the Impresum page. |
+
+Rules applied: no zone lacks a claim, so none is cut. A claim without proof at launch is reworded or dropped: the team strip launches with real data or not at all, and the audit zone claims only what G4 and G19 confirm. The AI assistant teaser joins in phase 4, with the demo as its proof.
+
 ### Usluge / Services (`/usluge`)
 
 1. **H1 and intro** (P: `services.title`, `services.intro`).
@@ -134,7 +149,40 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 6. **FAQ, 6–8 questions** (N, G8).
 7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
-### Tehničko crtanje / Engineering Drafting (`/tehnicko-crtanje`)
+**The page's argument** (phase 3 step 1, ADR 0027; put to the client on 2026-10-22, M5; **built** the same day under the client's standing instruction, M6, ADR 0031; the client reviews it at the end of phase 3). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)). The copy, with each line's key, is in [content.md](content.md) ("Services, phase 3").
+
+| Zone | Claim | Proof | Proof today |
+|---|---|---|---|
+| A · Hero | Everything Codraft does for businesses is on this page, in the order the work happens; you can go straight to what you need. Architects and builders see at once where their page is. | The index of the three stages, each with its services named and linking to its zone; the order is the process itself. The drafting path, as on Home. | In place |
+| B · 01 Planiranje | Starting costs nothing, and you know the scope, timeline and price before you pay for anything. | What the audit checks and what you get (G4, G19: the same facts as Home's audit lead); what the written offer states (scope, timeline, price); the page's one "Rezervirajte besplatnu analizu" (ADR 0017). | Partly: the audit's facts are Claude's drafts, which the client confirms before launch (M2), as on Home |
+| C · 02 Izrada | Each of the four build services delivers named things, and you can see roughly how long it takes and what it costs before you ask. | The client's sentence, 3–4 deliverables per service (G5), a typical timeline and "od X €" (G7, [ADR 0032](decisions/0032-guide-prices-below-the-market.md)). | In place; the deliverables marked **confirm** are Claude's drafts, confirmed before launch |
+| D · 03 Održavanje i rast | After launch we stay, for a fixed monthly fee that covers named things, and you can leave with everything. | What each service includes (G6), the monthly fee (G7, ADR 0032), and "Sve ostaje vaše" ([ADR 0021](decisions/0021-the-customer-owns-the-work.md)) in the FAQ. | In place; the inclusions marked **confirm** are confirmed before launch |
+| E · Tijek suradnje | You always know what comes next, and each step ends with something you get. | Four named steps, each with what you receive: the audit's summary, the written offer, the progress you see, every login at launch (ADR 0021). | Partly: "you see the progress" is a working practice the client confirms |
+| F · Česta pitanja | The usual worries (price, time, ownership, an existing site, being tied to maintenance) have straight answers. | Specific answers that follow the client's decisions (ADR 0021) and facts (G7, the terms of maintenance). | In place; the terms of maintenance are confirmed before launch |
+| G · Closing CTA | Not sure which service you need? Describe what you do, and we suggest the first step. | One clear step, "Pošaljite upit" to Contact; the reply time, as on Home (G23, the client confirms). | Partly |
+| H · Title block | Codraft is a real company you can check. | Item A, as on Home. | **Missing:** item A |
+
+Rules applied: every zone has a claim, so none is cut. Zones C and D show the guide prices of ADR 0032; the deliverables and inclusions Claude drafted are confirmed or cut before launch.
+
+**As built** (2026-10-22): as laid out below, plus a visible breadcrumb above the H1 on every inner page ("Početna / Usluge", the same trail as the `BreadcrumbList`), a price table per service (the timeline drawn as a dimension, the price right-aligned) with a note on what the prices are under stages 02 and 03, and the row's icon and title staying in view on desktop while its detail scrolls past.
+
+**Layout, zone by zone** (there is no lab design for Usluge; composed from the design system in `src/components/ui/` and Home's patterns, on the 12-column grid of Home's hero, audit and team). Differences from the outline above: the hero gets the stage index and the drafting path; "Tijek suradnje" has four steps, since maintenance is stage 03 right above it and five steps don't fit a row at 768 px (about 110 px each); the FAQ is always open.
+
+- **A · Hero** (paper): as Home's hero, the text on columns 1–7 (H1, `services.intro`, the drafting path link) and a drawing on graph paper on columns 8–12. The drawing is the page's index: the three stage bubbles of "Što radimo" (01, 02, 03) joined by the blue process line, each bubble with its stage's title and its services in one muted line, and each a link to its zone with the grips on hover and focus. Still, no animation (the mark's entrance stays on Home, ADR 0014). On phones the index follows the text, with the line down the left as in Home's narrow "Što radimo".
+- **B, C, D · the three stages** (paper), one zone each, `#planiranje`, `#izrada`, `#odrzavanje-i-rast` (EN `#plan`, `#build`, `#run-and-grow`):
+  - The stage head on columns 1–7: the bubble with its number beside the `h2` (the stage title), the tagline under it in muted lead type; stage 01 adds `plan.body` as its lead.
+  - Then each service as a row, under a hairline, like the rows of "Kako radimo": its icon and `h3` title on columns 1–4, and on columns 5–12 the client's sentence (lead type, full ink), a label ("Što dobivate", or "Što je uključeno" in stage 03), 3–4 short points in muted ink, and, if the client gives them (G7), the timeline as a Dimension (a kota in weeks, as the design system plans it) and the price. Each row has its anchor (`#web-stranice`, …), so Home's links land on it.
+  - The icons are still, as everywhere outside Home's process line.
+  - Stage 01's rows are "Besplatna analiza", which ends with the page's one button, and "Fiksni opseg, rok i cijena".
+  - On phones: the bubble beside the stage title; the icon beside the service's title and everything else under it at full width (ADR 0028).
+- **E · Tijek suradnje** (paper): the `h2` and a lead on columns 1–7, then `Steps` with four steps across the full width (stacked on phones, a row from 48rem), the line drawing from step to step as on Home's audit.
+- **F · Česta pitanja** (paper): the `h2` on columns 1–4 and the questions on columns 5–12, each an `Item` row (the question as `h3`, the answer under it), always open: no accordion and no script, and the answers stay readable for people and AI search.
+- **G · Closing CTA** (navy, the page's one navy surface): as Home's, centred: heading, lead, note, one button "Pošaljite upit".
+- **H · Title block**, as on every page.
+
+New in the design: only the short points' list (a small square marker in the line colour, not blue). Shared code: the stage bubble's style moves from Home's `services.css` to a shared place, and Home's closing call to action takes its text as props, both with no visible change on Home.
+
+### Tehničko crtanje / Architectural Drafting (`/tehnicko-crtanje`)
 
 1. **Hero:** H1 "Tehničko crtanje za arhitekturu i građevinarstvo" (I); `drafting.tagline`, `drafting.audience` (P).
 2. **The three services:** `drafting.cad.*`, `drafting.3d.*` (P; added 2026-10-19, [ADR 0019](decisions/0019-drafting-adds-3d-models.md)) and `drafting.docs.*` (P), plus deliverable bullets for each (N, G9).
@@ -197,7 +245,7 @@ Validated in phase 3 with the `seo` skill. The city is added once known.
 | `/tehnicko-crtanje` | "tehničko crtanje", "CAD crtanje", "AutoCAD crtanje", "digitalizacija nacrta" |
 | `/besplatna-analiza` | "besplatna analiza web stranice" |
 | `/en` | "web design and development Croatia" |
-| `/en/engineering-drafting` | "CAD drafting services", "drafting outsourcing" |
+| `/en/architectural-drafting` | "architectural drafting services", "CAD drafting services", "drafting outsourcing" ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
 
 FAQ copy is written for people and for AI search. Since August 2023, Google shows FAQ rich results only for well-known government and health sites, so don't expect them here.
 
@@ -247,4 +295,4 @@ EU law bans fake reviews (UCPD Annex I, points 23b–23c, added by Directive 201
 
 - **Terminology and slugs:** client approval of [content.md §1](content.md#1-glossary-hr--en) (phase 0 report).
 - **Prices on the site:** the client decides (gap G7).
-- **Address, city and in-person meetings:** these decide the local keywords and Google Business Profile eligibility (see [phases/7-launch.md](phases/7-launch.md)).
+- **Address, city and in-person meetings:** these decide the local keywords and Google Business Profile eligibility.

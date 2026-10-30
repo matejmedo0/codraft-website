@@ -1,0 +1,365 @@
+---
+/**
+ * One service on /usluge: its icon and title, the client's sentence, a
+ * label with 3-4 short points, and its terms: the guide prices (G7,
+ * ADR 0032), each with its typical timeline drawn as a dimension to one
+ * scale for the page, so the lines compare the timelines at a glance. Next
+ * to every price the terms say the figures are a guide, without VAT (the
+ * critique of Usluge, DC-04).
+ *
+ * The stage decides the shape (the critique, DC-02):
+ * - "rows" (stage 02): a row under a hairline, as in Home's "Kako radimo":
+ *   the icon and title on columns 1-4, the detail on 5-12; from 80rem the
+ *   terms take columns 10-12, so every price ends on the rules' right edge.
+ *   The head stays in view while a long detail scrolls past.
+ * - "pair" (stage 01): from 64rem the two items stand side by side.
+ * - "columns" (stage 03): rows up to 80rem, then three columns that can be
+ *   compared, each with its monthly fee at the foot.
+ * On phones the icon sits beside the title and the rest runs under both
+ * (ADR 0028). The icon is still: ADR 0022 draws it only on Home's process
+ * line.
+ */
+import Button from "../../components/ui/Button.astro";
+import Dimension from "../../components/ui/Dimension.astro";
+import { PRICES } from "../../config/pricing.ts";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
+import {
+  formatGuidePrice,
+  formatWeeks,
+} from "../../features/services/pricing.ts";
+import type { ServiceEntry } from "../../features/services/services.ts";
+
+export type ServiceLayout = "rows" | "pair" | "columns";
+
+interface Props {
+  locale: Locale;
+  service: ServiceEntry;
+  layout?: ServiceLayout;
+}
+
+/** The longest typical timeline on the page: the full width of a line. */
+const SCALE_WEEKS = 8;
+
+const { locale, service, layout = "rows" } = Astro.props;
+const { detail } = service;
+const id = service.anchor?.[locale];
+const idBase = id ?? service.title.replaceAll(".", "-");
+const pointsId = `${idBase}-tocke`;
+const prices = (detail?.prices ?? []).map((line) => {
+  const price = PRICES[line.price];
+  const weeks = "weeks" in price ? price.weeks : undefined;
+  return {
+    name: t(locale, line.label ?? "services.startingPrice"),
+    price: formatGuidePrice(price, locale),
+    weeks: weeks === undefined ? undefined : formatWeeks(weeks, locale),
+    // The line's length in eighths of the scale (a class, as the CSP
+    // allows no inline style).
+    scale:
+      weeks === undefined
+        ? undefined
+        : Math.min(SCALE_WEEKS, Math.max(1, weeks[1])),
+  };
+});
+---
+
+<li class:list={["service-row", `service-row--${layout}`]} id={id}>
+  <div
+    class:list={[
+      "service-row__head",
+      { "service-row__head--icon": service.icon !== undefined },
+    ]}
+  >
+    {service.icon !== undefined && (
+      <ServiceIcon icon={service.icon} class="service-row__icon" />
+    )}
+    <h3 class="service-row__title">{t(locale, service.title)}</h3>
+  </div>
+  {detail !== undefined && (
+    <div class="service-row__detail">
+      <div class="service-row__text">
+        <p class="service-row__body">{t(locale, detail.body)}</p>
+        <p class="service-row__label t-label" id={pointsId}>
+          {t(locale, detail.pointsLabel)}
+        </p>
+        <ul class="points" aria-labelledby={pointsId}>
+          {detail.points.map((point) => (
+            <li>{t(locale, point)}</li>
+          ))}
+        </ul>
+        {detail.auditCta === true && (
+          <div class="service-row__actions">
+            <Button href={pathFor("audit", locale)}>
+              {t(locale, "audit.cta")}
+            </Button>
+          </div>
+        )}
+      </div>
+      {prices.length > 0 && (
+        <div class="terms">
+          <p class="terms__caption t-label">{t(locale, "services.terms")}</p>
+          <dl class="terms__list">
+            {prices.map((line) => (
+              <div class="terms__line">
+                <dt class="terms__name">{line.name}</dt>
+                <dd class="terms__price">{line.price}</dd>
+                {line.weeks !== undefined && (
+                  <dd
+                    class:list={[
+                      "terms__time",
+                      `terms__time--${String(line.scale)}`,
+                    ]}
+                  >
+                    <span class="visually-hidden">
+                      {t(locale, "services.time")}:
+                    </span>
+                    <Dimension value={line.weeks} above />
+                  </dd>
+                )}
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
+    </div>
+  )}
+</li>
+
+<style>
+  .service-row {
+    --icon: 2.5rem;
+
+    display: grid;
+    /* One column that never grows past the list's width, whatever the
+       text size (the /check of Usluge). */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: var(--space-5) 0 var(--space-6);
+    border-top: var(--rule) solid var(--line);
+    scroll-margin-top: var(--space-5);
+  }
+
+  .service-row__head {
+    display: grid;
+    column-gap: var(--space-4);
+    align-items: center;
+  }
+
+  .service-row__head--icon {
+    grid-template-columns: var(--icon) minmax(0, 1fr);
+  }
+
+  .service-row__title {
+    font-size: var(--step-title);
+    line-height: var(--leading-title);
+  }
+
+  .service-row__body {
+    max-width: var(--measure);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .service-row__label {
+    margin-top: var(--space-5);
+    color: var(--ink-muted);
+  }
+
+  /* The short points: a small hollow square in the muted ink, a grip
+     without the blue (the one new mark of this page). */
+  .points {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--measure);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    color: var(--ink-muted);
+    list-style: none;
+  }
+
+  .points li {
+    position: relative;
+    padding-left: var(--space-5);
+  }
+
+  .points li::before {
+    position: absolute;
+    top: calc(0.775em - 3.5px);
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid var(--ink-muted);
+    content: "";
+  }
+
+  .service-row__actions {
+    display: grid;
+    justify-items: start;
+    margin-top: var(--space-6);
+  }
+
+  /* The terms: a caption, then each price with its name, and its timeline
+     as a dimension under it. */
+  .terms {
+    max-width: 24rem;
+    margin-top: var(--space-6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .terms__caption {
+    padding-bottom: var(--space-2);
+    border-bottom: var(--rule) solid var(--line);
+    color: var(--ink-muted);
+  }
+
+  .terms__list {
+    margin: 0;
+  }
+
+  .terms__line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-4);
+    row-gap: var(--space-2);
+    align-items: baseline;
+    padding: var(--space-3) 0;
+    border-bottom: var(--rule) solid var(--line);
+  }
+
+  .terms__name {
+    font-weight: var(--weight-medium);
+  }
+
+  .terms__price {
+    margin: 0;
+    font-weight: var(--weight-strong);
+    text-align: right;
+  }
+
+  /* The timeline to the page's scale: eight weeks fill the line. */
+  .terms__time {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .terms__time--1 {
+    width: 12.5%;
+  }
+
+  .terms__time--2 {
+    width: 25%;
+  }
+
+  .terms__time--3 {
+    width: 37.5%;
+  }
+
+  .terms__time--4 {
+    width: 50%;
+  }
+
+  .terms__time--5 {
+    width: 62.5%;
+  }
+
+  .terms__time--6 {
+    width: 75%;
+  }
+
+  .terms__time--7 {
+    width: 87.5%;
+  }
+
+  .terms__time--8 {
+    width: 100%;
+  }
+
+  @media (min-width: 64rem) {
+    /* The services' titles a step larger, as on Home (review #102). */
+    .service-row__title {
+      font-size: clamp(1.25rem, 1.1rem + 0.45vw, 1.625rem);
+    }
+
+    .service-row--rows,
+    .service-row--columns {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      padding-block: var(--space-6) var(--space-7);
+    }
+
+    /* The icon above the title, as a column of its own; it stays in view
+       while the row's detail scrolls past. */
+    :is(.service-row--rows, .service-row--columns) .service-row__head {
+      position: sticky;
+      top: var(--space-6);
+      align-self: start;
+      grid-column: 1 / span 4;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-4);
+      align-content: start;
+    }
+
+    :is(.service-row--rows, .service-row--columns) .service-row__detail {
+      grid-column: 5 / -1;
+    }
+
+    /* Side by side: the icon above the title, the detail under both. */
+    .service-row--pair {
+      align-content: start;
+      padding-block: var(--space-6) var(--space-7);
+    }
+
+    .service-row--pair .service-row__head {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-4);
+    }
+  }
+
+  @media (min-width: 80rem) {
+    /* The terms on columns 10-12, beside the text. */
+    .service-row--rows .service-row__detail {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      column-gap: var(--gap);
+      align-items: start;
+    }
+
+    .service-row--rows .service-row__text {
+      grid-column: 1 / span 5;
+    }
+
+    .service-row--rows .terms {
+      grid-column: 6 / -1;
+      margin-top: 0;
+    }
+
+    /* Three columns to compare: each column spans the list's three rows
+       (head, text, terms) as a subgrid, so the terms start on one line
+       across the columns. */
+    .service-row--columns {
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-4);
+    }
+
+    .service-row--columns :is(.service-row__head, .service-row__text, .terms) {
+      grid-column: 1;
+    }
+
+    .service-row--columns .service-row__head {
+      position: static;
+    }
+
+    .service-row--columns .service-row__detail {
+      display: contents;
+    }
+
+    .service-row--columns .terms {
+      max-width: none;
+      margin-top: var(--space-2);
+    }
+  }
+</style>

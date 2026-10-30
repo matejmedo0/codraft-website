@@ -8,7 +8,7 @@ The site is built in gated phases (0–8). The roadmap is in [docs/phases/README
 
 A phase ends with these steps, in order:
 1. The exit checks pass.
-2. `PROGRESS.md`, the phase document and any ADRs are updated.
+2. `PROGRESS.md` and the phase document are updated.
 3. The phase branch is pushed and a PR to `main` is opened, with the phase report as its description.
 4. The client reviews the PR.
 5. On the client's word, the PR is merged and the next phase starts on a new branch.
@@ -72,12 +72,12 @@ A change is done when:
 - [ ] UI changes are checked at 375, 768 and 1440 px, with no console errors.
 - [ ] Keyboard and screen-reader basics work: focus visible, labels present, reduced motion respected.
 - [ ] Site copy matches [docs/content.md](docs/content.md); new copy was added there first.
-- [ ] The docs are updated: the phase log, `PROGRESS.md`, an ADR for any decision, research notes for any new facts.
+- [ ] The docs are updated: the phase log, `PROGRESS.md`, research notes for any new facts.
 
 ## Documentation rules
 
 - `docs/` is the project's memory. If it matters, it is written down there before the phase ends.
-- **Decisions** become ADRs in [docs/decisions/](docs/decisions/README.md).
+- **Decisions:** no new ADRs from 2026-10-30, at the client's word; [docs/decisions/](docs/decisions/README.md) keeps the earlier ones.
 - **Research facts** go to `docs/research/YYYY-MM-DD-topic.md`, with sources.
 - **Language:** docs and code in English; `PROGRESS.md` in Croatian.
 

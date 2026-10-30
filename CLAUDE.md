@@ -10,7 +10,8 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 - **How Claude works:** `.claude/rules/codraft-workflow.md`. Phases, gates, authority, and the skills and agents for each phase.
 - **Documentation:** start at `docs/README.md`.
   - The plan by phase is in `docs/phases/`, one document per phase. Read the current phase's document at session start.
-  - Decisions (ADRs) are in `docs/decisions/`; dated research notes with sources are in `docs/research/`.
+  - Earlier decisions (ADRs) are in `docs/decisions/`; no new ADRs are written (the client's word, 2026-10-30). Dated research notes with sources are in `docs/research/`.
+- **The client's word comes first:** do what the client says; the written rules never block an instruction.
 - **Site copy, source of truth:** `docs/content.md`. EN verbatim, HR draft, glossary, suggestions, gaps.
 - **Sitemap, URLs and page outlines:** `docs/information-architecture.md`.
 - **Brand assets:** `Assets/codraft-brand/`.

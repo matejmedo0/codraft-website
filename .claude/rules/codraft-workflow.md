@@ -17,7 +17,6 @@ Every phase ends the same way:
 2. Update the docs:
    - `PROGRESS.md`: tick finished steps, record decisions and open questions.
    - The phase document in `docs/phases/`: status and log.
-   - An ADR for every decision.
 3. Commit (Conventional Commits) and push the phase branch (`phase/<n>-<name>`).
 4. Open a PR to `main`. Its description is the phase report.
 5. Report to the user in Croatian: what was done, what the checks found, which decisions are theirs, and the PR link.
@@ -72,7 +71,8 @@ From the end of phase 0, `main` is protected by a GitHub ruleset: a PR is requir
 
 `docs/` is the project's durable memory. A new session must be able to continue from the repository alone.
 
-- **Decisions:** every decision becomes an ADR in `docs/decisions/` (ADR 0001 defines what counts; the template is in the README there), plus one line under "Odluke" in `PROGRESS.md`. Accepted ADRs are never rewritten; a new ADR supersedes an old one.
+- **No ADRs (the client's word, 2026-10-30):** "makni adr pravila i radi sve kako ti ja kažem". Don't write ADRs any more; `docs/decisions/` stays as the record of the earlier ones. A decision gets at most one line under "Odluke" in `PROGRESS.md`.
+- **The client's word comes first.** Do what the client says. Rules written in these documents and earlier recorded decisions never block an instruction; at most, mention a conflict in one line and do it.
 - **Research:** every fact gathered from research goes to `docs/research/YYYY-MM-DD-topic.md`, with its source URL and a confidence rating.
 - **Phase documents:** keep the current phase's document up to date while working (status, log).
 - **Site copy:** copy goes into `docs/content.md` before it goes into the site.

@@ -15,21 +15,18 @@
 | Booking | Self-hosted Easy!Appointments on a subdomain | [ADR 0012](decisions/0012-booking-easy-appointments.md) |
 | Mailboxes | Zoho Mail Lite (phase 7) | [ADR 0013](decisions/0013-mailboxes-zoho-mail-lite.md) |
 
-Verified versions, settings and findings: [research/2026-10-19-scaffold-toolchain.md](research/2026-10-19-scaffold-toolchain.md) and [research/2026-10-19-scaffold-verification.md](research/2026-10-19-scaffold-verification.md).
-
 ## Repository layout
 
 ```
 codraft-website/
 ├── .claude/
 │   ├── hooks/             guard-env.mjs (blocks .env edits), format-lint.mjs (Prettier and ESLint after each edit)
-│   ├── rules/             How Claude works on this project: phases, gates, authority
 │   └── settings.json      The hooks and the permission allowlist
 ├── .github/               CI (workflows/ci.yml), Dependabot, PR template, issue forms, CODEOWNERS
 ├── Assets/codraft-brand/  Brand masters: final, read-only (the site uses optimised copies)
-├── docs/                  Project documentation; start at docs/README.md
+├── docs/                  Product docs: copy, sitemap, brand, motion, compliance, architecture, ADRs
 ├── public/                The favicon set and manifest: web copies of the brand package's web/ files, without C2PA
-├── scripts/               check-js-budget.mjs, check-guardrails.mjs, brand-web-copies.mjs (each with tests), build-lab.mjs, design-capture/ (screenshots and measurements for the design critic)
+├── scripts/               check-js-budget.mjs, check-guardrails.mjs, brand-web-copies.mjs (each with tests)
 ├── src/
 │   ├── assets/            brand/ (web copies of the marks), fonts/ (Archivo core and extended, with its OFL)
 │   ├── components/
@@ -44,7 +41,6 @@ codraft-website/
 │   │   ├── i18n/          Route map, URL helpers, navigation lists, UI-string lookup, with their tests
 │   │   ├── seo/           Structured data (JSON-LD), with its tests
 │   │   └── services/      The services' catalogue (stages, anchors, copy keys) and the nine service icons
-│   ├── lab/               The phase 2 design lab: prototypes A–E, the style page, their fonts and components (see below)
 │   ├── layouts/           BaseLayout (<html lang>, head, fonts, icons, canonical, hreflang) and SiteLayout (the sheet)
 │   ├── lib/               Pure helpers: contrast.ts
 │   ├── locales/           UI strings: hr.json and en.json
@@ -53,23 +49,15 @@ codraft-website/
 │   └── views/             One view per page: HomeView (its zones and the floor plan in home/), NotFoundView
 ├── tests/e2e/             Playwright tests
 ├── astro.config.ts · tsconfig.json · eslint.config.js · prettier.config.mjs · vitest.config.ts · playwright.config.ts
-└── CLAUDE.md · CONTRIBUTING.md · PROGRESS.md · README.md
+└── CLAUDE.md · README.md
 ```
-
-**The design lab (`src/lab/`).** The phase 2 prototypes (A–E, the record of both rounds), the style page (`/lab/style`), Home in the chosen direction (`/lab/pocetna`, built from the production components, where the client's review refinements are made) and the review's comparison pages (`/lab/sto-radimo-2`, `/lab/crtanje`, `/lab/ikone`, `/lab/tlocrt-3d`, `/lab/kuca-boje`) live here, outside `src/pages`.
-- **When it exists:** an integration in `astro.config.ts` injects the `/lab/*` routes in `astro dev` and in builds made with `CODRAFT_LAB=1` (`npm run build:lab`), never in a normal production build.
-- **What it carries:** the pages have no route-map entry, so they are noindex. The style page is built from the production components; the prototypes keep their own, unlayered styles.
-- **Fonts:** the lab's fonts sit in `src/lab/fonts/` and are emitted only when a lab page uses them.
-- **Checks:** lint, typecheck and the unit tests cover the lab. Check the prototypes under the real CSP with `npm run build:lab`; CI builds without them.
-- **After the port:** phase 3 builds each page from its lab design into `src/views/`. Home's production code (`src/views/home/`) is a copy of `src/lab/home/` with only the client's choices (the roof, palette 1, the icons beside the text) and the copy from the locales; the lab stays unchanged as the record, and removing lab code needs the client's OK.
 
 **The design system (phase 2, [ADR 0015](decisions/0015-design-direction-model-i-list.md)).**
 - **Tokens** are CSS custom properties in `src/styles/`, all inside cascade layers (`reset`, `tokens`, `base`, `utilities`), so unlayered component styles always win. Components use role tokens (`--ink`, `--surface`, `--line`, …), never the palette; `.surface-navy` switches the roles to the navy surface. `tokens.test.ts` checks the contrast of every text pair, and `motion.test.ts` keeps `motion.ts` (for React islands) in step with `motion.css`.
-- **Fonts:** Archivo only, split by `unicode-range` into a core file (preloaded by BaseLayout) and an extended file, with size-adjusted Arial fallbacks ([research/2026-10-19-design-system.md](research/2026-10-19-design-system.md)).
+- **Fonts:** Archivo only, split by `unicode-range` into a core file (preloaded by BaseLayout) and an extended file, with size-adjusted Arial fallbacks.
 - **Components:** `src/components/ui/` holds the design system, without features; `src/components/site/` holds the chrome that reads the route map and the locales. ESLint keeps `site/` from importing views, layouts and pages. Scripts are small modules (`draw.ts`, `menu.ts`); without JavaScript, or with reduced motion, every part shows its final state, and the `js` class (a head-inline script from the `codraft:js-class` integration, hashed for the CSP) lets components style the no-script fallback.
 - **Pages:** `SiteLayout` puts a view on the sheet: skip link, header, `<main id="main">` with the view's zones, and the title block. Zone letters count down the sheet with a CSS counter.
 - **Brand files:** `scripts/brand-web-copies.mjs` writes the web copies of the marks and the favicon set from the read-only masters, without C2PA (ADR 0014); a unit test checks that each copy matches its master.
-- **Figma:** the library mirrors the code for quick prototypes ([ADR 0016](decisions/0016-figma-for-design-iterations.md)). Code stays the source of truth.
 
 **Planned additions, when a phase needs them:**
 - `src/features/<feature>/`: `audit-form/`, `contact-form/`, `consent/`, `chatbot/` (phase 4). Server-only code goes in a `server/` folder inside the feature.

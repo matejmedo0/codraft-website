@@ -1,9 +1,9 @@
 # The new Home: the client's rules
 
-From 2026-10-23 the pages are made step by step by the client's rules, one instruction at a time (M8 in [phases/3-pages.md](phases/3-pages.md); [ADR 0033](decisions/0033-new-home-by-the-clients-rules.md)). The first page is a new Home. This document holds its rules; each new rule is added here, with the client's message it comes from.
+From 2026-10-23 the pages are made step by step by the client's rules, one instruction at a time ([ADR 0033](decisions/0033-new-home-by-the-clients-rules.md)). The first page is a new Home. This document holds its rules; each new rule is added here, with the client's message it comes from.
 
-- **Where:** `src/views/new-home/`, shown at `/lab/nova-pocetna` (the dev server and lab builds only, noindex).
-- **The current Home** stays at `/` and `/en`, unchanged; its copy as of 2026-10-23 is in the lab archive (`src/lab/archive/home-v1/`, `/lab/pocetna-stara`).
+- **Where:** `src/views/new-home/`, not routed yet; it replaces the current Home when it is done.
+- **The current Home** stays at `/` and `/en`, unchanged.
 
 ## 1. Apart from the current Home (M8, M9)
 

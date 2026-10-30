@@ -7,7 +7,6 @@
  *   BaseLayout preloads it.
  * - ext: the rest of Latin-1 and Latin Extended-A, loaded only by a page
  *   that uses one of those letters (é, ü, ł, …).
- * How the files were made: docs/research/2026-10-19-design-system.md.
  *
  * The fallbacks are local Arial faces scaled to Archivo's metrics, so the
  * swap moves almost nothing: Arial for text, Arial Narrow Bold for headings

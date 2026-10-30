@@ -31,7 +31,7 @@ interface InnerPage {
   graph: Record<string, number>;
 }
 
-/** The inner pages, as phase 3 builds them (docs/phases/3-pages.md). */
+/** The inner pages built so far. */
 const PAGES: InnerPage[] = [
   {
     path: "/usluge",

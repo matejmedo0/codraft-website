@@ -8,7 +8,7 @@
 
 [ADR 0007](0007-launch-scope-and-constraints.md) set the budget as close to €0 a month as possible, with a small paid EU host acceptable and EU hosting preferred. On 2026-10-19 the client set a ceiling of **€10 a month**.
 
-The research of 2026-10-19 ([research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md)) found:
+The research of 2026-10-19 (research/2026-10-19-hosting.md) found:
 - **Hetzner:** its cheap cloud line (CX23, CAX11) can't be ordered; new servers have been restricted since 2026-06-26.
 - **OVHcloud VPS-1** is the closest EU match:
   - 2 vCores, 4 GB RAM, 40 GB NVMe
@@ -24,7 +24,7 @@ The research of 2026-10-19 ([research/2026-10-19-hosting.md](../research/2026-10
   - renews at $25.99 a month excl. VAT
   - no full server access
 
-The options and their costs are in [phases/1-architecture-options.md](../phases/1-architecture-options.md).
+The options and their costs are in phases/1-architecture-options.md.
 
 ## Decision
 

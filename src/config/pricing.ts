@@ -1,8 +1,7 @@
 /**
  * Codraft's guide prices: starting prices in euros, without VAT, and typical
  * timelines in weeks. The client asked for prices about 10% below the
- * Croatian market's median (phase 3, M6; ADR 0032); the sources, the
- * arithmetic and the assumptions are in docs/research/2026-10-22-pricing.md.
+ * Croatian market's median (ADR 0032).
  * The exact price is always in the written offer (`plan.body`).
  * Bottom layer: imports nothing from `src/`.
  */
@@ -39,7 +38,7 @@ export type PriceId = keyof typeof PRICES;
 
 /**
  * Whether the prices on the site include VAT. The company's VAT status is
- * part of the company data the client sends (PROGRESS.md, item A); until
+ * part of the company data the client sends; until
  * then the site states its prices without VAT. It drives the JSON-LD only:
  * when it changes, change the copy that says so too (`services.terms`,
  * `services.faq.vat.a`; ADR 0032).

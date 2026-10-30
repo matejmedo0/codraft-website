@@ -15,7 +15,7 @@ Related: [information-architecture.md](information-architecture.md) shows which 
 
 ## 1. Glossary (HR ↔ EN)
 
-Where alternatives are listed, the client chooses (open question in `PROGRESS.md`). Slugs and anchors are provisional until the terminology is approved, and become permanent at launch.
+Where alternatives are listed, the client chooses. Slugs and anchors are provisional until the terminology is approved, and become permanent at launch.
 
 | EN | HR (recommended) | Alternatives | Slug / anchor (HR · EN) |
 |---|---|---|---|
@@ -483,9 +483,9 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 
 ### Services, phase 3 (2026-10-22)
 
-The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
+The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, ADR 0031): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
 
-Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects before launch; **[G7]** is a line about prices or timelines. G7 is decided: the page shows guide prices about 10% below the market ([ADR 0032](decisions/0032-guide-prices-below-the-market.md); figures in `src/config/pricing.ts`, sources in [the pricing research](research/2026-10-22-pricing.md)).
+Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects before launch; **[G7]** is a line about prices or timelines. G7 is decided: the page shows guide prices about 10% below the market ([ADR 0032](decisions/0032-guide-prices-below-the-market.md); figures in `src/config/pricing.ts`, sources in the pricing research).
 
 **A · Hero**
 
@@ -668,7 +668,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `footer.sheet` | List | Sheet | Title block: the page's sheet number |
 | `footer.sheetOf` | od | of | Title block: "1 od 10" / "1 of 10" |
 | `footer.updated` | Zadnja izmjena | Last updated | Title block: the build date |
-| `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet (PROGRESS.md, item A) |
+| `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet |
 
 **The style page** (`/lab/style`, lab only, never shipped) describes the tokens and components in Croatian for the client. Its explanatory text is lab documentation, not site copy; its examples reuse the strings above and the prototype copy.
 
@@ -721,7 +721,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
 - **2026-10-22 (phase 3, Home, the build):** The client approved Home's argument and asked to build (M2). "Home, phase 3" now holds every Home line with its locale key, in Croatian and in British English: the audit's lead without brackets (its facts confirmed by the client before launch), the closing call to action's note written by Claude at the client's request, and the team's names and roles from the client. Accepted: S3 (British English), S15 and S20, which changes the EN blocks `drafting.title` and `drafting.audience` and the slug to `/en/architectural-drafting` ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)); S19 rejected.
 - **2026-10-22 (phase 3, Usluge, the /check):** The price note under stages 02 and 03 (`services.priceNote`) and the price table's labels (`services.price`, `services.priceColumn`) are replaced by one caption above every service's prices, `services.terms` ("Okvirno, bez PDV-a"), and `services.startingPrice`, after the design critique (DC-04: the VAT status next to every price; Q3: one restatement fewer of the fixed offer).
-- **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
+- **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, ADR 0031). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)

@@ -25,7 +25,7 @@ const CONTENT_BUDGET = 15 * KB;
 
 /**
  * Pages with a form or the layer viewer. The AI assistants page joins the
- * route map in phase 4 with a budget of 120 KB.
+ * route map later, with a budget of 120 KB.
  * @type {Partial<Record<string, number>>}
  */
 const PAGE_BUDGETS = {

@@ -16,14 +16,9 @@ interface Props {
    * have none and are marked noindex.
    */
   page?: PageId | undefined;
-  /**
-   * Preload the core Archivo file (src/styles/fonts.css). Off only for lab
-   * prototypes that use other fonts.
-   */
-  preloadFont?: boolean;
 }
 
-const { locale, title, description, page, preloadFont = true } = Astro.props;
+const { locale, title, description, page } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,15 +30,13 @@ const { locale, title, description, page, preloadFont = true } = Astro.props;
     {description !== undefined && (
       <meta name="description" content={description} />
     )}
-    {preloadFont && (
-      <link
-        rel="preload"
-        href={archivoCore}
-        as="font"
-        type="font/woff2"
-        crossorigin
-      />
-    )}
+    <link
+      rel="preload"
+      href={archivoCore}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     {/* The brand package's head snippet (Assets/codraft-brand/web/), with
          the web copies in public/ (ADR 0014). */}
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -58,7 +51,7 @@ const { locale, title, description, page, preloadFont = true } = Astro.props;
           <link rel="alternate" hreflang={hreflang} href={href} />
         ))}
         {/* Open Graph for link previews; the per-page image is generated
-             later in phase 3 (docs/phases/3-pages.md, "OG images"). */}
+             later. */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:title" content={title} />

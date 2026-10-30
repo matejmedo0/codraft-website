@@ -8,7 +8,7 @@
 
 Every audit or contact submission sends two emails: a notification to the team and a localised confirmation to the sender ([ADR 0007](0007-launch-scope-and-constraints.md)). Email goes through an API, never a self-run mail server. Expected volume is about 50–600 emails a month. EU data processing is preferred, and the budget ceiling is €10 a month ([ADR 0009](0009-hosting-ovhcloud-vps-eu.md)).
 
-The research ([research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md#4-transactional-email)) shortlisted three EU providers with permanent free tiers:
+The research (research/2026-10-19-hosting.md) shortlisted three EU providers with permanent free tiers:
 - **Scaleway** (Paris): 300 emails a month free, then €0.25 per 1,000; all data in the EU.
 - **AhaSend** (Amsterdam): 1,000 a month free.
 - **Mailjet** (France): 6,000 a month free.

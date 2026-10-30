@@ -93,7 +93,7 @@ test("an unknown Croatian path gets the Croatian 404 page", async ({
 
 test("an unknown English path returns 404", async ({ page }) => {
   // Known limitation: the Node adapter serves the Croatian 404 page for
-  // unknown /en/* paths. In production Caddy serves en/404 (phase 7).
+  // unknown /en/* paths. In production Caddy serves en/404.
   const response = await page.goto("/en/x");
 
   expect(response?.status()).toBe(404);

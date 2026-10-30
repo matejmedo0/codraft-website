@@ -19,7 +19,7 @@ interface PageEntry {
 
 export const getStaticPaths = (() =>
   // The view registry: a page is generated once it has a view. The other
-  // pages exist only in the route map until phase 3 builds them.
+  // pages exist only in the route map until they are built.
   staticPathsFor<PageEntry>({
     home: {
       view: HomeView,

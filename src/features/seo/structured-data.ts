@@ -22,10 +22,10 @@ const LOGO_PATH = "/icon-512.png";
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
 /**
- * Home's ProfessionalService (docs/phases/3-pages.md, "SEO specifics"),
+ * Home's ProfessionalService,
  * with only what is true today (ADR 0004): the name, the site, the
  * country served and the languages. The legal name, OIB, email and phone
- * join once the client sends them (PROGRESS.md, items A and B); the address
+ * join once the client sends them; the address
  * only if it is public, and `sameAs` only with real profiles.
  */
 export function organization({
@@ -110,7 +110,7 @@ export interface ServiceInput {
 }
 
 /**
- * One offering as a `Service` (docs/phases/3-pages.md, "SEO specifics"):
+ * One offering as a `Service`:
  * eight on /usluge, three on the drafting page. Home's organisation is the
  * provider; a guide price is an offer with a starting price.
  */

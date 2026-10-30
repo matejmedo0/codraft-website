@@ -69,7 +69,7 @@ Planned order:
 - Legal links: Privatnost, Kolačići, Impresum, Izjava o pristupačnosti.
 - "Postavke kolačića" reopens the consent dialog.
 - Contact details.
-- Company data (OIB, MBS or craft register number). In design direction A this is styled as a drawing title block (see [phases/2-design.md](phases/2-design.md)).
+- Company data (OIB, MBS or craft register number). It is styled as a drawing title block.
 
 ## Internationalisation and URLs
 
@@ -118,7 +118,7 @@ Legend: **P** = the copy exists in [content.md](content.md) (block IDs given) ·
 7. **Team strip:** photos, names, roles (N, G3).
 8. **Closing CTA:** the client's heading "Imate skicu, stranicu ili samo ideju?" and lead (review batch 11, [content.md](content.md) "Prototype copy"), and one button, "Pošaljite upit" (ADR 0017).
 
-**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M1; **approved** by the client the same day: „Odobravam uglavnom kreni s izradom“, M2). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
+**The page's argument** (phase 3 step 1, ADR 0027; put to the client on 2026-10-22, M1; **approved** by the client the same day: „Odobravam uglavnom kreni s izradom“, M2). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)).
 
 | Zone | Claim | Proof | Proof today |
 |---|---|---|---|
@@ -149,7 +149,7 @@ Rules applied: no zone lacks a claim, so none is cut. A claim without proof at l
 6. **FAQ, 6–8 questions** (N, G8).
 7. **Closing CTA:** "Pošaljite upit" (I). The audit button is in `#planiranje` (ADR 0017).
 
-**The page's argument** (phase 3 step 1, [ADR 0027](decisions/0027-taste-skill-ideas-in-the-setup.md); put to the client on 2026-10-22, M5; **built** the same day under the client's standing instruction, M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md); the client reviews it at the end of phase 3). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)). The copy, with each line's key, is in [content.md](content.md) ("Services, phase 3").
+**The page's argument** (phase 3 step 1, ADR 0027; put to the client on 2026-10-22, M5; **built** the same day under the client's standing instruction, M6, ADR 0031; the client reviews it at the end of phase 3). One line per zone: what the visitor should believe after it, and what makes that believable. Proof is only what is true by construction ([ADR 0004](decisions/0004-verifiable-proof-only.md)). The copy, with each line's key, is in [content.md](content.md) ("Services, phase 3").
 
 | Zone | Claim | Proof | Proof today |
 |---|---|---|---|
@@ -295,4 +295,4 @@ EU law bans fake reviews (UCPD Annex I, points 23b–23c, added by Directive 201
 
 - **Terminology and slugs:** client approval of [content.md §1](content.md#1-glossary-hr--en) (phase 0 report).
 - **Prices on the site:** the client decides (gap G7).
-- **Address, city and in-person meetings:** these decide the local keywords and Google Business Profile eligibility (see [phases/7-launch.md](phases/7-launch.md)).
+- **Address, city and in-person meetings:** these decide the local keywords and Google Business Profile eligibility.

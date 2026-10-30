@@ -249,6 +249,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-23 | Logo na novoj početnoj u boji palete: slova bjelokosna `#ECEDEA`, detalji (luk, crta, kvadratić) teal `#82BBC5` umjesto brand plave | [ADR 0034](docs/decisions/0034-new-home-wordmark-in-the-palette.md) |
 | 2026-10-29 | Nova početna složena odjednom kao scroll‑vođena stranica: olovka na lijevom rubu lista, hero crtež koji se sam nacrta, ljepljivi naslovi faza, tlocrt koji skrol crta i diže u 3D (pinned scena), završna crtaća linija s gripom. CSS scroll‑driven animacije, bez biblioteka; bez animacija stranica je gotova i statična. Za ovu stranicu ne vrijede zabrane pinned scena i dubine iz `docs/motion.md`. | [ADR 0035](docs/decisions/0035-new-home-drawn-by-the-scroll.md) |
 | 2026-10-30 | Na novoj početnoj „Tehničko crtanje” i „Što radimo” animiraju se jednom, kad dođu na ekran, a ne sa skrolom. Umjesto kuće stambena zgrada (prizemlje, 3 kata, penthouse; dvorište s bazenom, parkiralište), zatim presjeci A–A i B–B i tablica bruto površine i kubature (1.312 m², 3.936 m³), sve kao ilustracija. | [ADR 0036](docs/decisions/0036-new-home-building-scene-on-arrival.md) |
+| 2026-10-30 | Hero nove početne: tekst centriran i animiran pri učitavanju, a ispod njega editor u kojem se kod tipka red po red i preglednik u kojem iz tog koda nastaje web stranica. Crtež web stranice zdesna je uklonjen. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md) |
 
 ## Sitemap
 

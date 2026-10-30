@@ -481,13 +481,15 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
-**The new Home's site drawing (2026-10-29, M25; [ADR 0035](decisions/0035-new-home-drawn-by-the-scroll.md)).** The hero of `/lab/nova-pocetna` shows a website drafted as a technical drawing; its title block and accessible name are new lines, drafts, written by Claude. The other two cells reuse `drawing.note` ("Ilustracija") and the site name.
+**The new Home's site drawing (2026-10-29, M25; [ADR 0035](decisions/0035-new-home-drawn-by-the-scroll.md); removed on 2026-10-30 with the drawing, M29).** The hero of `/lab/nova-pocetna` shows a website drafted as a technical drawing; its title block and accessible name are new lines, drafts, written by Claude. The other two cells reuse `drawing.note` ("Ilustracija") and the site name.
 
 | Key | HR `draft` | EN `draft` |
 |---|---|---|
 | `newHome.drawing.title` | Nacrt web stranice | Website drawing |
 | `newHome.drawing.units` | Mjere u px | Units: px |
 | `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
+
+**The new Home's hero sample (2026-10-30, M29; [ADR 0037](decisions/0037-new-home-hero-code-to-page.md)).** The code and the small page in the hero's animation are placeholders, hidden from assistive technology and not locale strings: the sample page shows "Vaša tvrtka", "Usluge", "Kontakt", "Nova web stranica", "Brza na mobitelu.", "Upit", "Izrada", "Održavanje" and "SEO", in both languages. They make no claim about Codraft.
 
 **The new Home's building scene (2026-10-30, M28; [ADR 0036](decisions/0036-new-home-building-scene-on-arrival.md)).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
 
@@ -748,6 +750,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
 - **2026-10-29 (phase 3, the new Home, M25):** "The new Home's site drawing" added under "Home, phase 3": the hero drawing's title block and accessible name (`newHome.drawing.title`, `.units`, `.label`), HR and EN drafts. No copy block changed.
 - **2026-10-30 (phase 3, the new Home, M28):** "The new Home's building scene" added under "Home, phase 3": the building drawing's labels, title block and accessible names, the sections' names and the schedule's caption, headers and note (`newHome.building.*`), HR and EN drafts. No copy block changed.
+- **2026-10-30 (phase 3, the new Home, M29):** The hero's site drawing and its lines (`newHome.drawing.*`) removed; "The new Home's hero sample" added, the placeholder words of the hero's code-to-page animation. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

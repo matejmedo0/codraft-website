@@ -7,10 +7,13 @@ The website of Codraft, a small studio that plans, builds and looks after websit
 - `docs/content.md`: site copy, the source of truth (EN verbatim, HR draft, glossary, gaps). Copy goes there before it goes into the site.
 - `docs/information-architecture.md`: sitemap, URLs, page outlines.
 - `docs/architecture.md`: stack, code structure, quality gates, integrations.
-- `docs/brand.md`, `docs/motion.md`, `docs/compliance.md`: brand rules, motion, Croatian and EU requirements.
-- `docs/new-home-rules.md`: rules for the new Home in `src/views/new-home/` (work in progress, not routed yet).
+- `docs/brand.md`, `docs/motion.md`, `docs/compliance.md`: the brand marks, the motion foundation, Croatian and EU requirements.
 - `docs/decisions/`: ADRs. A lasting decision gets a new ADR; accepted ones are not rewritten.
 - `Assets/codraft-brand/`: brand masters, read-only. The site uses the copies that `scripts/brand-web-copies.mjs` writes.
+
+## Direction
+
+A new, scroll-based look built for the wow ([ADR 0035](docs/decisions/0035-a-scroll-based-site-built-for-the-wow.md)). Pages are rebuilt one at a time on the user's instructions, Home first; the CAD language comes back only where the user asks for it. Pages not yet rebuilt keep the old design. Looks first: the JavaScript budget, reduced motion and other optimisation wait for a later phase.
 
 ## Languages and pages
 
@@ -31,7 +34,6 @@ Also at launch: Privatnost, Kolačići, Impresum, Izjava o pristupačnosti and a
 
 - **Drafting is not projektiranje.** Never call Codraft's drafting projektiranje or any related term, in any inflected form; that work is regulated in Croatia. The banned list and regex are in `docs/compliance.md`; `npm run check:guardrails` runs it over `src/`.
 - **No invented proof:** no made-up clients, testimonials, logos or metrics (ADR 0004).
-- **Blue `#2F6BFF` is for graphics and large text only** (4.12:1 on off-white fails AA for body text). Primary buttons are navy `#0F1B2D`. See `docs/brand.md`.
 
 ## Git
 
@@ -48,7 +50,7 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 | `npm run dev` | Dev server on http://localhost:4321 (CSP off in dev). |
 | `npm run build` | Static pages in `dist/client`, the Node server in `dist/server/entry.mjs`. |
 | `npm run preview` | Runs the built Node server. |
-| `npm run verify` | What CI runs, in order: lint, format check, typecheck (`astro check`), unit tests, build, JS budget, copy guardrails. |
+| `npm run verify` | What CI runs, in order: lint, format check, typecheck (`astro check`), unit tests, build, copy guardrails. |
 | `npm run test:e2e` | Playwright on the built server at 375, 768 and 1440 px. Build first and stop the dev server (Playwright reuses port 4321). Once: `npx playwright install chromium`. |
 | `npm run format` | Prettier on everything except `docs/`, `Assets/` and the root Markdown files. |
 
@@ -62,10 +64,11 @@ Astro 7 with static output and React 19 islands; only `/api/*` runs on the `@ast
 - **UI strings** live in `src/locales/{hr,en}.json`, read with `t(locale, key)`. Both files must have the same keys (a type check plus a unit test).
 - **CSP.** Astro adds a hash-based CSP `<meta>` to every built page: no inline `style` attributes, nothing from another origin. It's off in `astro dev`, so test CSP-sensitive changes on the build; the E2E tests fail on any console error, CSP violations included.
 - **Layers, enforced by ESLint:** client code (`.tsx`, client scripts in `.astro`) never imports `**/server/**`; `src/components/ui/` never imports features, views, layouts or pages; `src/components/site/` never imports views, layouts or pages. `src/config/` is the bottom layer.
-- **Design system (ADR 0015):** tokens are CSS custom properties in `src/styles/`, inside cascade layers so component styles win. Components use role tokens (`--ink`, `--surface`, `--line`, …), never the `--color-*` palette; `.surface-navy` switches to the navy surface, once per page. Design-system components in `src/components/ui/`; header, title-block footer and language switcher in `src/components/site/`; views render their zones inside `SiteLayout`.
-- **Astro renders a component's `<script>` in place**, not hoisted: keep scripts out of components that render inside links or SVG. Without JavaScript, or with reduced motion, every part must show its final state.
+- **Styles:** tokens are CSS custom properties in `src/styles/`, inside cascade layers so component styles win. Design-system components in `src/components/ui/`; header, footer and language switcher in `src/components/site/`; views render their zones inside `SiteLayout`.
+- **Motion:** GSAP (ScrollTrigger, SplitText) and Lenis, set up once in `src/lib/scroll.ts`; components import from it in their own `<script>` (`docs/motion.md`). React islands only for stateful UI.
+- **Astro renders a component's `<script>` in place**, not hoisted: keep scripts out of components that render inside links or SVG.
 - **Type-aware lint covers `.ts` and `.tsx` only.** `.astro` files are type-checked by `astro check`. A `.ts` file can't see the types of an imported `.astro` file, so keep `.astro` imports inside `.astro` files.
-- **`scripts/check-js-budget.mjs`** imports the route map through Node's type stripping, so `route-map.ts`, `urls.ts` and `site.ts` use erasable syntax only and import each other with `.ts` extensions. Budgets (gzip, per page): 15 KB content pages, 100 KB pages with a form or the layer viewer, 120 KB the AI page.
+- **`scripts/check-js-budget.mjs`** imports the route map through Node's type stripping, so `route-map.ts`, `urls.ts` and `site.ts` use erasable syntax only and import each other with `.ts` extensions. The budget check is out of `verify` and CI until the optimisation phase (ADR 0035); run it on demand with `npm run check:budget`.
 - **Environment variables** are declared in the `env.schema` of `astro.config.ts` and documented in `.env.example`.
 - **Claude Code hooks** (`.claude/settings.json`): edits to `.env*` other than `.env.example` are blocked; after every Write or Edit, Prettier and ESLint run on the file.
 - **Known limitation:** the Node server answers unknown `/en/*` paths with the Croatian 404. In production Caddy maps them to `en/404`.

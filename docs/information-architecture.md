@@ -1,6 +1,8 @@
 # Information architecture
 
 > **Status (2026-10-18):** the launch sitemap has been agreed in the approved plan (see [ADR 0003](decisions/0003-launch-sitemap.md)). Slugs and labels stay provisional until the client approves the Croatian terminology ([content.md §1](content.md#1-glossary-hr--en)). They become permanent at launch.
+>
+> **Since 2026-10-30** the site is being redesigned ([ADR 0035](decisions/0035-a-scroll-based-site-built-for-the-wow.md)): the visual and motion details in the page outlines below describe the old design. The sitemap, URLs and calls to action still hold.
 
 ## Principles
 

@@ -489,6 +489,21 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 | `newHome.drawing.units` | Mjere u px | Units: px |
 | `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
 
+**The new Home's building scene (2026-10-30, M28; [ADR 0036](decisions/0036-new-home-building-scene-on-arrival.md)).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
+
+| Key | HR `draft` | EN `draft` |
+|---|---|---|
+| `newHome.building.title` | Stambena zgrada | Residential building |
+| `newHome.building.units` | Mjere u m | Units: m |
+| `newHome.building.courtyard · pool · parking` | Dvorište · Bazen · Parkiralište | Courtyard · Pool · Parking |
+| `newHome.building.level.ground · first · second · third · penthouse` | Prizemlje · 1. kat · 2. kat · 3. kat · Penthouse | Ground floor · First floor · Second floor · Third floor · Penthouse |
+| `newHome.building.sectionA · sectionB` | Presjek A–A · Presjek B–B | Section A–A · Section B–B |
+| `newHome.building.schedule` | Bruto površina i kubatura | Gross floor area and volume |
+| `newHome.building.level · area · height · volume · total` | Etaža · Bruto površina (m²) · Visina etaže (m) · Kubatura (m³) · Ukupno | Storey · Gross area (m²) · Storey height (m) · Volume (m³) · Total |
+| `newHome.building.note` | Ilustracija. Bruto površina etaže računa se po vanjskim mjerama tlocrta, a kubatura kao bruto površina puta visina etaže. | Illustration. A storey's gross area is taken from the plan's outer dimensions, and its volume is the gross area times the storey height. |
+| `newHome.building.label` | Ilustracija: situacija stambene zgrade s dvorištem i bazenom s jedne strane i parkiralištem s druge, podignuta u 3D prikaz zgrade s prizemljem, tri kata i penthouseom, visine 15 m. | Illustration: the site plan of a residential building with a courtyard and pool on one side and parking on the other, raised into a 3D view of the building with a ground floor, three floors and a penthouse, 15 m high. |
+| `newHome.building.sectionsLabel` | Ilustracija: uzdužni presjek A–A i poprečni presjek B–B zgrade, s visinskim kotama etaža od ±0,00 do +15,00 m. | Illustration: the building's long section A–A and cross section B–B, with the storeys' levels from ±0.00 to +15.00 m. |
+
 ### Services, phase 3 (2026-10-22)
 
 The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
@@ -732,6 +747,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
 - **2026-10-29 (phase 3, the new Home, M25):** "The new Home's site drawing" added under "Home, phase 3": the hero drawing's title block and accessible name (`newHome.drawing.title`, `.units`, `.label`), HR and EN drafts. No copy block changed.
+- **2026-10-30 (phase 3, the new Home, M28):** "The new Home's building scene" added under "Home, phase 3": the building drawing's labels, title block and accessible names, the sections' names and the schedule's caption, headers and note (`newHome.building.*`), HR and EN drafts. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

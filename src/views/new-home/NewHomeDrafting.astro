@@ -1,26 +1,26 @@
 ---
 /**
- * "Tehničko crtanje" on the new Home, the page's one pinned scene: the
- * house plan of the current Home (PlanDrawing.astro) drawn by the scroll.
- * From 64rem the text stands on the left and the drawing on the right, both
- * held on screen while the scene's track scrolls by; as it does, the plan
- * is drafted layer by layer, turns into its 3D view, and gets its roof
- * (plan-scrub.ts). Below 64rem the text comes first, then the drawing
- * sticks on its own while it is drawn.
+ * "Tehničko crtanje" on the new Home (M28 in docs/phases/3-pages.md): the
+ * text on the left and, on the right, a residential building drawn once
+ * when it comes into view: its site plan (the building, a courtyard with a
+ * pool on one side, parking on the other), turned into a 3D view in which
+ * the storeys come down one by one, the penthouse last. Then, under the
+ * text, its sections and the schedule of gross floor areas and volumes
+ * (building/). Nothing here moves with the scroll; without JavaScript, or
+ * with reduced motion, it all shows finished.
  *
- * Without JavaScript, or with reduced motion, nothing sticks and the plan
- * shows its finished state at once, with the component's own switch to the
- * flat plan.
- *
- * The three services link to their anchors on the drafting page; the rule
- * above each is drawn from the left as it arrives.
+ * The three services link to their anchors on the drafting page.
  */
+import "./building/scene.css";
+
 import Grips from "../../components/ui/Grips.astro";
 import type { Locale } from "../../config/site.ts";
+import { SITE_NAME } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
 import { DRAFTING_SERVICES } from "../../features/services/services.ts";
-import PlanDrawing from "../home/plan/PlanDrawing.astro";
+import BuildingAnalysis from "./building/BuildingAnalysis.astro";
+import BuildingDrawing from "./building/BuildingDrawing.astro";
 
 interface Props {
   locale: Locale;
@@ -30,14 +30,13 @@ const { locale } = Astro.props;
 const drafting = pathFor("drafting", locale);
 ---
 
-<section class="cad nh-zone" aria-labelledby="crtanje" data-scene>
+<section class="cad nh-zone" aria-labelledby="crtanje" data-building-scene>
   <div class="cad__text">
     <h2 id="crtanje">{t(locale, "drafting.title")}</h2>
     <p class="cad__lead">{t(locale, "home.drafting.lead")}</p>
     <ul class="cad__list">
       {DRAFTING_SERVICES.map((service) => (
         <li class="cad-item has-grips">
-          <span class="nh-rule" aria-hidden="true" />
           <h3 class="cad-item__title">
             <a
               class="cad-item__link stretched-link"
@@ -56,20 +55,39 @@ const drafting = pathFor("drafting", locale);
       ))}
     </ul>
   </div>
-  <div class="cad__scene">
-    <div class="cad__figure" data-scene-figure>
-      <PlanDrawing locale={locale} idPrefix="nova" class="cad__plan" />
+
+  <figure class="cad__figure" data-building-figure>
+    <div class="cad__sheet graph-paper">
+      <BuildingDrawing locale={locale} />
     </div>
+    <figcaption
+      class="cad__title-block t-label"
+      data-wipe="fade"
+      data-at="5300"
+      data-for="400"
+    >
+      <span class="cad__cell cad__cell--strong">
+        {t(locale, "newHome.building.title")}
+      </span>
+      <span class="cad__cell">{t(locale, "newHome.building.units")}</span>
+      <span class="cad__cell cad__cell--strong">{SITE_NAME}</span>
+      <span class="cad__cell">{t(locale, "drawing.note")}</span>
+    </figcaption>
+  </figure>
+
+  <div class="cad__analysis">
+    <BuildingAnalysis locale={locale} />
   </div>
+
   <script>
-    import "./plan-scrub.ts";
+    import "./building/building-scene.ts";
   </script>
 </section>
 
 <style>
   .cad {
     display: grid;
-    gap: var(--space-7);
+    gap: var(--space-8);
   }
 
   .cad__lead {
@@ -89,6 +107,7 @@ const drafting = pathFor("drafting", locale);
   .cad-item {
     position: relative;
     padding: var(--space-4) 0 var(--space-5);
+    border-top: var(--rule) solid var(--line);
   }
 
   .cad-item__title {
@@ -115,55 +134,63 @@ const drafting = pathFor("drafting", locale);
     outline: none;
   }
 
-  /* The scene's track is tall only once the script holds the pen; the
-     figure sticks inside it, centred on the screen. */
-  .cad.is-live .cad__scene {
-    min-height: 220vh;
+  .cad__figure {
+    margin: 0;
   }
 
-  .cad.is-live .cad__figure {
-    position: sticky;
-    top: 0;
+  .cad__sheet {
+    padding: var(--space-4);
+  }
+
+  /* The title block under the drawing, in the drawing's cells. */
+  .cad__title-block {
     display: grid;
-    align-content: center;
-    min-height: 100svh;
-    padding-block: var(--space-5);
+    grid-template-columns: auto auto;
+    width: fit-content;
+    margin: var(--space-3) 0 0 auto;
+    border: 1px solid var(--drawing-ink);
+    color: var(--drawing-ink);
+    line-height: 1.2;
   }
 
-  /* Replaying is the scroll's job here. */
-  .cad :global(.plan__replay) {
-    display: none !important;
+  .cad__cell {
+    padding: 0.3125rem 0.5rem;
   }
 
+  .cad__cell:nth-child(odd) {
+    border-right: 1px solid var(--drawing-ink);
+  }
+
+  .cad__cell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--drawing-ink);
+  }
+
+  .cad__cell--strong {
+    font-weight: var(--weight-strong);
+  }
+
+  /* From 64rem: the text and, under it, the sections and schedule on the
+     left; the drawing on the right. */
   @media (min-width: 64rem) {
     .cad {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gap);
+      row-gap: var(--space-9);
       align-items: start;
-      padding-block: 0;
     }
 
-    .cad__text {
+    .cad__text,
+    .cad__analysis {
       grid-column: 1 / span 5;
-      padding-block: var(--zone-pad);
     }
 
-    .cad__scene {
+    .cad__figure {
+      grid-row: 1 / span 2;
       grid-column: 6 / -1;
-      padding-block: var(--zone-pad);
     }
 
-    .cad.is-live .cad__text {
-      position: sticky;
-      top: 0;
-      display: grid;
-      align-content: center;
-      min-height: 100svh;
-    }
-
-    .cad.is-live .cad__scene {
-      min-height: 300vh;
-      padding-block: 0;
+    .cad__sheet {
+      padding: var(--space-6);
     }
   }
 </style>

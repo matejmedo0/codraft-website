@@ -1,16 +1,14 @@
 ---
 /**
  * "Što radimo" on the new Home: the three stages one under the other, each
- * coming in as two halves from the sides as the scroll brings it (M26, M27
- * in docs/phases/3-pages.md). A stage's head (its number large in the
+ * coming in as two halves from the sides when it reaches the screen (M26 to
+ * M28 in docs/phases/3-pages.md). A stage's head (its number large in the
  * accent, title and tagline) slides in from one side and its services, as
  * one group, from the other; the next stage is mirrored, so the zone goes
- * zig-zag down the sheet while the rows inside a stage stay together. The
- * slides follow the scroll itself (one view timeline per stage), so
- * scrolling back slides the halves out again, and each icon draws stroke
- * by stroke as its row lands (new-home.css). The text is always there:
- * without scroll-driven animations, with reduced motion or without
- * JavaScript the halves stand in place.
+ * zig-zag down the sheet. Each stage plays once, on arrival, not with the
+ * scroll (reveal.ts), and its icons draw stroke by stroke as the group
+ * lands. The text is always there: without JavaScript or with reduced
+ * motion the halves stand in place.
  *
  * The services of stages 02 and 03 link to their anchors on /usluge; the
  * two items of stage 01 don't, since the free audit asks once, in the zone
@@ -39,7 +37,10 @@ const services = pathFor("services", locale);
     <p class="svc__intro">{t(locale, "services.intro")}</p>
   </div>
   {STAGES.map((stage, index) => (
-    <div class:list={["stage", { "stage--mirror": index % 2 === 1 }]}>
+    <div
+      class:list={["stage", { "stage--mirror": index % 2 === 1 }]}
+      data-reveal
+    >
       <div class="stage__head">
         <p class="stage__number" aria-hidden="true">
           {stage.number}
@@ -59,13 +60,7 @@ const services = pathFor("services", locale);
               ? undefined
               : `${services}#${service.anchor[locale]}`;
           return (
-            <li
-              class:list={[
-                "svc-item",
-                "nh-draw",
-                { "has-grips": href !== undefined },
-              ]}
-            >
+            <li class:list={["svc-item", { "has-grips": href !== undefined }]}>
               {service.icon !== undefined && (
                 <ServiceIcon icon={service.icon} class="svc-item__icon" />
               )}
@@ -86,6 +81,9 @@ const services = pathFor("services", locale);
       </ul>
     </div>
   ))}
+  <script>
+    import "./reveal.ts";
+  </script>
 </section>
 
 <style>
@@ -110,13 +108,12 @@ const services = pathFor("services", locale);
     color: var(--ink-muted);
   }
 
-  /* A stage: its head and its services, on one timeline. */
+  /* A stage: its head and its services. */
   .stage {
     display: grid;
     gap: var(--space-6);
     padding-block: var(--space-8);
     border-top: var(--rule) solid var(--line);
-    view-timeline: --stage block;
   }
 
   .stage__head {
@@ -213,9 +210,9 @@ const services = pathFor("services", locale);
     outline: none;
   }
 
-  /* The slides: a stage's two halves come in from their sides as far as the
-     scroll has brought the stage, and settle as its top reaches the
-     screen's lower third. The mirrored stage swaps the sides. */
+  /* The entrance: a stage's two halves come in from their sides as it
+     reaches the screen, the services a beat after the head; then the
+     icons draw. The mirrored stage swaps the sides. */
   @keyframes svc-from-left {
     from {
       opacity: 0;
@@ -240,24 +237,41 @@ const services = pathFor("services", locale);
     }
   }
 
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .stage__head,
-      .stage__items {
-        animation: svc-from-left var(--ease-standard) both;
-        animation-timeline: --stage;
-        animation-range: entry 0% cover 28%;
-      }
+  .stage.is-pending :is(.stage__head, .stage__items) {
+    opacity: 0;
+  }
 
-      .stage__items,
-      .stage--mirror .stage__head {
-        animation-name: svc-from-right;
-      }
+  .stage.is-in :is(.stage__head, .stage__items) {
+    animation: svc-from-left 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 
-      .stage--mirror .stage__items {
-        animation-name: svc-from-left;
-      }
-    }
+  .stage.is-in .stage__items,
+  .stage--mirror.is-in .stage__head {
+    animation-name: svc-from-right;
+  }
+
+  .stage--mirror.is-in .stage__items {
+    animation-name: svc-from-left;
+  }
+
+  .stage.is-in .stage__items {
+    animation-delay: 120ms;
+  }
+
+  .stage.is-in :global(:is([data-stroke="ink"], [data-stroke="line"])) {
+    stroke-dasharray: 1;
+    animation: nh-stroke 650ms var(--ease-pen) 650ms both;
+  }
+
+  .stage.is-in :global([data-stroke="line"]) {
+    animation-duration: 300ms;
+    animation-delay: 1150ms;
+  }
+
+  .stage.is-in :global([data-stroke="grip"]) {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap) 1400ms both;
   }
 
   @media (min-width: 64rem) {

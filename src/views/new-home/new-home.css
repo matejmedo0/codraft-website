@@ -126,9 +126,10 @@
   --nk-mono:
     ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas, monospace;
   /* The display sizes: a section's title, a statement, a row's title. */
-  --nk-title: clamp(3rem, 1.25rem + 7.5vw, 9.5rem);
-  --nk-statement: clamp(1.875rem, 1rem + 3.4vw, 4.25rem);
-  --nk-row: clamp(1.375rem, 1rem + 1.2vw, 2.125rem);
+  /* M33: a size smaller all round. */
+  --nk-title: clamp(2.25rem, 1rem + 4vw, 5.25rem);
+  --nk-statement: clamp(1.5rem, 1rem + 1.8vw, 2.75rem);
+  --nk-row: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
 }
 
 .nk-display {

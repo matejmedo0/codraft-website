@@ -3,7 +3,8 @@
  * The new Home's hero (M29 in docs/phases/3-pages.md): the headline, the
  * lead, the one button to the services and the drafting link, centred,
  * and under them code typed into an editor that builds a web page beside
- * it as it goes (hero/CodeToSite.astro).
+ * it as it goes (hero/CodeToSite.astro). On the first scroll down the two
+ * windows grow into the hero itself (M30, hero/hero-expand.ts).
  *
  * The text comes in on load: the headline's two lines rise out of their
  * own baseline one after the other, then the lead and the actions fade up;
@@ -24,7 +25,7 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="hero" aria-labelledby="naslov">
+<section class="hero" aria-labelledby="naslov" data-hero>
   <div class="hero__text">
     <h1 id="naslov">
       <span class="hero__line">
@@ -47,6 +48,9 @@ const { locale } = Astro.props;
   <div class="hero__stage">
     <CodeToSite />
   </div>
+  <script>
+    import "./hero/hero-expand.ts";
+  </script>
 </section>
 
 <style>
@@ -81,8 +85,9 @@ const { locale } = Astro.props;
     display: block;
   }
 
+  /* Two lines on wide screens. */
   .hero__lead {
-    max-width: 40ch;
+    max-width: 66ch;
     margin-top: var(--space-5);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
@@ -103,8 +108,17 @@ const { locale } = Astro.props;
     font-weight: var(--weight-medium);
   }
 
+  /* The stage is a container, so the windows' contents size with it. On
+     the first scroll down it grows to the sheet's width and the windows to
+     the screen's height (hero-expand.ts), and the windows become the hero. */
   .hero__stage {
     width: min(100%, 72rem);
+    container-type: inline-size;
+    transition: width 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero.is-big .hero__stage {
+    width: 100%;
   }
 
   @media (min-width: 64rem) {
@@ -114,6 +128,12 @@ const { locale } = Astro.props;
       min-height: calc(
         100svh - var(--sheet-margin) - 4.75rem * var(--topbar-scale, 1)
       );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__stage {
+      transition: none;
     }
   }
 

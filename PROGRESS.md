@@ -252,6 +252,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-30 | Hero nove početne: tekst centriran i animiran pri učitavanju, a ispod njega editor u kojem se kod tipka red po red i preglednik u kojem iz tog koda nastaje web stranica. Crtež web stranice zdesna je uklonjen. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md) |
 | 2026-10-30 | Hero: uvod u dva reda; na prvi skrol prozori editora i preglednika jednom narastu na cijeli ekran i postanu hero; u pregledniku animirani Codraft logo umjesto slike. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md), dopuna |
 | 2026-10-30 | Hero: narasli prozori su nešto manji (do 76rem širine, 76 % visine ekrana), a kad se vratite na vrh stranice, opet se smanje. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md), dopuna |
+| 2026-10-30 | Cijela nova početna u „Nike × tehničko crtanje” stilu: ogromni uski naslovi velikim slovima (Archivo 75 %), sitne oznake u monospaceu, gumbi kao pilule, traka usluga koja klizi (s pauzom), besplatna analiza kao jedina bjelokosna sekcija. Paleta, logo, tekst i animacije ostaju. | [ADR 0038](docs/decisions/0038-new-home-art-direction.md) |
 
 ## Sitemap
 

@@ -1,10 +1,10 @@
 ---
 /**
- * "Kako radimo" on the new Home: the client's three commitments as three
- * large statements, one under the other, in the client's order. A quiet
- * zone after the drafting scene: each statement rises in as it arrives,
- * under a rule drawn from the left (new-home.css). "Razgovarate s onima
- * koji rade" gets its proof from the team right below.
+ * "Kako radimo" on the new Home (M32): the client's three commitments as a
+ * manifesto, each a statement in display capitals across the sheet with
+ * its number in the monospace and its sentence beside it. They come in
+ * one after the other when the zone arrives (reveal.ts). "Razgovarate s
+ * onima koji rade" gets its proof from the team right below.
  */
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
@@ -20,85 +20,80 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 }));
 ---
 
-<section class="how nh-zone nh-grid" aria-labelledby="kako-radimo">
-  <h2 class="how__title" id="kako-radimo">
+<section class="how nh-zone" aria-labelledby="kako-radimo" data-reveal>
+  <h2 class="how__title nk-display nk-title" id="kako-radimo">
     {t(locale, "home.principles.title")}
   </h2>
   <ol class="how__list">
-    {items.map((item) => (
+    {items.map((item, index) => (
       <li class="how-item">
-        <span class="nh-rule" aria-hidden="true" />
-        <div class="how-item__text nh-rise">
-          <h3 class="how-item__title">{item.title}</h3>
-          <p class="how-item__body">{item.body}</p>
-        </div>
+        <span class="how-item__number nk-label" aria-hidden="true">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <h3 class="how-item__title nk-display">{item.title}</h3>
+        <p class="how-item__body">{item.body}</p>
       </li>
     ))}
   </ol>
+  <script>
+    import "./reveal.ts";
+  </script>
 </section>
 
 <style>
-  .how {
-    align-items: start;
-  }
-
   .how__list {
     display: grid;
-    margin: 0;
+    margin: var(--space-8) 0 0;
     padding: 0;
     list-style: none;
   }
 
   .how-item {
-    position: relative;
-    padding: var(--space-6) 0 var(--space-7);
-  }
-
-  .how-item__text {
     display: grid;
     gap: var(--space-3);
+    padding-block: var(--space-6);
+    border-top: var(--rule) solid var(--line);
   }
 
   .how-item__title {
-    max-width: 18ch;
-    font-size: var(--step-chapter);
-    font-weight: var(--weight-chapter);
+    font-size: var(--nk-statement);
+    line-height: 0.92;
   }
 
   .how-item__body {
-    max-width: var(--measure);
+    max-width: 40ch;
+    color: var(--ink-muted);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
-    color: var(--ink-muted);
   }
 
   @media (min-width: 64rem) {
-    .how__title {
-      position: sticky;
-      top: var(--space-8);
-      grid-column: 1 / span 4;
-    }
-
-    .how__list {
-      grid-column: 5 / -1;
-    }
-
     .how-item {
-      padding-block: var(--space-7) var(--space-8);
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+      column-gap: var(--gap);
+      align-items: baseline;
+      padding-block: var(--space-7);
     }
+  }
 
-    .how-item:first-child {
-      padding-top: var(--space-2);
-    }
+  .how.is-pending :is(.how__title, .how-item) {
+    opacity: 0;
+  }
 
-    .how-item:first-child > :global(.nh-rule) {
-      display: none;
-    }
+  .how.is-in .how__title {
+    animation: nk-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 
-    .how-item__text {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
-      gap: var(--gap);
-      align-items: start;
-    }
+  .how.is-in .how-item {
+    animation: nk-rise 800ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(250ms + var(--k, 0) * 160ms) both;
+  }
+
+  .how-item:nth-child(2) {
+    --k: 1;
+  }
+
+  .how-item:nth-child(3) {
+    --k: 2;
   }
 </style>

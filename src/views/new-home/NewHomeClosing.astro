@@ -1,10 +1,10 @@
 ---
 /**
- * The new Home's closing call to action, on the sunk surface: the client's
- * question, the lead, the note on the reply time and on sketches by email,
- * and one button to Kontakt. The page ends as the wordmark does: a drafting
- * line is drawn across the top of the zone as it arrives, and its grip
- * snaps in at the end (new-home.css's grammar, on the zone's own timeline).
+ * The new Home's closing call to action (M32): the client's question in
+ * display capitals as large as the sheet allows, the lead and the note on
+ * the reply time and on sketches by email, and one pill to Kontakt. It
+ * comes in when it arrives (reveal.ts): a drafting line runs across the
+ * top of the zone and its grip snaps in, the question rises.
  */
 import Button from "../../components/ui/Button.astro";
 import type { Locale } from "../../config/site.ts";
@@ -18,19 +18,24 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="closing" aria-labelledby="zavrsni-poziv">
+<section class="closing" aria-labelledby="zavrsni-poziv" data-reveal>
   <span class="closing__line" aria-hidden="true"></span>
   <span class="closing__grip" aria-hidden="true"></span>
-  <div class="closing__text">
-    <h2 class="closing__title" id="zavrsni-poziv">
-      {t(locale, "home.closing.title")}
-    </h2>
-    <p class="closing__lead">{t(locale, "home.closing.lead")}</p>
-    <p class="closing__note">{t(locale, "home.closing.note")}</p>
+  <h2 class="closing__title nk-display" id="zavrsni-poziv">
+    {t(locale, "home.closing.title")}
+  </h2>
+  <div class="closing__foot">
+    <div class="closing__text">
+      <p class="closing__lead">{t(locale, "home.closing.lead")}</p>
+      <p class="closing__note">{t(locale, "home.closing.note")}</p>
+    </div>
+    <Button href={pathFor("contact", locale)} class="closing__cta">
+      {t(locale, "home.closing.cta")}
+    </Button>
   </div>
-  <Button href={pathFor("contact", locale)} class="closing__cta">
-    {t(locale, "home.closing.cta")}
-  </Button>
+  <script>
+    import "./reveal.ts";
+  </script>
 </section>
 
 <style>
@@ -38,12 +43,8 @@ const { locale } = Astro.props;
     --grip: 0.875rem;
 
     position: relative;
-    display: grid;
-    justify-items: center;
-    padding: calc(var(--zone-pad) * 1.25) var(--pad);
+    padding: calc(var(--zone-pad) * 1.25) var(--pad) var(--zone-pad);
     background: var(--surface-sunk);
-    text-align: center;
-    view-timeline: --closing block;
   }
 
   .closing__line {
@@ -66,53 +67,59 @@ const { locale } = Astro.props;
     background: var(--grip-fill);
   }
 
-  .closing__text {
-    max-width: 100%;
-  }
-
   .closing__title {
-    max-width: 16ch;
-    font-size: clamp(2.25rem, 1.6rem + 3vw, 4.25rem);
-    font-weight: var(--weight-display);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
+    max-width: 14ch;
+    font-size: clamp(3rem, 1rem + 8.5vw, 10.5rem);
   }
 
-  .closing__lead,
-  .closing__note {
-    width: 0;
-    min-width: 100%;
-    text-wrap: balance;
+  .closing__foot {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--rule) solid var(--line);
   }
 
   .closing__lead {
-    margin-top: var(--space-5);
+    max-width: 44ch;
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
   }
 
   .closing__note {
-    margin-top: var(--space-3);
+    max-width: 52ch;
+    margin-top: var(--space-2);
     color: var(--ink-muted);
   }
 
-  .closing__cta {
-    margin-top: var(--space-7);
+  @media (min-width: 64rem) {
+    .closing__foot {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
   }
 
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .closing__line {
-        animation: motion-draw-x var(--ease-pen) both;
-        animation-timeline: --closing;
-        animation-range: entry 0% cover 30%;
-      }
+  .closing.is-pending :is(.closing__title, .closing__foot) {
+    opacity: 0;
+  }
 
-      .closing__grip {
-        animation: motion-snap-in var(--ease-snap) both;
-        animation-timeline: --closing;
-        animation-range: cover 29% cover 36%;
-      }
-    }
+  .closing.is-pending :is(.closing__line, .closing__grip) {
+    opacity: 0;
+  }
+
+  .closing.is-in .closing__line {
+    animation: motion-draw-x 900ms var(--ease-pen) both;
+  }
+
+  .closing.is-in .closing__grip {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap) 850ms both;
+  }
+
+  .closing.is-in .closing__title {
+    animation: nk-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+  }
+
+  .closing.is-in .closing__foot {
+    animation: nk-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) 450ms both;
   }
 </style>

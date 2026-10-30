@@ -225,5 +225,7 @@
   "newHome.building.height": "Visina etaže (m)",
   "newHome.building.volume": "Kubatura (m³)",
   "newHome.building.total": "Ukupno",
-  "newHome.building.note": "Ilustracija. Bruto površina etaže računa se po vanjskim mjerama tlocrta, a kubatura kao bruto površina puta visina etaže."
+  "newHome.building.note": "Ilustracija. Bruto površina etaže računa se po vanjskim mjerama tlocrta, a kubatura kao bruto površina puta visina etaže.",
+  "newHome.ticker.pause": "Zaustavi traku",
+  "newHome.ticker.play": "Pokreni traku"
 }

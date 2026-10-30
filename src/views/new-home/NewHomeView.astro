@@ -6,7 +6,9 @@
  * hero's site drawing drafts itself on load, every row's rule and icon
  * draw as they arrive, the house plan is drawn, raised and roofed by the
  * scroll in a pinned scene, and the page ends on the wordmark's line and
- * grip (new-home.css, docs/phases/3-pages.md M25).
+ * grip (new-home.css, docs/phases/3-pages.md M25). Its art direction is
+ * M32's: display capitals at Archivo's narrowest width, one ivory band,
+ * pills, a running strip of the services (new-home.css, NewHomeTicker).
  *
  * The zones go in this folder; the copy is the Home's, from the locale
  * files. Browsers without scroll-driven animations, reduced motion and no
@@ -22,6 +24,7 @@ import NewHomeHero from "./NewHomeHero.astro";
 import NewHomePrinciples from "./NewHomePrinciples.astro";
 import NewHomeServices from "./NewHomeServices.astro";
 import NewHomeTeam from "./NewHomeTeam.astro";
+import NewHomeTicker from "./NewHomeTicker.astro";
 
 interface Props {
   locale?: Locale;
@@ -36,6 +39,7 @@ const { locale = "hr" } = Astro.props;
 </div>
 
 <NewHomeHero locale={locale} />
+<NewHomeTicker locale={locale} />
 <NewHomeServices locale={locale} />
 <NewHomeAudit locale={locale} />
 <NewHomeDrafting locale={locale} />

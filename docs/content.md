@@ -489,6 +489,13 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 | `newHome.drawing.units` | Mjere u px | Units: px |
 | `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
 
+**The new Home's running strip (2026-10-30, M32; [ADR 0038](decisions/0038-new-home-art-direction.md)).** The strip repeats the services' titles; its button's two labels are new drafts by Claude.
+
+| Key | HR `draft` | EN `draft` |
+|---|---|---|
+| `newHome.ticker.pause` | Zaustavi traku | Pause the strip |
+| `newHome.ticker.play` | Pokreni traku | Play the strip |
+
 **The new Home's hero sample (2026-10-30, M29; [ADR 0037](decisions/0037-new-home-hero-code-to-page.md)).** The code and the small page in the hero's animation are placeholders, hidden from assistive technology and not locale strings: the sample page shows "Vaša tvrtka", "Usluge", "Kontakt", "Nova web stranica", "Brza na mobitelu.", "Upit", "Izrada", "Održavanje" and "SEO", in both languages. They make no claim about Codraft.
 
 **The new Home's building scene (2026-10-30, M28; [ADR 0036](decisions/0036-new-home-building-scene-on-arrival.md)).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
@@ -751,6 +758,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-29 (phase 3, the new Home, M25):** "The new Home's site drawing" added under "Home, phase 3": the hero drawing's title block and accessible name (`newHome.drawing.title`, `.units`, `.label`), HR and EN drafts. No copy block changed.
 - **2026-10-30 (phase 3, the new Home, M28):** "The new Home's building scene" added under "Home, phase 3": the building drawing's labels, title block and accessible names, the sections' names and the schedule's caption, headers and note (`newHome.building.*`), HR and EN drafts. No copy block changed.
 - **2026-10-30 (phase 3, the new Home, M29):** The hero's site drawing and its lines (`newHome.drawing.*`) removed; "The new Home's hero sample" added, the placeholder words of the hero's code-to-page animation. No copy block changed.
+- **2026-10-30 (phase 3, the new Home, M32):** "The new Home's running strip" added: the pause button's two labels (`newHome.ticker.*`), HR and EN drafts. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

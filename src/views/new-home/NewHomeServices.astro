@@ -31,7 +31,7 @@ const services = pathFor("services", locale);
 
 <section class="svc nh-zone" aria-labelledby="usluge">
   <div class="svc__head nh-grid">
-    <h2 class="svc__title" id="usluge">
+    <h2 class="svc__title nk-display nk-title" id="usluge">
       {t(locale, "services.title")}
     </h2>
     <p class="svc__intro">{t(locale, "services.intro")}</p>
@@ -42,11 +42,11 @@ const services = pathFor("services", locale);
       data-reveal
     >
       <div class="stage__head">
-        <p class="stage__number" aria-hidden="true">
+        <p class="stage__number nk-display nk-outline" aria-hidden="true">
           {stage.number}
         </p>
         <div class="stage__text">
-          <h3 class="stage__title">
+          <h3 class="stage__title nk-display">
             <span class="visually-hidden">{stage.number} </span>
             {t(locale, stage.title)}
           </h3>
@@ -64,7 +64,7 @@ const services = pathFor("services", locale);
               {service.icon !== undefined && (
                 <ServiceIcon icon={service.icon} class="svc-item__icon" />
               )}
-              <h4 class="svc-item__title">
+              <h4 class="svc-item__title nk-display">
                 {href === undefined ? (
                   t(locale, service.title)
                 ) : (
@@ -128,19 +128,13 @@ const services = pathFor("services", locale);
      of this zone, as a drawing numbers its sheets. The heading carries it
      for assistive technology. */
   .stage__number {
-    color: var(--accent-text);
-    font-family: var(--font-heading);
-    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
-    font-stretch: var(--width-heading);
-    font-weight: var(--weight-display);
-    line-height: 0.9;
-    letter-spacing: var(--tracking-display);
+    font-size: clamp(4.5rem, 2.5rem + 7vw, 10rem);
+    line-height: 0.8;
     font-variant-numeric: tabular-nums;
   }
 
   .stage__title {
-    font-size: var(--step-section);
-    letter-spacing: var(--tracking-section);
+    font-size: clamp(2rem, 1.25rem + 2.6vw, 3.75rem);
   }
 
   .stage__tagline {
@@ -182,9 +176,8 @@ const services = pathFor("services", locale);
 
   .svc-item__title {
     grid-column: 2;
-    font-size: var(--step-chapter);
-    font-weight: var(--weight-chapter);
-    line-height: var(--leading-title);
+    font-size: var(--nk-row);
+    line-height: 1;
   }
 
   .svc-item__link {

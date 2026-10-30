@@ -115,3 +115,94 @@
     }
   }
 }
+
+/*
+ * The page's art direction (M32: "as if made for Nike: modern, elegant,
+ * techy"). Display type is Archivo at its narrowest width, bold and in
+ * capitals, set tight and large; small data and labels are in the system
+ * monospace; controls are pills. One ivory band inverts the page once.
+ */
+:root {
+  --nk-mono:
+    ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+  /* The display sizes: a section's title, a statement, a row's title. */
+  --nk-title: clamp(3rem, 1.25rem + 7.5vw, 9.5rem);
+  --nk-statement: clamp(1.875rem, 1rem + 3.4vw, 4.25rem);
+  --nk-row: clamp(1.375rem, 1rem + 1.2vw, 2.125rem);
+}
+
+.nk-display {
+  font-family: var(--font-heading);
+  font-stretch: 75%;
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.nk-title {
+  font-size: var(--nk-title);
+}
+
+/* Type drawn as an outline, as a drafting line traces it. */
+.nk-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+
+.nk-label {
+  color: var(--ink-muted);
+  font-family: var(--nk-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The ivory band: the page's roles inverted, once. Every text colour
+   passes AA on ivory; the teal becomes a deep teal for lines and grips. */
+.nk-inverse {
+  --surface: var(--color-ivory);
+  --surface-sunk: #dfe2de;
+  --ink: var(--color-midnight);
+  --ink-muted: #3d5057;
+  --line: color-mix(in srgb, var(--color-midnight) 18%, var(--color-ivory));
+  --line-strong: var(--color-midnight);
+  --accent: #2e6e7a;
+  --accent-text: #22555e;
+  --link: #22555e;
+  --focus: #22555e;
+  --grip-fill: var(--color-ivory);
+  --button-primary-bg: var(--color-midnight);
+  --button-primary-bg-hover: var(--color-interactive);
+  --button-primary-fg: var(--color-ivory);
+
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.nk-inverse ::selection {
+  background-color: #c7d9dc;
+  color: var(--ink);
+}
+
+/* Pills: the page's buttons (the shared Button's scoped rule loses to the
+   doubled class). */
+html .button.button {
+  padding-inline: var(--space-6);
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+}
+
+/* A block arriving in a zone that has just come into view (reveal.ts). */
+@keyframes nk-rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

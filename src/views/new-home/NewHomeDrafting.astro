@@ -1,0 +1,169 @@
+---
+/**
+ * "Tehničko crtanje" on the new Home, the page's one pinned scene: the
+ * house plan of the current Home (PlanDrawing.astro) drawn by the scroll.
+ * From 64rem the text stands on the left and the drawing on the right, both
+ * held on screen while the scene's track scrolls by; as it does, the plan
+ * is drafted layer by layer, turns into its 3D view, and gets its roof
+ * (plan-scrub.ts). Below 64rem the text comes first, then the drawing
+ * sticks on its own while it is drawn.
+ *
+ * Without JavaScript, or with reduced motion, nothing sticks and the plan
+ * shows its finished state at once, with the component's own switch to the
+ * flat plan.
+ *
+ * The three services link to their anchors on the drafting page; the rule
+ * above each is drawn from the left as it arrives.
+ */
+import Grips from "../../components/ui/Grips.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import { DRAFTING_SERVICES } from "../../features/services/services.ts";
+import PlanDrawing from "../home/plan/PlanDrawing.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const drafting = pathFor("drafting", locale);
+---
+
+<section class="cad nh-zone" aria-labelledby="crtanje" data-scene>
+  <div class="cad__text">
+    <h2 id="crtanje">{t(locale, "drafting.title")}</h2>
+    <p class="cad__lead">{t(locale, "home.drafting.lead")}</p>
+    <ul class="cad__list">
+      {DRAFTING_SERVICES.map((service) => (
+        <li class="cad-item has-grips">
+          <span class="nh-rule" aria-hidden="true" />
+          <h3 class="cad-item__title">
+            <a
+              class="cad-item__link stretched-link"
+              href={
+                service.anchor === undefined
+                  ? drafting
+                  : `${drafting}#${service.anchor[locale]}`
+              }
+            >
+              {t(locale, service.title)}
+            </a>
+          </h3>
+          <p class="cad-item__body">{t(locale, service.short)}</p>
+          <Grips />
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="cad__scene">
+    <div class="cad__figure" data-scene-figure>
+      <PlanDrawing locale={locale} idPrefix="nova" class="cad__plan" />
+    </div>
+  </div>
+  <script>
+    import "./plan-scrub.ts";
+  </script>
+</section>
+
+<style>
+  .cad {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .cad__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .cad__list {
+    display: grid;
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cad-item {
+    position: relative;
+    padding: var(--space-4) 0 var(--space-5);
+  }
+
+  .cad-item__title {
+    font-size: var(--step-title);
+    line-height: var(--leading-title);
+  }
+
+  .cad-item__link {
+    color: var(--ink);
+  }
+
+  .cad-item__body {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    color: var(--ink-muted);
+  }
+
+  .cad-item:has(.cad-item__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .cad-item__link:focus-visible {
+    outline: none;
+  }
+
+  /* The scene's track is tall only once the script holds the pen; the
+     figure sticks inside it, centred on the screen. */
+  .cad.is-live .cad__scene {
+    min-height: 220vh;
+  }
+
+  .cad.is-live .cad__figure {
+    position: sticky;
+    top: 0;
+    display: grid;
+    align-content: center;
+    min-height: 100svh;
+    padding-block: var(--space-5);
+  }
+
+  /* Replaying is the scroll's job here. */
+  .cad :global(.plan__replay) {
+    display: none !important;
+  }
+
+  @media (min-width: 64rem) {
+    .cad {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      align-items: start;
+      padding-block: 0;
+    }
+
+    .cad__text {
+      grid-column: 1 / span 5;
+      padding-block: var(--zone-pad);
+    }
+
+    .cad__scene {
+      grid-column: 6 / -1;
+      padding-block: var(--zone-pad);
+    }
+
+    .cad.is-live .cad__text {
+      position: sticky;
+      top: 0;
+      display: grid;
+      align-content: center;
+      min-height: 100svh;
+    }
+
+    .cad.is-live .cad__scene {
+      min-height: 300vh;
+      padding-block: 0;
+    }
+  }
+</style>

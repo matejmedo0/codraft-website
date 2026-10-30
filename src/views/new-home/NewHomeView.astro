@@ -1,21 +1,121 @@
 ---
 /**
- * The new Home, built step by step by the client's rules (M8, M9 in
- * docs/phases/3-pages.md; the rules in docs/new-home-rules.md), apart from
- * the current Home: its zones go in this folder and its copy gets its own
- * locale keys. Shown at /lab/nova-pocetna.
+ * The new Home, shown at /lab/nova-pocetna: one drawing sheet that the
+ * scroll drafts. The scroll is the pen: a drafting line on the sheet's left
+ * frame grows as the page scrolls and its grip follows the scroll, the
+ * hero's site drawing drafts itself on load, every row's rule and icon
+ * draw as they arrive, the house plan is drawn, raised and roofed by the
+ * scroll in a pinned scene, and the page ends on the wordmark's line and
+ * grip (new-home.css, docs/phases/3-pages.md M25).
+ *
+ * The zones go in this folder; the copy is the Home's, from the locale
+ * files. Browsers without scroll-driven animations, reduced motion and no
+ * JavaScript all get the finished page.
  */
+import "./new-home.css";
+
+import type { Locale } from "../../config/site.ts";
+import NewHomeAudit from "./NewHomeAudit.astro";
+import NewHomeClosing from "./NewHomeClosing.astro";
+import NewHomeDrafting from "./NewHomeDrafting.astro";
 import NewHomeHero from "./NewHomeHero.astro";
+import NewHomePrinciples from "./NewHomePrinciples.astro";
+import NewHomeServices from "./NewHomeServices.astro";
+import NewHomeTeam from "./NewHomeTeam.astro";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "hr" } = Astro.props;
 ---
 
-<NewHomeHero />
+<div class="pen" aria-hidden="true">
+  <span class="pen__line"></span>
+  <span class="pen__grip"></span>
+</div>
+
+<NewHomeHero locale={locale} />
+<NewHomeServices locale={locale} />
+<NewHomeAudit locale={locale} />
+<NewHomeDrafting locale={locale} />
+<NewHomePrinciples locale={locale} />
+<NewHomeTeam locale={locale} />
+<NewHomeClosing locale={locale} />
+
+<style>
+  /* The pen: on the sheet's left frame, a drafting line as long as the
+     page has been scrolled, with the grip at its tip travelling down the
+     screen. Only where the scroll can drive it; otherwise nothing. */
+  .pen {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    display: none;
+    width: calc(var(--sheet-margin) * 2);
+    pointer-events: none;
+  }
+
+  .pen__line {
+    position: absolute;
+    inset: 0 auto 0 calc(var(--sheet-margin) - var(--rail) / 2);
+    width: var(--rail);
+    background: var(--accent);
+    transform-origin: 50% 0;
+  }
+
+  .pen__grip {
+    position: absolute;
+    top: 0;
+    left: calc(var(--sheet-margin) - var(--grip-size) / 2 - 1px);
+    width: calc(var(--grip-size) + 2px);
+    height: calc(var(--grip-size) + 2px);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .pen {
+        display: block;
+      }
+
+      .pen__line {
+        animation: motion-draw-y linear both;
+        animation-timeline: scroll(root);
+      }
+
+      .pen__grip {
+        animation: pen-travel linear both;
+        animation-timeline: scroll(root);
+      }
+    }
+  }
+
+  @keyframes pen-travel {
+    from {
+      translate: 0 0;
+    }
+
+    to {
+      translate: 0 calc(100dvh - 100%);
+    }
+  }
+</style>
 
 <style is:global>
-  /* The page's palette, "Midnight" (M13, docs/new-home-rules.md), on the
-     design system's roles. Loaded only on this page; unlayered, so it wins
-     over tokens.css. Every text colour passes AA on every surface; the
-     border is decorative. The wordmark takes the palette too: ivory
-     lettering and the teal accent (M14). */
+  /* The title block's rule keeps the site's timed selection (a line, a
+     grip, a release); on this page every line is the scroll's, so the
+     footer shows its plain rule. */
+  .title-block .zone-mark__select {
+    display: none;
+  }
+
+  /* The page's palette, "Midnight" (docs/new-home-rules.md), on the design
+     system's roles. Loaded only on this page; unlayered, so it wins over
+     tokens.css. Every text colour passes AA on every surface; the border is
+     decorative. The wordmark takes the palette too: ivory lettering and the
+     teal accent. */
   :root {
     --color-midnight: #0b181d;
     --color-deep-teal: #11252c;
@@ -25,7 +125,7 @@ import NewHomeHero from "./NewHomeHero.astro";
     --color-silver: #aab8bb;
     --color-teal: #82bbc5;
     --color-border: #28434c;
-    /* The navigation's links, between silver and ivory (M17). */
+    /* The navigation's links, between silver and ivory. */
     --color-nav: #bec8ca;
 
     --surface: var(--color-midnight);
@@ -34,9 +134,9 @@ import NewHomeHero from "./NewHomeHero.astro";
     --ink-muted: var(--color-silver);
     --nav-ink: var(--color-nav);
 
-    /* One knob for the header's sizes from 64rem (M18): the wordmark, the
-       links, EN, their spacing and the header's height grow together.
-       1 = M17's sizes. The hero reads it too, to stay at the fold. */
+    /* One knob for the header's sizes from 64rem: the wordmark, the links,
+       EN, their spacing and the header's height grow together. The hero
+       reads it too, to stay at the fold. */
     --topbar-scale: 1.125;
     --frame: var(--color-border);
     --line: var(--color-border);

@@ -1,0 +1,117 @@
+/*
+ * The new Home's scroll grammar (src/views/new-home/). The page is one
+ * drawing sheet and the scroll is the pen: every reveal is a drafting
+ * action (a rule drawn from the left, a stroke run along its path, a grip
+ * snapping in) driven by the scroll itself, through CSS scroll-driven
+ * animations. The animations exist only inside @supports and the
+ * no-preference media query, so a browser without them, reduced motion and
+ * no JavaScript all get the finished page: nothing is ever hidden waiting
+ * for an animation that never runs.
+ *
+ * Imported once by NewHomeView.astro; unlayered, so it wins over base.css.
+ */
+
+/* A block arriving: a short rise with a fade. */
+@keyframes nh-rise {
+  from {
+    opacity: 0;
+    translate: 0 1.25rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* A stroke run along its path; the path has pathLength="1". */
+@keyframes nh-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* One zone of the page: a section with the sheet's padding and a hairline
+   above it, like the rules between a drawing's zones. */
+.nh-zone {
+  position: relative;
+  padding: var(--zone-pad) var(--pad);
+}
+
+.nh-zone + .nh-zone {
+  border-top: var(--rule) solid var(--line);
+}
+
+/* The page's 12-column grid from 64rem. */
+.nh-grid {
+  display: grid;
+  gap: var(--space-7);
+}
+
+@media (min-width: 64rem) {
+  .nh-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+}
+
+/* A rule above a row, drawn from the left as the row arrives. The row is
+   positioned (has-grips does that, or the row's own style). */
+.nh-rule {
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--rule);
+  background: var(--line);
+  transform-origin: 0 50%;
+}
+
+/* A row whose strokes draw as it arrives: its [data-stroke] descendants
+   (an icon's ink, its drafting line and its grip) follow the row's own
+   view timeline, so a list staggers itself by position. */
+.nh-draw {
+  view-timeline: --nh-row block;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .nh-rise {
+      animation: nh-rise var(--ease-standard) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+
+    .nh-rule {
+      animation: motion-draw-x var(--ease-pen) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 32%;
+    }
+
+    .nh-draw [data-stroke] {
+      stroke-dasharray: 1;
+    }
+
+    .nh-draw [data-stroke="ink"] {
+      animation: nh-stroke var(--ease-pen) both;
+      animation-timeline: --nh-row;
+      animation-range: entry 10% cover 36%;
+    }
+
+    .nh-draw [data-stroke="line"] {
+      animation: nh-stroke var(--ease-pen) both;
+      animation-timeline: --nh-row;
+      animation-range: cover 34% cover 44%;
+    }
+
+    .nh-draw [data-stroke="grip"] {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: motion-snap-in var(--ease-snap) both;
+      animation-timeline: --nh-row;
+      animation-range: cover 43% cover 50%;
+    }
+  }
+}

@@ -481,6 +481,14 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
+**The new Home's site drawing (2026-10-29, M25; [ADR 0035](decisions/0035-new-home-drawn-by-the-scroll.md)).** The hero of `/lab/nova-pocetna` shows a website drafted as a technical drawing; its title block and accessible name are new lines, drafts, written by Claude. The other two cells reuse `drawing.note` ("Ilustracija") and the site name.
+
+| Key | HR `draft` | EN `draft` |
+|---|---|---|
+| `newHome.drawing.title` | Nacrt web stranice | Website drawing |
+| `newHome.drawing.units` | Mjere u px | Units: px |
+| `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
+
 ### Services, phase 3 (2026-10-22)
 
 The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
@@ -723,6 +731,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Usluge, the /check):** The price note under stages 02 and 03 (`services.priceNote`) and the price table's labels (`services.price`, `services.priceColumn`) are replaced by one caption above every service's prices, `services.terms` ("Okvirno, bez PDV-a"), and `services.startingPrice`, after the design critique (DC-04: the VAT status next to every price; Q3: one restatement fewer of the fixed offer).
 - **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
+- **2026-10-29 (phase 3, the new Home, M25):** "The new Home's site drawing" added under "Home, phase 3": the hero drawing's title block and accessible name (`newHome.drawing.title`, `.units`, `.label`), HR and EN drafts. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

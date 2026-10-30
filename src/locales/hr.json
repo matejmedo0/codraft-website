@@ -204,5 +204,8 @@
   "build.ai.setup": "Izrada asistenta",
   "services.perSheet": "po listu",
   "services.terms": "Okvirno, bez PDV-a",
-  "services.startingPrice": "Početna cijena"
+  "services.startingPrice": "Početna cijena",
+  "newHome.drawing.label": "Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima.",
+  "newHome.drawing.title": "Nacrt web stranice",
+  "newHome.drawing.units": "Mjere u px"
 }

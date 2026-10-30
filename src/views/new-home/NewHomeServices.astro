@@ -1,15 +1,16 @@
 ---
 /**
- * "Što radimo" on the new Home: the three stages one under the other, as a
- * zig-zag the scroll pulls in (M26 in docs/phases/3-pages.md). A stage's
- * head (its number, title and tagline) comes in from the left as it
- * arrives, and its services alternate: the first from the right, the next
- * from the left, and so on, each on its own side of the sheet from 64rem.
- * The slides follow the scroll itself (view timelines), so scrolling back
- * slides them out again, and the icon draws stroke by stroke as its row
- * lands (new-home.css). The text is always there: without scroll-driven
- * animations, with reduced motion or without JavaScript the rows stand
- * still, in place.
+ * "Što radimo" on the new Home: the three stages one under the other, each
+ * coming in as two halves from the sides as the scroll brings it (M26, M27
+ * in docs/phases/3-pages.md). A stage's head (its number large in the
+ * accent, title and tagline) slides in from one side and its services, as
+ * one group, from the other; the next stage is mirrored, so the zone goes
+ * zig-zag down the sheet while the rows inside a stage stay together. The
+ * slides follow the scroll itself (one view timeline per stage), so
+ * scrolling back slides the halves out again, and each icon draws stroke
+ * by stroke as its row lands (new-home.css). The text is always there:
+ * without scroll-driven animations, with reduced motion or without
+ * JavaScript the halves stand in place.
  *
  * The services of stages 02 and 03 link to their anchors on /usluge; the
  * two items of stage 01 don't, since the free audit asks once, in the zone
@@ -37,9 +38,9 @@ const services = pathFor("services", locale);
     </h2>
     <p class="svc__intro">{t(locale, "services.intro")}</p>
   </div>
-  {STAGES.map((stage) => (
-    <div class="stage">
-      <div class="stage__head svc-slide">
+  {STAGES.map((stage, index) => (
+    <div class:list={["stage", { "stage--mirror": index % 2 === 1 }]}>
+      <div class="stage__head">
         <p class="stage__number" aria-hidden="true">
           {stage.number}
         </p>
@@ -52,19 +53,15 @@ const services = pathFor("services", locale);
         </div>
       </div>
       <ul class="stage__items">
-        {stage.services.map((service, index) => {
+        {stage.services.map((service) => {
           const href =
             service.anchor === undefined
               ? undefined
               : `${services}#${service.anchor[locale]}`;
-          const side = index % 2 === 0 ? "right" : "left";
           return (
             <li
               class:list={[
                 "svc-item",
-                `svc-item--${side}`,
-                "svc-slide",
-                `svc-slide--${side}`,
                 "nh-draw",
                 { "has-grips": href !== undefined },
               ]}
@@ -93,7 +90,7 @@ const services = pathFor("services", locale);
 
 <style>
   .svc {
-    /* How far a row comes in from: a step on phones, a long slide from
+    /* How far a half comes in from: a step on phones, a long slide from
        64rem. The slides are clipped at the zone's edge, so the page never
        scrolls sideways. */
     --svc-slide: 16vw;
@@ -113,9 +110,13 @@ const services = pathFor("services", locale);
     color: var(--ink-muted);
   }
 
+  /* A stage: its head and its services, on one timeline. */
   .stage {
+    display: grid;
+    gap: var(--space-6);
     padding-block: var(--space-8);
     border-top: var(--rule) solid var(--line);
+    view-timeline: --stage block;
   }
 
   .stage__head {
@@ -123,7 +124,7 @@ const services = pathFor("services", locale);
     grid-template-columns: auto minmax(0, 1fr);
     column-gap: var(--space-5);
     align-items: baseline;
-    margin-bottom: var(--space-6);
+    align-self: start;
   }
 
   /* The stage's number, large and in the accent: the sequence is the point
@@ -166,8 +167,13 @@ const services = pathFor("services", locale);
     grid-template-columns: 3.5rem minmax(0, 1fr);
     column-gap: var(--space-5);
     align-items: start;
-    padding: var(--space-6) 0;
+    padding: var(--space-5) 0;
     border-top: var(--rule) solid var(--line);
+  }
+
+  .svc-item:first-child {
+    padding-top: 0;
+    border-top: 0;
   }
 
   .svc-item .svc-item__icon {
@@ -207,9 +213,9 @@ const services = pathFor("services", locale);
     outline: none;
   }
 
-  /* The slides: a head or a row comes in from its side as far as the
-     scroll has brought it, and settles as it reaches the screen's lower
-     third. */
+  /* The slides: a stage's two halves come in from their sides as far as the
+     scroll has brought the stage, and settle as its top reaches the
+     screen's lower third. The mirrored stage swaps the sides. */
   @keyframes svc-from-left {
     from {
       opacity: 0;
@@ -236,21 +242,27 @@ const services = pathFor("services", locale);
 
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .svc-slide {
+      .stage__head,
+      .stage__items {
         animation: svc-from-left var(--ease-standard) both;
-        animation-timeline: view();
-        animation-range: entry 0% cover 30%;
+        animation-timeline: --stage;
+        animation-range: entry 0% cover 28%;
       }
 
-      .svc-slide--right {
+      .stage__items,
+      .stage--mirror .stage__head {
         animation-name: svc-from-right;
+      }
+
+      .stage--mirror .stage__items {
+        animation-name: svc-from-left;
       }
     }
   }
 
   @media (min-width: 64rem) {
     .svc {
-      --svc-slide: 24vw;
+      --svc-slide: 22vw;
     }
 
     .svc__title {
@@ -261,38 +273,34 @@ const services = pathFor("services", locale);
       grid-column: 7 / -1;
     }
 
+    /* The two halves side by side on the page's grid: the head on the
+       left and the services on the right, or mirrored. */
     .stage {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
       padding-block: var(--space-9);
     }
 
     .stage__head {
-      margin-bottom: var(--space-7);
+      grid-row: 1;
+      grid-column: 1 / span 5;
     }
 
-    /* Each row on its own side of the sheet, on the page's grid: the first
-       on the right, the next on the left, a zig-zag down the zone. */
-    .svc-item {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: var(--gap);
-      padding-block: var(--space-7);
+    .stage__items {
+      grid-row: 1;
+      grid-column: 7 / -1;
     }
 
-    .svc-item .svc-item__icon {
-      grid-column: 1;
-    }
-
-    .svc-item__title,
-    .svc-item__body {
-      grid-column: 2 / span 5;
-    }
-
-    .svc-item--right .svc-item__icon {
-      grid-column: 7;
-    }
-
-    .svc-item--right .svc-item__title,
-    .svc-item--right .svc-item__body {
+    .stage--mirror .stage__head {
       grid-column: 8 / -1;
+    }
+
+    .stage--mirror .stage__items {
+      grid-column: 1 / span 6;
+    }
+
+    .svc-item {
+      padding-block: var(--space-6);
     }
   }
 </style>

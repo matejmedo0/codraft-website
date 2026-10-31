@@ -1,0 +1,128 @@
+---
+/**
+ * Home's closing call to action (M32, M36): a band on graph paper,
+ * centred as in the client's reference "Torch": the client's question in
+ * display capitals, its last word in the accent, the lead and the note on
+ * the reply time and on sketches by email, and one pill to Kontakt. It
+ * comes in when it arrives (reveal.ts): a drafting line runs across the
+ * top of the zone and its grip snaps in, the question rises.
+ */
+import Button from "../../components/ui/Button.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import TwoTone from "./TwoTone.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section
+  class="closing graph-paper"
+  aria-labelledby="zavrsni-poziv"
+  data-reveal
+>
+  <span class="closing__line" aria-hidden="true"></span>
+  <span class="closing__grip" aria-hidden="true"></span>
+  <h2 class="closing__title nk-display" id="zavrsni-poziv">
+    <TwoTone text={t(locale, "home.closing.title")} />
+  </h2>
+  <div class="closing__foot">
+    <div class="closing__text">
+      <p class="closing__lead">{t(locale, "home.closing.lead")}</p>
+      <p class="closing__note">{t(locale, "home.closing.note")}</p>
+    </div>
+    <Button href={pathFor("contact", locale)} class="closing__cta">
+      {t(locale, "home.closing.cta")}
+    </Button>
+  </div>
+  <script>
+    import "./reveal.ts";
+  </script>
+</section>
+
+<style>
+  .closing {
+    --grip: 0.875rem;
+
+    position: relative;
+    padding: calc(var(--zone-pad) * 1.5) var(--pad);
+    border: 0;
+    background-color: var(--surface-sunk);
+    text-align: center;
+  }
+
+  .closing__line {
+    position: absolute;
+    top: calc(var(--rail) / -2);
+    right: calc(var(--pad) + var(--grip) / 2);
+    left: 0;
+    height: var(--rail);
+    background: var(--accent);
+    transform-origin: 0 50%;
+  }
+
+  .closing__grip {
+    position: absolute;
+    top: calc(var(--grip) / -2);
+    right: var(--pad);
+    width: var(--grip);
+    height: var(--grip);
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+  }
+
+  .closing__title {
+    max-width: 22ch;
+    margin-inline: auto;
+    font-size: clamp(2.25rem, 1rem + 4.5vw, 6rem);
+  }
+
+  .closing__foot {
+    display: grid;
+    gap: var(--space-7);
+    justify-items: center;
+    margin-top: var(--space-6);
+  }
+
+  .closing__lead {
+    max-width: 44ch;
+    margin-inline: auto;
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .closing__note {
+    max-width: 52ch;
+    margin-inline: auto;
+    margin-top: var(--space-2);
+    color: var(--ink-muted);
+  }
+
+  .closing.is-pending :is(.closing__title, .closing__foot) {
+    opacity: 0;
+  }
+
+  .closing.is-pending :is(.closing__line, .closing__grip) {
+    opacity: 0;
+  }
+
+  .closing.is-in .closing__line {
+    animation: motion-draw-x 900ms var(--ease-pen) both;
+  }
+
+  .closing.is-in .closing__grip {
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap) 850ms both;
+  }
+
+  .closing.is-in .closing__title {
+    animation: nk-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+  }
+
+  .closing.is-in .closing__foot {
+    animation: nk-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) 450ms both;
+  }
+</style>

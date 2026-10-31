@@ -1,0 +1,270 @@
+---
+/**
+ * Stage 03's drawing (M35; axes in M40): visits from Google over the
+ * months after launch, rising as the site is kept up, with the launch
+ * (v1.0) marked and a grip for each regular update along the bottom. The
+ * axes are named and the months numbered so the picture reads; it carries
+ * no values and says it is an illustration, not a claim.
+ *
+ * It draws stroke by stroke as its stage slides in (`is-in` from
+ * reveal.ts); each part waits its step (`data-at`, 250 ms each). Without
+ * JavaScript, with reduced motion or already in view on load it is
+ * complete. Decorative: the stage's text says it all.
+ */
+import type { Locale } from "../../../config/site.ts";
+import { t } from "../../../features/i18n/ui.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+/** The plot: the origin, a month's width, the axes' ends. */
+const X0 = 70;
+const Y0 = 230;
+const MONTH = 50;
+const X_END = 400;
+const Y_END = 30;
+const monthX = (month: number): number => X0 + 20 + month * MONTH;
+
+const MONTHS = [0, 1, 2, 3, 4, 5, 6];
+const VISITS = [206, 199, 203, 182, 170, 146, 104];
+const line = `M${MONTHS.map((month, index) => `${String(monthX(month))} ${String(VISITS[index])}`).join("L")}`;
+const UPDATES = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5].map(monthX);
+const end = monthX(6);
+---
+
+<div class="chart graph-paper" aria-hidden="true">
+  <svg viewBox="0 0 420 300" fill="none">
+    <text class="note" x="404" y="20" data-at="1">
+      {t(locale, "drawing.note")}
+    </text>
+    <path
+      class="faint"
+      d={`M${String(X0)} 80H${String(X_END)}M${String(X0)} 130H${String(X_END)}M${String(X0)} 180H${String(X_END)}`}
+      pathLength="1"
+      data-at="1"
+    ></path>
+    <path
+      class="muted"
+      d={`M${String(X0)} ${String(Y_END)}V${String(Y0)}H${String(X_END)}M${String(X0 - 5)} 80h5M${String(X0 - 5)} 130h5M${String(X0 - 5)} 180h5${MONTHS.map((month) => `M${String(monthX(month))} ${String(Y0)}v5`).join("")}`}
+      pathLength="1"
+      data-at="1"
+    ></path>
+    <text
+      class="axis"
+      x="0"
+      y="0"
+      transform={`translate(30 ${String((Y0 + Y_END) / 2)}) rotate(-90)`}
+      data-at="2"
+    >
+      {t(locale, "newHome.growth.y")}
+    </text>
+    {MONTHS.map((month) => (
+      <text class="tick" x={monthX(month)} y={Y0 + 19} data-at="2">
+        {month}
+      </text>
+    ))}
+    <text class="axis" x={(X0 + X_END) / 2} y="296" data-at="2">
+      {t(locale, "newHome.growth.x")}
+    </text>
+    <path
+      class="muted dashed"
+      d={`M${String(monthX(0))} ${String(Y0)}V44`}
+      data-at="2"
+    ></path>
+    <text class="tag" x={monthX(0) + 6} y="50" data-at="2">
+      v1.0
+    </text>
+    <path class="accent growth" d={line} pathLength="1" data-at="3"></path>
+    <text class="updates" x={X0 - 8} y="273" data-at="3">
+      {t(locale, "newHome.growth.updates")}
+    </text>
+    {UPDATES.map((x, index) => (
+      <rect
+        class="grip grip--small"
+        x={x - 3.5}
+        y="265"
+        width="7"
+        height="7"
+        data-at={index + 4}
+      />
+    ))}
+    <rect
+      class="grip"
+      x={monthX(0) - 5}
+      y={Y0 - 5}
+      width="10"
+      height="10"
+      data-at="2"
+    ></rect>
+    <rect
+      class="grip"
+      x={end - 5}
+      y={(VISITS.at(-1) ?? 0) - 5}
+      width="10"
+      height="10"
+      data-at="10"
+    ></rect>
+  </svg>
+</div>
+
+<style>
+  .chart {
+    width: 100%;
+    max-width: 38rem;
+    padding: var(--space-4) var(--space-3) var(--space-2);
+    border-radius: var(--nk-radius-inner);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  path {
+    stroke-width: 1.5;
+    stroke-linecap: square;
+  }
+
+  .muted {
+    stroke: var(--drawing-muted);
+  }
+
+  .faint {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .dashed {
+    stroke-dasharray: 4 4;
+  }
+
+  .accent {
+    stroke: var(--accent);
+  }
+
+  .growth {
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+
+  .grip {
+    fill: var(--grip-fill);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  .grip--small {
+    stroke-width: 1.25;
+  }
+
+  text {
+    fill: var(--ink-muted);
+    font-family: var(--nk-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .axis {
+    fill: var(--ink);
+    text-anchor: middle;
+    text-transform: uppercase;
+  }
+
+  .tick {
+    text-anchor: middle;
+  }
+
+  .updates {
+    text-anchor: end;
+    text-transform: uppercase;
+  }
+
+  .note {
+    text-anchor: end;
+  }
+
+  .tag {
+    fill: var(--accent);
+  }
+
+  [data-at="1"] {
+    --at: 1;
+  }
+
+  [data-at="2"] {
+    --at: 2;
+  }
+
+  [data-at="3"] {
+    --at: 3;
+  }
+
+  [data-at="4"] {
+    --at: 4;
+  }
+
+  [data-at="5"] {
+    --at: 5;
+  }
+
+  [data-at="6"] {
+    --at: 6;
+  }
+
+  [data-at="7"] {
+    --at: 7;
+  }
+
+  [data-at="8"] {
+    --at: 8;
+  }
+
+  [data-at="9"] {
+    --at: 9;
+  }
+
+  [data-at="10"] {
+    --at: 10;
+  }
+
+  /* Drawn as the stage slides in: strokes run along their paths, labels
+     fade in, grips snap in, each at its step. */
+  :global(.stage.is-in) [data-at] {
+    animation: chart-fade 400ms var(--ease-standard) both;
+    animation-delay: calc(300ms + var(--at) * 250ms);
+  }
+
+  :global(.stage.is-in) path[pathLength] {
+    stroke-dasharray: 1;
+    animation-name: nh-stroke;
+    animation-duration: 600ms;
+    animation-timing-function: var(--ease-pen);
+  }
+
+  :global(.stage.is-in) .growth {
+    animation-duration: 1500ms;
+  }
+
+  :global(.stage.is-in) .grip {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation-name: motion-snap-in;
+    animation-duration: var(--motion-snap);
+    animation-timing-function: var(--ease-snap);
+  }
+
+  @keyframes chart-fade {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+</style>

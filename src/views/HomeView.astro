@@ -1,13 +1,25 @@
 ---
 /**
  * Home (`/`, `/en`): rebuilt from scratch, one instruction at a time
- * (ADR 0035). Until then it holds the hero, "from draft to product"
- * (home/HomeHero.astro). The old Home is in archive/old-home/.
+ * (ADR 0035): the hero, "from draft to product" (home/HomeHero.astro),
+ * then the content of the earlier new Home (dev, M24–M40) set in this
+ * design (home/home.css): what we do in three stages, the free estimate,
+ * drafting, how we work, the team, questions and the closing call. The
+ * old Home is in archive/old-home/.
  */
 import type { Locale } from "../config/site.ts";
 import { t } from "../features/i18n/ui.ts";
 import { jsonLdText, organization } from "../features/seo/structured-data.ts";
+import "./home/home.css";
+
+import HomeAudit from "./home/HomeAudit.astro";
+import HomeClosing from "./home/HomeClosing.astro";
+import HomeDrafting from "./home/HomeDrafting.astro";
+import HomeFaq from "./home/HomeFaq.astro";
 import HomeHero from "./home/HomeHero.astro";
+import HomePrinciples from "./home/HomePrinciples.astro";
+import HomeServices from "./home/HomeServices.astro";
+import HomeTeam from "./home/HomeTeam.astro";
 
 interface Props {
   locale: Locale;
@@ -24,4 +36,11 @@ const structuredData = jsonLdText(
 ---
 
 <HomeHero locale={locale} />
+<HomeServices locale={locale} />
+<HomeAudit locale={locale} />
+<HomeDrafting locale={locale} />
+<HomePrinciples locale={locale} />
+<HomeTeam locale={locale} />
+<HomeFaq locale={locale} />
+<HomeClosing locale={locale} />
 <script type="application/ld+json" is:inline set:html={structuredData} />

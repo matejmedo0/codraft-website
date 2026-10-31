@@ -1,0 +1,13 @@
+---
+/** A title with its last word in the accent (M36, two-tone.ts). */
+import { twoTone } from "./two-tone.ts";
+
+interface Props {
+  text: string;
+}
+
+const [head, accent] = twoTone(Astro.props.text);
+---
+
+{head}
+{accent !== "" && <span class="nk-accent">{accent}</span>}

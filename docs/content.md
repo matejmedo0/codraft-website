@@ -482,7 +482,7 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
-**Home's sections under the hero (2026-10-31, M41).** The content of the earlier new Home (dev, M24–M40) set in the scroll-based design: the blocks below came with it, as written on dev. The keys keep their `newHome.` prefix.
+**Home's sections under the hero (2026-10-31, M41).** The content of the earlier new Home (dev, M24–M40) set in the scroll-based design: the blocks below came with it, as written on dev. The keys keep their `newHome.` prefix. Since M42 (2026-10-31) they scroll inside the hero's window, which opens over the page once the drawing has filled in; its address bar shows the page each part belongs to (`codraft.hr/usluge`, `/besplatna-procjena`, `/tehnicko-crtanje`, `/o-nama`, `/kontakt`) and its menu is `MAIN_NAV`, both decorative.
 
 **Home's client journey and growth chart (2026-10-31, M40).** Stage 01's card walks through the process from the first enquiry to the finished product, for the service the visitor picks; its other steps reuse `services.process.*`, and the launch line for websites is `services.process.launch.body`. The chart beside stage 03 labels its axes and its updates, and carries `drawing.note` ("Ilustracija"): it shows no values. New drafts by Claude, HR and EN.
 

@@ -5,24 +5,31 @@
  * which a website's blueprint draws itself in fine light lines, over dotted
  * drafting paper and under a sweeping band of light, up to the frame the
  * client chose (M41): the drawing whole, the first parts filling in. The
- * scroll (the hero stays pinned for a screen) takes it on from there: it
- * fills in as the finished interface while the silk steps back. Code +
- * Draft, in one picture.
+ * scroll (the hero stays pinned to the end of the page) takes it on from
+ * there: it fills in as the finished interface while the silk steps back.
+ * Then the window opens over the stage, between the wordmark and the
+ * bottom menu, and the rest of the page (the slot) rises into it and
+ * scrolls in it, like the site in a browser (M42); its address bar shows
+ * the page each part comes from. Code + Draft, in one picture.
  *
  * The drawing is decorative and shows no content: bars for text, a copper
  * pill for the button, a gradient for the image. Without JavaScript it shows
- * finished; the `js` class (astro.config.ts) hides its parts until the
- * scroll draws them.
+ * finished and the page follows it as usual; the `js` class
+ * (astro.config.ts) hides the drawing's parts until the scroll draws them
+ * and puts the page in the window.
  */
 import SilkWaves from "../../components/ui/SilkWaves.astro";
 import type { Locale } from "../../config/site.ts";
+import { MAIN_NAV } from "../../features/i18n/navigation.ts";
 import { t } from "../../features/i18n/ui.ts";
 
 interface Props {
   locale: Locale;
+  /** Home's address, shown in the window's bar before the page comes in. */
+  address: string;
 }
 
-const { locale } = Astro.props;
+const { locale, address } = Astro.props;
 const CARDS = [60, 240, 420];
 ---
 
@@ -33,10 +40,27 @@ const CARDS = [60, 240, 420];
       {t(locale, "home.hero.titleLine1")}{" "}
       <span class="hero__title-muted">{t(locale, "home.hero.titleLine2")}</span>
     </h1>
-    <div class="hero__device">
-      <div class="hero__glass" data-hero-glass></div>
+    <div class="hero__device" data-hero-device>
+      <div class="hero__glass" data-hero-glass>
+        <div class="hero__chrome" aria-hidden="true" data-hero-chrome>
+          <span class="hero__dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="hero__address" data-hero-address>
+            {address}
+          </span>
+          <ul class="hero__nav">
+            {MAIN_NAV.map(({ page, label }) => (
+              <li data-page={page}>{t(locale, label)}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
       <svg
         class="hero__drawing"
+        data-hero-drawing
         viewBox="0 0 640 440"
         aria-hidden="true"
         focusable="false"
@@ -334,24 +358,68 @@ const CARDS = [60, 240, 420];
       </svg>
     </div>
   </div>
+  <div class="hero__screen" data-hero-screen>
+    <div class="hero__site" data-hero-site>
+      <slot />
+    </div>
+  </div>
 </section>
 
 <script>
-  import { gsap, SplitText } from "../../lib/scroll";
+  import { gsap, lenis, ScrollTrigger, SplitText } from "../../lib/scroll";
 
   /** Where the fill begins, and the client's frame the scroll starts from:
       the blueprint drawn, the first parts of the interface filling. */
   const FILL_AT = 4.4;
   const START_FRAME = 4.75;
+  /** The drawing's window in its 640 × 440: the frame at 20, 20, 600 × 400,
+      its bar 40 high. */
+  const FRAME = {
+    left: 20 / 640,
+    top: 20 / 440,
+    width: 600 / 640,
+    height: 400 / 440,
+    bar: 40 / 440,
+  };
+  /** The line, from the window's top, past which a part of the page takes
+      the address bar. */
+  const ADDRESS_LINE = 0.4;
+
+  interface Box {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }
 
   function setUp(hero: HTMLElement): void {
     const title = hero.querySelector<HTMLElement>("[data-hero-title]");
     const canvas = hero.querySelector("canvas");
     const blueprint = hero.querySelector("[data-hero-blueprint]");
-    const glass = hero.querySelector("[data-hero-glass]");
+    const device = hero.querySelector<HTMLElement>("[data-hero-device]");
+    const glass = hero.querySelector<HTMLElement>("[data-hero-glass]");
+    const drawing = hero.querySelector("[data-hero-drawing]");
+    const chrome = hero.querySelector<HTMLElement>("[data-hero-chrome]");
+    const bar = hero.querySelector("[data-hero-address]");
     const grid = hero.querySelector("[data-hero-grid]");
     const scan = hero.querySelector("[data-hero-scan]");
-    if (!title || !blueprint || !glass || !grid || !scan) return;
+    const screen = hero.querySelector<HTMLElement>("[data-hero-screen]");
+    const site = hero.querySelector<HTMLElement>("[data-hero-site]");
+    if (
+      !title ||
+      !blueprint ||
+      !device ||
+      !glass ||
+      !drawing ||
+      !chrome ||
+      !bar ||
+      !grid ||
+      !scan ||
+      !screen ||
+      !site
+    ) {
+      return;
+    }
 
     // The headline, line by line from under its mask, once the font is in.
     SplitText.create(title, {
@@ -418,8 +486,54 @@ const CARDS = [60, 240, 420];
         FILL_AT,
       )
       .to(canvas, { opacity: 0.35, duration: 3 }, FILL_AT)
-      // A beat on the finished picture before the pin lets go.
+      // A beat on the finished picture before the window opens.
       .to({}, { duration: 1 });
+
+    // The scroll in three parts, in pixels: the picture fills in; the
+    // window opens while the page rises into it; the page scrolls in it.
+    const fill = (): number => window.innerHeight * 1.1;
+    const rise = (): number => screen.clientHeight;
+    const travel = (): number =>
+      Math.max(0, site.offsetHeight - screen.clientHeight);
+
+    // The page's parts, each with its page's address, and the bar's menu.
+    const parts = [...site.querySelectorAll<HTMLElement>("[data-address]")];
+    const items = [...chrome.querySelectorAll<HTMLElement>("[data-page]")];
+    const home = bar.textContent;
+    let shown: HTMLElement | undefined;
+
+    /** Places the page `scrolled` pixels into the opening: it rises into
+        the window with the scroll, then scrolls in it, 1:1. */
+    const place = (scrolled: number): void => {
+      const y = gsap.utils.clamp(-travel(), rise(), rise() - scrolled);
+      gsap.set(site, { y });
+      const line = screen.clientHeight * ADDRESS_LINE - y;
+      const part = parts.findLast((element) => element.offsetTop <= line);
+      if (part === shown) return;
+      shown = part;
+      bar.textContent = part?.dataset.address ?? home;
+      for (const item of items) {
+        item.classList.toggle(
+          "is-current",
+          item.dataset.page === part?.dataset.page,
+        );
+      }
+    };
+
+    // One pin holds the hero for all three parts, to the end of the page.
+    const pin = ScrollTrigger.create({
+      trigger: hero,
+      start: "top top",
+      end: () => `+=${String(fill() + rise() + travel())}`,
+      pin: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        place(self.scroll() - self.start - fill());
+      },
+      onRefresh: (self) => {
+        place(self.scroll() - self.start - fill());
+      },
+    });
 
     // On load the pen draws the blueprint by itself, up to the client's
     // frame (M41): the whole drawing on its paper, the first parts filling.
@@ -444,10 +558,8 @@ const CARDS = [60, 240, 420];
         if (engaged) picture.time(scrub.time);
       },
       scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: "+=110%",
-        pin: true,
+        start: () => pin.start,
+        end: () => pin.start + fill(),
         scrub: 0.8,
         // The pin can report a hair of progress on load; only a real
         // scroll takes over from the intro.
@@ -459,6 +571,93 @@ const CARDS = [60, 240, 420];
         },
       },
     });
+
+    /** The glass's box in the device: on the drawing's frame, or open over
+        the stage around the window's screen and its bar. */
+    const framed = (): Box => ({
+      left: device.clientWidth * FRAME.left,
+      top: device.clientHeight * FRAME.top,
+      width: device.clientWidth * FRAME.width,
+      height: device.clientHeight * FRAME.height,
+    });
+    const opened = (): Box => {
+      const from = device.getBoundingClientRect();
+      const to = screen.getBoundingClientRect();
+      const edge = glass.clientLeft;
+      const top = chrome.offsetHeight + edge;
+      return {
+        left: to.left - from.left - edge,
+        top: to.top - from.top - top,
+        width: to.width + 2 * edge,
+        height: to.height + top + edge,
+      };
+    };
+    const box = (get: () => Box) => ({
+      left: () => get().left,
+      top: () => get().top,
+      width: () => get().width,
+      height: () => get().height,
+    });
+    /** The screen cut to the drawing's window under its bar, rounded as the
+        glass; at the end, all of it. */
+    const cut = (whole: boolean): string => {
+      const r = String(
+        parseFloat(getComputedStyle(glass).borderBottomLeftRadius) -
+          glass.clientLeft,
+      );
+      if (whole) return `inset(0px 0px 0px 0px round 0px 0px ${r}px ${r}px)`;
+      const from = device.getBoundingClientRect();
+      const to = screen.getBoundingClientRect();
+      const frame = framed();
+      const px = (value: number): string =>
+        `${String(Math.max(0, Math.round(value)))}px`;
+      const top = from.top + frame.top + device.clientHeight * FRAME.bar;
+      const left = from.left + frame.left;
+      const bottom = from.top + frame.top + frame.height;
+      return `inset(${px(top - to.top)} ${px(to.right - left - frame.width)} ${px(to.bottom - bottom)} ${px(left - to.left)} round 0px 0px ${r}px ${r}px)`;
+    };
+
+    // The window opens: the drawing gives way to the window's own bar,
+    // the headline steps back, and the glass grows over the stage.
+    gsap
+      .timeline({
+        defaults: { duration: 1, ease: "power2.inOut" },
+        scrollTrigger: {
+          start: () => pin.start + fill(),
+          end: () => pin.start + fill() + rise(),
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        },
+      })
+      .fromTo(glass, box(framed), box(opened), 0)
+      .fromTo(
+        screen,
+        { clipPath: () => cut(false) },
+        { clipPath: () => cut(true) },
+        0,
+      )
+      .to(drawing, { opacity: 0, duration: 0.3, ease: "none" }, 0)
+      .to(title, { opacity: 0, x: -32, duration: 0.5 }, 0)
+      .fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.2);
+
+    // A tab to a link the window doesn't show scrolls the page to it.
+    site.addEventListener("focusin", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const view = screen.getBoundingClientRect();
+      const target = event.target.getBoundingClientRect();
+      if (target.top >= view.top && target.bottom <= view.bottom) return;
+      const offset = target.top - site.getBoundingClientRect().top;
+      lenis.scrollTo(
+        pin.start + fill() + rise() + Math.max(0, offset - view.height / 3),
+        { immediate: true },
+      );
+    });
+
+    // A question opening or a photo loading changes the page's height,
+    // and with it the length of the pin.
+    new ResizeObserver(() => {
+      ScrollTrigger.refresh();
+    }).observe(site);
   }
 
   const hero = document.querySelector<HTMLElement>("[data-hero]");
@@ -466,7 +665,15 @@ const CARDS = [60, 240, 420];
 </script>
 
 <style>
+  /* The open window: under the wordmark, over the bottom menu, the bar on
+     top of its screen. */
   .hero {
+    --win-top: var(--space-9);
+    --win-bottom: calc(
+      var(--space-10) + var(--space-1) + env(safe-area-inset-bottom, 0px)
+    );
+    --chrome-height: 2.75rem;
+
     position: relative;
     min-height: 100svh;
     overflow: hidden;
@@ -516,6 +723,7 @@ const CARDS = [60, 240, 420];
      screen's height. */
   .hero__device {
     position: relative;
+    container-type: inline-size;
     justify-self: center;
     width: 100%;
     max-width: calc(62svh * 640 / 440);
@@ -531,20 +739,97 @@ const CARDS = [60, 240, 420];
   }
 
   /* The sheet the pen draws on: dark glass over the silk, like the bottom
-     menu, placed on the drawing's frame (20, 20, 600 × 400 of 640 × 440). */
+     menu, placed on the drawing's frame (20, 20, 600 × 400 of 640 × 440)
+     and rounded as it (rx 14). The scroll opens it over the stage. */
   .hero__glass {
     position: absolute;
     top: 4.5455%;
     left: 3.125%;
     width: 93.75%;
     height: 90.9091%;
+    overflow: hidden;
     border: var(--rule) solid var(--line);
-    border-radius: 2.1875% / 3.1818%;
+    border-radius: calc(100cqw * 14 / 640);
     background: color-mix(in srgb, var(--surface-sunk) 72%, transparent);
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent),
       0 2.5rem 5rem -2rem color-mix(in srgb, var(--surface) 80%, transparent);
     backdrop-filter: blur(18px) saturate(1.2);
+  }
+
+  /* The open window's bar, as the drawing's: three dots, the address of
+     the page in the window, the site's menu. Decorative: the page's own
+     menu is the bottom one. The scroll shows it as the drawing goes. */
+  .hero__chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    height: var(--chrome-height);
+    padding-inline: var(--space-4);
+    border-bottom: var(--rule) solid var(--line);
+    opacity: 0;
+  }
+
+  .hero__dots {
+    display: flex;
+    flex: none;
+    gap: var(--space-2);
+  }
+
+  .hero__dots span {
+    width: 0.625rem;
+    aspect-ratio: 1;
+    border: var(--rule) solid var(--ink-muted);
+    border-radius: 50%;
+  }
+
+  .hero__address {
+    overflow: hidden;
+    min-width: 0;
+    padding: var(--space-1) var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-muted);
+    font-family: var(--nk-mono);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hero__nav {
+    display: none;
+    gap: var(--space-6);
+    margin: 0 0 0 auto;
+    padding: 0;
+    color: var(--ink-muted);
+    font-size: 0.8125rem;
+    list-style: none;
+  }
+
+  .hero__nav .is-current {
+    color: var(--ink);
+  }
+
+  @media (min-width: 48rem) {
+    .hero__nav {
+      display: flex;
+    }
+  }
+
+  /* The window's screen, where the rest of the page scrolls: without
+     JavaScript the page simply follows the hero. With it, the screen lies
+     in the open window and the page waits a screen below, clipped, until
+     the scroll (and the clip) lets it in. */
+  :global(.js) .hero__screen {
+    position: absolute;
+    z-index: 2;
+    inset: calc(var(--win-top) + var(--chrome-height)) var(--pad)
+      var(--win-bottom);
+    overflow: clip;
+  }
+
+  :global(.js) .hero__site {
+    transform: translateY(100svh);
   }
 
   /* Fine light lines, like a white pencil on dark glass: no glow, so the

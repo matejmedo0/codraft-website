@@ -2,13 +2,17 @@
 /**
  * Home (`/`, `/en`): rebuilt from scratch, one instruction at a time
  * (ADR 0035): the hero, "from draft to product" (home/HomeHero.astro),
- * then the content of the earlier new Home (dev, M24–M40) set in this
- * design (home/home.css): what we do in three stages, the free estimate,
- * drafting, how we work, the team, questions and the closing call. The
- * old Home is in archive/old-home/.
+ * whose window opens onto the rest of the page (M42): the content of the
+ * earlier new Home (dev, M24–M40) set in this design (home/home.css): what
+ * we do in three stages, the free estimate, drafting, how we work, the
+ * team, questions and the closing call. Each group carries the address of
+ * the page it belongs to, for the window's address bar. The old Home is in
+ * archive/old-home/.
  */
 import type { Locale } from "../config/site.ts";
 import { t } from "../features/i18n/ui.ts";
+import type { PageId } from "../features/i18n/route-map.ts";
+import { urlFor } from "../features/i18n/urls.ts";
 import { jsonLdText, organization } from "../features/seo/structured-data.ts";
 import "./home/home.css";
 
@@ -33,14 +37,28 @@ const structuredData = jsonLdText(
     country: t(locale, "meta.country"),
   }),
 );
+/** A page's address as a browser's bar shows it: codraft.hr/usluge. */
+const address = (page: PageId): string =>
+  urlFor(page, locale).replace(/^https:\/\/|\/$/g, "");
 ---
 
-<HomeHero locale={locale} />
-<HomeServices locale={locale} />
-<HomeAudit locale={locale} />
-<HomeDrafting locale={locale} />
-<HomePrinciples locale={locale} />
-<HomeTeam locale={locale} />
-<HomeFaq locale={locale} />
-<HomeClosing locale={locale} />
+<HomeHero locale={locale} address={address("home")}>
+  <div data-page="services" data-address={address("services")}>
+    <HomeServices locale={locale} />
+  </div>
+  <div data-page="audit" data-address={address("audit")}>
+    <HomeAudit locale={locale} />
+  </div>
+  <div data-page="drafting" data-address={address("drafting")}>
+    <HomeDrafting locale={locale} />
+  </div>
+  <div data-page="about" data-address={address("about")}>
+    <HomePrinciples locale={locale} />
+    <HomeTeam locale={locale} />
+  </div>
+  <div data-page="contact" data-address={address("contact")}>
+    <HomeFaq locale={locale} />
+    <HomeClosing locale={locale} />
+  </div>
+</HomeHero>
 <script type="application/ld+json" is:inline set:html={structuredData} />

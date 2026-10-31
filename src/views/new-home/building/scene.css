@@ -1,21 +1,14 @@
 /*
  * The drafting scene's timing (building-scene.ts sets --at and --for on
- * each element and the classes on the scene). While pending, every timed
- * element is hidden and the site plan lies flat; once drawing, each plays
- * from its own start. The final state, with no classes at all, is the 3D
- * view with its sections and schedule.
+ * each element, the tilt's --off-at, --tilt-at and --tilt-for on the
+ * scene, all at its SPEED, and the classes on the scene). While pending,
+ * every timed element is hidden and the site plan lies flat; once drawing,
+ * each plays from its own start. The final state, with no classes at all,
+ * is the 3D view with its sections and schedule.
  *
  * Imported by NewHomeDrafting.astro; global, since its elements live in
  * three components.
  */
-
-[data-building-scene] {
-  /* The site plan's dimensions switch off, then the plan turns and tilts
-     into the 3D view; the storeys follow (BuildingDrawing.astro). */
-  --off-at: 2300ms;
-  --tilt-at: 2400ms;
-  --tilt-for: 1200ms;
-}
 
 /* Pending: hidden, the plan flat. */
 .is-pending :is([data-wipe], [data-drop]) {

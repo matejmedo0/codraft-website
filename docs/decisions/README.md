@@ -25,8 +25,9 @@ Each significant decision gets a short record here, so the reasoning survives ac
 | [0029](0029-english-naming-spelling-and-titles.md) | English: "Architectural Drafting", British spelling, "Croatia" in titles | Accepted | 2026-10-22 |
 | [0032](0032-guide-prices-below-the-market.md) | Guide prices on the site, about 10% below the market | Accepted | 2026-10-22 |
 | [0035](0035-a-scroll-based-site-built-for-the-wow.md) | A new direction: a scroll-based site built for the wow (removes 0014, 0015, 0022, 0023, 0025, 0028, 0030, 0033, 0034; in git history) | Accepted | 2026-10-30 |
+| [0036](0036-obsidian-copper-palette.md) | The Obsidian Copper palette | Accepted | 2026-10-31 |
 
-Next number: **0036**.
+Next number: **0037**.
 
 ## How to add one
 

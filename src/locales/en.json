@@ -204,5 +204,9 @@
   "build.ai.setup": "Building the assistant",
   "services.perSheet": "per sheet",
   "services.terms": "Guide figures, excl. VAT",
-  "services.startingPrice": "Starting price"
+  "services.startingPrice": "Starting price",
+  "menu.open": "Open menu",
+  "menu.close": "Close menu",
+  "menu.title": "This is Codraft",
+  "menu.cta": "Start a project"
 }

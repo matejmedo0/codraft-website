@@ -1,14 +1,13 @@
 ---
 /**
  * Home (`/`, `/en`): rebuilt from scratch, one instruction at a time
- * (ADR 0035). Until then it holds a full-screen hero on silk waves, with
- * the headline there for screen readers and search only. The old Home is
- * in archive/old-home/.
+ * (ADR 0035). Until then it holds the hero, "from draft to product"
+ * (home/HomeHero.astro). The old Home is in archive/old-home/.
  */
-import SilkWaves from "../components/ui/SilkWaves.astro";
 import type { Locale } from "../config/site.ts";
 import { t } from "../features/i18n/ui.ts";
 import { jsonLdText, organization } from "../features/seo/structured-data.ts";
+import HomeHero from "./home/HomeHero.astro";
 
 interface Props {
   locale: Locale;
@@ -24,18 +23,5 @@ const structuredData = jsonLdText(
 );
 ---
 
-<section class="hero">
-  <SilkWaves />
-  <h1 class="visually-hidden">
-    {t(locale, "home.hero.titleLine1")} {t(locale, "home.hero.titleLine2")}
-  </h1>
-</section>
+<HomeHero locale={locale} />
 <script type="application/ld+json" is:inline set:html={structuredData} />
-<style>
-  /* Empty for now and one screen tall. svh, so it doesn't jump when the
-     mobile toolbar hides. */
-  .hero {
-    position: relative;
-    min-height: 100svh;
-  }
-</style>

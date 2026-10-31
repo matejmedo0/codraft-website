@@ -92,20 +92,23 @@ void main() {
   vec2 p = (uv + toPointer * near * 0.15) * u_scale + u_offset;
   for (int i = 1; i < u_iterations; i++) {
     float n = float(i);
-    float k = (0.75 + 0.45 * (n - 1.0)) * u_curve;
+    float k = (0.75 + 0.6 * (n - 1.0)) * u_curve;
     p.x += u_distortion * 0.6 / n * sin(k * p.y + u_time + 0.3 * n);
     p.y += u_distortion * 0.4 / n * sin(k * p.x + u_time + 0.3 * n + 1.6);
   }
 
-  // Diagonal bands, clipped into a core and a ground. The threshold drifts,
-  // so a sheet widens and thins along its length.
+  // Diagonal bands, clipped into a core and a ground; the second harmonic
+  // makes one edge crisp and the other soft, like a lit fold. The threshold
+  // drifts, so a sheet widens and thins along its length.
   float phase = u_frequency * 2.2 * (p.x + 0.35 * p.y);
-  float body = 1.12 * sin(phase) + 0.2 * sin(3.0 * phase + 0.8);
-  float threshold = -0.25 + 0.22 * sin(0.9 * p.y - 0.6 * p.x + 0.7 * u_time);
+  float body = 1.45 * sin(phase) + 0.28 * sin(2.0 * phase + 0.5);
+  float threshold = -0.38 + 0.28 * sin(0.9 * p.y - 0.6 * p.x + 0.7 * u_time);
   float light = clamp(threshold + u_contrast * body, 0.0, 1.0);
-  // Sheen: faint folds along the bands, then a dim haze around them.
-  light *= 1.3 * (0.82 + 0.1 * sin(2.7 * phase + 1.3) + 0.08 * sin(6.3 * phase + 2.1));
-  light += 0.12 * pow(0.5 + 0.5 * sin(phase), 3.0);
+  // Sheen: folds along the bands, thin dark gaps between the threads, then
+  // a dim haze around them.
+  light *= 1.3 * (0.76 + 0.14 * sin(2.7 * phase + 1.3) + 0.1 * sin(6.3 * phase + 2.1) + 0.06 * sin(11.0 * phase + 0.4));
+  light *= 1.0 - 0.22 * pow(0.5 + 0.5 * sin(9.0 * phase + 0.7), 6.0);
+  light += 0.06 * pow(0.5 + 0.5 * sin(phase), 3.0);
   light *= u_brightness * (1.0 + 0.25 * near);
 
   outColor = vec4(gradient(light) * u_opacity, u_opacity);

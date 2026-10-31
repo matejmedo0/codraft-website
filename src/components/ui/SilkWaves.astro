@@ -3,8 +3,8 @@
  * Silk waves: flowing ribbons like draped silk, drawn by a WebGL2 shader
  * (silk-waves.ts) on a canvas that fills its positioned parent. Our own
  * take on React Bits Pro's Silk Waves, with the same props and defaults.
- * Without `colors` the ramp comes from the palette (tokens.css), from
- * obsidian through petrol to the technical teal. Around the pointer the
+ * Without `colors` the ramp is --silk-ramp (tokens.css), from obsidian
+ * through deep petrols to a pale teal. Around the pointer the
  * silk bends a little and catches more light. Without WebGL2 the canvas
  * stays empty and the parent's surface shows.
  */
@@ -79,56 +79,16 @@ const options = JSON.stringify({
 
 <script>
   import { gsap } from "../../lib/scroll";
-  import {
-    createSilkWaves,
-    hexToRgb,
-    type Rgb,
-    type SilkOptions,
-  } from "./silk-waves";
+  import { createSilkWaves, hexToRgb, type SilkOptions } from "./silk-waves";
 
   type Data = Omit<SilkOptions, "colors"> & { colors?: string[] };
 
-  function mix(a: Rgb, b: Rgb, amount: number): Rgb {
-    return [
-      a[0] + (b[0] - a[0]) * amount,
-      a[1] + (b[1] - a[1]) * amount,
-      a[2] + (b[2] - a[2]) * amount,
-    ];
-  }
-
-  /** The palette's ramp: obsidian, the petrols, then up to the teal. */
-  function paletteRamp(): Rgb[] {
-    const style = getComputedStyle(document.documentElement);
-    const [obsidian, petrol, raised, teal, bone] = [
-      "obsidian",
-      "petrol",
-      "petrol-raised",
-      "teal",
-      "bone",
-    ].map((name) => hexToRgb(style.getPropertyValue(`--color-${name}`))) as [
-      Rgb,
-      Rgb,
-      Rgb,
-      Rgb,
-      Rgb,
-    ];
-    return [
-      obsidian,
-      petrol,
-      raised,
-      mix(raised, teal, 0.35),
-      mix(raised, teal, 0.6),
-      mix(raised, teal, 0.8),
-      teal,
-      mix(teal, bone, 0.15),
-    ];
-  }
-
   function start(canvas: HTMLCanvasElement): void {
     const data = JSON.parse(canvas.dataset.silkWaves ?? "{}") as Data;
+    const ramp = getComputedStyle(canvas).getPropertyValue("--silk-ramp");
     const render = createSilkWaves(canvas, {
       ...data,
-      colors: data.colors?.map(hexToRgb) ?? paletteRamp(),
+      colors: (data.colors ?? ramp.split(",")).map(hexToRgb),
     });
     if (!render) return;
 

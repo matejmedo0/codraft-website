@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 
-import archivoCore from "../assets/fonts/archivo-core.woff2?url";
 import { type Locale, OG_LOCALES, SITE_NAME } from "../config/site.ts";
 import type { PageId } from "../features/i18n/route-map.ts";
 import { alternatesFor, otherLocale, urlFor } from "../features/i18n/urls.ts";
@@ -32,7 +31,7 @@ const { locale, title, description, page } = Astro.props;
     )}
     <link
       rel="preload"
-      href={archivoCore}
+      href="/fonts/ClashDisplay-Variable.woff2"
       as="font"
       type="font/woff2"
       crossorigin

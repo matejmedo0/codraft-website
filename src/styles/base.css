@@ -9,6 +9,9 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* The site is dark (ADR 0036), so the browser's own parts, scrollbars
+       and form controls, are dark too. */
+    color-scheme: dark;
     background: var(--surface);
     color: var(--ink-muted);
   }

@@ -7,8 +7,47 @@ import { collectErrors } from "./helpers.ts";
 /** Below 64rem the navigation folds behind the menu button. */
 const DESKTOP_WIDTH = 1024;
 
-/** Home is bare for now (ADR 0035): the chrome is checked on Services. */
+/** Home has the new design's chrome (ADR 0035); the old one is checked on Services. */
 const CHROME_PAGE = pathFor("services", "hr");
+
+test("Home's bottom menu opens with every page, and Escape closes it", async ({
+  page,
+}) => {
+  const errors = collectErrors(page);
+  await page.goto("/");
+  const toggle = page.locator('[aria-controls="bottom-nav-panel"]');
+  const panel = page.locator("#bottom-nav-panel");
+  await expect(toggle).toHaveAccessibleName("Otvori izbornik");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(panel).toBeHidden();
+
+  await toggle.click();
+  await expect(toggle).toHaveAccessibleName("Zatvori izbornik");
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  for (const target of [
+    "home",
+    ...MAIN_NAV.map((link) => link.page),
+    ...LEGAL_NAV.map((link) => link.page),
+  ] as const) {
+    await expect(
+      panel.locator(`a[href="${pathFor(target, "hr")}"]`).first(),
+    ).toBeVisible();
+  }
+  await expect(panel.locator('a[hreflang="en"]')).toHaveAttribute(
+    "href",
+    "/en",
+  );
+  // The call to action is Contact; the free audit is asked for on the page.
+  await expect(
+    panel.locator(`a[href="${pathFor("audit", "hr")}"]`),
+  ).toHaveCount(0);
+
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(toggle).toBeFocused();
+  await expect(panel).toBeHidden();
+  expect(errors).toEqual([]);
+});
 
 function isNarrow(page: Page): boolean {
   return (page.viewportSize()?.width ?? DESKTOP_WIDTH) < DESKTOP_WIDTH;

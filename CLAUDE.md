@@ -13,7 +13,7 @@ The website of Codraft, a small studio that plans, builds and looks after websit
 
 ## Direction
 
-A new, scroll-based look built for the wow ([ADR 0035](docs/decisions/0035-a-scroll-based-site-built-for-the-wow.md)). Pages are rebuilt one at a time on the user's instructions, Home first; the CAD language comes back only where the user asks for it. Pages not yet rebuilt keep the old design. Looks first: the JavaScript budget, reduced motion and other optimisation wait for a later phase.
+A new, scroll-based look built for the wow ([ADR 0035](docs/decisions/0035-a-scroll-based-site-built-for-the-wow.md)). Pages are rebuilt one at a time on the user's instructions, Home first; the CAD language comes back only where the user asks for it. Pages not yet rebuilt keep the old design. Colours: the Obsidian Copper palette ([ADR 0036](docs/decisions/0036-obsidian-copper-palette.md)), as tokens in `src/styles/tokens.css`. Type: Clash Display (`src/styles/fonts.css`); its licence forbids sharing the file through a public repository, so `public/fonts/` and `Assets/codraft-fonts/` stay out of git (`.gitignore`); never commit them. Looks first: the JavaScript budget, reduced motion and other optimisation wait for a later phase.
 
 ## Languages and pages
 

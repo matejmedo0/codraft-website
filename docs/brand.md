@@ -1,6 +1,6 @@
 # Brand
 
-> **Status (2026-10-30):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses the web copies made by `scripts/brand-web-copies.mjs` (the favicon set in `public/`, the marks in `src/assets/brand/`, all without C2PA). The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png). The site's colours, type and imagery are being redesigned ([ADR 0035](decisions/0035-a-scroll-based-site-built-for-the-wow.md)); this file keeps only the marks.
+> **Status (2026-10-30):** the brand package in `Assets/codraft-brand/` is **final**. The masters are read-only; the site uses the web copies made by `scripts/brand-web-copies.mjs` (the favicon set in `public/`, the marks in `src/assets/brand/`, all without C2PA). The full package documentation is in [Assets/codraft-brand/README.md](../Assets/codraft-brand/README.md), and every mark is shown on [the overview sheet](../Assets/codraft-brand/codraft-overview-sheet.png). The site's colours, type and imagery are being redesigned ([ADR 0035](decisions/0035-a-scroll-based-site-built-for-the-wow.md)); this file keeps only the marks. The colours are the Obsidian Copper palette ([ADR 0036](decisions/0036-obsidian-copper-palette.md)); the marks in the package still have the old ones.
 
 ## The marks
 

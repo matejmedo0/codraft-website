@@ -24,6 +24,11 @@
     --color-teal: #668a90; /* technical accent */
     /* Selected text: a copper tint; the text keeps its ink (base.css). */
     --color-selection: #504033;
+    /* The silk background's eight stops (SilkWaves.astro): obsidian through
+       deepened, more saturated petrols of the teal's hue, so the edges stay
+       dark and the lit core is crisp, up to a pale teal. */
+    --silk-ramp:
+      #080d10, #0a1a20, #0c2730, #0f3542, #1a4f5c, #34707a, #668a90, #a3c0c3;
 
     /* The sheet's frame, zone rules and title block: the same rule on every
        surface. */
@@ -69,12 +74,12 @@
     );
     --drawing-fill: var(--color-obsidian);
 
-    /* Type: Archivo only (fonts.css). Headings use the semi-condensed width,
-       labels the condensed one. */
-    --font-text: "Archivo", "Archivo Fallback", system-ui, sans-serif;
-    --font-heading:
-      "Archivo", "Archivo Heading Fallback", "Archivo Fallback", system-ui,
-      sans-serif;
+    /* Type: Clash Display, with Archivo for the characters it lacks
+       (fonts.css). The width tokens were Archivo's; Clash Display has one
+       width, so they change nothing now.
+       shortcut: no metric-matched fallback, so the swap can shift text; fit one in the optimisation phase (ADR 0035). */
+    --font-text: "Clash Display", "Archivo", system-ui, sans-serif;
+    --font-heading: "Clash Display", "Archivo", system-ui, sans-serif;
     --width-text: 100%;
     --width-heading: 87.5%;
     --width-label: 75%;

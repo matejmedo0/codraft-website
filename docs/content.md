@@ -670,6 +670,17 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `footer.updated` | Zadnja izmjena | Last updated | Title block: the build date |
 | `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet |
 
+### UI strings of the new design (ADR 0035)
+
+The bottom menu of the rebuilt pages (`BottomNav.astro`). Both languages are drafts (`draft`). It also reuses `breadcrumb.home` for the Home link and the current-page label, the `nav.*` and `legal.*` labels, and the language switcher.
+
+| Key | HR `draft` | EN `draft` | Where |
+|---|---|---|---|
+| `menu.open` | Otvori izbornik | Open menu | Bottom bar's button, menu closed |
+| `menu.close` | Zatvori izbornik | Close menu | Bottom bar's button, menu open |
+| `menu.title` | Ovo je Codraft | This is Codraft | Heading of the open menu, beside the mark |
+| `menu.cta` | Pokrenimo projekt | Start a project | Button in the open menu, with an ↗ arrow; links to Contact, not the free audit ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)) |
+
 **The style page** (`/lab/style`, lab only, never shipped) describes the tokens and components in Croatian for the client. Its explanatory text is lab documentation, not site copy; its examples reuse the strings above and the prototype copy.
 
 ## 5. Editorial notes (not site copy)
@@ -723,6 +734,8 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Usluge, the /check):** The price note under stages 02 and 03 (`services.priceNote`) and the price table's labels (`services.price`, `services.priceColumn`) are replaced by one caption above every service's prices, `services.terms` ("Okvirno, bez PDV-a"), and `services.startingPrice`, after the design critique (DC-04: the VAT status next to every price; Q3: one restatement fewer of the fixed offer).
 - **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, ADR 0031). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
+- **2026-10-31 (new design, the bottom menu):** "UI strings of the new design" added under §4: the bottom menu's button, heading and call to action (`menu.open`, `menu.close`, `menu.title`, `menu.cta`), drafts. No copy block changed.
+- **2026-10-31 (new design, the bottom menu, round 2):** `menu.cta` changes from „Razgovarajmo“ / “Let's talk” to „Pokrenimo projekt“ / “Start a project”, at the team's request. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

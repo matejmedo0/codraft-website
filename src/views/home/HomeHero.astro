@@ -1,127 +1,607 @@
 ---
 /**
- * Zone A of Home in the chosen direction (ADR 0015): the headline beside a
- * drawing on graph paper that holds the mark, which plays its entrance once
- * per load (ADR 0014). On paper, like the header above it. (Batch 5 tried
- * the H1 across the whole sheet; the client kept this layout in batch 6.)
+ * Home's hero, "from draft to product" (ADR 0035): the headline comes in
+ * line by line over the silk with an empty sheet of dark glass beside it.
+ * Scrolling (the hero stays pinned for two screens) draws a website's
+ * blueprint on the glass in fine light lines, over dotted drafting
+ * paper and under a sweeping band of light; then it fills in as the
+ * finished interface while the silk steps back. Code + Draft, in one picture.
  *
- * The hero orients and doesn't sell (ADR 0017): its one button leads to the
- * services, and the drafting clients get their own path below it
- * (ADR 0018). The free audit is asked for once, in its own zone.
+ * The drawing is decorative and shows no content: bars for text, a copper
+ * pill for the button, a gradient for the image. Without JavaScript it shows
+ * finished; the `js` class (astro.config.ts) hides its parts until the
+ * scroll draws them.
  */
-import Button from "../../components/ui/Button.astro";
-import Wordmark from "../../components/ui/Wordmark.astro";
-import Zone from "../../components/ui/Zone.astro";
+import SilkWaves from "../../components/ui/SilkWaves.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
-import { pathFor } from "../../features/i18n/urls.ts";
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const CARDS = [60, 240, 420];
 ---
 
-<Zone labelledby="naslov" select={false} class="home-hero">
-  <div class="home-hero__text">
-    <h1 id="naslov">
-      <span class="home-hero__line">{t(locale, "home.hero.titleLine1")}</span>{" "}
-      <span class="home-hero__line">{t(locale, "home.hero.titleLine2")}</span>
+<section class="hero" data-hero>
+  <SilkWaves opacity={0.75} />
+  <div class="hero__stage">
+    <h1 class="hero__title" data-hero-title>
+      {t(locale, "home.hero.titleLine1")}{" "}
+      <span class="hero__title-muted">{t(locale, "home.hero.titleLine2")}</span>
     </h1>
-    <p class="home-hero__lead">{t(locale, "home.hero.lead")}</p>
-    <div class="home-hero__actions">
-      <Button href={pathFor("services", locale)}>
-        {t(locale, "home.hero.cta")}
-      </Button>
+    <div class="hero__device">
+      <div class="hero__glass" data-hero-glass></div>
+      <svg
+        class="hero__drawing"
+        viewBox="0 0 640 440"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <linearGradient id="hero-image-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" class="hero__stop-from" />
+            <stop offset="1" class="hero__stop-to" />
+          </linearGradient>
+          <linearGradient id="hero-scan-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="hero__scan-edge" />
+            <stop offset="0.5" class="hero__scan-light" />
+            <stop offset="1" class="hero__scan-edge" />
+          </linearGradient>
+          <pattern
+            id="hero-dots"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="10" cy="10" r="0.9" />
+          </pattern>
+          <clipPath id="hero-panel-clip">
+            <rect x="20" y="60" width="600" height="360" />
+          </clipPath>
+        </defs>
+
+        <!-- Drafting paper, and the light that sweeps it while the pen draws. -->
+        <rect
+          class="hero__grid"
+          x="20"
+          y="60"
+          width="600"
+          height="360"
+          data-hero-grid
+        />
+        <g clip-path="url(#hero-panel-clip)">
+          <rect
+            class="hero__scan"
+            x="20"
+            y="0"
+            width="600"
+            height="90"
+            data-hero-scan
+          />
+        </g>
+
+        <!-- The blueprint, in drawing order. -->
+        <g class="hero__blueprint" data-hero-blueprint>
+          <rect
+            class="hero__frame"
+            x="20"
+            y="20"
+            width="600"
+            height="400"
+            rx="14"
+            pathLength="1"
+            data-draw
+          />
+          <path d="M20 60H620" pathLength="1" data-draw />
+          <path
+            d="M41 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0M59 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0M77 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="110"
+            y="33"
+            width="64"
+            height="14"
+            rx="3"
+            pathLength="1"
+            data-draw
+          />
+          <path
+            d="M430 40H462M478 40H510M526 40H558"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="60"
+            y="104"
+            width="290"
+            height="30"
+            rx="4"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="60"
+            y="144"
+            width="210"
+            height="30"
+            rx="4"
+            pathLength="1"
+            data-draw
+          />
+          <path
+            class="hero__fine"
+            d="M60 196H320M60 212H290M60 228H240"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="60"
+            y="252"
+            width="128"
+            height="36"
+            rx="18"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="390"
+            y="104"
+            width="190"
+            height="184"
+            rx="12"
+            pathLength="1"
+            data-draw
+          />
+          {CARDS.map((x) => (
+            <rect
+              x={x}
+              y="318"
+              width="160"
+              height="78"
+              rx="10"
+              pathLength="1"
+              data-draw
+            />
+          ))}
+        </g>
+
+        <!-- The finished interface, filled in over the blueprint. -->
+        <g class="hero__product">
+          <rect
+            class="hero__panel"
+            x="20"
+            y="20"
+            width="600"
+            height="400"
+            rx="14"
+            data-fill
+          />
+          <rect
+            class="hero__ink"
+            x="110"
+            y="33"
+            width="64"
+            height="14"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="430"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="478"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="526"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__ink"
+            x="60"
+            y="104"
+            width="290"
+            height="30"
+            rx="4"
+            data-fill
+          />
+          <rect
+            class="hero__ink"
+            x="60"
+            y="144"
+            width="210"
+            height="30"
+            rx="4"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="60"
+            y="193"
+            width="260"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="60"
+            y="209"
+            width="230"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="60"
+            y="225"
+            width="180"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__cta"
+            x="60"
+            y="252"
+            width="128"
+            height="36"
+            rx="18"
+            data-fill
+          />
+          <rect
+            class="hero__cta-ink"
+            x="84"
+            y="267"
+            width="80"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__image"
+            x="390"
+            y="104"
+            width="190"
+            height="184"
+            rx="12"
+            data-fill
+          />
+          {CARDS.map((x) => (
+            <>
+              <rect
+                class="hero__card"
+                x={x}
+                y="318"
+                width="160"
+                height="78"
+                rx="10"
+                data-fill
+              />
+              <rect
+                class="hero__ink"
+                x={x + 16}
+                y="336"
+                width="60"
+                height="6"
+                rx="3"
+                data-fill
+              />
+              <rect
+                class="hero__muted"
+                x={x + 16}
+                y="352"
+                width="110"
+                height="5"
+                rx="2.5"
+                data-fill
+              />
+              <rect
+                class="hero__muted"
+                x={x + 16}
+                y="364"
+                width="84"
+                height="5"
+                rx="2.5"
+                data-fill
+              />
+            </>
+          ))}
+        </g>
+      </svg>
     </div>
-    <p class="home-hero__drafting">
-      <a href={pathFor("drafting", locale)}>
-        {t(locale, "home.hero.drafting")}
-      </a>
-    </p>
   </div>
-  <div class="home-hero__drawing graph-paper">
-    <Wordmark entrance />
-  </div>
-</Zone>
+</section>
+
+<script>
+  import { gsap, SplitText } from "../../lib/scroll";
+
+  function setUp(hero: HTMLElement): void {
+    const title = hero.querySelector<HTMLElement>("[data-hero-title]");
+    const canvas = hero.querySelector("canvas");
+    const blueprint = hero.querySelector("[data-hero-blueprint]");
+    const glass = hero.querySelector("[data-hero-glass]");
+    const grid = hero.querySelector("[data-hero-grid]");
+    const scan = hero.querySelector("[data-hero-scan]");
+    if (!title || !blueprint || !glass || !grid || !scan) return;
+
+    // The headline, line by line from under its mask, once the font is in.
+    SplitText.create(title, {
+      type: "lines",
+      mask: "lines",
+      autoSplit: true,
+      onSplit: (split) => {
+        gsap.set(title, { visibility: "visible" });
+        return gsap.from(split.lines, {
+          yPercent: 110,
+          duration: 1.1,
+          ease: "expo.out",
+          stagger: 0.12,
+          delay: 0.15,
+        });
+      },
+    });
+
+    // The empty glass sheet rises in with the headline, ready for the pen.
+    gsap.fromTo(
+      glass,
+      { opacity: 0, y: 24, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "expo.out",
+        delay: 0.35,
+      },
+    );
+
+    // The scroll: draw, then fill, while the silk steps back.
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "+=200%",
+          pin: true,
+          scrub: 0.8,
+        },
+      })
+      .fromTo(
+        hero.querySelectorAll("[data-draw]"),
+        { strokeDashoffset: 1 },
+        { strokeDashoffset: 0, duration: 1.2, stagger: 0.18, ease: "none" },
+        0,
+      )
+      // The paper's dots, and a band of light that sweeps down as the pen draws.
+      .fromTo(grid, { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0)
+      .fromTo(
+        scan,
+        { attr: { y: -30 } },
+        { attr: { y: 420 }, duration: 4.2, ease: "none" },
+        0,
+      )
+      .fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0)
+      .to(scan, { opacity: 0, duration: 0.4 }, 3.8)
+      .to(blueprint, { opacity: 0.3, duration: 1.2 }, 4.4)
+      .to(grid, { opacity: 0.25, duration: 1.2 }, 4.4)
+      .fromTo(
+        hero.querySelectorAll("[data-fill]"),
+        { opacity: 0, scaleX: 0.6, transformOrigin: "0% 50%" },
+        {
+          opacity: 1,
+          scaleX: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        },
+        4.4,
+      )
+      .to(canvas, { opacity: 0.35, duration: 3 }, 4.4)
+      // A beat on the finished picture before the pin lets go.
+      .to({}, { duration: 1 });
+  }
+
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  if (hero) setUp(hero);
+</script>
 
 <style>
-  .home-hero {
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  /* Clear of the top bar and the bottom menu, which lie over the hero. */
+  .hero__stage {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: var(--space-7);
-    padding-block: var(--space-7) var(--space-8);
-  }
-
-  /* The H1's two lines, as in direction A (the client's review, batch 2).
-     The first line is about 14 em long. From a 54rem column (a screen of
-     about 1660 px) each half is a line of its own, and the size eases just
-     enough for the first to fit; a narrower column wraps the sentence
-     evenly at full size. */
-  .home-hero__text {
-    container-type: inline-size;
-  }
-
-  @container (min-width: 54rem) {
-    .home-hero h1 {
-      font-size: min(var(--step-display), 100cqi / 14.2);
-    }
-
-    .home-hero__line {
-      display: block;
-    }
-  }
-
-  .home-hero__lead {
-    max-width: var(--measure-lead);
-    margin-top: var(--space-5);
-    font-size: var(--step-lead);
-    line-height: var(--leading-lead);
-  }
-
-  .home-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-6);
-  }
-
-  .home-hero__drafting {
-    margin-top: var(--space-5);
-  }
-
-  .home-hero__drafting a {
-    color: var(--ink);
-    font-weight: var(--weight-medium);
-  }
-
-  /* On narrow screens the drawing is a low strip and the mark stays mid
-     size (the client didn't want a large mark in front). */
-  .home-hero__drawing {
-    display: grid;
-    place-items: center;
-    aspect-ratio: 21 / 9;
-    padding: 6% 25%;
-    color: var(--ink);
+    align-content: center;
+    max-width: 80rem;
+    min-height: 100svh;
+    margin-inline: auto;
+    padding: calc(var(--space-10) + var(--space-2)) var(--pad)
+      calc(var(--space-10) + var(--space-5));
   }
 
   @media (min-width: 64rem) {
-    .home-hero {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: var(--gap);
+    .hero__stage {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-9);
       align-items: center;
-      /* 72 px above: the client's reference screenshot (review #19). */
-      padding-block: 4.5rem var(--space-10);
     }
+  }
 
-    .home-hero__text {
-      grid-column: 1 / span 7;
-    }
+  /* Clash Display is wide, with a narrow word space: a step below the
+     display size, nearly no negative tracking and a wider space keep the
+     headline to about four lines and its words apart. */
+  .hero__title {
+    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.75rem);
+    font-weight: var(--weight-strong);
+    letter-spacing: -0.01em;
+    word-spacing: 0.08em;
+  }
 
-    .home-hero__drawing {
-      grid-column: 8 / -1;
-      aspect-ratio: 4 / 3;
-      padding: 14%;
-    }
+  .hero__title-muted {
+    color: var(--ink-muted);
+  }
+
+  :global(.js) .hero__title {
+    visibility: hidden;
+  }
+
+  /* The drawing keeps its 640 × 440 proportions and at most 62 % of the
+     screen's height. */
+  .hero__device {
+    position: relative;
+    justify-self: center;
+    width: 100%;
+    max-width: calc(62svh * 640 / 440);
+    aspect-ratio: 640 / 440;
+  }
+
+  .hero__drawing {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* The sheet the pen draws on: dark glass over the silk, like the bottom
+     menu, placed on the drawing's frame (20, 20, 600 × 400 of 640 × 440). */
+  .hero__glass {
+    position: absolute;
+    top: 4.5455%;
+    left: 3.125%;
+    width: 93.75%;
+    height: 90.9091%;
+    border: var(--rule) solid var(--line);
+    border-radius: 2.1875% / 3.1818%;
+    background: color-mix(in srgb, var(--surface-sunk) 72%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent),
+      0 2.5rem 5rem -2rem color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(18px) saturate(1.2);
+  }
+
+  /* Fine light lines, like a white pencil on dark glass: no glow, so the
+     drawing reads as drafting, not as a screen. */
+  .hero__blueprint {
+    fill: none;
+    stroke: var(--ink);
+    stroke-opacity: 0.6;
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hero__frame {
+    stroke-opacity: 0.75;
+    stroke-width: 1.5;
+  }
+
+  .hero__fine {
+    stroke-opacity: 0.4;
+    stroke-width: 1;
+  }
+
+  .hero__grid {
+    fill: url("#hero-dots");
+  }
+
+  .hero__drawing pattern circle {
+    fill: var(--ink-muted);
+    fill-opacity: 0.25;
+  }
+
+  /* Only ever seen while the scroll moves it. */
+  .hero__scan {
+    opacity: 0;
+    fill: url("#hero-scan-fill");
+  }
+
+  .hero__scan-edge {
+    stop-color: var(--line-strong);
+    stop-opacity: 0;
+  }
+
+  .hero__scan-light {
+    stop-color: var(--line-strong);
+    stop-opacity: 0.16;
+  }
+
+  [data-draw] {
+    stroke-dasharray: 1;
+  }
+
+  :global(.js) [data-draw] {
+    stroke-dashoffset: 1;
+  }
+
+  :global(.js) :is(.hero__glass, .hero__grid, .hero__scan, [data-fill]) {
+    opacity: 0;
+  }
+
+  .hero__panel {
+    fill: color-mix(in srgb, var(--surface-sunk) 85%, transparent);
+  }
+
+  .hero__card {
+    fill: color-mix(in srgb, var(--surface-sunk) 60%, var(--line));
+  }
+
+  .hero__ink {
+    fill: var(--ink);
+  }
+
+  /* fill-opacity, since GSAP animates the opacity of every filled part. */
+  .hero__muted {
+    fill: var(--ink-muted);
+    fill-opacity: 0.6;
+  }
+
+  .hero__cta {
+    fill: var(--accent);
+  }
+
+  .hero__cta-ink {
+    fill: var(--surface);
+  }
+
+  .hero__image {
+    fill: url("#hero-image-fill");
+  }
+
+  .hero__stop-from {
+    stop-color: var(--surface-sunk);
+  }
+
+  .hero__stop-to {
+    stop-color: var(--line-strong);
   }
 </style>

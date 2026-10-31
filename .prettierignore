@@ -3,6 +3,7 @@
 # Documentation, plan snapshots and the brand masters are never reformatted.
 docs/
 Assets/
+archive/
 /*.md
 
 # Written by npm.

@@ -204,5 +204,9 @@
   "build.ai.setup": "Izrada asistenta",
   "services.perSheet": "po listu",
   "services.terms": "Okvirno, bez PDV-a",
-  "services.startingPrice": "Početna cijena"
+  "services.startingPrice": "Početna cijena",
+  "menu.open": "Otvori izbornik",
+  "menu.close": "Zatvori izbornik",
+  "menu.title": "Ovo je Codraft",
+  "menu.cta": "Pokrenimo projekt"
 }

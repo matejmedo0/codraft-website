@@ -1,0 +1,41 @@
+---
+/**
+ * Home (`/`, `/en`): the design the client approved, in both languages, its zones lettered down the sheet.
+ * Its argument, a claim and its proof per zone, is in
+ * docs/information-architecture.md (Home); its copy, with each line's key,
+ * in docs/content.md ("Home, phase 3"). The AI assistant teaser joins
+ * later.
+ */
+import type { Locale } from "../config/site.ts";
+import { t } from "../features/i18n/ui.ts";
+import { jsonLdText, organization } from "../features/seo/structured-data.ts";
+import HomeAudit from "./home/HomeAudit.astro";
+import HomeClosing from "./home/HomeClosing.astro";
+import HomeDrafting from "./home/HomeDrafting.astro";
+import HomeHero from "./home/HomeHero.astro";
+import HomePrinciples from "./home/HomePrinciples.astro";
+import HomeServices from "./home/HomeServices.astro";
+import HomeTeam from "./home/HomeTeam.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const structuredData = jsonLdText(
+  organization({
+    locale,
+    description: t(locale, "meta.home.description"),
+    country: t(locale, "meta.country"),
+  }),
+);
+---
+
+<HomeHero locale={locale} />
+<HomeServices locale={locale} />
+<HomeAudit locale={locale} />
+<HomeDrafting locale={locale} />
+<HomePrinciples locale={locale} />
+<HomeTeam locale={locale} />
+<HomeClosing locale={locale} />
+<script type="application/ld+json" is:inline set:html={structuredData} />

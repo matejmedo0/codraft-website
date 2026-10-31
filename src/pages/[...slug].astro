@@ -15,6 +15,8 @@ interface PageEntry {
   view: typeof HomeView | typeof ServicesView;
   title: UiKey;
   description: UiKey;
+  /** A rebuilt page, without the old sheet, header and footer (ADR 0035). */
+  bare?: true;
 }
 
 export const getStaticPaths = (() =>
@@ -25,6 +27,7 @@ export const getStaticPaths = (() =>
       view: HomeView,
       title: "meta.home.title",
       description: "meta.home.description",
+      bare: true,
     },
     services: {
       view: ServicesView,
@@ -36,7 +39,7 @@ export const getStaticPaths = (() =>
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page, locale, view: entry } = Astro.props;
-const { view: View, title, description } = entry;
+const { view: View, title, description, bare } = entry;
 ---
 
 <SiteLayout
@@ -44,6 +47,7 @@ const { view: View, title, description } = entry;
   page={page}
   title={t(locale, title)}
   description={t(locale, description)}
+  bare={bare}
 >
   <View locale={locale} />
 </SiteLayout>

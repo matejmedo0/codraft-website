@@ -1,6 +1,6 @@
 # Architecture
 
-> **Status (2026-10-19):** the phase 1 scaffold and the phase 2 design system are in place. The stack and services are decided in ADR 0008–0013 and the design direction in ADR 0015; this file describes the real structure. Update it whenever the structure changes.
+> **Status (2026-10-19):** the phase 1 scaffold and the phase 2 design system are in place. The stack and services are decided in ADR 0008–0013; the old design direction (ADR 0015) is being replaced by a scroll-based one ([ADR 0035](decisions/0035-a-scroll-based-site-built-for-the-wow.md)), page by page. This file describes the real structure. Update it whenever the structure changes.
 
 ## Stack
 
@@ -46,13 +46,13 @@ codraft-website/
 │   ├── locales/           UI strings: hr.json and en.json
 │   ├── pages/             [...slug].astro (every route-map page), 404.astro, en/404.astro, api/health.ts
 │   ├── styles/            global.css with tokens.css, motion.css, fonts.css, base.css, utilities.css; motion.ts
-│   └── views/             One view per page: HomeView (its zones and the floor plan in home/), NotFoundView
+│   └── views/             One view per page: HomeView (being rebuilt, ADR 0035), ServicesView, NotFoundView
 ├── tests/e2e/             Playwright tests
 ├── astro.config.ts · tsconfig.json · eslint.config.js · prettier.config.mjs · vitest.config.ts · playwright.config.ts
 └── CLAUDE.md · README.md
 ```
 
-**The design system (phase 2, [ADR 0015](decisions/0015-design-direction-model-i-list.md)).**
+**The design system (phase 2; being replaced page by page, ADR 0035).**
 - **Tokens** are CSS custom properties in `src/styles/`, all inside cascade layers (`reset`, `tokens`, `base`, `utilities`), so unlayered component styles always win. Components use role tokens (`--ink`, `--surface`, `--line`, …), never the palette; `.surface-navy` switches the roles to the navy surface. `tokens.test.ts` checks the contrast of every text pair, and `motion.test.ts` keeps `motion.ts` (for React islands) in step with `motion.css`.
 - **Fonts:** Archivo only, split by `unicode-range` into a core file (preloaded by BaseLayout) and an extended file, with size-adjusted Arial fallbacks.
 - **Components:** `src/components/ui/` holds the design system, without features; `src/components/site/` holds the chrome that reads the route map and the locales. ESLint keeps `site/` from importing views, layouts and pages. Scripts are small modules (`draw.ts`, `menu.ts`); without JavaScript, or with reduced motion, every part shows its final state, and the `js` class (a head-inline script from the `codraft:js-class` integration, hashed for the CSP) lets components style the no-script fallback.
@@ -114,12 +114,12 @@ codraft-website/
 
 ### Styling and motion
 
-- Animate only `transform` and `opacity` (`clip-path` sparingly). Never animate layout properties. Respect `prefers-reduced-motion` ([motion.md](motion.md)).
+- Motion runs on GSAP (ScrollTrigger, SplitText) and Lenis from `src/lib/scroll.ts` ([motion.md](motion.md)). Animate `transform`, `opacity` and `clip-path`, never layout properties.
 
 ### Performance
 
 - **Targets:** LCP < 2.5 s, INP < 200 ms, CLS < 0.1.
-- **JavaScript budget** (gzip, all JS a page loads, [ADR 0008](decisions/0008-stack-astro-with-react-islands.md)): 15 KB for content pages, 100 KB for pages with a form or the layer viewer, 120 KB for the AI assistants page. `npm run check:budget` enforces it on every build in CI. For scale: one minimal React island costs about 70 KB.
+- **JavaScript budget** (gzip, all JS a page loads, [ADR 0008](decisions/0008-stack-astro-with-react-islands.md)): 15 KB for content pages, 100 KB for pages with a form or the layer viewer, 120 KB for the AI assistants page. Paused by ADR 0035 until the optimisation phase: the check is out of `verify` and CI, and `npm run check:budget` runs it on demand. For scale: one minimal React island costs about 70 KB; GSAP, ScrollTrigger, SplitText and Lenis about 52 KB.
 - **Images:**
   - explicit `width` and `height`
   - AVIF or WebP
@@ -130,7 +130,7 @@ codraft-website/
 
 ### Accessibility
 
-- Target WCAG 2.2 AA. Use semantic HTML first, keyboard support, visible focus (grips plus an outline) and labelled forms.
+- Target WCAG 2.2 AA. Use semantic HTML first, keyboard support, visible focus and labelled forms.
 - ESLint runs the jsx-a11y rules on `.astro` and `.tsx`; the E2E tests fail on serious or critical axe findings.
 
 ## Quality gates
@@ -142,10 +142,10 @@ codraft-website/
 | Types | `astro check` (the build doesn't type-check) | `npm run typecheck`, CI |
 | Unit tests | Vitest 5 on Astro's Vite config; tests sit next to the code as `*.test.ts` | `npm run test`, CI |
 | E2E | Playwright on the production build at 375, 768 and 1440 px: status, `lang`, H1, canonical, hreflang, CSP, console errors, axe | `npm run test:e2e`, CI (Node 24) |
-| JavaScript budget | `scripts/check-js-budget.mjs` over `dist/client` | `npm run check:budget`, CI |
+| JavaScript budget | `scripts/check-js-budget.mjs` over `dist/client` | On demand, `npm run check:budget` (out of `verify` and CI until the optimisation phase, ADR 0035) |
 | Copy guardrails | `scripts/check-guardrails.mjs`: the [compliance.md](compliance.md#copy-guardrails) regex over `src/`, Unicode-aware | `npm run check:guardrails`, CI |
 
-`npm run verify` runs every gate except E2E, in the CI order. CI runs it on Node 24 and Node 26, and E2E on Node 24. Dependabot proposes npm and Actions updates every Monday.
+`npm run verify` runs every gate except E2E and the JavaScript budget, in the CI order. CI runs it on Node 24 and Node 26, and E2E on Node 24. Dependabot proposes npm and Actions updates every Monday.
 
 ## Integrations
 

@@ -42,6 +42,9 @@ export default defineConfig({
   // React only for islands: forms, the CAD layer viewer, the chatbot.
   integrations: [react(), jsClass()],
 
+  // The dev toolbar sits bottom centre, over the bottom menu's button.
+  devToolbar: { enabled: false },
+
   // URLs without a trailing slash: /usluge, /en/services. The directory
   // format keeps /en working on the Node server ('file' would write en.html
   // next to the en/ folder). Astro.url keeps a trailing slash in directory

@@ -7,6 +7,48 @@ import { collectErrors } from "./helpers.ts";
 /** Below 64rem the navigation folds behind the menu button. */
 const DESKTOP_WIDTH = 1024;
 
+/** Home has the new design's chrome (ADR 0035); the old one is checked on Services. */
+const CHROME_PAGE = pathFor("services", "hr");
+
+test("Home's bottom menu opens with every page, and Escape closes it", async ({
+  page,
+}) => {
+  const errors = collectErrors(page);
+  await page.goto("/");
+  const toggle = page.locator('[aria-controls="bottom-nav-panel"]');
+  const panel = page.locator("#bottom-nav-panel");
+  await expect(toggle).toHaveAccessibleName("Otvori izbornik");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(panel).toBeHidden();
+
+  await toggle.click();
+  await expect(toggle).toHaveAccessibleName("Zatvori izbornik");
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  for (const target of [
+    "home",
+    ...MAIN_NAV.map((link) => link.page),
+    ...LEGAL_NAV.map((link) => link.page),
+  ] as const) {
+    await expect(
+      panel.locator(`a[href="${pathFor(target, "hr")}"]`).first(),
+    ).toBeVisible();
+  }
+  await expect(panel.locator('a[hreflang="en"]')).toHaveAttribute(
+    "href",
+    "/en",
+  );
+  // The call to action is Contact; the free audit is asked for on the page.
+  await expect(
+    panel.locator(`a[href="${pathFor("audit", "hr")}"]`),
+  ).toHaveCount(0);
+
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(toggle).toBeFocused();
+  await expect(panel).toBeHidden();
+  expect(errors).toEqual([]);
+});
+
 function isNarrow(page: Page): boolean {
   return (page.viewportSize()?.width ?? DESKTOP_WIDTH) < DESKTOP_WIDTH;
 }
@@ -27,7 +69,7 @@ test("the skip link comes first and leads to the main content", async ({
 test("the header links every main page and asks for nothing", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto(CHROME_PAGE);
   const nav = page.getByRole("navigation", { name: "Glavna navigacija" });
   if (isNarrow(page)) {
     await page.getByRole("button", { name: "Izbornik" }).click();
@@ -42,16 +84,17 @@ test("the header links every main page and asks for nothing", async ({
   await expect(
     page.locator(`header a[href="${pathFor("audit", "hr")}"]`),
   ).toHaveCount(0);
-  await expect(
-    page.getByRole("link", { name: "Codraft, početna stranica" }),
-  ).toHaveAttribute("aria-current", "page");
+  await expect(nav.locator(`a[href="${CHROME_PAGE}"]`)).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
 });
 
 test("the menu opens, and Escape closes it and returns focus", async ({
   page,
 }) => {
   const errors = collectErrors(page);
-  await page.goto("/");
+  await page.goto(CHROME_PAGE);
   const toggle = page.getByRole("button", { name: "Izbornik" });
   const nav = page.getByRole("navigation", { name: "Glavna navigacija" });
 
@@ -81,7 +124,7 @@ test.describe("without JavaScript", () => {
   test("the navigation stays open and the menu button hidden", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(CHROME_PAGE);
 
     await expect(
       page.getByRole("navigation", { name: "Glavna navigacija" }),
@@ -91,8 +134,8 @@ test.describe("without JavaScript", () => {
 });
 
 for (const { from, to, lang } of [
-  { from: "/", to: "/en", lang: "en" },
-  { from: "/en", to: "/", lang: "hr" },
+  { from: "/usluge", to: "/en/services", lang: "en" },
+  { from: "/en/services", to: "/usluge", lang: "hr" },
   { from: "/nepostojeca-stranica", to: "/en", lang: "en" },
 ]) {
   test(`the language switcher on ${from} leads to ${to}`, async ({ page }) => {
@@ -113,7 +156,7 @@ for (const locale of ["hr", "en"] as const) {
   test(`the title block links the legal pages (${locale})`, async ({
     page,
   }) => {
-    await page.goto(pathFor("home", locale));
+    await page.goto(pathFor("services", locale));
     const footer = page.getByRole("contentinfo");
 
     for (const { page: target } of LEGAL_NAV) {
@@ -127,18 +170,6 @@ for (const locale of ["hr", "en"] as const) {
     );
   });
 }
-
-test("with reduced motion nothing waits to be drawn", async ({ browser }) => {
-  const context = await browser.newContext({ reducedMotion: "reduce" });
-  const page = await context.newPage();
-  await page.goto("/");
-  await page.evaluate(() => {
-    window.scrollTo(0, document.documentElement.scrollHeight);
-  });
-
-  await expect(page.locator(".is-pending")).toHaveCount(0);
-  await context.close();
-});
 
 test("the favicon set is served without C2PA metadata", async ({ request }) => {
   for (const path of [

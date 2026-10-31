@@ -25,12 +25,12 @@ No environment variables yet; `.env.example` documents them when they arrive.
 | `npm run dev` | Dev server. The Content-Security-Policy is active only in the build. |
 | `npm run build` | Production build: static pages in `dist/client`, the Node server in `dist/server/entry.mjs` |
 | `npm run preview` | Runs the built Node server |
-| `npm run verify` | Lint, format check, typecheck, unit tests, build, JavaScript budget and copy guardrails, in CI order |
+| `npm run verify` | Lint, format check, typecheck, unit tests, build and copy guardrails, in CI order |
 | `npm run test` | Unit tests (Vitest) |
 | `npm run test:e2e` | E2E tests (Playwright) on the built server at 375, 768 and 1440 px; build first and stop `npm run dev` |
 | `npm run lint` / `npm run typecheck` | ESLint / `astro check` |
 | `npm run format` / `npm run format:check` | Prettier |
-| `npm run check:budget` | JavaScript budget per built page |
+| `npm run check:budget` | JavaScript budget per built page (on demand until the optimisation phase, ADR 0035) |
 | `npm run check:guardrails` | Banned drafting terms in `src/` ([compliance.md](docs/compliance.md#copy-guardrails)) |
 | `node scripts/brand-web-copies.mjs` | Rewrites the web copies of the brand marks and favicons from `Assets/codraft-brand/` |
 

@@ -1,0 +1,50 @@
+---
+/**
+ * The new design's top bar (ADR 0035): for now only the wordmark, centred
+ * at the top and linking home. It is fixed, so it stays with Home's hero
+ * while the hero is pinned.
+ */
+import type { Locale } from "../../config/site.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import Wordmark from "../ui/Wordmark.astro";
+
+interface Props {
+  locale: Locale;
+  page?: PageId | undefined;
+}
+
+const { locale, page } = Astro.props;
+---
+
+<header class="top-bar">
+  <a
+    class="top-bar__home"
+    href={pathFor("home", locale)}
+    aria-current={page === "home" ? "page" : undefined}
+  >
+    <span class="visually-hidden">{t(locale, "header.home")}</span>
+    <Wordmark />
+  </a>
+</header>
+
+<style>
+  /* Above the hero, which comes later in the page; under the bottom menu's
+     backdrop (z-index 9). */
+  .top-bar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: var(--space-5) var(--pad);
+  }
+
+  .top-bar__home {
+    --wordmark-width: 7.25rem;
+
+    display: block;
+    color: var(--ink);
+  }
+</style>

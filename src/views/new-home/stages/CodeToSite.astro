@@ -1,17 +1,17 @@
 ---
 /**
- * The new Home's hero animation (M29 in docs/phases/3-pages.md): code
+ * Stage 02's drawing in "Što radimo" (M29, M35 in docs/phases/3-pages.md): code
  * typed into an editor, line by line, and beside it the web page that code
  * makes, built element by element as each line is finished. A drafting
  * line with its grip joins the two, and once the last line is typed the
  * finished page is selected with the brand's four grips.
  *
- * hero-code.ts times it on load: each line types at its own length
+ * code-to-site.ts times it when it comes into view: each line types at its own length
  * (`--n` characters from `--at` for `--for`), and each part of the page
  * (`data-after-line`) appears as its line ends. Without JavaScript, or
  * with reduced motion, the code and the page are complete at once.
  *
- * Decorative: the hero's text says what the studio does, so the whole
+ * Decorative: the stage's text says what the studio does, so the whole
  * stage is hidden from assistive technology. The page shown is a sample,
  * not client work.
  */
@@ -175,7 +175,7 @@ const LINES: Line[] = [
 </div>
 
 <script>
-  import "./hero-code.ts";
+  import "./code-to-site.ts";
 </script>
 
 <style>
@@ -195,7 +195,6 @@ const LINES: Line[] = [
     position: relative;
     min-width: 0;
     min-height: 0;
-    transition: min-height 1100ms cubic-bezier(0.16, 1, 0.3, 1);
     border: var(--rule) solid var(--line);
     border-radius: var(--radius);
     background: var(--panel);
@@ -376,50 +375,10 @@ const LINES: Line[] = [
     font-weight: var(--weight-medium);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .cts__editor,
-    .cts__browser {
-      transition: none;
-    }
-  }
-
-  /* The hero taken by the windows (is-big, hero-expand.ts): from 48rem
-     they grow with the stage, and from 64rem to the screen's height. */
   @media (min-width: 48rem) {
     .cts__browser {
       display: grid;
       grid-template-rows: auto 1fr;
-    }
-
-    :global(.is-big) .cts__page {
-      align-content: space-evenly;
-      padding: var(--space-6);
-      font-size: clamp(0.75rem, 1.2cqi, 1.125rem);
-    }
-
-    :global(.is-big) .cts__code {
-      --code-size: clamp(0.75rem, 1.15cqi, 1.125rem);
-
-      padding-top: var(--space-5);
-      line-height: 1.9;
-    }
-
-    :global(.is-big) .site__title {
-      font-size: clamp(1.375rem, 2.9cqi, 2.75rem);
-    }
-
-    :global(.is-big) .site__hero {
-      gap: var(--space-6);
-    }
-  }
-
-  /* Most of the screen's height (M31: a little short of all of it), only
-     where the windows sit side by side on a wide screen; a tall tablet
-     would leave them empty. */
-  @media (min-width: 64rem) {
-    :global(.is-big) .cts__editor,
-    :global(.is-big) .cts__browser {
-      min-height: 64svh;
     }
   }
 
@@ -477,7 +436,7 @@ const LINES: Line[] = [
     }
   }
 
-  /* The animation, once hero-code.ts has timed it. A line types at one
+  /* The animation, once code-to-site.ts has timed it. A line types at one
      character a step, a caret at its end while it types; each part of the
      page comes in as its line ends, flashing the accent outline as if just
      selected; the link draws as the first line starts; the grips select
@@ -524,8 +483,7 @@ const LINES: Line[] = [
   /* A clip from the right, so the line ends exactly where its text does,
      whatever the monospace's real advance. */
   /* The wordmark draws as its image appears: the lettering rises in, the
-     arc and the drafting line draw, the grip snaps in. When the windows
-     grow into the hero (is-big) it draws once more. */
+     arc and the drafting line draw, the grip snaps in. */
   .site__image :global(:is(.wordmark__line, .wordmark__grip, .wordmark__arc)) {
     transform-box: fill-box;
   }
@@ -558,35 +516,6 @@ const LINES: Line[] = [
       calc(var(--at) + 1300ms) both;
   }
 
-  :global(.is-big .is-live) .site__image :global(.wordmark__ink) {
-    animation-name: cts-ink-again;
-    animation-delay: 500ms;
-  }
-
-  :global(.is-big .is-live) .site__image :global(.wordmark__arc) {
-    animation-name: cts-snap-again;
-    animation-delay: 800ms;
-  }
-
-  :global(.is-big .is-live) .site__image :global(.wordmark__line) {
-    animation-name: cts-draw-again;
-    animation-delay: 950ms;
-  }
-
-  :global(.is-big .is-live) .site__image :global(.wordmark__grip) {
-    animation-name: cts-snap-again;
-    animation-delay: 1650ms;
-  }
-
-  /* Shrunk back after growing: the wordmark stays drawn, with no replay. */
-  :global(.was-big:not(.is-big) .is-live)
-    .site__image
-    :global(
-      :is(.wordmark__ink, .wordmark__arc, .wordmark__line, .wordmark__grip)
-    ) {
-    animation: none;
-  }
-
   @keyframes cts-ink {
     from {
       opacity: 0;
@@ -596,41 +525,6 @@ const LINES: Line[] = [
     to {
       opacity: 1;
       translate: 0 0;
-    }
-  }
-
-  /* The same motions under new names, so a replay restarts them. */
-  @keyframes cts-ink-again {
-    from {
-      opacity: 0;
-      translate: 0 12px;
-    }
-
-    to {
-      opacity: 1;
-      translate: 0 0;
-    }
-  }
-
-  @keyframes cts-draw-again {
-    from {
-      transform: scaleX(0);
-    }
-
-    to {
-      transform: scaleX(1);
-    }
-  }
-
-  @keyframes cts-snap-again {
-    from {
-      opacity: 0;
-      scale: 0.6;
-    }
-
-    to {
-      opacity: 1;
-      scale: 1;
     }
   }
 

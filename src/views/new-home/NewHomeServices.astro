@@ -2,13 +2,14 @@
 /**
  * "Što radimo" on the new Home: the three stages one under the other, each
  * coming in as two halves from the sides when it reaches the screen (M26 to
- * M28 in docs/phases/3-pages.md). A stage's head (its number large in the
- * accent, title and tagline) slides in from one side and its services, as
- * one group, from the other; the next stage is mirrored, so the zone goes
- * zig-zag down the sheet. Each stage plays once, on arrival, not with the
- * scroll (reveal.ts), and its icons draw stroke by stroke as the group
- * lands. The text is always there: without JavaScript or with reduced
- * motion the halves stand in place.
+ * M28, M35 in docs/phases/3-pages.md). A stage's text (its number large in
+ * the accent, title, tagline and services) slides in from one side and its
+ * drawing from the other: the plan, the code that builds a page, the
+ * growth after launch (stages/). The next stage is mirrored, so the zone
+ * goes zig-zag down the sheet. Each stage plays once, on arrival, not with
+ * the scroll (reveal.ts); its icons and its drawing draw as it lands. The
+ * text is always there: without JavaScript or with reduced motion the
+ * halves stand in place.
  *
  * The services of stages 02 and 03 link to their anchors on /usluge; the
  * two items of stage 01 don't, since the free audit asks once, in the zone
@@ -20,6 +21,8 @@ import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
 import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
 import { STAGES } from "../../features/services/services.ts";
+import CodeToSite from "./stages/CodeToSite.astro";
+import StageSketch from "./stages/StageSketch.astro";
 
 interface Props {
   locale: Locale;
@@ -41,44 +44,55 @@ const services = pathFor("services", locale);
       class:list={["stage", { "stage--mirror": index % 2 === 1 }]}
       data-reveal
     >
-      <div class="stage__head">
-        <p class="stage__number nk-display nk-outline" aria-hidden="true">
-          {stage.number}
-        </p>
-        <div class="stage__text">
-          <h3 class="stage__title nk-display">
-            <span class="visually-hidden">{stage.number} </span>
-            {t(locale, stage.title)}
-          </h3>
-          <p class="stage__tagline">{t(locale, stage.tagline)}</p>
+      <div class="stage__copy">
+        <div class="stage__head">
+          <p class="stage__number nk-display nk-outline" aria-hidden="true">
+            {stage.number}
+          </p>
+          <div class="stage__text">
+            <h3 class="stage__title nk-display">
+              <span class="visually-hidden">{stage.number} </span>
+              {t(locale, stage.title)}
+            </h3>
+            <p class="stage__tagline">{t(locale, stage.tagline)}</p>
+          </div>
         </div>
-      </div>
-      <ul class="stage__items">
-        {stage.services.map((service) => {
-          const href =
-            service.anchor === undefined
-              ? undefined
-              : `${services}#${service.anchor[locale]}`;
-          return (
-            <li class:list={["svc-item", { "has-grips": href !== undefined }]}>
-              {service.icon !== undefined && (
-                <ServiceIcon icon={service.icon} class="svc-item__icon" />
-              )}
-              <h4 class="svc-item__title nk-display">
-                {href === undefined ? (
-                  t(locale, service.title)
-                ) : (
-                  <a class="svc-item__link stretched-link" href={href}>
-                    {t(locale, service.title)}
-                  </a>
+        <ul class="stage__items">
+          {stage.services.map((service) => {
+            const href =
+              service.anchor === undefined
+                ? undefined
+                : `${services}#${service.anchor[locale]}`;
+            return (
+              <li
+                class:list={["svc-item", { "has-grips": href !== undefined }]}
+              >
+                {service.icon !== undefined && (
+                  <ServiceIcon icon={service.icon} class="svc-item__icon" />
                 )}
-              </h4>
-              <p class="svc-item__body">{t(locale, service.short)}</p>
-              {href !== undefined && <Grips />}
-            </li>
-          );
-        })}
-      </ul>
+                <h4 class="svc-item__title nk-display">
+                  {href === undefined ? (
+                    t(locale, service.title)
+                  ) : (
+                    <a class="svc-item__link stretched-link" href={href}>
+                      {t(locale, service.title)}
+                    </a>
+                  )}
+                </h4>
+                <p class="svc-item__body">{t(locale, service.short)}</p>
+                {href !== undefined && <Grips />}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div class="stage__visual">
+        {index === 1 ? (
+          <CodeToSite />
+        ) : (
+          <StageSketch kind={index === 0 ? "plan" : "run"} locale={locale} />
+        )}
+      </div>
     </div>
   ))}
   <script>
@@ -108,12 +122,27 @@ const services = pathFor("services", locale);
     color: var(--ink-muted);
   }
 
-  /* A stage: its head and its services. */
+  /* A stage: its text (head and services) and its drawing. */
   .stage {
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-8);
     padding-block: var(--space-8);
     border-top: var(--rule) solid var(--line);
+  }
+
+  .stage__copy {
+    display: grid;
+    gap: var(--space-7);
+    align-content: start;
+  }
+
+  /* A container, so the code animation's type sizes with it. */
+  .stage__visual {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    min-width: 0;
+    container-type: inline-size;
   }
 
   .stage__head {
@@ -230,24 +259,24 @@ const services = pathFor("services", locale);
     }
   }
 
-  .stage.is-pending :is(.stage__head, .stage__items) {
+  .stage.is-pending :is(.stage__copy, .stage__visual) {
     opacity: 0;
   }
 
-  .stage.is-in :is(.stage__head, .stage__items) {
+  .stage.is-in :is(.stage__copy, .stage__visual) {
     animation: svc-from-left 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .stage.is-in .stage__items,
-  .stage--mirror.is-in .stage__head {
+  .stage.is-in .stage__visual,
+  .stage--mirror.is-in .stage__copy {
     animation-name: svc-from-right;
   }
 
-  .stage--mirror.is-in .stage__items {
+  .stage--mirror.is-in .stage__visual {
     animation-name: svc-from-left;
   }
 
-  .stage.is-in .stage__items {
+  .stage.is-in .stage__visual {
     animation-delay: 120ms;
   }
 
@@ -280,30 +309,30 @@ const services = pathFor("services", locale);
       grid-column: 7 / -1;
     }
 
-    /* The two halves side by side on the page's grid: the head on the
-       left and the services on the right, or mirrored. */
+    /* The two halves side by side on the page's grid: the text on the
+       left and the drawing on the right, or mirrored. */
     .stage {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gap);
       padding-block: var(--space-9);
     }
 
-    .stage__head {
+    .stage__copy {
       grid-row: 1;
       grid-column: 1 / span 5;
     }
 
-    .stage__items {
+    .stage__visual {
       grid-row: 1;
-      grid-column: 7 / -1;
+      grid-column: 6 / -1;
     }
 
-    .stage--mirror .stage__head {
+    .stage--mirror .stage__copy {
       grid-column: 8 / -1;
     }
 
-    .stage--mirror .stage__items {
-      grid-column: 1 / span 6;
+    .stage--mirror .stage__visual {
+      grid-column: 1 / span 7;
     }
 
     .svc-item {

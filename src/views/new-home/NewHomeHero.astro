@@ -1,14 +1,12 @@
 ---
 /**
- * The new Home's hero (M29 in docs/phases/3-pages.md): the headline, the
- * lead, the one button to the services and the drafting link, centred,
- * and under them code typed into an editor that builds a web page beside
- * it as it goes (hero/CodeToSite.astro). On the first scroll down the two
- * windows grow into the hero itself (M30, hero/hero-expand.ts).
+ * The new Home's hero: the headline, the lead, the one button to the
+ * services and the drafting link, centred. Its code-to-page animation moved
+ * to stage 02 of "Što radimo" (M35 in docs/phases/3-pages.md).
  *
  * The text comes in on load: the headline's two lines rise out of their
- * own baseline one after the other, then the lead and the actions fade up;
- * the code starts as they settle. With reduced motion everything is there
+ * own baseline one after the other, then the lead and the actions fade up.
+ * With reduced motion everything is there
  * at once. The hero orients and doesn't sell: its one button leads to the
  * services, and the free audit is asked for once, in its own zone.
  */
@@ -16,7 +14,6 @@ import Button from "../../components/ui/Button.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
-import CodeToSite from "./hero/CodeToSite.astro";
 
 interface Props {
   locale: Locale;
@@ -25,7 +22,7 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="hero" aria-labelledby="naslov" data-hero>
+<section class="hero" aria-labelledby="naslov">
   <div class="hero__text">
     <h1 class="hero__title nk-display" id="naslov">
       <span class="hero__line">
@@ -45,18 +42,11 @@ const { locale } = Astro.props;
       </a>
     </div>
   </div>
-  <div class="hero__stage">
-    <CodeToSite />
-  </div>
-  <script>
-    import "./hero/hero-expand.ts";
-  </script>
 </section>
 
 <style>
   .hero {
     display: grid;
-    gap: var(--space-9);
     align-content: center;
     justify-items: center;
     /* The header is 4.25rem tall below 64rem and from 64rem 4.78rem times
@@ -115,33 +105,12 @@ const { locale } = Astro.props;
     font-weight: var(--weight-medium);
   }
 
-  /* The stage is a container, so the windows' contents size with it. On
-     the first scroll down it grows to the sheet's width and the windows to
-     the screen's height (hero-expand.ts), and the windows become the hero. */
-  .hero__stage {
-    width: min(100%, 60rem);
-    container-type: inline-size;
-    transition: width 1100ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Grown, a little short of the sheet's width (M31). */
-  .hero.is-big .hero__stage {
-    width: min(100%, 66rem);
-  }
-
   @media (min-width: 64rem) {
     .hero {
-      gap: var(--space-8);
       padding-top: var(--space-6);
       min-height: calc(
         100svh - var(--sheet-margin) - 4.75rem * var(--topbar-scale, 1)
       );
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero__stage {
-      transition: none;
     }
   }
 
@@ -161,10 +130,6 @@ const { locale } = Astro.props;
 
     .hero__actions {
       animation: hero-up 700ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
-    }
-
-    .hero__stage {
-      animation: hero-up 800ms cubic-bezier(0.16, 1, 0.3, 1) 700ms both;
     }
   }
 

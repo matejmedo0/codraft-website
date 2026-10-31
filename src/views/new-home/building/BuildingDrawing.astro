@@ -22,6 +22,8 @@ import {
   PARKING,
   POOL,
   SITE,
+  STOREY_AT,
+  STOREY_STEP,
   storeys,
   TREE_RADIUS,
   TREES,
@@ -63,9 +65,6 @@ const aisle = `M${String(d(PARKING.x0))} ${String(d(PARKING.y0))}V${String(d(SIT
 
 const model = storeys();
 const height = heightDimension();
-/** The storeys come down one after another once the plan has tilted. */
-const STOREY_AT = 3600;
-const STOREY_STEP = 320;
 ---
 
 <svg

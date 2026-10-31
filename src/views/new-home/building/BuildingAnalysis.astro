@@ -3,9 +3,11 @@
  * What follows the building's 3D view in the drafting scene (M28): its two
  * sections, A–A along the building and B–B across it, with the storeys'
  * levels, and the schedule of gross floor areas and volumes, from the same
- * model as the drawing (building-model.ts). The sections draw storey by
- * storey from the ground up and the schedule's rows come in after them,
- * once the 3D view is done (`data-at`, building-scene.ts). Without
+ * model as the drawing (building-model.ts). They start with the 3D view
+ * (M37): the ground and the schedule's head come in as the plan tilts, then
+ * each storey is cut in the sections and gets its row in the schedule just
+ * as it comes down on the 3D building, on the same clock (`data-at`,
+ * building-scene.ts). Without
  * JavaScript, or with reduced motion, all of it is there.
  */
 import type { Locale } from "../../../config/site.ts";
@@ -16,6 +18,9 @@ import {
   PENTHOUSE,
   schedule,
   STOREY,
+  STOREY_AT,
+  STOREY_STEP,
+  TILT_AT,
   U,
 } from "./building-model.ts";
 
@@ -31,9 +36,8 @@ const number = new Intl.NumberFormat(locale === "hr" ? "hr-HR" : "en-GB", {
 const level = (z: number): string =>
   z === 0 ? `±${number.format(0)}` : `+${number.format(z)}`;
 
-/** When the sections start: once the 3D view is done (BuildingDrawing). */
-const START = 6000;
-const STEP = 220;
+/** Storey `index` comes down on the 3D building at this time. */
+const storeyAt = (index: number): number => STOREY_AT + index * STOREY_STEP;
 
 const SLAB = 2.5;
 const WALL = 3;
@@ -88,7 +92,6 @@ const hatch = Array.from({ length: 52 }, (_, index) => -30 + index * 10)
   .join("");
 
 const { rows, area, volume } = schedule();
-const ROWS_AT = START + LEVELS.length * STEP + 500;
 ---
 
 <div class="analysis">
@@ -100,7 +103,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
       aria-label={t(locale, "newHome.building.sectionsLabel")}
       focusable="false"
     >
-      <g data-wipe="x" data-at={START} data-for="400">
+      <g data-wipe="x" data-at={TILT_AT} data-for="400">
         <path class="sections__ground" d="M-30 2H270M310 2H490"></path>
         <path class="sections__hatch" d={hatch}></path>
         {groundSlabs.map(({ x, width }) => (
@@ -108,7 +111,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
         ))}
       </g>
       {LEVELS.map((_, index) => (
-        <g data-wipe="up" data-at={START + 200 + index * STEP} data-for="380">
+        <g data-wipe="up" data-at={storeyAt(index)} data-for="380">
           {[sectionA[index], sectionB[index]].map((storey) =>
             storey === undefined ? null : (
               <>
@@ -126,7 +129,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
         <g
           class="sections__level"
           data-wipe="fade"
-          data-at={START + 200 + index * STEP}
+          data-at={index === 0 ? TILT_AT + 200 : storeyAt(index - 1) + 300}
           data-for="300"
         >
           <path d={`M252 ${String(-z * U)}h8l-4 -6z`} class="sections__mark" />
@@ -138,7 +141,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
       <g
         class="sections__names"
         data-wipe="fade"
-        data-at={START + LEVELS.length * STEP + 200}
+        data-at={storeyAt(LEVELS.length) + 200}
         data-for="300"
       >
         <text x="120" y="34">
@@ -155,13 +158,13 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
     <caption
       class="schedule__caption"
       data-wipe="fade"
-      data-at={ROWS_AT - 200}
+      data-at={TILT_AT}
       data-for="300"
     >
       {t(locale, "newHome.building.schedule")}
     </caption>
     <thead>
-      <tr data-wipe="rise" data-at={ROWS_AT} data-for="350">
+      <tr data-wipe="rise" data-at={TILT_AT + 200} data-for="350">
         <th scope="col">{t(locale, "newHome.building.level")}</th>
         <th scope="col">{t(locale, "newHome.building.area")}</th>
         <th scope="col">{t(locale, "newHome.building.height")}</th>
@@ -170,11 +173,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
     </thead>
     <tbody>
       {rows.map((row, index) => (
-        <tr
-          data-wipe="rise"
-          data-at={ROWS_AT + (index + 1) * 110}
-          data-for="350"
-        >
+        <tr data-wipe="rise" data-at={storeyAt(index)} data-for="350">
           <th scope="row">{t(locale, row.key)}</th>
           <td>{number.format(row.area)}</td>
           <td>{number.format(row.height)}</td>
@@ -183,11 +182,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
       ))}
     </tbody>
     <tfoot>
-      <tr
-        data-wipe="rise"
-        data-at={ROWS_AT + (rows.length + 1) * 110 + 150}
-        data-for="400"
-      >
+      <tr data-wipe="rise" data-at={storeyAt(rows.length) + 200} data-for="400">
         <th scope="row">{t(locale, "newHome.building.total")}</th>
         <td>{number.format(area)}</td>
         <td></td>
@@ -198,7 +193,7 @@ const ROWS_AT = START + LEVELS.length * STEP + 500;
   <p
     class="analysis__note"
     data-wipe="fade"
-    data-at={ROWS_AT + (rows.length + 2) * 110 + 300}
+    data-at={storeyAt(rows.length) + 500}
     data-for="300"
   >
     {t(locale, "newHome.building.note")}

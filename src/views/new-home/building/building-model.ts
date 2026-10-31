@@ -61,6 +61,17 @@ export const BOXES: Box[] = LEVELS.map(({ plan }, index) => ({
   z1: (index + 1) * STOREY,
 }));
 
+/**
+ * The scene's clock (ms from its start, building-scene.ts): the plan
+ * tilts into the 3D view at TILT_AT (--tilt-at in scene.css), then the
+ * storeys come down one after another, each STOREY_STEP after the last.
+ * The sections and the schedule beside the drawing keep the same clock
+ * (BuildingAnalysis.astro, M37).
+ */
+export const TILT_AT = 2400;
+export const STOREY_AT = 3600;
+export const STOREY_STEP = 320;
+
 /** The building's height to the penthouse roof. */
 export const HEIGHT = LEVELS.length * STOREY;
 

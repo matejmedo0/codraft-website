@@ -1,6 +1,7 @@
 ---
 /**
- * The free audit on the new Home, the page's one ivory band (M32): the
+ * The free audit on the new Home, the page's one ivory band (M32), set in
+ * the page as a rounded card (M36, after the client's reference): the
  * title in display capitals across the band, the lead and the page's one
  * "Rezervirajte besplatnu analizu" beside the three steps (form → time
  * slot → confirmation). The steps are grips joined by a drafting line,
@@ -12,6 +13,7 @@ import Button from "../../components/ui/Button.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
@@ -26,7 +28,7 @@ const steps = (["form", "slot", "confirmation"] as const).map((step) => ({
 
 <section class="audit nk-inverse" aria-labelledby="analiza" data-reveal>
   <h2 class="audit__title nk-display nk-title" id="analiza">
-    {t(locale, "home.audit.title")}
+    <TwoTone text={t(locale, "home.audit.title")} />
   </h2>
   <div class="audit__body">
     <div class="audit__text">
@@ -57,7 +59,15 @@ const steps = (["form", "slot", "confirmation"] as const).map((step) => ({
 
 <style>
   .audit {
-    padding: var(--zone-pad) var(--pad);
+    margin: var(--space-6) var(--pad);
+    padding: var(--zone-pad) var(--space-5);
+    border-radius: var(--nk-radius);
+  }
+
+  @media (min-width: 48rem) {
+    .audit {
+      padding-inline: var(--space-8);
+    }
   }
 
   .audit__body {

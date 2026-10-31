@@ -1,13 +1,15 @@
 ---
 /**
- * "Tehničko crtanje" on the new Home (M28 in docs/phases/3-pages.md): the
- * text on the left and, on the right, a residential building drawn once
- * when it comes into view: its site plan (the building, a courtyard with a
- * pool on one side, parking on the other), turned into a 3D view in which
- * the storeys come down one by one, the penthouse last. Then, under the
- * text, its sections and the schedule of gross floor areas and volumes
- * (building/). Nothing here moves with the scroll; without JavaScript, or
- * with reduced motion, it all shows finished.
+ * "Tehničko crtanje" on the new Home (M28, M36 in docs/phases/3-pages.md),
+ * laid out as the client's reference "Torch" shows a feature: the title and
+ * the lead, then a large rounded card with the drawing, then the three
+ * services in a row of columns. The card holds a residential building
+ * drawn once when it comes into view: its site plan (the building, a
+ * courtyard with a pool on one side, parking on the other), turned into a
+ * 3D view in which the storeys come down one by one, the penthouse last;
+ * beside it, its sections and the schedule of gross floor areas and
+ * volumes (building/). Nothing here moves with the scroll; without
+ * JavaScript, or with reduced motion, it all shows finished.
  *
  * The three services link to their anchors on the drafting page.
  */
@@ -21,6 +23,7 @@ import { pathFor } from "../../features/i18n/urls.ts";
 import { DRAFTING_SERVICES } from "../../features/services/services.ts";
 import BuildingAnalysis from "./building/BuildingAnalysis.astro";
 import BuildingDrawing from "./building/BuildingDrawing.astro";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
@@ -31,55 +34,60 @@ const drafting = pathFor("drafting", locale);
 ---
 
 <section class="cad nh-zone" aria-labelledby="crtanje" data-building-scene>
-  <div class="cad__text">
-    <h2 class="cad__title nk-display" id="crtanje">
-      {t(locale, "drafting.title")}
+  <div class="cad__head nh-grid">
+    <h2 class="cad__title nk-display nk-title" id="crtanje">
+      <TwoTone text={t(locale, "drafting.title")} />
     </h2>
     <p class="cad__lead">{t(locale, "home.drafting.lead")}</p>
-    <ul class="cad__list">
-      {DRAFTING_SERVICES.map((service) => (
-        <li class="cad-item has-grips">
-          <h3 class="cad-item__title nk-display">
-            <a
-              class="cad-item__link stretched-link"
-              href={
-                service.anchor === undefined
-                  ? drafting
-                  : `${drafting}#${service.anchor[locale]}`
-              }
-            >
-              {t(locale, service.title)}
-            </a>
-          </h3>
-          <p class="cad-item__body">{t(locale, service.short)}</p>
-          <Grips />
-        </li>
-      ))}
-    </ul>
   </div>
 
-  <figure class="cad__figure" data-building-figure>
-    <div class="cad__sheet graph-paper">
-      <BuildingDrawing locale={locale} />
+  <div class="cad__card nk-card">
+    <figure class="cad__figure" data-building-figure>
+      <div class="cad__sheet graph-paper">
+        <BuildingDrawing locale={locale} />
+      </div>
+      <figcaption
+        class="cad__title-block t-label"
+        data-wipe="fade"
+        data-at="5300"
+        data-for="400"
+      >
+        <span class="cad__cell cad__cell--strong">
+          {t(locale, "newHome.building.title")}
+        </span>
+        <span class="cad__cell">{t(locale, "newHome.building.units")}</span>
+        <span class="cad__cell cad__cell--strong">{SITE_NAME}</span>
+        <span class="cad__cell">{t(locale, "drawing.note")}</span>
+      </figcaption>
+    </figure>
+    <div class="cad__analysis">
+      <BuildingAnalysis locale={locale} />
     </div>
-    <figcaption
-      class="cad__title-block t-label"
-      data-wipe="fade"
-      data-at="5300"
-      data-for="400"
-    >
-      <span class="cad__cell cad__cell--strong">
-        {t(locale, "newHome.building.title")}
-      </span>
-      <span class="cad__cell">{t(locale, "newHome.building.units")}</span>
-      <span class="cad__cell cad__cell--strong">{SITE_NAME}</span>
-      <span class="cad__cell">{t(locale, "drawing.note")}</span>
-    </figcaption>
-  </figure>
-
-  <div class="cad__analysis">
-    <BuildingAnalysis locale={locale} />
   </div>
+
+  <ul class="cad__list">
+    {DRAFTING_SERVICES.map((service, index) => (
+      <li class="cad-item has-grips">
+        <span class="cad-item__number nk-eyebrow" aria-hidden="true">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <h3 class="cad-item__title nk-display">
+          <a
+            class="cad-item__link stretched-link"
+            href={
+              service.anchor === undefined
+                ? drafting
+                : `${drafting}#${service.anchor[locale]}`
+            }
+          >
+            {t(locale, service.title)}
+          </a>
+        </h3>
+        <p class="cad-item__body">{t(locale, service.short)}</p>
+        <Grips />
+      </li>
+    ))}
+  </ul>
 
   <script>
     import "./building/building-scene.ts";
@@ -87,65 +95,33 @@ const drafting = pathFor("drafting", locale);
 </section>
 
 <style>
-  .cad {
-    display: grid;
-    gap: var(--space-8);
+  .cad__head {
+    align-items: end;
+    margin-bottom: var(--space-8);
   }
 
   .cad__lead {
     max-width: var(--measure-lead);
-    margin-top: var(--space-5);
+    color: var(--ink-muted);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
   }
 
-  .cad__list {
+  /* The large card: the drawing, and beside it its sections and schedule. */
+  .cad__card {
     display: grid;
-    margin: var(--space-7) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .cad-item {
-    position: relative;
-    padding: var(--space-4) 0 var(--space-5);
-    border-top: var(--rule) solid var(--line);
-  }
-
-  .cad__title {
-    font-size: var(--nk-title);
-  }
-
-  .cad-item__title {
-    font-size: var(--nk-row);
-    line-height: 1;
-  }
-
-  .cad-item__link {
-    color: var(--ink);
-  }
-
-  .cad-item__body {
-    max-width: var(--measure);
-    margin-top: var(--space-2);
-    color: var(--ink-muted);
-  }
-
-  .cad-item:has(.cad-item__link:focus-visible) {
-    outline: var(--focus-width) solid var(--focus);
-    outline-offset: var(--focus-offset);
-  }
-
-  .cad-item__link:focus-visible {
-    outline: none;
+    gap: var(--space-7);
+    padding: var(--space-4);
   }
 
   .cad__figure {
+    min-width: 0;
     margin: 0;
   }
 
   .cad__sheet {
     padding: var(--space-4);
+    border-radius: var(--nk-radius-inner);
   }
 
   /* The title block under the drawing, in the drawing's cells. */
@@ -175,28 +151,96 @@ const drafting = pathFor("drafting", locale);
     font-weight: var(--weight-strong);
   }
 
-  /* From 64rem: the text and, under it, the sections and schedule on the
-     left; the drawing on the right. */
-  @media (min-width: 64rem) {
-    .cad {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: var(--gap);
-      row-gap: var(--space-9);
-      align-items: start;
+  .cad__analysis {
+    min-width: 0;
+  }
+
+  /* The three services: a row of columns under the card. */
+  .cad__list {
+    display: grid;
+    gap: var(--space-7) var(--gap);
+    margin: var(--space-8) 0 0;
+    padding: 0 var(--space-4);
+    list-style: none;
+  }
+
+  .cad-item {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+
+  .cad-item__number {
+    margin-bottom: var(--space-2);
+  }
+
+  .cad-item__title {
+    font-size: var(--nk-row);
+    line-height: 1;
+  }
+
+  .cad-item__link {
+    color: var(--ink);
+  }
+
+  .cad-item__body {
+    max-width: var(--measure);
+    color: var(--ink-muted);
+  }
+
+  .cad-item:has(.cad-item__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .cad-item__link:focus-visible {
+    outline: none;
+  }
+
+  @media (min-width: 48rem) {
+    .cad__card {
+      padding: var(--space-7);
     }
 
-    .cad__text,
-    .cad__analysis {
-      grid-column: 1 / span 5;
+    .cad__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding-inline: var(--space-7);
+    }
+  }
+
+  /* From 64rem: the title and the lead side by side; in the card, the
+     drawing on the left and its sections and schedule on the right. */
+  @media (min-width: 64rem) {
+    .cad__title {
+      grid-column: 1 / span 6;
+    }
+
+    .cad__lead {
+      grid-column: 8 / -1;
+    }
+
+    .cad__card {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      align-items: start;
+      padding: var(--space-8);
     }
 
     .cad__figure {
-      grid-row: 1 / span 2;
-      grid-column: 6 / -1;
+      grid-column: 1 / span 7;
+    }
+
+    .cad__analysis {
+      grid-column: 8 / -1;
     }
 
     .cad__sheet {
       padding: var(--space-6);
+    }
+
+    .cad__list {
+      padding-inline: var(--space-8);
     }
   }
 </style>

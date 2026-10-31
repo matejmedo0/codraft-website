@@ -1,19 +1,22 @@
 ---
 /**
- * The new Home's hero: the headline, the lead, the one button to the
- * services and the drafting link, centred. Its code-to-page animation moved
- * to stage 02 of "Što radimo" (M35 in docs/phases/3-pages.md).
+ * The new Home's hero, split as in the client's reference (M36): on the
+ * left the headline, its second line in the accent, the lead, the one
+ * button to the services and the drafting page as a second, outlined pill;
+ * on the right a board of four small drawings of what the studio does
+ * (HeroBoard.astro).
  *
  * The text comes in on load: the headline's two lines rise out of their
- * own baseline one after the other, then the lead and the actions fade up.
- * With reduced motion everything is there
- * at once. The hero orients and doesn't sell: its one button leads to the
+ * own baseline one after the other, then the lead and the actions fade up,
+ * then the board. With reduced motion everything is there at once. The
+ * hero orients and doesn't sell: its one primary button leads to the
  * services, and the free audit is asked for once, in its own zone.
  */
 import Button from "../../components/ui/Button.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
+import HeroBoard from "./HeroBoard.astro";
 
 interface Props {
   locale: Locale;
@@ -29,7 +32,9 @@ const { locale } = Astro.props;
         <span class="hero__rise">{t(locale, "home.hero.titleLine1")}</span>
       </span>{" "}
       <span class="hero__line">
-        <span class="hero__rise">{t(locale, "home.hero.titleLine2")}</span>
+        <span class="hero__rise nk-accent">
+          {t(locale, "home.hero.titleLine2")}
+        </span>
       </span>
     </h1>
     <p class="hero__lead">{t(locale, "home.hero.lead")}</p>
@@ -37,37 +42,31 @@ const { locale } = Astro.props;
       <Button href={pathFor("services", locale)}>
         {t(locale, "home.hero.cta")}
       </Button>
-      <a class="hero__drafting" href={pathFor("drafting", locale)}>
+      <Button href={pathFor("drafting", locale)} variant="secondary">
         {t(locale, "home.hero.drafting")}
-      </a>
+      </Button>
     </div>
+  </div>
+  <div class="hero__board">
+    <HeroBoard />
   </div>
 </section>
 
 <style>
   .hero {
     display: grid;
+    gap: var(--space-8);
     align-content: center;
-    justify-items: center;
     /* The header is 4.25rem tall below 64rem and from 64rem 4.78rem times
        --topbar-scale (NewHomeHeader.astro). svh: the screen with a phone's
        browser bars shown. */
     min-height: calc(100svh - var(--sheet-margin) - 4.125rem);
     padding: var(--space-8) var(--pad) var(--zone-pad);
-    text-align: center;
   }
 
-  .hero__text {
-    display: grid;
-    justify-items: center;
-    width: 100%;
-    container-type: inline-size;
-  }
-
-  /* The first line about two thirds of the sheet (M33: a size smaller). */
   .hero__title {
-    font-size: clamp(2.25rem, 100cqi / 24, 4.5rem);
-    line-height: 0.88;
+    font-size: clamp(2.25rem, 0.75rem + 2.9vw, 4rem);
+    line-height: 0.9;
   }
 
   /* Each line of the headline is its own block, clipped at its baseline,
@@ -82,35 +81,39 @@ const { locale } = Astro.props;
     display: block;
   }
 
-  /* Two lines on wide screens. */
   .hero__lead {
-    max-width: 66ch;
+    max-width: 52ch;
     margin-top: var(--space-6);
+    color: var(--ink-muted);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
-    text-wrap: balance;
   }
 
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4) var(--space-6);
-    justify-content: center;
+    gap: var(--space-3);
     align-items: center;
-    margin-top: var(--space-6);
-  }
-
-  .hero__drafting {
-    color: var(--ink);
-    font-weight: var(--weight-medium);
+    margin-top: var(--space-7);
   }
 
   @media (min-width: 64rem) {
     .hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      align-items: center;
       padding-top: var(--space-6);
       min-height: calc(
         100svh - var(--sheet-margin) - 4.75rem * var(--topbar-scale, 1)
       );
+    }
+
+    .hero__text {
+      grid-column: 1 / span 6;
+    }
+
+    .hero__board {
+      grid-column: 7 / -1;
     }
   }
 
@@ -130,6 +133,10 @@ const { locale } = Astro.props;
 
     .hero__actions {
       animation: hero-up 700ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+    }
+
+    .hero__board {
+      animation: hero-up 900ms cubic-bezier(0.16, 1, 0.3, 1) 500ms both;
     }
   }
 

@@ -207,3 +207,40 @@ html .button.button {
     translate: 0 0;
   }
 }
+
+/*
+ * The page's layout shapes (M36, after the client's reference "Torch"):
+ * rounded panels on the deep teal, with an inner panel a step lighter for
+ * drawings; a small teal eyebrow over a zone's title; and the title's last
+ * word in the accent. The drawing vocabulary inside them (grips, lines,
+ * the sheet's frame) stays square.
+ */
+:root {
+  --nk-radius: 1.25rem;
+  --nk-radius-inner: 0.75rem;
+}
+
+.nk-card {
+  border: var(--rule) solid var(--line);
+  border-radius: var(--nk-radius);
+  background: var(--surface-sunk);
+}
+
+.nk-panel {
+  border-radius: var(--nk-radius-inner);
+  background: var(--color-elevated);
+}
+
+.nk-eyebrow {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--accent-text);
+  font-family: var(--nk-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nk-accent {
+  color: var(--accent-text);
+}

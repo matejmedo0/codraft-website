@@ -8,7 +8,10 @@
  * scroll in a pinned scene, and the page ends on the wordmark's line and
  * grip (new-home.css, docs/phases/3-pages.md M25). Its art direction is
  * M32's: display capitals at Archivo's narrowest width, one ivory band,
- * pills.
+ * pills. Its layout follows the client's reference "Torch" (M36): a split
+ * hero with a board of drawings, rounded cards and panels, rows of
+ * columns under them, an accordion of questions and a centred closing
+ * band (new-home.css, "layout shapes").
  *
  * The zones go in this folder; the copy is the Home's, from the locale
  * files. Browsers without scroll-driven animations, reduced motion and no
@@ -20,6 +23,7 @@ import type { Locale } from "../../config/site.ts";
 import NewHomeAudit from "./NewHomeAudit.astro";
 import NewHomeClosing from "./NewHomeClosing.astro";
 import NewHomeDrafting from "./NewHomeDrafting.astro";
+import NewHomeFaq from "./NewHomeFaq.astro";
 import NewHomeHero from "./NewHomeHero.astro";
 import NewHomePrinciples from "./NewHomePrinciples.astro";
 import NewHomeServices from "./NewHomeServices.astro";
@@ -43,6 +47,7 @@ const { locale = "hr" } = Astro.props;
 <NewHomeDrafting locale={locale} />
 <NewHomePrinciples locale={locale} />
 <NewHomeTeam locale={locale} />
+<NewHomeFaq locale={locale} />
 <NewHomeClosing locale={locale} />
 
 <style>

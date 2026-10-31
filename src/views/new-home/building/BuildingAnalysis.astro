@@ -3,12 +3,13 @@
  * What follows the building's 3D view in the drafting scene (M28): its two
  * sections, A–A along the building and B–B across it, with the storeys'
  * levels, and the schedule of gross floor areas and volumes, from the same
- * model as the drawing (building-model.ts). They start with the 3D view
- * (M37): the ground and the schedule's head come in as the plan tilts, then
- * each storey is cut in the sections and gets its row in the schedule just
- * as it comes down on the 3D building, on the same clock (`data-at`,
- * building-scene.ts). Without
- * JavaScript, or with reduced motion, all of it is there.
+ * model as the drawing (building-model.ts). They are the part the client
+ * cares about most, so they start at once, the moment the scene starts,
+ * without waiting for the plan and its tilt (M39): the ground and the
+ * schedule's head first, then each storey is cut in the sections from the
+ * ground up and gets its row in the schedule, then the total and the note
+ * (`data-at`, building-scene.ts). The 3D building follows on its own
+ * clock. Without JavaScript, or with reduced motion, all of it is there.
  */
 import type { Locale } from "../../../config/site.ts";
 import { t } from "../../../features/i18n/ui.ts";
@@ -18,9 +19,6 @@ import {
   PENTHOUSE,
   schedule,
   STOREY,
-  STOREY_AT,
-  STOREY_STEP,
-  TILT_AT,
   U,
 } from "./building-model.ts";
 
@@ -36,8 +34,12 @@ const number = new Intl.NumberFormat(locale === "hr" ? "hr-HR" : "en-GB", {
 const level = (z: number): string =>
   z === 0 ? `±${number.format(0)}` : `+${number.format(z)}`;
 
-/** Storey `index` comes down on the 3D building at this time. */
-const storeyAt = (index: number): number => STOREY_AT + index * STOREY_STEP;
+/** The analysis' own clock (ms from the scene's start, before its
+    SPEED): the ground at 0, then a storey every STOREY_STEP. */
+const START = 0;
+const FIRST_STOREY = 300;
+const STOREY_STEP = 400;
+const storeyAt = (index: number): number => FIRST_STOREY + index * STOREY_STEP;
 
 const SLAB = 2.5;
 const WALL = 3;
@@ -103,7 +105,7 @@ const { rows, area, volume } = schedule();
       aria-label={t(locale, "newHome.building.sectionsLabel")}
       focusable="false"
     >
-      <g data-wipe="x" data-at={TILT_AT} data-for="400">
+      <g data-wipe="x" data-at={START} data-for="400">
         <path class="sections__ground" d="M-30 2H270M310 2H490"></path>
         <path class="sections__hatch" d={hatch}></path>
         {groundSlabs.map(({ x, width }) => (
@@ -129,7 +131,7 @@ const { rows, area, volume } = schedule();
         <g
           class="sections__level"
           data-wipe="fade"
-          data-at={index === 0 ? TILT_AT + 200 : storeyAt(index - 1) + 300}
+          data-at={index === 0 ? START + 200 : storeyAt(index - 1) + 300}
           data-for="300"
         >
           <path d={`M252 ${String(-z * U)}h8l-4 -6z`} class="sections__mark" />
@@ -158,13 +160,13 @@ const { rows, area, volume } = schedule();
     <caption
       class="schedule__caption"
       data-wipe="fade"
-      data-at={TILT_AT}
+      data-at={START}
       data-for="300"
     >
       {t(locale, "newHome.building.schedule")}
     </caption>
     <thead>
-      <tr data-wipe="rise" data-at={TILT_AT + 200} data-for="350">
+      <tr data-wipe="rise" data-at={START + 200} data-for="350">
         <th scope="col">{t(locale, "newHome.building.level")}</th>
         <th scope="col">{t(locale, "newHome.building.area")}</th>
         <th scope="col">{t(locale, "newHome.building.height")}</th>

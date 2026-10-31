@@ -62,11 +62,11 @@ export const BOXES: Box[] = LEVELS.map(({ plan }, index) => ({
 }));
 
 /**
- * The scene's clock (ms from its start, building-scene.ts): the plan
- * tilts into the 3D view at TILT_AT (--tilt-at in scene.css), then the
- * storeys come down one after another, each STOREY_STEP after the last.
- * The sections and the schedule beside the drawing keep the same clock
- * (BuildingAnalysis.astro, M37).
+ * The scene's clock (ms from its start, before building-scene.ts's
+ * SPEED): the plan tilts into the 3D view at TILT_AT, then the storeys
+ * come down one after another, each STOREY_STEP after the last. The
+ * sections and the schedule beside the drawing run their own, earlier
+ * clock (BuildingAnalysis.astro, M39).
  */
 export const TILT_AT = 2400;
 export const TILT_FOR = 1200;

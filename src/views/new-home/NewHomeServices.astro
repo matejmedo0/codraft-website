@@ -4,8 +4,9 @@
  * (M26 to M28, M35, M36 in docs/phases/3-pages.md). Each stage is a
  * rounded card, as in the client's reference "Torch": its text (the
  * number large in the accent, title and tagline) on one side and its
- * drawing in an inner panel on the other: the plan, the code that builds a
- * page, the growth after launch (stages/). The next card is mirrored, so
+ * drawing in an inner panel on the other: the client's way from enquiry
+ * to finished product for the service they pick, the code that builds a
+ * page, the growth after launch (stages/, M40). The next card is mirrored, so
  * the zone goes zig-zag down the sheet. Under each card, the stage's
  * services stand in a row of columns, each an icon, a title and a line.
  *
@@ -25,7 +26,8 @@ import { pathFor } from "../../features/i18n/urls.ts";
 import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
 import { STAGES } from "../../features/services/services.ts";
 import CodeToSite from "./stages/CodeToSite.astro";
-import StageSketch from "./stages/StageSketch.astro";
+import GrowthChart from "./stages/GrowthChart.astro";
+import ProcessJourney from "./stages/ProcessJourney.astro";
 import TwoTone from "./TwoTone.astro";
 
 interface Props {
@@ -60,11 +62,9 @@ const services = pathFor("services", locale);
           <p class="stage__tagline">{t(locale, stage.tagline)}</p>
         </div>
         <div class="stage__visual nk-panel">
-          {index === 1 ? (
-            <CodeToSite />
-          ) : (
-            <StageSketch kind={index === 0 ? "plan" : "run"} locale={locale} />
-          )}
+          {index === 0 && <ProcessJourney locale={locale} />}
+          {index === 1 && <CodeToSite />}
+          {index === 2 && <GrowthChart locale={locale} />}
         </div>
       </div>
       <ul class="stage__items">

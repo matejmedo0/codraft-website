@@ -33,7 +33,7 @@ The website of Codraft, a small team studio that plans, builds and looks after w
 | Usluge | `/usluge` | `/en/services` |
 | Tehničko crtanje | `/tehnicko-crtanje` | `/en/architectural-drafting` |
 | O nama | `/o-nama` | `/en/about` |
-| Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` |
+| Besplatna procjena | `/besplatna-procjena` | `/en/free-audit` |
 | Kontakt | `/kontakt` | `/en/contact` |
 
 - **Usluge** has three anchored stages: 01 Planiranje, 02 Izrada, 03 Održavanje i rast.

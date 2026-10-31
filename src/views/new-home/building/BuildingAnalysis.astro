@@ -2,7 +2,9 @@
 /**
  * What follows the building's 3D view in the drafting scene (M28): its two
  * sections, A–A along the building and B–B across it, with the storeys'
- * levels, and the schedule of gross floor areas and volumes, from the same
+ * levels, cut as drafted (M40): strip foundations, walls and slabs at
+ * their thickness, windows and the entrance door, the terrace's railing and
+ * its pool; and the schedule of gross floor areas and volumes, from the same
  * model as the drawing (building-model.ts). They are the part the client
  * cares about most, so they start at once, the moment the scene starts,
  * without waiting for the plan and its tilt (M39): the ground and the
@@ -17,8 +19,11 @@ import {
   FOOTPRINT,
   LEVELS,
   PENTHOUSE,
+  POOL_RIM,
+  RAILING,
   schedule,
   STOREY,
+  TERRACE_POOL,
   U,
 } from "./building-model.ts";
 
@@ -41,33 +46,90 @@ const FIRST_STOREY = 300;
 const STOREY_STEP = 400;
 const storeyAt = (index: number): number => FIRST_STOREY + index * STOREY_STEP;
 
-const SLAB = 2.5;
-const WALL = 3;
+/** Thicknesses in decimetres: slabs, outer walls (block, insulation and
+    render, about 0.5 m, so the cut reads at this scale), inner walls. */
+const SLAB = 3;
+const WALL = 5;
+const INNER = 2;
 const B_OFFSET = 340;
+const H = STOREY * U;
+/** Sill and head heights above the floor: windows, the penthouse's glass
+    walls, the entrance door. */
+const SILL = 10;
+const HEAD = 23;
+const GLASS_SILL = 2;
+const DOOR = 22;
 
-/** One section: the storeys as walls and the slab at their top. */
-function section(width: number, setback: number, x: number) {
-  return LEVELS.map((_, index) => {
+type Kind = "cut" | "glass" | "water";
+interface Part {
+  kind: Kind;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const part = (
+  kind: Kind,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+): Part => ({ kind, x, y, width, height });
+
+/** An outer wall from `bottom` up a storey, cut through an opening from
+    `sill` to `head`: the wall under and over it, the glass in between. */
+function outerWall(x: number, bottom: number, sill: number, head: number) {
+  return [
+    part("cut", x, bottom - sill, WALL, sill),
+    part("cut", x, bottom - H, WALL, H - head),
+    part("glass", x + WALL / 2 - 0.5, bottom - head, 1, head - sill),
+  ];
+}
+
+/**
+ * One section: per storey its outer walls with their openings, an inner
+ * wall in the middle (a door through it on the ground floor) and the slab
+ * over it; the penthouse set back, glazed floor to ceiling. The terrace's
+ * railing and, along the building, its pool come with the penthouse.
+ */
+function section(width: number, setback: number, x: number, pool: boolean) {
+  return LEVELS.map((_, index): Part[] => {
     const penthouse = index === LEVELS.length - 1;
     const left = x + (penthouse ? setback : 0);
     const right = x + width - (penthouse ? setback : 0);
-    const bottom = -index * STOREY * U;
-    const top = bottom - STOREY * U;
-    return {
-      walls: [
-        { x: left, y: top, width: WALL, height: STOREY * U },
-        { x: right - WALL, y: top, width: WALL, height: STOREY * U },
-      ],
-      slab: { x: left, y: top, width: right - left, height: SLAB },
-      // A parapet round the terrace on the third floor's roof.
-      parapets:
-        index === LEVELS.length - 2
-          ? [
-              { x, y: top - 10, width: 2, height: 10 },
-              { x: x + width - 2, y: top - 10, width: 2, height: 10 },
-            ]
-          : [],
-    };
+    const bottom = -index * H;
+    const top = bottom - H;
+    const middle = x + width / 2 - INNER / 2;
+    const [sill, head] = penthouse ? [GLASS_SILL, HEAD + 2] : [SILL, HEAD];
+    const parts = [
+      ...(index === 0
+        ? outerWall(left, bottom, 0, DOOR)
+        : outerWall(left, bottom, sill, head)),
+      ...outerWall(right - WALL, bottom, index === 0 ? 4 : sill, head),
+      index === 0
+        ? part("cut", middle, top, INNER, H - DOOR)
+        : part("cut", middle, top, INNER, H),
+      part("cut", left, top, right - left, SLAB),
+    ];
+    if (!penthouse) return parts;
+    const roof = bottom;
+    const rail = RAILING * U;
+    const railing = [x, x + width - 1].flatMap((post) => [
+      part("glass", post, roof - rail, 1, rail),
+      part("cut", post - 1, roof - rail - 1.5, 3, 1.5),
+    ]);
+    if (!pool) return [...parts, ...railing];
+    const p0 = x + (TERRACE_POOL.x0 - FOOTPRINT.x0) * U;
+    const p1 = x + (TERRACE_POOL.x1 - FOOTPRINT.x0) * U;
+    const rim = POOL_RIM * U;
+    return [
+      ...parts,
+      ...railing,
+      part("cut", p0, roof - rim, 1.5, rim),
+      part("cut", p1 - 1.5, roof - rim, 1.5, rim),
+      part("water", p0 + 1.5, roof - rim + 1, p1 - p0 - 3, rim - 1),
+    ];
   });
 }
 
@@ -75,22 +137,36 @@ const sectionA = section(
   (FOOTPRINT.x1 - FOOTPRINT.x0) * U,
   (PENTHOUSE.x0 - FOOTPRINT.x0) * U,
   0,
+  true,
 );
 const sectionB = section(
   (FOOTPRINT.y1 - FOOTPRINT.y0) * U,
   (PENTHOUSE.y0 - FOOTPRINT.y0) * U,
   B_OFFSET,
+  false,
 );
 const groundSlabs = [
   { x: 0, width: (FOOTPRINT.x1 - FOOTPRINT.x0) * U },
   { x: B_OFFSET, width: (FOOTPRINT.y1 - FOOTPRINT.y0) * U },
 ];
+/** Strip foundations under every wall: the wall carried down to a footing
+    0.8 m wider, 1.4 m below the floor. */
+const foundations = groundSlabs.flatMap(({ x, width }) =>
+  [
+    [x, WALL],
+    [x + width / 2 - INNER / 2, INNER],
+    [x + width - WALL, WALL],
+  ].flatMap(([at = 0, thick = 0]) => [
+    part("cut", at, SLAB, thick, 8),
+    part("cut", at - 4 + (thick - WALL) / 2, SLAB + 8, WALL + 8, 4),
+  ]),
+);
 const levels = Array.from(
   { length: LEVELS.length + 1 },
   (_, index) => index * STOREY,
 );
 const hatch = Array.from({ length: 52 }, (_, index) => -30 + index * 10)
-  .map((x) => `M${String(x)} 10L${String(x + 8)} 2`)
+  .map((x) => `M${String(x)} 18L${String(x + 16)} 2`)
   .join("");
 
 const { rows, area, volume } = schedule();
@@ -111,18 +187,15 @@ const { rows, area, volume } = schedule();
         {groundSlabs.map(({ x, width }) => (
           <rect class="sections__cut" x={x} y="0" width={width} height={SLAB} />
         ))}
+        {foundations.map(({ kind, ...box }) => (
+          <rect class={`sections__${kind}`} {...box} />
+        ))}
       </g>
       {LEVELS.map((_, index) => (
         <g data-wipe="up" data-at={storeyAt(index)} data-for="380">
-          {[sectionA[index], sectionB[index]].map((storey) =>
-            storey === undefined ? null : (
-              <>
-                {[...storey.walls, storey.slab, ...storey.parapets].map(
-                  (part) => (
-                    <rect class="sections__cut" {...part} />
-                  ),
-                )}
-              </>
+          {[...(sectionA[index] ?? []), ...(sectionB[index] ?? [])].map(
+            ({ kind, ...box }) => (
+              <rect class={`sections__${kind}`} {...box} />
             ),
           )}
         </g>
@@ -230,6 +303,14 @@ const { rows, area, volume } = schedule();
     stroke: var(--drawing-muted);
     stroke-width: 1px;
     vector-effect: non-scaling-stroke;
+  }
+
+  .sections .sections__glass {
+    fill: var(--accent);
+  }
+
+  .sections .sections__water {
+    fill: color-mix(in srgb, var(--accent) 45%, var(--drawing-fill));
   }
 
   .sections .sections__mark {

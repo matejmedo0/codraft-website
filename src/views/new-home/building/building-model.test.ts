@@ -10,6 +10,8 @@ import {
   project,
   schedule,
   SITE,
+  TERRACE_POOL,
+  terrace,
   viewTransform,
 } from "./building-model.ts";
 
@@ -31,6 +33,19 @@ describe("the building's schedule", () => {
     expect(PENTHOUSE.x1).toBeLessThan(FOOTPRINT.x1);
     expect(PENTHOUSE.y0).toBeGreaterThan(FOOTPRINT.y0);
     expect(PENTHOUSE.y1).toBeLessThan(FOOTPRINT.y1);
+  });
+});
+
+describe("the terrace", () => {
+  it("puts the pool on the west terrace, clear of the penthouse", () => {
+    expect(TERRACE_POOL.x0).toBeGreaterThan(FOOTPRINT.x0);
+    expect(TERRACE_POOL.x1).toBeLessThan(PENTHOUSE.x0);
+  });
+
+  it("rails all four edges, two behind the penthouse and two before", () => {
+    const { far, near } = terrace();
+    expect(far.panels).toHaveLength(2);
+    expect(near.panels).toHaveLength(2);
   });
 });
 

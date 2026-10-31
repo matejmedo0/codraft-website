@@ -225,5 +225,17 @@
   "newHome.building.height": "Storey height (m)",
   "newHome.building.volume": "Volume (m³)",
   "newHome.building.total": "Total",
-  "newHome.building.note": "Illustration. A storey's gross area is taken from the plan's outer dimensions, and its volume is the gross area times the storey height."
+  "newHome.building.note": "Illustration. A storey's gross area is taken from the plan's outer dimensions, and its volume is the gross area times the storey height.",
+  "newHome.journey.pick": "Pick a service",
+  "newHome.journey.contact.title": "Enquiry",
+  "newHome.journey.contact.body": "Get in touch by form or email and tell us what you need.",
+  "newHome.journey.scope": "Scope",
+  "newHome.journey.time": "Timeline",
+  "newHome.journey.price": "Price",
+  "newHome.journey.launch.apps": "The tool runs on your data and you get every login.",
+  "newHome.journey.launch.integrations": "Bookings and payments run on their own, connected to your site.",
+  "newHome.journey.launch.ai": "The assistant answers your customers around the clock, from your own content.",
+  "newHome.growth.x": "Months after launch",
+  "newHome.growth.y": "Visits from Google",
+  "newHome.growth.updates": "Updates"
 }

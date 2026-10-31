@@ -1,0 +1,1203 @@
+---
+/**
+ * Stage 01's drawing (M40): the client's way from the first enquiry to the
+ * finished product, for the service they pick. Four chips pick one of the
+ * build services; five steps follow, enquiry → free estimate → offer →
+ * build → launch, each a grip on a drafting line, and a small screen shows
+ * the step: the enquiry form with the service in it, the review with its
+ * checks, the offer with scope, timeline and price, the product drawn as a
+ * wireframe, then live. The product and the last line depend on the
+ * service: a website, an app, bookings, an AI assistant.
+ *
+ * journey.ts plays the steps once when the card comes into view and again
+ * on every new pick; a step can be clicked to stop on it. The picks work
+ * without JavaScript (radio inputs, :has()); without it, or with reduced
+ * motion, the last step stands. The screen is decorative; the steps and
+ * their lines are text.
+ */
+import type { Locale } from "../../../config/site.ts";
+import { t, type UiKey } from "../../../features/i18n/ui.ts";
+import { STAGES } from "../../../features/services/services.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const LAUNCH: Record<string, UiKey> = {
+  "web-stranice": "services.process.launch.body",
+  "web-aplikacije": "newHome.journey.launch.apps",
+  integracije: "newHome.journey.launch.integrations",
+  "ai-asistenti": "newHome.journey.launch.ai",
+};
+
+const services = (STAGES[1]?.services ?? []).map((service) => ({
+  id: service.icon ?? "",
+  title: t(locale, service.title),
+  launch: t(
+    locale,
+    LAUNCH[service.icon ?? ""] ?? "services.process.launch.body",
+  ),
+}));
+
+const steps = [
+  ["newHome.journey.contact.title", "newHome.journey.contact.body"],
+  ["services.process.audit.title", "services.process.audit.body"],
+  ["services.process.offer.title", "services.process.offer.body"],
+  ["services.process.build.title", "services.process.build.body"],
+  ["services.process.launch.title", undefined],
+] as const;
+
+const offer = (
+  [
+    "newHome.journey.scope",
+    "newHome.journey.time",
+    "newHome.journey.price",
+  ] as const
+).map((key) => t(locale, key));
+---
+
+<div class="journey" data-journey data-step="4">
+  <fieldset class="journey__pick">
+    <legend class="journey__legend nk-label">
+      {t(locale, "newHome.journey.pick")}
+    </legend>
+    <div class="journey__chips">
+      {services.map((service, index) => (
+        <label class="chip">
+          <input
+            class="chip__input"
+            type="radio"
+            name="journey-service"
+            value={service.id}
+            checked={index === 0}
+          />
+          <span>{service.title}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <ol class="journey__steps">
+    {steps.map(([title], index) => (
+      <li class="jstep">
+        <button
+          class="jstep__button"
+          type="button"
+          data-goto={index}
+          aria-current={index === steps.length - 1 ? "step" : undefined}
+        >
+          <span class="jstep__node" aria-hidden="true" />
+          <span class="jstep__title">{t(locale, title)}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
+
+  <div class="journey__screen" aria-hidden="true">
+    <div class="scene scene--0">
+      <div class="form">
+        <span class="pb w30"></span>
+        <span class="field"></span>
+        <span class="pb w30"></span>
+        <span class="field field--chip">
+          {services.map((service) => (
+            <span data-product={service.id}>{service.title}</span>
+          ))}
+        </span>
+        <span class="pb w30"></span>
+        <span class="field field--tall"></span>
+        <span class="pa btn"></span>
+      </div>
+    </div>
+
+    <div class="scene scene--1">
+      <div class="review">
+        <span class="pt w50"></span>
+        <span class="pb w80"></span>
+        <span class="pf review__block"></span>
+        <span class="pb w60"></span>
+        <span class="pb w70"></span>
+        <span class="lens"></span>
+      </div>
+      <ul class="checks">
+        {["w70", "w50", "w80", "w60"].map((width) => (
+          <li>
+            <span class="tick" />
+            <span class:list={["pb", width]} />
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="scene scene--2">
+      <div class="doc">
+        <span class="pt w50"></span>
+        {offer.map((label, index) => (
+          <span class="doc__row">
+            <span class="doc__label">{label}</span>
+            <span class:list={["pb", ["w70", "w40", "w30"][index]]} />
+          </span>
+        ))}
+        <span class="doc__sign">
+          <span class="pb w40"></span>
+          <span class="stamp"></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="scene scene--build">
+      <div class="window">
+        <span class="window__bar">
+          <span class="lock"></span>
+          <span class="pb w40"></span>
+          <span class="live"></span>
+        </span>
+        <div class="window__body">
+          <div class="product" data-product="web-stranice">
+            <div class="web">
+              <div class="web__nav">
+                <span class="pa web__logo"></span>
+                <span class="pb w15"></span>
+                <span class="pb w15"></span>
+                <span class="pb w15"></span>
+              </div>
+              <div class="web__hero">
+                <div class="web__copy">
+                  <span class="pt w80"></span>
+                  <span class="pb w60"></span>
+                  <span class="pa btn"></span>
+                </div>
+                <span class="pf web__image"></span>
+              </div>
+              <div class="web__cards">
+                {[0, 1, 2].map(() => (
+                  <span class="web__card">
+                    <span class="pf web__thumb" />
+                    <span class="pb w60" />
+                    <span class="pa pill" />
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="product" data-product="web-aplikacije">
+            <div class="app">
+              <div class="app__side">
+                <span class="pa w60"></span>
+                <span class="pb w80"></span>
+                <span class="pb w70"></span>
+                <span class="pb w80"></span>
+                <span class="pb w60"></span>
+              </div>
+              <div class="app__main">
+                <div class="app__kpis">
+                  {[0, 1, 2].map(() => (
+                    <span class="app__kpi">
+                      <span class="pb w50" />
+                      <span class="pt w70" />
+                    </span>
+                  ))}
+                </div>
+                <div class="app__chart">
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map(() => (
+                    <span class="pa" />
+                  ))}
+                </div>
+                <div class="app__rows">
+                  {[0, 1, 2].map(() => (
+                    <span class="app__row">
+                      <span class="pb w30" />
+                      <span class="pb w20" />
+                      <span class="pf w15" />
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product" data-product="integracije">
+            <div class="book">
+              <div class="book__cal">
+                <span class="pt w40"></span>
+                <div class="book__days">
+                  {Array.from({ length: 35 }, () => (
+                    <span class="pf day" />
+                  ))}
+                </div>
+              </div>
+              <div class="book__times">
+                <span class="pb w60"></span>
+                {[0, 1, 2, 3].map(() => (
+                  <span class="pf time" />
+                ))}
+                <span class="pa btn"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="product" data-product="ai-asistenti">
+            <div class="chat">
+              <div class="chat__log">
+                <span class="pf msg msg--in w60"></span>
+                <span class="pa msg msg--out w70"></span>
+                <span class="pf msg msg--in w45"></span>
+                <span class="pa msg msg--out w55"></span>
+                <span class="typing">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </span>
+              </div>
+              <div class="chat__input">
+                <span class="pb w60"></span>
+                <span class="pa send"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="progress"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey__caption">
+    {steps.map(([title, body], index) =>
+      body === undefined ? (
+        services.map((service) => (
+          <p class="jcap" data-for-step={index} data-product={service.id}>
+            <strong>{t(locale, title)}.</strong> {service.launch}
+          </p>
+        ))
+      ) : (
+        <p class="jcap" data-for-step={index}>
+          <strong>{t(locale, title)}.</strong> {t(locale, body)}
+        </p>
+      ),
+    )}
+  </div>
+</div>
+
+<script>
+  import "./journey.ts";
+</script>
+
+<style>
+  .journey {
+    display: grid;
+    gap: var(--space-5);
+    width: 100%;
+  }
+
+  /* The picks: radio inputs as pills. */
+  .journey__pick {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .journey__legend {
+    margin-bottom: var(--space-3);
+    padding: 0;
+  }
+
+  .journey__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.25rem var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+    cursor: pointer;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  .chip:hover {
+    color: var(--ink);
+  }
+
+  .chip__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .chip:has(.chip__input:checked) {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--button-primary-fg);
+  }
+
+  .chip:has(.chip__input:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* The steps: grips on a drafting line that fills up to the current one. */
+  .journey__steps {
+    --progress: 1;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .journey__steps::before,
+  .journey__steps::after {
+    position: absolute;
+    top: calc(0.75rem - var(--rail) / 2);
+    right: 10%;
+    left: 10%;
+    height: var(--rail);
+    background: var(--line);
+    content: "";
+  }
+
+  .journey__steps::after {
+    background: var(--accent);
+    transform: scaleX(var(--progress));
+    transform-origin: 0 50%;
+    transition: transform 600ms var(--ease-pen);
+  }
+
+  .jstep__button {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: var(--step-small);
+    cursor: pointer;
+  }
+
+  .jstep__button:hover,
+  .jstep__button[aria-current] {
+    color: var(--ink);
+  }
+
+  .jstep__button:focus-visible {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .jstep__node {
+    position: relative;
+    z-index: 1;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: var(--grip-stroke) solid var(--line);
+    background: var(--color-elevated);
+    transition:
+      border-color var(--motion-base) var(--ease-standard),
+      background-color var(--motion-base) var(--ease-standard),
+      scale var(--motion-base) var(--ease-standard);
+    scale: 0.66;
+  }
+
+  .jstep__title {
+    text-align: center;
+  }
+
+  /* Done and current steps, by the journey's step. */
+  [data-step="0"] .journey__steps {
+    --progress: 0;
+  }
+
+  [data-step="1"] .journey__steps {
+    --progress: 0.25;
+  }
+
+  [data-step="2"] .journey__steps {
+    --progress: 0.5;
+  }
+
+  [data-step="3"] .journey__steps {
+    --progress: 0.75;
+  }
+
+  [data-step="0"] .jstep:nth-child(-n + 1) .jstep__node,
+  [data-step="1"] .jstep:nth-child(-n + 2) .jstep__node,
+  [data-step="2"] .jstep:nth-child(-n + 3) .jstep__node,
+  [data-step="3"] .jstep:nth-child(-n + 4) .jstep__node,
+  [data-step="4"] .jstep .jstep__node {
+    border-color: var(--accent);
+    background: var(--grip-fill);
+  }
+
+  .jstep__button[aria-current] .jstep__node {
+    background: var(--accent);
+    scale: 1;
+  }
+
+  /* The screen: one scene at a time. */
+  .journey__screen {
+    position: relative;
+    display: grid;
+    aspect-ratio: 16 / 10;
+    padding: var(--space-4);
+    overflow: hidden;
+    border: var(--rule) solid var(--line);
+    border-radius: var(--nk-radius-inner);
+    background: var(--surface);
+  }
+
+  .scene {
+    display: none;
+    min-height: 0;
+  }
+
+  [data-step="0"] .scene--0,
+  [data-step="1"] .scene--1,
+  [data-step="2"] .scene--2,
+  [data-step="3"] .scene--build,
+  [data-step="4"] .scene--build {
+    display: grid;
+  }
+
+  /* The pick decides the product, the chip in the form and the last line. */
+  [data-product] {
+    display: none;
+  }
+
+  .journey:has([value="web-stranice"]:checked) [data-product="web-stranice"],
+  .journey:has([value="web-aplikacije"]:checked)
+    [data-product="web-aplikacije"],
+  .journey:has([value="integracije"]:checked) [data-product="integracije"],
+  .journey:has([value="ai-asistenti"]:checked) [data-product="ai-asistenti"] {
+    display: revert;
+  }
+
+  .journey .product[data-product] {
+    height: 100%;
+  }
+
+  .journey:has([value="web-stranice"]:checked)
+    .product[data-product="web-stranice"],
+  .journey:has([value="web-aplikacije"]:checked)
+    .product[data-product="web-aplikacije"],
+  .journey:has([value="integracije"]:checked)
+    .product[data-product="integracije"],
+  .journey:has([value="ai-asistenti"]:checked)
+    .product[data-product="ai-asistenti"] {
+    display: grid;
+  }
+
+  /* Skeleton parts: text bars, titles, accents and fills. */
+  :is(.pb, .pt, .pa, .pf) {
+    display: block;
+    height: 0.375rem;
+    border-radius: 999px;
+  }
+
+  .pb {
+    background: color-mix(in srgb, var(--drawing-muted) 70%, transparent);
+  }
+
+  .pt {
+    height: 0.625rem;
+    background: var(--drawing-ink);
+  }
+
+  .pa {
+    background: var(--accent);
+  }
+
+  .pf {
+    background: var(--color-elevated);
+  }
+
+  .w15 {
+    width: 15%;
+  }
+
+  .w20 {
+    width: 20%;
+  }
+
+  .w30 {
+    width: 30%;
+  }
+
+  .w40 {
+    width: 40%;
+  }
+
+  .w45 {
+    width: 45%;
+  }
+
+  .w50 {
+    width: 50%;
+  }
+
+  .w55 {
+    width: 55%;
+  }
+
+  .w60 {
+    width: 60%;
+  }
+
+  .w70 {
+    width: 70%;
+  }
+
+  .w80 {
+    width: 80%;
+  }
+
+  .btn {
+    width: 4.5rem;
+    height: 1.25rem;
+  }
+
+  .pill {
+    width: 2.5rem;
+    height: 0.875rem;
+  }
+
+  /* 0 · Enquiry: a short form with the picked service in it. */
+  .form {
+    display: grid;
+    gap: var(--space-2);
+    align-content: center;
+    justify-items: start;
+    width: min(100%, 22rem);
+    margin-inline: auto;
+  }
+
+  .field {
+    width: 100%;
+    height: 1.5rem;
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .field--chip {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-2);
+    color: var(--ink);
+    font-size: 0.6875rem;
+  }
+
+  .field--tall {
+    height: 3rem;
+  }
+
+  /* 1 · Free estimate: the site under a lens, and the checks ticked. */
+  .scene--1 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  .review {
+    position: relative;
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .review__block {
+    height: 2.5rem;
+  }
+
+  .lens {
+    position: absolute;
+    right: -0.75rem;
+    bottom: -0.75rem;
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+  }
+
+  .lens::after {
+    position: absolute;
+    right: -0.75rem;
+    bottom: -0.5rem;
+    width: 1rem;
+    height: 2px;
+    background: var(--accent);
+    content: "";
+    rotate: 45deg;
+  }
+
+  .checks {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .checks li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .tick {
+    flex: none;
+    width: 0.875rem;
+    height: 0.5rem;
+    border-bottom: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+    rotate: -45deg;
+    translate: 0 -0.125rem;
+  }
+
+  .checks .pb {
+    flex: 1;
+  }
+
+  /* 2 · Offer: a document with scope, timeline and price, stamped. */
+  .doc {
+    display: grid;
+    gap: var(--space-3);
+    align-content: center;
+    align-self: center;
+    width: min(100%, 22rem);
+    margin-inline: auto;
+    padding: var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface-sunk);
+  }
+
+  .doc__row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    padding-block: var(--space-1);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .doc__label {
+    color: var(--ink);
+    font-family: var(--nk-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .doc__sign {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: var(--space-2);
+  }
+
+  .stamp {
+    width: 1.75rem;
+    height: 1.75rem;
+    border: var(--grip-stroke) solid var(--accent);
+    background: var(--grip-fill);
+  }
+
+  /* 3 and 4 · Build and launch: the product in a window, first as a
+     wireframe with a progress bar, then live. */
+  .window {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 0;
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .window__bar {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--rule) solid var(--line);
+  }
+
+  .window__bar .pb {
+    flex: none;
+  }
+
+  .lock {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 1px;
+  }
+
+  .live {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-left: auto;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .window__body {
+    min-height: 0;
+    padding: var(--space-3);
+  }
+
+  .progress {
+    display: none;
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    left: var(--space-4);
+    height: 3px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform-origin: 0 50%;
+  }
+
+  [data-step="3"] .progress {
+    display: block;
+  }
+
+  [data-step="3"] :is(.lock, .live) {
+    visibility: hidden;
+  }
+
+  /* Wireframe: every part an empty dashed outline. */
+  [data-step="3"] .window__body :is(.pb, .pt, .pa, .pf, .typing) {
+    outline: 1px dashed var(--drawing-muted);
+    outline-offset: -1px;
+    background: transparent;
+  }
+
+  /* The website: navigation, hero with an image, three cards. */
+  .web {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-3);
+  }
+
+  .web__nav {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .web__logo {
+    width: 1.25rem;
+    margin-right: auto;
+  }
+
+  .web__nav .pb {
+    flex: none;
+  }
+
+  .web__hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .web__copy {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .web__image {
+    height: 100%;
+    min-height: 3rem;
+    border-radius: var(--radius);
+  }
+
+  .web__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .web__card {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .web__thumb {
+    height: 1.5rem;
+    border-radius: var(--radius);
+  }
+
+  /* The app: a side menu, three figures, a bar chart, rows. */
+  .app {
+    display: grid;
+    grid-template-columns: 22% minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .app__side {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding-right: var(--space-2);
+    border-right: var(--rule) solid var(--line);
+  }
+
+  .app__main {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-2);
+  }
+
+  .app__kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .app__kpi {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-2);
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .app__chart {
+    display: flex;
+    gap: 6%;
+    align-items: end;
+    min-height: 2rem;
+    padding-inline: var(--space-2);
+  }
+
+  .app__chart .pa {
+    flex: 1;
+    height: 40%;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .app__chart .pa:nth-child(2) {
+    height: 55%;
+  }
+
+  .app__chart .pa:nth-child(3) {
+    height: 48%;
+  }
+
+  .app__chart .pa:nth-child(4) {
+    height: 70%;
+  }
+
+  .app__chart .pa:nth-child(5) {
+    height: 62%;
+  }
+
+  .app__chart .pa:nth-child(6) {
+    height: 82%;
+  }
+
+  .app__chart .pa:nth-child(7) {
+    height: 76%;
+  }
+
+  .app__chart .pa:nth-child(8) {
+    height: 95%;
+  }
+
+  .app__rows {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .app__row {
+    display: flex;
+    gap: var(--space-3);
+    padding-top: var(--space-1);
+    border-top: var(--rule) solid var(--line);
+  }
+
+  .app__row .pf {
+    margin-left: auto;
+  }
+
+  /* The bookings: a month with one day picked, times, a confirm button. */
+  .book {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .book__cal {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .book__days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+  }
+
+  .day {
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 3px;
+  }
+
+  .day:nth-child(17) {
+    background: var(--accent);
+  }
+
+  .day:nth-child(-n + 3),
+  .day:nth-child(7n) {
+    opacity: 0.4;
+  }
+
+  .book__times {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .time {
+    height: 1.125rem;
+    border-radius: var(--radius);
+  }
+
+  .time:nth-of-type(3) {
+    outline: 1.5px solid var(--accent);
+    outline-offset: -1.5px;
+  }
+
+  /* The assistant: a conversation, typing, and the input. */
+  .chat {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: var(--space-3);
+  }
+
+  .chat__log {
+    display: grid;
+    gap: var(--space-2);
+    align-content: end;
+  }
+
+  .msg {
+    height: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .msg--in {
+    border-bottom-left-radius: 2px;
+  }
+
+  .msg--out {
+    justify-self: end;
+    border-bottom-right-radius: 2px;
+  }
+
+  .typing {
+    display: flex;
+    gap: 0.25rem;
+    width: fit-content;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--color-elevated);
+  }
+
+  .typing i {
+    width: 0.3125rem;
+    height: 0.3125rem;
+    border-radius: 50%;
+    background: var(--drawing-muted);
+  }
+
+  .chat__input {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2);
+    border: var(--rule) solid var(--line);
+    border-radius: 999px;
+  }
+
+  .send {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* The caption: the current step's line, the others kept for screen
+     readers. */
+  .journey__caption {
+    min-height: 3em;
+    color: var(--ink-muted);
+  }
+
+  .jcap strong {
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  .jcap {
+    position: absolute;
+    margin: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  [data-step="0"] .jcap[data-for-step="0"],
+  [data-step="1"] .jcap[data-for-step="1"],
+  [data-step="2"] .jcap[data-for-step="2"],
+  [data-step="3"] .jcap[data-for-step="3"],
+  [data-step="4"] .jcap[data-for-step="4"] {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  /* Small screens: a taller screen, so the scenes fit, and only the
+     current step's name under the line. */
+  @media (max-width: 47.99rem) {
+    .journey__screen {
+      aspect-ratio: 4 / 3.4;
+      padding: var(--space-3);
+    }
+
+    .doc {
+      gap: var(--space-2);
+      padding: var(--space-3);
+    }
+  }
+
+  @media (max-width: 29.99rem) {
+    .jstep__title {
+      font-size: 0.6875rem;
+    }
+
+    .jstep__button:not([aria-current]) .jstep__title {
+      opacity: 0;
+    }
+  }
+
+  /* Each scene comes in; the build's progress fills; ticks and rows
+     follow one another. */
+  @media (prefers-reduced-motion: no-preference) {
+    .scene {
+      animation: journey-in 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    [data-step="3"] .progress {
+      animation: journey-fill 1.3s var(--ease-standard) both;
+    }
+
+    .checks li {
+      animation: journey-in 350ms var(--ease-standard) both;
+    }
+
+    .checks li:nth-child(2) {
+      animation-delay: 200ms;
+    }
+
+    .checks li:nth-child(3) {
+      animation-delay: 400ms;
+    }
+
+    .checks li:nth-child(4) {
+      animation-delay: 600ms;
+    }
+
+    .doc__row {
+      animation: journey-in 350ms var(--ease-standard) both;
+    }
+
+    .doc__row:nth-child(3) {
+      animation-delay: 200ms;
+    }
+
+    .doc__row:nth-child(4) {
+      animation-delay: 400ms;
+    }
+
+    .stamp {
+      animation: motion-snap-in var(--motion-snap) var(--ease-snap) 700ms both;
+    }
+
+    .typing i {
+      animation: journey-dot 1s ease-in-out infinite;
+    }
+
+    .typing i:nth-child(2) {
+      animation-delay: 150ms;
+    }
+
+    .typing i:nth-child(3) {
+      animation-delay: 300ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip,
+    .journey__steps::after,
+    .jstep__node {
+      transition: none;
+    }
+  }
+
+  @keyframes journey-in {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes journey-fill {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+
+  @keyframes journey-dot {
+    50% {
+      opacity: 0.3;
+    }
+  }
+</style>

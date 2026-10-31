@@ -2,8 +2,8 @@
 /**
  * The residential building of the new Home's drafting scene (M28): its site
  * plan drawn element by element, then turned and tilted into a 3D view in
- * which the storeys come down one on the other, the penthouse last, and the
- * height is dimensioned. building-scene.ts starts it once, when the drawing
+ * which the storeys come down one on the other, the penthouse last, and
+ * its terrace gets a glass railing and a raised pool (M40). building-scene.ts starts it once, when the drawing
  * comes into view; each element's start and length are its `data-at` and
  * `data-for`, in milliseconds from that start. Without JavaScript, or with
  * reduced motion, the drawing shows its final state, the 3D view.
@@ -17,14 +17,13 @@ import {
   AXO_VIEW,
   DECK,
   FOOTPRINT,
-  heightDimension,
-  HEIGHT,
   PARKING,
   POOL,
   SITE,
   STOREY_AT,
   STOREY_STEP,
   storeys,
+  terrace,
   TREE_RADIUS,
   TREES,
   U,
@@ -64,7 +63,9 @@ const bayLines = bays
 const aisle = `M${String(d(PARKING.x0))} ${String(d(PARKING.y0))}V${String(d(SITE.depth))}M${String(d(PARKING.x1))} ${String(d(PARKING.y0))}V${String(d(parkingEnd))}`;
 
 const model = storeys();
-const height = heightDimension();
+const deck = terrace();
+/** The terrace's railing and pool come once the penthouse has landed. */
+const TERRACE_AT = STOREY_AT + (model.length - 1) * STOREY_STEP + 500;
 ---
 
 <svg
@@ -146,45 +147,65 @@ const height = heightDimension();
 
   <g class="bld__model">
     {model.map((storey, index) => (
-      <g
-        class="bld-storey"
-        data-drop
-        data-at={STOREY_AT + index * STOREY_STEP}
-        data-for={index === model.length - 1 ? 650 : 520}
-      >
-        {storey.facades.map((facade) => (
-          <>
-            <polygon
-              class:list={["bld-face", `bld-face--${facade.side}`]}
-              points={facade.outline}
-            />
-            {facade.windows.map((pane) => (
-              <polygon class="bld-glass" points={pane} />
+      <>
+        {index === model.length - 1 && (
+          <g
+            class="bld-railing"
+            data-wipe="fade"
+            data-at={TERRACE_AT}
+            data-for="400"
+          >
+            {deck.far.panels.map((panel) => (
+              <polygon class="bld-rail-glass" points={panel} />
             ))}
-          </>
-        ))}
-        <polygon class="bld-top" points={storey.top} />
-      </g>
+            <path d={deck.far.posts}></path>
+          </g>
+        )}
+        <g
+          class="bld-storey"
+          data-drop
+          data-at={STOREY_AT + index * STOREY_STEP}
+          data-for={index === model.length - 1 ? 650 : 520}
+        >
+          {storey.facades.map((facade) => (
+            <>
+              <polygon
+                class:list={["bld-face", `bld-face--${facade.side}`]}
+                points={facade.outline}
+              />
+              {facade.windows.map((pane) => (
+                <polygon class="bld-glass" points={pane} />
+              ))}
+            </>
+          ))}
+          <polygon class="bld-top" points={storey.top} />
+        </g>
+      </>
     ))}
-  </g>
-
-  <g
-    class="bld-height"
-    data-wipe="fade"
-    data-at={STOREY_AT + model.length * STOREY_STEP + 400}
-    data-for="400"
-  >
-    <path d={height.line}></path>
-    {height.ticks.map((tick) => (
-      <path d={tick} />
-    ))}
-    <text
-      x={d(height.label[0])}
-      y={d(height.label[1])}
-      transform={`rotate(-90 ${String(d(height.label[0]))} ${String(d(height.label[1]))})`}
+    <g class="bld-terrace-pool" data-drop data-at={TERRACE_AT} data-for="450">
+      {deck.pool.sides.map((side, index) => (
+        <polygon
+          class:list={[
+            "bld-face",
+            index === 0 ? "bld-face--west" : "bld-face--south",
+          ]}
+          points={side}
+        />
+      ))}
+      <polygon class="bld-top" points={deck.pool.rim} />
+      <polygon class="bld-pool" points={deck.pool.water} />
+    </g>
+    <g
+      class="bld-railing"
+      data-wipe="fade"
+      data-at={TERRACE_AT + 150}
+      data-for="400"
     >
-      {number.format(HEIGHT)}
-    </text>
+      {deck.near.panels.map((panel) => (
+        <polygon class="bld-rail-glass" points={panel} />
+      ))}
+      <path d={deck.near.posts}></path>
+    </g>
   </g>
 </svg>
 
@@ -251,9 +272,19 @@ const height = heightDimension();
     stroke: color-mix(in srgb, var(--accent) 70%, var(--drawing-fill));
   }
 
-  .bld .bld-plan-dims path,
-  .bld .bld-height path {
+  .bld .bld-plan-dims path {
     stroke: var(--accent);
+  }
+
+  /* The terrace's railing: glass panels, a tint of the accent you see the
+     penthouse through, on thin posts. */
+  .bld .bld-rail-glass {
+    fill: color-mix(in srgb, var(--accent) 16%, transparent);
+    stroke: color-mix(in srgb, var(--accent) 75%, var(--drawing-fill));
+  }
+
+  .bld .bld-railing path {
+    stroke: var(--drawing-muted);
   }
 
   /* Lettering in decimetres: about 1.4 m tall on the site. */
@@ -267,7 +298,7 @@ const height = heightDimension();
     dominant-baseline: central;
   }
 
-  .bld :is(.bld-plan-dims, .bld-height) text {
+  .bld .bld-plan-dims text {
     fill: var(--accent-text);
   }
 

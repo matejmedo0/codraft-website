@@ -317,30 +317,80 @@ export function storeys(): Storey[] {
   });
 }
 
-/** The height's dimension in the 3D view, just east of the south-east corner, clear of the facades. */
-export function heightDimension(): {
-  line: string;
-  ticks: string[];
-  label: Point;
-} {
-  const foot: Point = [FOOTPRINT.x1 + 2.5, FOOTPRINT.y1];
-  const levels = Array.from(
-    { length: LEVELS.length + 1 },
-    (_, index) => index * STOREY,
-  );
-  const at = (z: number): Point => axo(foot, z);
-  const tick = (z: number): string => {
-    const [px, py] = at(z);
-    const x = px * U;
-    const y = py * U;
-    return `M${String(round(x - 6))} ${String(round(y + 6))}L${String(round(x + 6))} ${String(round(y - 6))}`;
+/** The terrace's glass railing round the third floor's roof, 1.1 m high. */
+export const RAILING = 1.1;
+
+/** A raised pool on the west terrace, beside the penthouse: 2.2 × 7 m, its
+    rim 0.5 m above the terrace. */
+export const TERRACE_POOL = { x0: 14.7, y0: 12.5, x1: 16.9, y1: 19.5 };
+export const POOL_RIM = 0.5;
+
+export interface Terrace {
+  /** The railing's panels and posts on the far edges (north, east), which
+      the penthouse hides in part, so they go before it. */
+  far: { panels: string[]; posts: string };
+  /** The near edges (west, south), drawn over the penthouse and the pool. */
+  near: { panels: string[]; posts: string };
+  pool: { sides: string[]; rim: string; water: string };
+}
+
+/**
+ * What stands on the third floor's roof round the penthouse (M40): a glass
+ * railing along its four edges, posts every 2 m, and the raised pool.
+ */
+export function terrace(): Terrace {
+  const roof = BOXES[BOXES.length - 2]?.z1 ?? 0;
+  const { x0, y0, x1, y1 } = FOOTPRINT;
+  const edge = (a: Point, b: Point) => {
+    const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const count = Math.round(length / 2);
+    const posts = Array.from({ length: count + 1 }, (_, index) => {
+      const at: Point = [
+        a[0] + ((b[0] - a[0]) * index) / count,
+        a[1] + ((b[1] - a[1]) * index) / count,
+      ];
+      return `M${points([axo(at, roof), axo(at, roof + RAILING)])}`;
+    }).join("");
+    return {
+      panel: points([
+        axo(a, roof),
+        axo(b, roof),
+        axo(b, roof + RAILING),
+        axo(a, roof + RAILING),
+      ]),
+      posts,
+    };
   };
-  const [bx, by] = at(0);
-  const [tx, ty] = at(HEIGHT);
+  const north = edge([x1, y0], [x0, y0]);
+  const east = edge([x1, y1], [x1, y0]);
+  const west = edge([x0, y0], [x0, y1]);
+  const south = edge([x0, y1], [x1, y1]);
+  const pool = TERRACE_POOL;
+  const top = roof + POOL_RIM;
+  const face = (a: Point, b: Point): string =>
+    points([axo(a, roof), axo(b, roof), axo(b, top), axo(a, top)]);
+  const inset = 0.25;
   return {
-    line: `M${String(round(bx * U))} ${String(round(by * U))}L${String(round(tx * U))} ${String(round(ty * U))}`,
-    ticks: levels.map(tick),
-    label: [(bx + tx) / 2 + 1.4, (by + ty) / 2],
+    far: { panels: [north.panel, east.panel], posts: north.posts + east.posts },
+    near: {
+      panels: [west.panel, south.panel],
+      posts: west.posts + south.posts,
+    },
+    pool: {
+      sides: [
+        face([pool.x0, pool.y0], [pool.x0, pool.y1]),
+        face([pool.x0, pool.y1], [pool.x1, pool.y1]),
+      ],
+      rim: points(corners(pool).map((point) => axo(point, top))),
+      water: points(
+        corners({
+          x0: pool.x0 + inset,
+          y0: pool.y0 + inset,
+          x1: pool.x1 - inset,
+          y1: pool.y1 - inset,
+        }).map((point) => axo(point, top - 0.05)),
+      ),
+    },
   };
 }
 

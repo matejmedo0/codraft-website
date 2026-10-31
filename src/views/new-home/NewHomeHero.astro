@@ -1,10 +1,9 @@
 ---
 /**
  * The new Home's hero, split as in the client's reference (M36): on the
- * left the headline, its second line in the accent, the lead, the one
- * button to the services and the drafting page as a second, outlined pill;
- * on the right a board of four small drawings of what the studio does
- * (HeroBoard.astro).
+ * left the headline, its second line in the accent, the lead and one
+ * button, to the services (M40: one button only); on the right a board of
+ * four small drawings of what the studio does (HeroBoard.astro).
  *
  * The text comes in on load: the headline's two lines rise out of their
  * own baseline one after the other, then the lead and the actions fade up,
@@ -41,9 +40,6 @@ const { locale } = Astro.props;
     <div class="hero__actions">
       <Button href={pathFor("services", locale)}>
         {t(locale, "home.hero.cta")}
-      </Button>
-      <Button href={pathFor("drafting", locale)} variant="secondary">
-        {t(locale, "home.hero.drafting")}
       </Button>
     </div>
   </div>

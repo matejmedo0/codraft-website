@@ -21,7 +21,9 @@
 import SilkWaves from "../../components/ui/SilkWaves.astro";
 import type { Locale } from "../../config/site.ts";
 import { MAIN_NAV } from "../../features/i18n/navigation.ts";
-import { t } from "../../features/i18n/ui.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t, type UiKey } from "../../features/i18n/ui.ts";
+import { STAGES } from "../../features/services/services.ts";
 
 interface Props {
   locale: Locale;
@@ -31,6 +33,14 @@ interface Props {
 
 const { locale, address } = Astro.props;
 const CARDS = [60, 240, 420];
+/** The pages the window scrolls through, as the page in it lists them. */
+const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
+  { page: "services", label: "nav.services" },
+  { page: "audit", label: "home.audit.title" },
+  { page: "drafting", label: "nav.drafting" },
+  { page: "about", label: "nav.about" },
+  { page: "contact", label: "nav.contact" },
+];
 ---
 
 <section class="hero" data-hero>
@@ -57,6 +67,52 @@ const CARDS = [60, 240, 420];
             ))}
           </ul>
         </div>
+        <div class="hero__page" data-hero-page>
+          <div class="hero__page-main">
+            <p class="hero__page-title" data-fill>
+              {t(locale, "home.hero.window.title")}
+            </p>
+            <p class="hero__page-lead" data-fill>
+              {t(locale, "home.hero.lead")}
+            </p>
+            <button
+              type="button"
+              class="hero__page-scroll"
+              data-fill
+              data-hero-scroll
+            >
+              {t(locale, "home.hero.window.scroll")}
+              <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                <path d="M2 4l4 4 4-4"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="hero__page-side" data-fill>
+            <p class="hero__page-label">
+              {t(locale, "home.hero.window.pages")}
+            </p>
+            <ul class="hero__page-list">
+              {WINDOW_PAGES.map(({ page, label }) => (
+                <li>
+                  <button type="button" data-go={page}>
+                    {t(locale, label)}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <ul class="hero__page-stages">
+            {STAGES.map((stage) => (
+              <li data-fill>
+                <span class="hero__page-number">{stage.number}</span>
+                <span class="hero__page-stage">{t(locale, stage.title)}</span>
+                <span class="hero__page-tagline">
+                  {t(locale, stage.tagline)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <svg
         class="hero__drawing"
@@ -66,10 +122,6 @@ const CARDS = [60, 240, 420];
         focusable="false"
       >
         <defs>
-          <linearGradient id="hero-image-fill" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" class="hero__stop-from" />
-            <stop offset="1" class="hero__stop-to" />
-          </linearGradient>
           <linearGradient id="hero-scan-fill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" class="hero__scan-edge" />
             <stop offset="0.5" class="hero__scan-light" />
@@ -195,17 +247,12 @@ const CARDS = [60, 240, 420];
           ))}
         </g>
 
-        <!-- The finished interface, filled in over the blueprint. -->
+        <!-- The bar filled in over the blueprint, first; the page in real
+             text (the glass's .hero__page) fills in after it. -->
         <g class="hero__product">
-          <rect
-            class="hero__panel"
-            x="20"
-            y="20"
-            width="600"
-            height="400"
-            rx="14"
-            data-fill
-          />
+          {[46, 64, 82].map((cx) => (
+            <circle class="hero__muted" cx={cx} cy="40" r="4" data-fill />
+          ))}
           <rect
             class="hero__ink"
             x="110"
@@ -242,118 +289,6 @@ const CARDS = [60, 240, 420];
             rx="3"
             data-fill
           />
-          <rect
-            class="hero__ink"
-            x="60"
-            y="104"
-            width="290"
-            height="30"
-            rx="4"
-            data-fill
-          />
-          <rect
-            class="hero__ink"
-            x="60"
-            y="144"
-            width="210"
-            height="30"
-            rx="4"
-            data-fill
-          />
-          <rect
-            class="hero__muted"
-            x="60"
-            y="193"
-            width="260"
-            height="6"
-            rx="3"
-            data-fill
-          />
-          <rect
-            class="hero__muted"
-            x="60"
-            y="209"
-            width="230"
-            height="6"
-            rx="3"
-            data-fill
-          />
-          <rect
-            class="hero__muted"
-            x="60"
-            y="225"
-            width="180"
-            height="6"
-            rx="3"
-            data-fill
-          />
-          <rect
-            class="hero__cta"
-            x="60"
-            y="252"
-            width="128"
-            height="36"
-            rx="18"
-            data-fill
-          />
-          <rect
-            class="hero__cta-ink"
-            x="84"
-            y="267"
-            width="80"
-            height="6"
-            rx="3"
-            data-fill
-          />
-          <rect
-            class="hero__image"
-            x="390"
-            y="104"
-            width="190"
-            height="184"
-            rx="12"
-            data-fill
-          />
-          {CARDS.map((x) => (
-            <>
-              <rect
-                class="hero__card"
-                x={x}
-                y="318"
-                width="160"
-                height="78"
-                rx="10"
-                data-fill
-              />
-              <rect
-                class="hero__ink"
-                x={x + 16}
-                y="336"
-                width="60"
-                height="6"
-                rx="3"
-                data-fill
-              />
-              <rect
-                class="hero__muted"
-                x={x + 16}
-                y="352"
-                width="110"
-                height="5"
-                rx="2.5"
-                data-fill
-              />
-              <rect
-                class="hero__muted"
-                x={x + 16}
-                y="364"
-                width="84"
-                height="5"
-                rx="2.5"
-                data-fill
-              />
-            </>
-          ))}
         </g>
       </svg>
     </div>
@@ -400,6 +335,7 @@ const CARDS = [60, 240, 420];
     const glass = hero.querySelector<HTMLElement>("[data-hero-glass]");
     const drawing = hero.querySelector("[data-hero-drawing]");
     const chrome = hero.querySelector<HTMLElement>("[data-hero-chrome]");
+    const page = hero.querySelector<HTMLElement>("[data-hero-page]");
     const bar = hero.querySelector("[data-hero-address]");
     const grid = hero.querySelector("[data-hero-grid]");
     const scan = hero.querySelector("[data-hero-scan]");
@@ -412,6 +348,7 @@ const CARDS = [60, 240, 420];
       !glass ||
       !drawing ||
       !chrome ||
+      !page ||
       !bar ||
       !grid ||
       !scan ||
@@ -471,18 +408,16 @@ const CARDS = [60, 240, 420];
       )
       .fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0)
       .to(scan, { opacity: 0, duration: 0.4 }, 3.8)
-      .to(blueprint, { opacity: 0.3, duration: 1.2 }, FILL_AT)
+      // The sketch gives way to the page: the bar first, then its text.
+      .to(blueprint, { opacity: 0, duration: 1.2 }, FILL_AT)
       .to(grid, { opacity: 0.25, duration: 1.2 }, FILL_AT)
       .fromTo(
-        hero.querySelectorAll("[data-fill]"),
-        { opacity: 0, scaleX: 0.6, transformOrigin: "0% 50%" },
-        {
-          opacity: 1,
-          scaleX: 1,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-        },
+        [
+          ...drawing.querySelectorAll("[data-fill]"),
+          ...page.querySelectorAll("[data-fill]"),
+        ],
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power2.out" },
         FILL_AT,
       )
       .to(canvas, { opacity: 0.35, duration: 3 }, FILL_AT)
@@ -534,6 +469,21 @@ const CARDS = [60, 240, 420];
         place(self.scroll() - self.start - fill());
       },
     });
+
+    // The page in the window asks for the scroll: its call opens the
+    // window, its list of pages scrolls the window to one of them.
+    const opening = (): number => pin.start + fill() + rise();
+    page.querySelector("[data-hero-scroll]")?.addEventListener("click", () => {
+      lenis.scrollTo(opening());
+    });
+    for (const button of page.querySelectorAll<HTMLElement>("[data-go]")) {
+      button.addEventListener("click", () => {
+        const part = parts.find(
+          (element) => element.dataset.page === button.dataset.go,
+        );
+        lenis.scrollTo(opening() + (part?.offsetTop ?? 0));
+      });
+    }
 
     // On load the pen draws the blueprint by itself, up to the client's
     // frame (M41): the whole drawing on its paper, the first parts filling.
@@ -636,7 +586,7 @@ const CARDS = [60, 240, 420];
         { clipPath: () => cut(true) },
         0,
       )
-      .to(drawing, { opacity: 0, duration: 0.3, ease: "none" }, 0)
+      .to([drawing, page], { autoAlpha: 0, duration: 0.3, ease: "none" }, 0)
       .to(title, { opacity: 0, x: -32, duration: 0.5 }, 0)
       .fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.2);
 
@@ -647,10 +597,9 @@ const CARDS = [60, 240, 420];
       const target = event.target.getBoundingClientRect();
       if (target.top >= view.top && target.bottom <= view.bottom) return;
       const offset = target.top - site.getBoundingClientRect().top;
-      lenis.scrollTo(
-        pin.start + fill() + rise() + Math.max(0, offset - view.height / 3),
-        { immediate: true },
-      );
+      lenis.scrollTo(opening() + Math.max(0, offset - view.height / 3), {
+        immediate: true,
+      });
     });
 
     // A question opening or a photo loading changes the page's height,
@@ -701,17 +650,19 @@ const CARDS = [60, 240, 420];
     }
   }
 
-  /* Clash Display is wide, with a narrow word space: a step below the
+  /* Clash Display is wide, with a narrow word space: two steps below the
      display size, nearly no negative tracking and a wider space keep the
-     headline to about four lines and its words apart. */
+     headline's two sentences to about six lines and its words apart. */
   .hero__title {
-    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.75rem);
+    font-size: clamp(2rem, 1.4rem + 1.8vw, 3.25rem);
     font-weight: var(--weight-strong);
     letter-spacing: -0.01em;
     word-spacing: 0.08em;
   }
 
+  /* The second sentence, drafting, on lines of its own. */
   .hero__title-muted {
+    display: block;
     color: var(--ink-muted);
   }
 
@@ -730,12 +681,14 @@ const CARDS = [60, 240, 420];
     aspect-ratio: 640 / 440;
   }
 
+  /* Over the glass, so the page's buttons under it must get the pointer. */
   .hero__drawing {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     overflow: visible;
+    pointer-events: none;
   }
 
   /* The sheet the pen draws on: dark glass over the silk, like the bottom
@@ -816,6 +769,154 @@ const CARDS = [60, 240, 420];
     }
   }
 
+  /* The finished page in the window, in real text, where the blueprint
+     sketches it: a title and the lead with the call to scroll on the
+     left, the pages below on the right, the three stages under them. A
+     miniature, sized by the device (cqw) between rem limits. */
+  .hero__page {
+    position: absolute;
+    inset: 9cqw 6.25cqw 3cqw;
+    display: grid;
+    grid-template-columns: minmax(0, 290fr) minmax(0, 190fr);
+    gap: 2.5cqw 5cqw;
+    align-content: start;
+    overflow: hidden;
+  }
+
+  .hero__page-main {
+    display: grid;
+    gap: 2cqw;
+    align-content: start;
+  }
+
+  .hero__page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 4.2cqw, 1.5rem);
+    font-weight: var(--weight-strong);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .hero__page-lead {
+    color: var(--ink-muted);
+    font-size: clamp(0.6875rem, 2.3cqw, 0.8125rem);
+    line-height: 1.4;
+  }
+
+  .hero__page-scroll {
+    display: inline-flex;
+    gap: 0.5em;
+    align-items: center;
+    justify-self: start;
+    padding: 0.6em 1.1em;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--surface);
+    font: inherit;
+    font-size: clamp(0.6875rem, 2.2cqw, 0.8125rem);
+    font-weight: var(--weight-strong);
+    cursor: pointer;
+  }
+
+  .hero__page-scroll svg {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: hero-bob 1.6s ease-in-out infinite;
+  }
+
+  /* The call's arrow nods down. */
+  @keyframes hero-bob {
+    50% {
+      translate: 0 0.2em;
+    }
+  }
+
+  .hero__page-side,
+  .hero__page-stages li {
+    padding: 2.5cqw;
+    border-radius: 1.875cqw;
+    background: color-mix(in srgb, var(--surface-sunk) 60%, var(--line));
+  }
+
+  .hero__page-side {
+    font-size: clamp(0.6875rem, 2.2cqw, 0.8125rem);
+  }
+
+  .hero__page-label {
+    margin-bottom: 1.5cqw;
+    color: var(--ink-muted);
+    font-family: var(--nk-mono);
+    font-size: 0.8em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero__page-list,
+  .hero__page-stages {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__page-list button {
+    padding: 0.1em 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .hero__page-list button:hover {
+    color: var(--accent);
+  }
+
+  .hero__page-stages {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.125cqw;
+    font-size: clamp(0.6875rem, 2cqw, 0.8125rem);
+  }
+
+  .hero__page-stages li {
+    display: grid;
+    gap: 0.3em;
+    align-content: start;
+  }
+
+  .hero__page-number {
+    color: var(--accent-text);
+    font-family: var(--nk-mono);
+    font-size: 0.85em;
+  }
+
+  .hero__page-stage {
+    font-weight: var(--weight-strong);
+  }
+
+  .hero__page-tagline {
+    color: var(--ink-muted);
+  }
+
+  /* A narrow window holds the title, the lead and the call only. */
+  @container (width < 30rem) {
+    .hero__page {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero__page-side,
+    .hero__page-stages {
+      display: none;
+    }
+  }
+
   /* The window's screen, where the rest of the page scrolls: without
      JavaScript the page simply follows the hero. With it, the screen lies
      in the open window and the page waits a screen below, clipped, until
@@ -890,14 +991,6 @@ const CARDS = [60, 240, 420];
     opacity: 0;
   }
 
-  .hero__panel {
-    fill: color-mix(in srgb, var(--surface-sunk) 85%, transparent);
-  }
-
-  .hero__card {
-    fill: color-mix(in srgb, var(--surface-sunk) 60%, var(--line));
-  }
-
   .hero__ink {
     fill: var(--ink);
   }
@@ -906,25 +999,5 @@ const CARDS = [60, 240, 420];
   .hero__muted {
     fill: var(--ink-muted);
     fill-opacity: 0.6;
-  }
-
-  .hero__cta {
-    fill: var(--accent);
-  }
-
-  .hero__cta-ink {
-    fill: var(--surface);
-  }
-
-  .hero__image {
-    fill: url("#hero-image-fill");
-  }
-
-  .hero__stop-from {
-    stop-color: var(--surface-sunk);
-  }
-
-  .hero__stop-to {
-    stop-color: var(--line-strong);
   }
 </style>

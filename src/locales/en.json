@@ -225,7 +225,5 @@
   "newHome.building.height": "Storey height (m)",
   "newHome.building.volume": "Volume (m³)",
   "newHome.building.total": "Total",
-  "newHome.building.note": "Illustration. A storey's gross area is taken from the plan's outer dimensions, and its volume is the gross area times the storey height.",
-  "newHome.ticker.pause": "Pause the strip",
-  "newHome.ticker.play": "Play the strip"
+  "newHome.building.note": "Illustration. A storey's gross area is taken from the plan's outer dimensions, and its volume is the gross area times the storey height."
 }

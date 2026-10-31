@@ -478,4 +478,6 @@ Each of the client's messages is recorded here verbatim before anything changes.
 
     > ova ogromna slova su prevelika. smanji to. i ova dva prozora isto smanji
   - **What M33 changed** (branch `fix/home-smaller` from `dev`): the display type a size smaller everywhere: zone titles to at most 5.25rem (were 9.5), statements 2.75rem (4.25), rows 1.75rem (2.125), the hero's headline to at most 4.5rem with its first line about two thirds of the sheet (was the whole sheet, up to 7rem), the stage numbers 6rem (10), the stage titles 2.625rem (3.75), the strip 3.5rem (6), the closing question 6rem (10.5), its measure widened to 22ch so it no longer stacks in a narrow column. The two windows: at rest at most 60rem wide (were 72), grown at most 66rem wide (76) and 64% of the screen's height (76%). At 1440 px the browser window measures 448 × 377 at rest and 496 × 576 grown (was 544 × 379 and 576 × 684), and still shrinks back at the top.
+  - **M34**, verbatim: "ovo mi makni ne svida mi se" (with a screenshot of the running strip).
+  - **What M34 changed** (branch `fix/remove-ticker` from `dev`): the running strip between the hero and "Što radimo" is gone: `NewHomeTicker.astro` and its locale lines `newHome.ticker.pause` and `.play` removed.
 

@@ -3,7 +3,7 @@
  * The free audit on the new Home, the page's one ivory band (M32), set in
  * the page as a rounded card (M36, after the client's reference): the
  * title in display capitals across the band, the lead and the page's one
- * "Rezervirajte besplatnu analizu" beside the three steps (form → time
+ * "Rezervirajte besplatnu procjenu" beside the three steps (form → time
  * slot → confirmation). The steps are grips joined by a drafting line,
  * numbered in the monospace; they come in once when the band arrives
  * (reveal.ts), the line drawn from grip to grip. Without JavaScript, or
@@ -26,8 +26,8 @@ const steps = (["form", "slot", "confirmation"] as const).map((step) => ({
 }));
 ---
 
-<section class="audit nk-inverse" aria-labelledby="analiza" data-reveal>
-  <h2 class="audit__title nk-display nk-title" id="analiza">
+<section class="audit nk-inverse" aria-labelledby="procjena" data-reveal>
+  <h2 class="audit__title nk-display nk-title" id="procjena">
     <TwoTone text={t(locale, "home.audit.title")} />
   </h2>
   <div class="audit__body">

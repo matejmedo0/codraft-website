@@ -254,6 +254,7 @@ Svaka odluka ima svoj ADR u `docs/decisions/`.
 | 2026-10-30 | Hero: narasli prozori su nešto manji (do 76rem širine, 76 % visine ekrana), a kad se vratite na vrh stranice, opet se smanje. | [ADR 0037](docs/decisions/0037-new-home-hero-code-to-page.md), dopuna |
 | 2026-10-30 | Cijela nova početna u „Nike × tehničko crtanje” stilu: ogromni uski naslovi velikim slovima (Archivo 75 %), sitne oznake u monospaceu, gumbi kao pilule, traka usluga koja klizi (s pauzom), besplatna analiza kao jedina bjelokosna sekcija. Paleta, logo, tekst i animacije ostaju. | [ADR 0038](docs/decisions/0038-new-home-art-direction.md) |
 | 2026-10-30 | Nova početna: veliki naslovi su manji (naslovi sekcija do 5,25rem, hero do 4,5rem), a prozori u heroju su manji (do 60rem širine, narasli do 66rem i 64 % visine ekrana). | [ADR 0038](docs/decisions/0038-new-home-art-direction.md), dopuna |
+| 2026-10-31 | „Besplatna analiza” se svuda zove „Besplatna procjena”, i adresa: `/besplatna-procjena`. Engleski ostaje „Free audit” dok klijent ne potvrdi prijedlog S21 („Free estimate”). | — |
 
 ## Sitemap
 

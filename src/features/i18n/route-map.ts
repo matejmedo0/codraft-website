@@ -15,7 +15,7 @@ export const ROUTES = {
   services: { hr: "usluge", en: "services" },
   drafting: { hr: "tehnicko-crtanje", en: "architectural-drafting" },
   about: { hr: "o-nama", en: "about" },
-  audit: { hr: "besplatna-analiza", en: "free-audit" },
+  audit: { hr: "besplatna-procjena", en: "free-audit" },
   contact: { hr: "kontakt", en: "contact" },
   privacy: { hr: "privatnost", en: "privacy" },
   cookies: { hr: "kolacici", en: "cookies" },

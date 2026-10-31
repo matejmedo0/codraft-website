@@ -2,7 +2,7 @@
 /**
  * Zone C: the free audit and its three steps (ADR 0007: form → time slot →
  * confirmation), on paper (ADR 0015). It holds the page's one "Rezervirajte
- * besplatnu analizu" (ADR 0017): the button sits where the audit is
+ * besplatnu procjenu" (ADR 0017): the button sits where the audit is
  * explained. The lead says what the audit checks and what you get (G4,
  * G19; the client confirms the facts before launch).
  */
@@ -24,9 +24,9 @@ const steps = (["form", "slot", "confirmation"] as const).map((step) => ({
 }));
 ---
 
-<Zone labelledby="analiza" class="home-audit">
+<Zone labelledby="procjena" class="home-audit">
   <div class="home-audit__intro">
-    <h2 id="analiza">{t(locale, "home.audit.title")}</h2>
+    <h2 id="procjena">{t(locale, "home.audit.title")}</h2>
     <p class="home-audit__lead">{t(locale, "home.audit.lead")}</p>
   </div>
   <div class="home-audit__steps">

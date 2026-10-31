@@ -34,8 +34,8 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | CAD Drafting | **2D CAD crteži** | CAD crtanje u AutoCAD-u | `#2d-crtezi` · `#cad-drafting` |
 | 3D Models | **3D modeli** ([ADR 0019](decisions/0019-drafting-adds-3d-models.md)) | — | `#3d-modeli` · `#3d-models` |
 | Technical Documentation | **Tehnička dokumentacija** | — | `#dokumentacija` · `#documentation` |
-| Free audit | **Besplatna analiza** | Besplatni audit; Besplatni pregled | `/besplatna-analiza` · `/en/free-audit` |
-| Book a free audit | **Rezervirajte besplatnu analizu** | Zatražite besplatnu analizu | — |
+| Free audit | **Besplatna procjena** | Besplatni audit; Besplatni pregled | `/besplatna-procjena` · `/en/free-audit` |
+| Book a free audit | **Rezervirajte besplatnu procjenu** | Zatražite besplatnu procjenu | — |
 | Request a quote | **Zatražite ponudu** | Pošaljite upit | — |
 | About | **O nama** | — | `/o-nama` · `/en/about` |
 | Contact | **Kontakt** | — | `/kontakt` · `/en/contact` |
@@ -50,7 +50,7 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | layer | **sloj** | — | — |
 
 **Why these choices**
-- **"Analiza", not "audit".** To a small-business owner "audit" is jargon, and the copy promises plain language. "Revizija" reads as a financial audit.
+- **"Procjena", not "analiza" or "audit"** (the client's choice, 2026-10-31, M40: "Besplatna analiza" didn't read well as a name). To a small-business owner "audit" is jargon, and the copy promises plain language; "revizija" reads as a financial audit. The HR slug follows: `/besplatna-procjena`. EN stays "Free audit" until the client approves a suggestion (see "Suggestions").
 - **"Tehničko crtanje".** The client chose it over "CAD crtanje" on 2026-10-19, for architecture and construction only (ADR 0018). It avoids "projektiranje", which is a regulated activity. "Inženjersko crtanje" would suggest engineering services and protected titles. "CAD" stays in the deliverable's name, "2D CAD crteži".
 
 **Do not use** (both languages):
@@ -94,10 +94,10 @@ Each EN line is identical to the client's text. Where the original puts a title 
   - HR `draft`: Prvo jasnoća.
 - **`plan.body`**
   - EN: We begin with a free review of your current website and Google visibility. You then get a fixed scope, timeline and price before any work starts.
-  - HR `draft`: Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu. Zatim, prije početka bilo kakvog rada, dobivate fiksni opseg posla, rok i cijenu.
+  - HR `draft`: Počinjemo besplatnom procjenom vaše postojeće web stranice i vidljivosti na Googleu. Zatim, prije početka bilo kakvog rada, dobivate fiksni opseg posla, rok i cijenu.
 - **`plan.cta`**
   - EN: → Book a free audit
-  - HR `draft`: → Rezervirajte besplatnu analizu
+  - HR `draft`: → Rezervirajte besplatnu procjenu
 
 ### 02 — Build
 
@@ -217,6 +217,7 @@ None of these are applied. The client accepts or rejects each one; accepted ones
 | S18 | `services.intro` | "…for businesses that want results, not jargon." | "…for businesses that want to understand what they get.", to match the Croatian, where the client replaced "žargon" (2026-10-19) | **Yes** | applied 2026-10-22 by Claude (M6, ADR 0031), for the client's final review |
 | S19 | `drafting.title`, `drafting.audience` | "Engineering Drafting"; "For architects, engineering firms and manufacturers who need extra drafting capacity." | "Technical Drawing" (slug `/en/technical-drawing`); "For architecture practices and construction companies that need extra drafting capacity." To match ADR 0018 | **Yes** | rejected 2026-10-22: S20 instead; its audience line is kept |
 | S20 | `drafting.title`, `nav.drafting`, the EN slug (2026-10-22, an alternative to S19) | "Engineering Drafting" (`/en/engineering-drafting`) | "Architectural Drafting" (slug `/en/architectural-drafting`), with S19's audience line. It is the term architects and builders search for in English ("architectural drafting services"); "Technical Drawing" reads as the school subject or general engineering, and "Engineering Drafting" suggests engineering, which ADR 0018 leaves out | **Yes** | accepted 2026-10-22 ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)) |
+| S21 | "Free audit" everywhere (`plan.audit.title`, `home.audit.title`, `audit.cta`, the page, `/en/free-audit`) | "Free audit" | "Free estimate" (`/en/free-estimate`), to match the HR term the client chose on 2026-10-31 (M40), "Besplatna procjena" | No | pending |
 
 ## 4. Content gaps
 
@@ -264,7 +265,7 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Home hero, lead | Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas. (Replaces "Codraft je (mali) studio za tvrtke kojima su važni rezultati, a ne žargon." at the client's request, 2026-10-19.) | `plan.body`, `run.tagline` |
 | Home hero, secondary CTA | Pogledajte usluge (the primary button on `/lab/pocetna`, ADR 0017) | [information-architecture.md](information-architecture.md), Home hero |
 | Home hero, drafting path | Tehničko crtanje za arhitekturu i građevinarstvo | `drafting.title`, `drafting.audience`, ADR 0018 |
-| Header CTA | Besplatna analiza (lab A–E only; the production header has no button, ADR 0017) | Glossary |
+| Header CTA | Besplatna procjena (lab A–E only; the production header has no button, ADR 0017) | Glossary |
 | Menu button | Izbornik | UI string |
 | Skip link | Preskoči na sadržaj | UI string |
 | Footer, placeholder note | Podaci o tvrtki stižu prije objave. | Stands in for the company data until the client sends it (lab only) |
@@ -273,13 +274,13 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 
 | Where | HR (prototype) | Derived from |
 |---|---|---|
-| "Što radimo", stage 01, first item | **Besplatna analiza:** Pregled vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body` |
+| "Što radimo", stage 01, first item | **Besplatna procjena:** Pregled vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body` |
 | "Što radimo", stage 01, second item | **Fiksni opseg, rok i cijena:** Dobivate ih prije početka bilo kakvog rada. | `plan.body` |
-| Free audit, heading | Besplatna analiza | Glossary |
-| Free audit, lead | Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body`, first sentence verbatim |
+| Free audit, heading | Besplatna procjena | Glossary |
+| Free audit, lead | Počinjemo besplatnom procjenom vaše postojeće web stranice i vidljivosti na Googleu. | `plan.body`, first sentence verbatim |
 | Free audit, the three steps | 1 **Forma:** Ispunite kratku formu. · 2 **Termin:** Odaberite termin u kalendaru. · 3 **Potvrda:** Dobivate potvrdu termina. | The audit flow in [ADR 0007](decisions/0007-launch-scope-and-constraints.md); a first draft of the G20 microcopy |
-| Free audit, placeholder note | Popis onoga što analiza provjerava stiže prije objave. | Stands in for G4 until the client defines the scope (lab only) |
-| Free audit, button | Rezervirajte besplatnu analizu | Glossary |
+| Free audit, placeholder note | Popis onoga što procjena provjerava stiže prije objave. | Stands in for G4 until the client defines the scope (lab only) |
+| Free audit, button | Rezervirajte besplatnu procjenu | Glossary |
 | CAD section, layer list | Slojevi: Konture, Osi, Presjek, Kote, Oznake, Zaglavlje | Glossary (*sloj*, *zaglavlje*); drafting terms |
 | CAD section, replay button | Iscrtaj ponovno | UI string |
 | CAD drawing, title block | Ploča s utorom · mm · Codraft · Ilustracija | Describes the illustration honestly ([ADR 0004](decisions/0004-verifiable-proof-only.md)) |
@@ -367,21 +368,21 @@ The design-lab prototypes (`src/lab/copy.ts`) use the HR drafts from §2 unchang
 | Team strip, placeholder note | Fotografije, imena i uloge stižu u fazi 3. | Stands in for G3 (lab only) |
 | Team strip, link | Više o nama | Glossary (*O nama*) |
 | Closing call to action, heading | Prvo jasnoća. | `plan.tagline` |
-| Closing call to action, button | Rezervirajte besplatnu analizu | `plan.cta` |
+| Closing call to action, button | Rezervirajte besplatnu procjenu | `plan.cta` |
 | Closing call to action, second link | Pošaljite upit | Glossary (alternative for "Request a quote"); the Contact page CTA |
 
 **Review refinements** (`/lab/pocetna`, 2026-10-19). Home in the chosen direction uses the lines above, arranged by [ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md); no new line:
 - **Header:** the four navigation links and the language, no button.
 - **Hero:** "Pogledajte usluge" is the primary button; the drafting path link stays below it.
 - **"Što radimo", stage 01:** its two items, without the link to the audit.
-- **Free audit zone:** the only "Rezervirajte besplatnu analizu" on the page.
+- **Free audit zone:** the only "Rezervirajte besplatnu procjenu" on the page.
 - **Closing call to action:** "Prvo jasnoća." with one button, "Pošaljite upit".
 
 **One line per service on Home** (review batch 4, 2026-10-19). The client asked for less text under the services on Home, because the services page has the full sentences. Each line is shortened from the service's own sentence (§2) and adds no claim. They are drafts for the client to approve.
 
 | Service | HR (Home, one line) | Shortened from |
 |---|---|---|
-| Besplatna analiza | Pregled vaše web stranice i vidljivosti na Googleu. | `plan.body` |
+| Besplatna procjena | Pregled vaše web stranice i vidljivosti na Googleu. | `plan.body` |
 | Fiksni opseg, rok i cijena | Znate ih prije početka rada. | `plan.body` |
 | Web stranice i web trgovine | Brze, prilagođene mobitelu i usmjerene na upite i narudžbe. | `build.websites.body` |
 | Web aplikacije i interni alati | Alati po mjeri umjesto tablica i ručnog rada. | `build.apps.body` |
@@ -399,13 +400,13 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 | Where | Key | HR `draft` | Source |
 |---|---|---|---|
-| Free audit, lead (replaces the lead and the placeholder note "Popis onoga što analiza provjerava stiže prije objave.") | `home.audit.lead` | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. Provjeravamo brzinu, prikaz na mobitelu, Profil tvrtke na Googleu, pristupačnost i vidljivost u AI tražilicama. Dobivate razgovor od 30 minuta i pisani sažetak s prioritetima, bez obveze. | G4 and G19, Claude's draft: what is checked, the 30-minute call, the written summary and "bez obveze" are **facts the client confirms before launch** (M2); the case without a site as in S11; critique 22, points 1–2 |
+| Free audit, lead (replaces the lead and the placeholder note "Popis onoga što procjena provjerava stiže prije objave.") | `home.audit.lead` | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. Provjeravamo brzinu, prikaz na mobitelu, Profil tvrtke na Googleu, pristupačnost i vidljivost u AI tražilicama. Dobivate razgovor od 30 minuta i pisani sažetak s prioritetima, bez obveze. | G4 and G19, Claude's draft: what is checked, the 30-minute call, the written summary and "bez obveze" are **facts the client confirms before launch** (M2); the case without a site as in S11; critique 22, points 1–2 |
 | Closing CTA, a note under the lead | `home.closing.note` | Odgovaramo u roku od jednog radnog dana. Skice i nacrte primamo i e-mailom. | Written by Claude at the client's request ("da sam smisli tekst", M2). The reply time (G23) is a commitment **the client confirms before launch**; sketches come by email ([ADR 0020](decisions/0020-drawings-arrive-by-email.md)), and the address is on Kontakt (G24) |
 | Team strip, first person | `team.matejMedved.role` | Matej Medved · Web razvoj, dizajn, SEO i AI asistenti | The client (M2): "Full Stack Web Developer, SEO radim, dizajne … što se tiče weba i AI asisteni i AI na stranici". The title "Full stack web developer" and the longer description are for About (G15) |
 | Team strip, second person | `team.tinManjerovic.role` | Tin Manjerović · Tehničko crtanje, SEO i AI asistenti | The client (M2): "SEO optimizacija isto, AI asistenti, Tehničko Crtanje" |
 | Team strip, note | `home.team.pending` | Fotografije stižu prije objave. | Replaces "Fotografije, imena i uloge stižu u fazi 3."; the photos and the written consent come later (item C) |
 | Home, `<title>` | `meta.home.title` | Izrada web stranica, softvera i AI alata \| Codraft | G28; keyword map (`/`: the brand and "izrada web stranica"; the city once known) |
-| Home, meta description (151 characters) | `meta.home.description` | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate za tvrtke. Opseg, rok i cijenu znate prije početka rada. Počnite besplatnom analizom. | G28; the hero's H1 and lead, `plan.body` |
+| Home, meta description (151 characters) | `meta.home.description` | Planiramo, izrađujemo i održavamo web stranice, softver i AI alate za tvrtke. Opseg, rok i cijenu znate prije početka rada. Počnite besplatnom procjenom. | G28; the hero's H1 and lead, `plan.body` |
 
 **Every key on Home, HR and EN.** British English ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)). Where the client's English exists (§2), it is used verbatim; every other English line is a new draft, translated from the Croatian above it.
 
@@ -422,7 +423,7 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 | `services.title` | Što radimo | What we do | The client |
 | `plan.title` | Planiranje | Plan | `plan.heading`, without its number |
 | `plan.tagline` | Prvo jasnoća. | Start with clarity. | The client |
-| `plan.audit.title` | Besplatna analiza | Free audit | Glossary |
+| `plan.audit.title` | Besplatna procjena | Free audit | Glossary |
 | `plan.audit.short` | Pregled vaše web stranice i vidljivosti na Googleu. | A review of your website and Google visibility. | From `plan.body` |
 | `plan.scope.title` | Fiksni opseg, rok i cijena | Fixed scope, timeline and price | From `plan.body` |
 | `plan.scope.short` | Znate ih prije početka rada. | You know them before work starts. | New |
@@ -444,12 +445,12 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 | `run.seo.short` | Rad na vašem položaju na Googleu i u AI tražilicama. | Work on your ranking on Google and in AI search. | From `run.seo.body` |
 | `run.analytics.title` | Analitika i usklađenost | Analytics & Compliance | The client |
 | `run.analytics.short` | Analitika, kolačići i pristupačnost postavljeni kako treba. | Analytics, cookies and accessibility set up properly. | From `run.analytics.body` |
-| `home.audit.title` | Besplatna analiza | Free audit | Glossary |
+| `home.audit.title` | Besplatna procjena | Free audit | Glossary |
 | `home.audit.lead` | (above) | We review your website and how customers find you on Google, or, if you don’t have a site yet, just your visibility on Google. We check speed, how the site works on mobile, your Google Business Profile, accessibility and visibility in AI search. You get a 30-minute call and a written summary with priorities, with no obligation. | New; the facts wait for the client, as in Croatian |
 | `audit.step.form.title` · `.body` | Forma · Ispunite kratku formu. | Form · Fill in a short form. | New (G20) |
 | `audit.step.slot.title` · `.body` | Termin · Odaberite termin u kalendaru. | Time slot · Pick a time in the calendar. | New (G20) |
 | `audit.step.confirmation.title` · `.body` | Potvrda · Dobivate potvrdu termina. | Confirmation · You get a confirmation of your time slot. | New (G20) |
-| `audit.cta` | Rezervirajte besplatnu analizu | Book a free audit | `plan.cta`, without its arrow |
+| `audit.cta` | Rezervirajte besplatnu procjenu | Book a free audit | `plan.cta`, without its arrow |
 | `drafting.title` | Tehničko crtanje | Architectural Drafting | S20 |
 | `home.drafting.lead` | Za arhitektonske urede i građevinske tvrtke kad crteža ima više nego ruku. Crtamo u vašim slojevima i s vašim zaglavljem. | For architecture practices and construction companies when there are more drawings than hands. We draw in your layers and with your title block. | New |
 | `drafting.cad.shortTitle` | 2D crteži | 2D Drawings | New |
@@ -489,6 +490,23 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 | `newHome.drawing.units` | Mjere u px | Units: px |
 | `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
 
+**The new Home's client journey and growth chart (2026-10-31, M40).** Stage 01's card walks through the process from the first enquiry to the finished product, for the service the visitor picks; its other steps reuse `services.process.*`, and the launch line for websites is `services.process.launch.body`. The chart beside stage 03 labels its axes and its updates, and carries `drawing.note` ("Ilustracija"): it shows no values. New drafts by Claude, HR and EN.
+
+| Key | HR `draft` | EN `draft` |
+|---|---|---|
+| `newHome.journey.pick` | Odaberite uslugu | Pick a service |
+| `newHome.journey.contact.title` | Upit | Enquiry |
+| `newHome.journey.contact.body` | Javite se formom ili e-mailom i recite što trebate. | Get in touch by form or email and tell us what you need. |
+| `newHome.journey.scope` | Opseg | Scope |
+| `newHome.journey.time` | Rok | Timeline |
+| `newHome.journey.price` | Cijena | Price |
+| `newHome.journey.launch.apps` | Alat radi na vašim podacima, a vi dobivate sve pristupe. | The tool runs on your data and you get every login. |
+| `newHome.journey.launch.integrations` | Rezervacije i plaćanja rade sami, povezani s vašom stranicom. | Bookings and payments run on their own, connected to your site. |
+| `newHome.journey.launch.ai` | Asistent odgovara vašim klijentima danonoćno, na temelju vašeg sadržaja. | The assistant answers your customers around the clock, from your own content. |
+| `newHome.growth.x` | Mjeseci nakon objave | Months after launch |
+| `newHome.growth.y` | Posjeti s Googlea | Visits from Google |
+| `newHome.growth.updates` | Ažuriranja | Updates |
+
 **The new Home's hero sample (2026-10-30, M29; [ADR 0037](decisions/0037-new-home-hero-code-to-page.md)).** The code and the small page in the code-to-page animation (in the hero until M35, now beside stage 02 of "Što radimo") are placeholders, hidden from assistive technology and not locale strings: the sample page shows "Vaša tvrtka", "Usluge", "Kontakt", "Nova web stranica", "Brza na mobitelu.", "Upit", "Izrada", "Održavanje" and "SEO", in both languages. They make no claim about Codraft.
 
 **The new Home's building scene (2026-10-30, M28; [ADR 0036](decisions/0036-new-home-building-scene-on-arrival.md)).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
@@ -519,7 +537,7 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | `services.title` (H1) | Što radimo | What we do | The client. The `seo` check: keep it; the keywords are in the intro, the `<title>`, the description and the eight service headings, and a keyword H1 would repeat the intro |
 | `services.intro` | Codraft je studio koji planira, izrađuje i održava web stranice, softver i AI alate za tvrtke koje žele razumjeti što dobivaju. | Codraft is a studio that plans, builds and looks after websites, software and AI tools for businesses that want to understand what they get. | §2; EN with S17 and S18 |
 | `services.index.label` | Faze na ovoj stranici | Stages on this page | New: the accessible name of the index |
-| `services.index.plan` | Besplatna analiza i fiksna ponuda | Free audit and a fixed offer | New, from the stage's two rows |
+| `services.index.plan` | Besplatna procjena i fiksna ponuda | Free audit and a fixed offer | New, from the stage's two rows |
 | `services.index.build` | Web stranice, aplikacije, integracije i AI | Websites, apps, integrations and AI | New, from the stage's four services |
 | `services.index.run` | Hosting, SEO i analitika | Hosting, SEO and analytics | New, from the stage's three services |
 | (the drafting path) | Tehničko crtanje za arhitekturu i građevinarstvo | Architectural drafting for architects and builders | `home.hero.drafting`, shared with Home |
@@ -529,7 +547,7 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | Key | HR `draft` | EN `draft` | Source |
 |---|---|---|---|
 | `plan.title` · `plan.tagline` | (Home) | (Home) | The client |
-| `plan.body` | Počinjemo besplatnom analizom vaše postojeće web stranice i vidljivosti na Googleu. Zatim, prije početka bilo kakvog rada, dobivate fiksni opseg posla, rok i cijenu. | We begin with a free audit of your current website and Google visibility. You then get a fixed scope, timeline and price before any work starts. | §2; EN with S1 |
+| `plan.body` | Počinjemo besplatnom procjenom vaše postojeće web stranice i vidljivosti na Googleu. Zatim, prije početka bilo kakvog rada, dobivate fiksni opseg posla, rok i cijenu. | We begin with a free audit of your current website and Google visibility. You then get a fixed scope, timeline and price before any work starts. | §2; EN with S1 |
 | `plan.audit.title` | (Home) | (Home) | Glossary |
 | `services.plan.audit.body` | Pregledamo vašu web stranicu i kako vas klijenti pronalaze na Googleu, a ako stranicu još nemate, samo vašu vidljivost na Googleu. | We review your website and how customers find you on Google, or, if you don’t have a site yet, just your visibility on Google. | `home.audit.lead`, its first sentence |
 | `services.gets` (label) | Što dobivate | What you get | New |
@@ -608,7 +626,7 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 |---|---|---|---|
 | `services.process.title` | Tijek suradnje | How a project runs | The outline |
 | `services.process.lead` | Nakon svakog koraka znate što ste dobili i što slijedi. | After each step, you know what you’ve got and what comes next. | New |
-| `services.process.audit.title` · `.body` | Analiza · Besplatan pregled i razgovor od 30 minuta. | Audit · A free review and a 30-minute call. | `plan.body`; the call as above (**confirm**) |
+| `services.process.audit.title` · `.body` | Procjena · Besplatan pregled i razgovor od 30 minuta. | Audit · A free review and a 30-minute call. | `plan.body`; the call as above (**confirm**) |
 | `services.process.offer.title` · `.body` | Ponuda · Pisana, s fiksnim opsegom, rokom i cijenom. | Offer · In writing, with a fixed scope, timeline and price. | `plan.body` |
 | `services.process.build.title` · `.body` | Izrada · Radimo prema ponudi i pokazujemo vam napredak. | Build · We work to the offer and show you the progress. | **confirm** |
 | `services.process.launch.title` · `.body` | Objava · Stranica ide uživo, a vi dobivate sve pristupe. | Launch · The site goes live and you get every login. | ADR 0021 |
@@ -618,9 +636,9 @@ Marks: **confirm** is a fact about how Codraft works that Claude drafted and the
 | Key | HR `draft` | EN `draft` | Source |
 |---|---|---|---|
 | `services.faq.title` | Česta pitanja | Frequently asked questions | New |
-| `services.faq.price.q` · `.a` | Koliko košta? · Okvirnu početnu cijenu vidite uz svaku uslugu. Točnu cijenu dobivate u pisanoj ponudi nakon besplatne analize, prije početka rada. | How much does it cost? · You can see a guide starting price next to each service. You get the exact price in a written offer after the free audit, before any work starts. | `plan.body`; G7 (ADR 0032) |
+| `services.faq.price.q` · `.a` | Koliko košta? · Okvirnu početnu cijenu vidite uz svaku uslugu. Točnu cijenu dobivate u pisanoj ponudi nakon besplatne procjene, prije početka rada. | How much does it cost? · You can see a guide starting price next to each service. You get the exact price in a written offer after the free audit, before any work starts. | `plan.body`; G7 (ADR 0032) |
 | `services.faq.time.q` · `.a` | Koliko traje izrada? · Okvirni rok vidite uz svaku uslugu, a točan piše u ponudi. Rok teče od dana kad imamo sve što nam treba od vas, poput tekstova i fotografija. | How long does it take? · You can see a typical timeline next to each service; the exact one is in the offer. It runs from the day we have everything we need from you, such as text and photos. | G7; the second sentence: **confirm** |
-| `services.faq.existing.q` · `.a` | Već imam web stranicu. Treba li mi nova? · Ne nužno. Analiza pokaže što vrijedi zadržati. Ako je dovoljno popraviti brzinu, prikaz na mobitelu ili SEO, reći ćemo vam to prije ponude. | I already have a website. Do I need a new one? · Not necessarily. The audit shows what’s worth keeping. If fixing the speed, the mobile layout or the SEO is enough, we’ll tell you before the offer. | The client's "Kažemo i kad nešto ne treba" |
+| `services.faq.existing.q` · `.a` | Već imam web stranicu. Treba li mi nova? · Ne nužno. Procjena pokaže što vrijedi zadržati. Ako je dovoljno popraviti brzinu, prikaz na mobitelu ili SEO, reći ćemo vam to prije ponude. | I already have a website. Do I need a new one? · Not necessarily. The audit shows what’s worth keeping. If fixing the speed, the mobile layout or the SEO is enough, we’ll tell you before the offer. | The client's "Kažemo i kad nešto ne treba" |
 | `services.faq.ownership.q` · `.a` | Čiji su stranica, kod i domena? · Vaši. Kod, domena i pristupi pripadaju vama, i ako jednog dana odete drugdje. Domenu registriramo na vaše ime. Licence tuđih alata, poput fontova i dodataka, ostaju pod njihovim uvjetima. | Who owns the site, the code and the domain? · You do. The code, the domain and every login belong to you, even if one day you go elsewhere. We register the domain in your name. Third-party licences, such as fonts and plugins, stay under their own terms. | [ADR 0021](decisions/0021-the-customer-owns-the-work.md) and its consequences |
 | `services.faq.maintenance.q` · `.a` | Moram li uzeti i održavanje? · Ne. Održavanje je zasebna mjesečna usluga, bez minimalnog trajanja i s otkazom do kraja mjeseca. Ako ga ne uzmete ili kasnije odete, dobivate sve pristupe i kopiju stranice. | Do I have to take maintenance? · No. Maintenance is a separate monthly service, with no minimum term, and you can cancel by the end of any month. If you don’t take it, or leave later, you get every login and a copy of your site. | ADR 0021; "bez minimalnog trajanja" and the notice "do kraja mjeseca": **confirm** |
 | `services.faq.editing.q` · `.a` | Mogu li sadržaj mijenjati bez vas? · Da. Tekstove, slike i proizvode mijenjate sami, a mi vam pokažemo kako. Veće izmjene radimo mi. | Can I change the content without you? · Yes. You change the text, images and products yourself, and we show you how. Bigger changes we make for you. | **confirm** (whether every site has an editor) |

@@ -1,0 +1,392 @@
+---
+/**
+ * What follows the building's 3D view in the drafting scene (M28): its two
+ * sections, A–A along the building and B–B across it, with the storeys'
+ * levels, cut as drafted (M40): strip foundations, walls and slabs at
+ * their thickness, windows and the entrance door, the terrace's railing and
+ * its pool; and the schedule of gross floor areas and volumes, from the same
+ * model as the drawing (building-model.ts). They are the part the client
+ * cares about most, so they start at once, the moment the scene starts,
+ * without waiting for the plan and its tilt (M39): the ground and the
+ * schedule's head first, then each storey is cut in the sections from the
+ * ground up and gets its row in the schedule, then the total and the note
+ * (`data-at`, building-scene.ts). The 3D building follows on its own
+ * clock. Without JavaScript, or with reduced motion, all of it is there.
+ */
+import type { Locale } from "../../../config/site.ts";
+import { t } from "../../../features/i18n/ui.ts";
+import {
+  FOOTPRINT,
+  LEVELS,
+  PENTHOUSE,
+  POOL_RIM,
+  RAILING,
+  schedule,
+  STOREY,
+  TERRACE_POOL,
+  U,
+} from "./building-model.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const number = new Intl.NumberFormat(locale === "hr" ? "hr-HR" : "en-GB", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const level = (z: number): string =>
+  z === 0 ? `±${number.format(0)}` : `+${number.format(z)}`;
+
+/** The analysis' own clock (ms from the scene's start, before its
+    SPEED): the ground at 0, then a storey every STOREY_STEP. */
+const START = 0;
+const FIRST_STOREY = 300;
+const STOREY_STEP = 400;
+const storeyAt = (index: number): number => FIRST_STOREY + index * STOREY_STEP;
+
+/** Thicknesses in decimetres: slabs, outer walls (block, insulation and
+    render, about 0.5 m, so the cut reads at this scale), inner walls. */
+const SLAB = 3;
+const WALL = 5;
+const INNER = 2;
+const B_OFFSET = 340;
+const H = STOREY * U;
+/** Sill and head heights above the floor: windows, the penthouse's glass
+    walls, the entrance door. */
+const SILL = 10;
+const HEAD = 23;
+const GLASS_SILL = 2;
+const DOOR = 22;
+
+type Kind = "cut" | "glass" | "water";
+interface Part {
+  kind: Kind;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const part = (
+  kind: Kind,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+): Part => ({ kind, x, y, width, height });
+
+/** An outer wall from `bottom` up a storey, cut through an opening from
+    `sill` to `head`: the wall under and over it, the glass in between. */
+function outerWall(x: number, bottom: number, sill: number, head: number) {
+  return [
+    part("cut", x, bottom - sill, WALL, sill),
+    part("cut", x, bottom - H, WALL, H - head),
+    part("glass", x + WALL / 2 - 0.5, bottom - head, 1, head - sill),
+  ];
+}
+
+/**
+ * One section: per storey its outer walls with their openings, an inner
+ * wall in the middle (a door through it on the ground floor) and the slab
+ * over it; the penthouse set back, glazed floor to ceiling. The terrace's
+ * railing and, along the building, its pool come with the penthouse.
+ */
+function section(width: number, setback: number, x: number, pool: boolean) {
+  return LEVELS.map((_, index): Part[] => {
+    const penthouse = index === LEVELS.length - 1;
+    const left = x + (penthouse ? setback : 0);
+    const right = x + width - (penthouse ? setback : 0);
+    const bottom = -index * H;
+    const top = bottom - H;
+    const middle = x + width / 2 - INNER / 2;
+    const [sill, head] = penthouse ? [GLASS_SILL, HEAD + 2] : [SILL, HEAD];
+    const parts = [
+      ...(index === 0
+        ? outerWall(left, bottom, 0, DOOR)
+        : outerWall(left, bottom, sill, head)),
+      ...outerWall(right - WALL, bottom, index === 0 ? 4 : sill, head),
+      index === 0
+        ? part("cut", middle, top, INNER, H - DOOR)
+        : part("cut", middle, top, INNER, H),
+      part("cut", left, top, right - left, SLAB),
+    ];
+    if (!penthouse) return parts;
+    const roof = bottom;
+    const rail = RAILING * U;
+    const railing = [x, x + width - 1].flatMap((post) => [
+      part("glass", post, roof - rail, 1, rail),
+      part("cut", post - 1, roof - rail - 1.5, 3, 1.5),
+    ]);
+    if (!pool) return [...parts, ...railing];
+    const p0 = x + (TERRACE_POOL.x0 - FOOTPRINT.x0) * U;
+    const p1 = x + (TERRACE_POOL.x1 - FOOTPRINT.x0) * U;
+    const rim = POOL_RIM * U;
+    return [
+      ...parts,
+      ...railing,
+      part("cut", p0, roof - rim, 1.5, rim),
+      part("cut", p1 - 1.5, roof - rim, 1.5, rim),
+      part("water", p0 + 1.5, roof - rim + 1, p1 - p0 - 3, rim - 1),
+    ];
+  });
+}
+
+const sectionA = section(
+  (FOOTPRINT.x1 - FOOTPRINT.x0) * U,
+  (PENTHOUSE.x0 - FOOTPRINT.x0) * U,
+  0,
+  true,
+);
+const sectionB = section(
+  (FOOTPRINT.y1 - FOOTPRINT.y0) * U,
+  (PENTHOUSE.y0 - FOOTPRINT.y0) * U,
+  B_OFFSET,
+  false,
+);
+const groundSlabs = [
+  { x: 0, width: (FOOTPRINT.x1 - FOOTPRINT.x0) * U },
+  { x: B_OFFSET, width: (FOOTPRINT.y1 - FOOTPRINT.y0) * U },
+];
+/** Strip foundations under every wall: the wall carried down to a footing
+    0.8 m wider, 1.4 m below the floor. */
+const foundations = groundSlabs.flatMap(({ x, width }) =>
+  [
+    [x, WALL],
+    [x + width / 2 - INNER / 2, INNER],
+    [x + width - WALL, WALL],
+  ].flatMap(([at = 0, thick = 0]) => [
+    part("cut", at, SLAB, thick, 8),
+    part("cut", at - 4 + (thick - WALL) / 2, SLAB + 8, WALL + 8, 4),
+  ]),
+);
+const levels = Array.from(
+  { length: LEVELS.length + 1 },
+  (_, index) => index * STOREY,
+);
+const hatch = Array.from({ length: 52 }, (_, index) => -30 + index * 10)
+  .map((x) => `M${String(x)} 18L${String(x + 16)} 2`)
+  .join("");
+
+const { rows, area, volume } = schedule();
+---
+
+<div class="analysis">
+  <figure class="analysis__sections">
+    <svg
+      class="sections"
+      viewBox="-40 -175 520 225"
+      role="img"
+      aria-label={t(locale, "newHome.building.sectionsLabel")}
+      focusable="false"
+    >
+      <g data-wipe="x" data-at={START} data-for="400">
+        <path class="sections__ground" d="M-30 2H270M310 2H490"></path>
+        <path class="sections__hatch" d={hatch}></path>
+        {groundSlabs.map(({ x, width }) => (
+          <rect class="sections__cut" x={x} y="0" width={width} height={SLAB} />
+        ))}
+        {foundations.map(({ kind, ...box }) => (
+          <rect class={`sections__${kind}`} {...box} />
+        ))}
+      </g>
+      {LEVELS.map((_, index) => (
+        <g data-wipe="up" data-at={storeyAt(index)} data-for="380">
+          {[...(sectionA[index] ?? []), ...(sectionB[index] ?? [])].map(
+            ({ kind, ...box }) => (
+              <rect class={`sections__${kind}`} {...box} />
+            ),
+          )}
+        </g>
+      ))}
+      {levels.map((z, index) => (
+        <g
+          class="sections__level"
+          data-wipe="fade"
+          data-at={index === 0 ? START + 200 : storeyAt(index - 1) + 300}
+          data-for="300"
+        >
+          <path d={`M252 ${String(-z * U)}h8l-4 -6z`} class="sections__mark" />
+          <text x="266" y={-z * U - 3}>
+            {level(z)}
+          </text>
+        </g>
+      ))}
+      <g
+        class="sections__names"
+        data-wipe="fade"
+        data-at={storeyAt(LEVELS.length) + 200}
+        data-for="300"
+      >
+        <text x="120" y="34">
+          {t(locale, "newHome.building.sectionA")}
+        </text>
+        <text x={B_OFFSET + 60} y="34">
+          {t(locale, "newHome.building.sectionB")}
+        </text>
+      </g>
+    </svg>
+  </figure>
+
+  <table class="schedule">
+    <caption
+      class="schedule__caption"
+      data-wipe="fade"
+      data-at={START}
+      data-for="300"
+    >
+      {t(locale, "newHome.building.schedule")}
+    </caption>
+    <thead>
+      <tr data-wipe="rise" data-at={START + 200} data-for="350">
+        <th scope="col">{t(locale, "newHome.building.level")}</th>
+        <th scope="col">{t(locale, "newHome.building.area")}</th>
+        <th scope="col">{t(locale, "newHome.building.height")}</th>
+        <th scope="col">{t(locale, "newHome.building.volume")}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, index) => (
+        <tr data-wipe="rise" data-at={storeyAt(index)} data-for="350">
+          <th scope="row">{t(locale, row.key)}</th>
+          <td>{number.format(row.area)}</td>
+          <td>{number.format(row.height)}</td>
+          <td>{number.format(row.volume)}</td>
+        </tr>
+      ))}
+    </tbody>
+    <tfoot>
+      <tr data-wipe="rise" data-at={storeyAt(rows.length) + 200} data-for="400">
+        <th scope="row">{t(locale, "newHome.building.total")}</th>
+        <td>{number.format(area)}</td>
+        <td></td>
+        <td>{number.format(volume)}</td>
+      </tr>
+    </tfoot>
+  </table>
+  <p
+    class="analysis__note"
+    data-wipe="fade"
+    data-at={storeyAt(rows.length) + 500}
+    data-for="300"
+  >
+    {t(locale, "newHome.building.note")}
+  </p>
+</div>
+
+<style>
+  .analysis {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .analysis__sections {
+    margin: 0;
+    padding: var(--space-4);
+  }
+
+  .sections {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* What the section cuts is solid ink, as drafted. */
+  .sections .sections__cut {
+    fill: var(--drawing-ink);
+  }
+
+  .sections :is(.sections__ground, .sections__hatch) {
+    fill: none;
+    stroke: var(--drawing-muted);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .sections .sections__glass {
+    fill: var(--accent);
+  }
+
+  .sections .sections__water {
+    fill: color-mix(in srgb, var(--accent) 45%, var(--drawing-fill));
+  }
+
+  .sections .sections__mark {
+    fill: var(--accent);
+  }
+
+  .sections text {
+    fill: var(--accent-text);
+    font-size: 13px;
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sections .sections__names text {
+    fill: var(--ink-muted);
+    text-anchor: middle;
+  }
+
+  /* The schedule: figures right-aligned in tabular numerals, the total in
+     the accent under a rule. */
+  .schedule {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .schedule__caption {
+    margin-bottom: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: var(--step-title);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-heading);
+    text-align: left;
+  }
+
+  .schedule :is(th, td) {
+    padding: var(--space-2) var(--space-2);
+    border-bottom: var(--rule) solid var(--line);
+    text-align: right;
+  }
+
+  .schedule :is(th, td):first-child {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .schedule :is(th, td):last-child {
+    padding-right: 0;
+  }
+
+  .schedule thead th {
+    color: var(--ink-muted);
+    font-size: var(--step-label);
+    font-stretch: var(--width-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    vertical-align: bottom;
+  }
+
+  .schedule tbody th {
+    font-weight: var(--weight-text);
+  }
+
+  .schedule tfoot :is(th, td) {
+    border-top: var(--rail) solid var(--accent);
+    border-bottom: 0;
+    color: var(--accent-text);
+    font-weight: var(--weight-strong);
+  }
+
+  .analysis__note {
+    max-width: var(--measure);
+    color: var(--ink-muted);
+    font-size: var(--step-small);
+  }
+</style>

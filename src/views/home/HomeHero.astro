@@ -1,11 +1,13 @@
 ---
 /**
  * Home's hero, "from draft to product" (ADR 0035): the headline comes in
- * line by line over the silk with an empty sheet of dark glass beside it.
- * Scrolling (the hero stays pinned for two screens) draws a website's
- * blueprint on the glass in fine light lines, over dotted drafting
- * paper and under a sweeping band of light; then it fills in as the
- * finished interface while the silk steps back. Code + Draft, in one picture.
+ * line by line over the silk with a sheet of dark glass beside it, on
+ * which a website's blueprint draws itself in fine light lines, over dotted
+ * drafting paper and under a sweeping band of light, up to the frame the
+ * client chose (M41): the drawing whole, the first parts filling in. The
+ * scroll (the hero stays pinned for a screen) takes it on from there: it
+ * fills in as the finished interface while the silk steps back. Code +
+ * Draft, in one picture.
  *
  * The drawing is decorative and shows no content: bars for text, a copper
  * pill for the button, a gradient for the image. Without JavaScript it shows
@@ -337,6 +339,11 @@ const CARDS = [60, 240, 420];
 <script>
   import { gsap, SplitText } from "../../lib/scroll";
 
+  /** Where the fill begins, and the client's frame the scroll starts from:
+      the blueprint drawn, the first parts of the interface filling. */
+  const FILL_AT = 4.4;
+  const START_FRAME = 4.75;
+
   function setUp(hero: HTMLElement): void {
     const title = hero.querySelector<HTMLElement>("[data-hero-title]");
     const canvas = hero.querySelector("canvas");
@@ -377,17 +384,9 @@ const CARDS = [60, 240, 420];
       },
     );
 
-    // The scroll: draw, then fill, while the silk steps back.
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: "+=200%",
-          pin: true,
-          scrub: 0.8,
-        },
-      })
+    // The whole picture on one timeline, driven by the clock and the scroll.
+    const picture = gsap
+      .timeline({ paused: true })
       .fromTo(
         hero.querySelectorAll("[data-draw]"),
         { strokeDashoffset: 1 },
@@ -404,8 +403,8 @@ const CARDS = [60, 240, 420];
       )
       .fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0)
       .to(scan, { opacity: 0, duration: 0.4 }, 3.8)
-      .to(blueprint, { opacity: 0.3, duration: 1.2 }, 4.4)
-      .to(grid, { opacity: 0.25, duration: 1.2 }, 4.4)
+      .to(blueprint, { opacity: 0.3, duration: 1.2 }, FILL_AT)
+      .to(grid, { opacity: 0.25, duration: 1.2 }, FILL_AT)
       .fromTo(
         hero.querySelectorAll("[data-fill]"),
         { opacity: 0, scaleX: 0.6, transformOrigin: "0% 50%" },
@@ -416,11 +415,50 @@ const CARDS = [60, 240, 420];
           stagger: 0.12,
           ease: "power2.out",
         },
-        4.4,
+        FILL_AT,
       )
-      .to(canvas, { opacity: 0.35, duration: 3 }, 4.4)
+      .to(canvas, { opacity: 0.35, duration: 3 }, FILL_AT)
       // A beat on the finished picture before the pin lets go.
       .to({}, { duration: 1 });
+
+    // On load the pen draws the blueprint by itself, up to the client's
+    // frame (M41): the whole drawing on its paper, the first parts filling.
+    let engaged = false;
+    const intro = picture.tweenTo(START_FRAME, {
+      duration: 2.2,
+      ease: "power2.inOut",
+      delay: 0.3,
+      onComplete: () => {
+        engaged = true;
+      },
+    });
+
+    // The scroll takes the picture on from that frame to the finished
+    // interface. Until the intro ends or the page is scrolled, the clock
+    // has the picture; scrolling first stops the intro where it is.
+    const scrub = { time: START_FRAME };
+    gsap.to(scrub, {
+      time: picture.duration(),
+      ease: "none",
+      onUpdate: () => {
+        if (engaged) picture.time(scrub.time);
+      },
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: "+=110%",
+        pin: true,
+        scrub: 0.8,
+        // The pin can report a hair of progress on load; only a real
+        // scroll takes over from the intro.
+        onUpdate: (self) => {
+          if (engaged || self.progress < 0.01) return;
+          intro.kill();
+          engaged = true;
+          picture.time(scrub.time);
+        },
+      },
+    });
   }
 
   const hero = document.querySelector<HTMLElement>("[data-hero]");

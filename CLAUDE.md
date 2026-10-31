@@ -25,7 +25,7 @@ Croatian is the default at `/`, English under `/en`, each with localised ASCII s
 | Usluge | `/usluge` | `/en/services` |
 | Tehničko crtanje | `/tehnicko-crtanje` | `/en/architectural-drafting` |
 | O nama | `/o-nama` | `/en/about` |
-| Besplatna analiza | `/besplatna-analiza` | `/en/free-audit` |
+| Besplatna procjena | `/besplatna-procjena` | `/en/free-audit` |
 | Kontakt | `/kontakt` | `/en/contact` |
 
 Also at launch: Privatnost, Kolačići, Impresum, Izjava o pristupačnosti and a localised 404. Later: AI asistenti (`/usluge/ai-asistenti`), Radovi, Blog. After launch slugs never change without a 301.

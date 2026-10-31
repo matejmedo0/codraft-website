@@ -69,6 +69,9 @@ export const BOXES: Box[] = LEVELS.map(({ plan }, index) => ({
  * (BuildingAnalysis.astro, M37).
  */
 export const TILT_AT = 2400;
+export const TILT_FOR = 1200;
+/** The site plan's dimensions switch off just before the tilt. */
+export const DIMS_OFF_AT = 2300;
 export const STOREY_AT = 3600;
 export const STOREY_STEP = 320;
 

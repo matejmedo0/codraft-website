@@ -1,0 +1,299 @@
+---
+/**
+ * The drawings beside stages 01 and 03 of "Što radimo" (M35 in
+ * docs/phases/3-pages.md); stage 02 has the code-to-page animation
+ * (CodeToSite.astro).
+ *
+ * - plan: the site's map (the home page and three pages under it) and a
+ *   schedule of the three stages, the build ending on a grip: its launch.
+ * - run: a line rising over the weeks after launch (v1.0), with a grip for
+ *   each regular update along the bottom. No numbers: it is an
+ *   illustration, not a claim.
+ *
+ * They draw stroke by stroke as their stage slides in (`is-in` from
+ * reveal.ts); each part waits its step (`data-at`, 250 ms each). Without
+ * JavaScript, with reduced motion or already in view on load they are
+ * complete. Decorative: the stage's text says it all, so the drawing is
+ * hidden from assistive technology.
+ */
+import type { Locale } from "../../../config/site.ts";
+import { t } from "../../../features/i18n/ui.ts";
+
+interface Props {
+  kind: "plan" | "run";
+  locale: Locale;
+}
+
+const { kind, locale } = Astro.props;
+
+/** A rectangle as a path, so it can draw with pathLength. */
+const box = (x: number, y: number, w: number, h: number): string =>
+  `M${String(x)} ${String(y)}h${String(w)}v${String(h)}h${String(-w)}z`;
+
+const PAGES = [
+  { x: 20, label: t(locale, "nav.services") },
+  { x: 150, label: t(locale, "nav.about") },
+  { x: 280, label: t(locale, "nav.contact") },
+];
+
+/** The schedule's bars: label, start, end, row; run stays open-ended. */
+const BARS = [
+  { label: t(locale, "plan.title"), from: 20, to: 110, y: 166, at: 6 },
+  { label: t(locale, "build.title"), from: 95, to: 290, y: 208, at: 7 },
+  { label: t(locale, "run.title"), from: 270, to: 380, y: 250, at: 8 },
+];
+
+/** The growth line after launch. */
+const GROWTH = [
+  [60, 226],
+  [100, 218],
+  [140, 222],
+  [180, 196],
+  [220, 188],
+  [260, 160],
+  [300, 142],
+  [340, 110],
+  [370, 84],
+] as const;
+const UPDATES = [100, 148, 196, 244, 292, 340];
+---
+
+<div class="sketch graph-paper" aria-hidden="true">
+  {kind === "plan" ? (
+    <svg viewBox="0 0 400 300" fill="none">
+      <path class="ink" d={box(170, 20, 60, 28)} pathLength="1" data-at="1" />
+      <text class="name" x="200" y="38" data-at="1">
+        /
+      </text>
+      <path
+        class="muted"
+        d="M200 48V72M70 72H330M70 72V92M200 72V92M330 72V92"
+        pathLength="1"
+        data-at="2"
+      />
+      {PAGES.map((page) => (
+        <>
+          <path
+            class="ink"
+            d={box(page.x, 92, 100, 28)}
+            pathLength="1"
+            data-at="3"
+          />
+          <text class="name" x={page.x + 50} y="110" data-at="4">
+            {page.label}
+          </text>
+        </>
+      ))}
+      <path
+        class="muted"
+        d="M20 282H380M20 282v5M65 282v5M110 282v5M155 282v5M200 282v5M245 282v5M290 282v5M335 282v5M380 282v5"
+        pathLength="1"
+        data-at="5"
+      />
+      {BARS.map((bar, index) => (
+        <>
+          <text class="label" x={bar.from} y={bar.y - 6} data-at={bar.at}>
+            {bar.label}
+          </text>
+          <path
+            class="accent"
+            d={
+              index === BARS.length - 1
+                ? `M${String(bar.to)} ${String(bar.y)}H${String(bar.from)}v18H${String(bar.to)}`
+                : box(bar.from, bar.y, bar.to - bar.from, 18)
+            }
+            pathLength="1"
+            data-at={bar.at}
+          />
+        </>
+      ))}
+      <rect class="grip" x="285" y="221" width="10" height="10" data-at="9" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 400 300" fill="none">
+      <path
+        class="faint"
+        d="M40 60H380M40 110H380M40 160H380M40 210H380"
+        pathLength="1"
+        data-at="1"
+      />
+      <path class="muted" d="M40 30V250H380" pathLength="1" data-at="1" />
+      <path class="muted dashed" d="M60 250V40" data-at="2" />
+      <text class="label label--plain" x="60" y="292" data-at="2">
+        v1.0
+      </text>
+      <rect class="grip" x="55" y="245" width="10" height="10" data-at="2" />
+      <path
+        class="accent growth"
+        d={`M${GROWTH.map((point) => point.join(" ")).join("L")}`}
+        pathLength="1"
+        data-at="3"
+      />
+      {UPDATES.map((x, index) => (
+        <rect
+          class="grip grip--small"
+          x={x - 3.5}
+          y="263"
+          width="7"
+          height="7"
+          data-at={index + 4}
+        />
+      ))}
+      <rect class="grip" x="365" y="79" width="10" height="10" data-at="10" />
+    </svg>
+  )}
+</div>
+
+<style>
+  .sketch {
+    width: 100%;
+    max-width: 36rem;
+    border: var(--rule) solid var(--line);
+    border-radius: var(--radius);
+    background-color: var(--surface-sunk);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  path {
+    stroke-width: 1.5;
+    stroke-linecap: square;
+  }
+
+  .ink {
+    stroke: var(--drawing-ink);
+  }
+
+  .muted {
+    stroke: var(--drawing-muted);
+  }
+
+  .faint {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .dashed {
+    stroke-dasharray: 4 4;
+  }
+
+  .accent {
+    stroke: var(--accent);
+  }
+
+  .growth {
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+
+  .grip {
+    fill: var(--grip-fill);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  .grip--small {
+    stroke-width: 1.25;
+  }
+
+  text {
+    font-family: var(--nk-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .name {
+    fill: var(--ink);
+    text-anchor: middle;
+  }
+
+  .label {
+    fill: var(--ink-muted);
+    text-transform: uppercase;
+  }
+
+  .label--plain {
+    text-transform: none;
+  }
+
+  [data-at="1"] {
+    --at: 1;
+  }
+
+  [data-at="2"] {
+    --at: 2;
+  }
+
+  [data-at="3"] {
+    --at: 3;
+  }
+
+  [data-at="4"] {
+    --at: 4;
+  }
+
+  [data-at="5"] {
+    --at: 5;
+  }
+
+  [data-at="6"] {
+    --at: 6;
+  }
+
+  [data-at="7"] {
+    --at: 7;
+  }
+
+  [data-at="8"] {
+    --at: 8;
+  }
+
+  [data-at="9"] {
+    --at: 9;
+  }
+
+  [data-at="10"] {
+    --at: 10;
+  }
+
+  /* Drawn as the stage slides in: strokes run along their paths, labels
+     fade in, grips snap in, each at its step. */
+  :global(.stage.is-in) [data-at] {
+    animation: sketch-fade 400ms var(--ease-standard) both;
+    animation-delay: calc(300ms + var(--at) * 250ms);
+  }
+
+  :global(.stage.is-in) path[pathLength] {
+    stroke-dasharray: 1;
+    animation-name: nh-stroke;
+    animation-duration: 600ms;
+    animation-timing-function: var(--ease-pen);
+  }
+
+  :global(.stage.is-in) .growth {
+    animation-duration: 1500ms;
+  }
+
+  :global(.stage.is-in) .grip {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation-name: motion-snap-in;
+    animation-duration: var(--motion-snap);
+    animation-timing-function: var(--ease-snap);
+  }
+
+  @keyframes sketch-fade {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+</style>

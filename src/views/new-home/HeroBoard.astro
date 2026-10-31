@@ -1,0 +1,259 @@
+---
+/**
+ * The board beside the hero's text (M36, after the client's reference
+ * "Torch"): a rounded panel of four small drawings, one per thing the
+ * studio does, in the order of the page: the site's map (planning), code
+ * (building), a line rising with a grip per update (running), a floor plan
+ * with its dimension (drafting). They draw on load, one after the other;
+ * with reduced motion they are complete. Decorative, so hidden from
+ * assistive technology: the hero's text says it all.
+ */
+---
+
+<div class="board nk-card" aria-hidden="true">
+  <svg class="cell nk-panel" viewBox="0 0 200 150" fill="none">
+    <path class="ink s1" d="M80 22h40v20h-40z" pathLength="1"></path>
+    <path
+      class="muted s2"
+      d="M100 42V58M40 58H160M40 58V74M100 58V74M160 58V74"
+      pathLength="1"
+    ></path>
+    <path
+      class="ink s3"
+      d="M20 74h40v22h-40zM80 74h40v22h-40zM140 74h40v22h-40z"
+      pathLength="1"
+    ></path>
+    <path
+      class="muted s4"
+      d="M100 96V110M86 110h28v16h-28z"
+      pathLength="1"
+    ></path>
+    <path
+      class="faint s4"
+      d="M90 32h20M28 85h24M88 85h24M148 85h24M93 118h14"
+      pathLength="1"
+    ></path>
+  </svg>
+
+  <svg class="cell code nk-panel" viewBox="0 0 200 150" fill="none">
+    <g>
+      <rect class="tag" x="20" y="20" width="18" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="32" y="35" width="14" height="5" rx="2.5"></rect>
+      <rect class="txt" x="50" y="35" width="46" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="32" y="50" width="14" height="5" rx="2.5"></rect>
+      <rect class="txt" x="50" y="50" width="62" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="20" y="65" width="22" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="20" y="80" width="28" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="32" y="95" width="12" height="5" rx="2.5"></rect>
+      <rect class="txt" x="48" y="95" width="72" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="32" y="110" width="12" height="5" rx="2.5"></rect>
+      <rect class="txt" x="48" y="110" width="40" height="5" rx="2.5"></rect>
+    </g>
+    <g>
+      <rect class="tag" x="20" y="125" width="28" height="5" rx="2.5"></rect>
+    </g>
+  </svg>
+
+  <svg class="cell nk-panel" viewBox="0 0 200 150" fill="none">
+    <path class="faint s1" d="M20 50H184M20 80H184" pathLength="1"></path>
+    <path class="muted s1" d="M20 20V120H184" pathLength="1"></path>
+    <path
+      class="accent wide s2"
+      d="M28 104L56 96L84 100L112 78L140 70L168 40"
+      pathLength="1"
+    ></path>
+    <rect class="grip s3" x="164" y="36" width="8" height="8"></rect>
+    <rect class="grip s2" x="53.5" y="130" width="5" height="5"></rect>
+    <rect class="grip s3" x="81.5" y="130" width="5" height="5"></rect>
+    <rect class="grip s3" x="109.5" y="130" width="5" height="5"></rect>
+    <rect class="grip s4" x="137.5" y="130" width="5" height="5"></rect>
+  </svg>
+
+  <svg class="cell nk-panel" viewBox="0 0 200 150" fill="none">
+    <path
+      class="ink wall s1"
+      d="M90 124H30V36H170V124H110"
+      pathLength="1"
+    ></path>
+    <path class="ink s2" d="M110 36V82M110 98V124" pathLength="1"></path>
+    <path
+      class="muted s3"
+      d="M90 124V104M90 104A20 20 0 0 1 110 124"
+      pathLength="1"
+    ></path>
+    <path
+      class="muted s3"
+      d="M30 22H170M30 17v10M170 17v10M26 64v32"
+      pathLength="1"
+    ></path>
+    <rect class="grip s4" x="166" y="18" width="8" height="8"></rect>
+  </svg>
+</div>
+
+<style>
+  .board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .cell {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  path {
+    stroke-width: 1.5;
+    stroke-linecap: square;
+  }
+
+  .ink {
+    stroke: var(--drawing-ink);
+  }
+
+  .muted {
+    stroke: var(--drawing-muted);
+  }
+
+  .faint {
+    stroke: var(--line);
+  }
+
+  .accent {
+    stroke: var(--accent);
+  }
+
+  .wide {
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+
+  .wall {
+    stroke-width: 3.5;
+  }
+
+  .grip {
+    fill: var(--grip-fill);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  .tag {
+    fill: var(--accent);
+  }
+
+  .txt {
+    fill: var(--drawing-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .board {
+      gap: var(--space-4);
+      padding: var(--space-5);
+    }
+  }
+
+  /* Drawn on load, cell after cell, each in its steps (s1-s4): strokes run
+     along their paths, the code's lines type in, grips snap in. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cell:nth-child(1) {
+      --cell: 900ms;
+    }
+
+    .cell:nth-child(2) {
+      --cell: 1400ms;
+    }
+
+    .cell:nth-child(3) {
+      --cell: 1900ms;
+    }
+
+    .cell:nth-child(4) {
+      --cell: 2400ms;
+    }
+
+    .s2 {
+      --step: 300ms;
+    }
+
+    .s3 {
+      --step: 600ms;
+    }
+
+    .s4 {
+      --step: 900ms;
+    }
+
+    [pathLength] {
+      stroke-dasharray: 1;
+      animation: nh-stroke 650ms var(--ease-pen) both;
+      animation-delay: calc(var(--cell) + var(--step, 0ms));
+    }
+
+    .grip {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: motion-snap-in var(--motion-snap) var(--ease-snap) both;
+      animation-delay: calc(var(--cell) + 300ms + var(--step, 0ms));
+    }
+
+    .code rect {
+      transform-box: fill-box;
+      transform-origin: 0 50%;
+      animation: board-type 260ms var(--ease-standard) both;
+      animation-delay: calc(var(--cell) + var(--row, 0) * 110ms);
+    }
+
+    .code g:nth-child(2) {
+      --row: 1;
+    }
+
+    .code g:nth-child(3) {
+      --row: 2;
+    }
+
+    .code g:nth-child(4) {
+      --row: 3;
+    }
+
+    .code g:nth-child(5) {
+      --row: 4;
+    }
+
+    .code g:nth-child(6) {
+      --row: 5;
+    }
+
+    .code g:nth-child(7) {
+      --row: 6;
+    }
+
+    .code g:nth-child(8) {
+      --row: 7;
+    }
+  }
+
+  @keyframes board-type {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+</style>

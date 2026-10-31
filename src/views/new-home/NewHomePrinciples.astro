@@ -1,13 +1,16 @@
 ---
 /**
- * "Kako radimo" on the new Home (M32): the client's three commitments as a
- * manifesto, each a statement in display capitals across the sheet with
- * its number in the monospace and its sentence beside it. They come in
- * one after the other when the zone arrives (reveal.ts). "Razgovarate s
- * onima koji rade" gets its proof from the team right below.
+ * "Kako radimo" on the new Home (M32, M36): the client's three commitments
+ * as a grid of rounded cards, as in the client's reference "Torch": the
+ * first card tall on the left, the other two stacked beside it. Each card
+ * has its number outlined at the top and its statement in display capitals
+ * with its sentence at the bottom. They come in one after the other when
+ * the zone arrives (reveal.ts). "Razgovarate s onima koji rade" gets its
+ * proof from the team right below.
  */
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
@@ -22,16 +25,18 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 
 <section class="how nh-zone" aria-labelledby="kako-radimo" data-reveal>
   <h2 class="how__title nk-display nk-title" id="kako-radimo">
-    {t(locale, "home.principles.title")}
+    <TwoTone text={t(locale, "home.principles.title")} />
   </h2>
   <ol class="how__list">
     {items.map((item, index) => (
-      <li class="how-item">
-        <span class="how-item__number nk-label" aria-hidden="true">
+      <li class="how-item nk-card">
+        <span class="how-item__number nk-display nk-outline" aria-hidden="true">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h3 class="how-item__title nk-display">{item.title}</h3>
-        <p class="how-item__body">{item.body}</p>
+        <div>
+          <h3 class="how-item__title nk-display">{item.title}</h3>
+          <p class="how-item__body">{item.body}</p>
+        </div>
       </li>
     ))}
   </ol>
@@ -43,6 +48,7 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 <style>
   .how__list {
     display: grid;
+    gap: var(--space-4);
     margin: var(--space-8) 0 0;
     padding: 0;
     list-style: none;
@@ -50,9 +56,15 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 
   .how-item {
     display: grid;
-    gap: var(--space-3);
-    padding-block: var(--space-6);
-    border-top: var(--rule) solid var(--line);
+    gap: var(--space-8);
+    align-content: space-between;
+    min-height: 16rem;
+    padding: var(--space-6);
+  }
+
+  .how-item__number {
+    font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
+    line-height: 0.8;
   }
 
   .how-item__title {
@@ -62,17 +74,24 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 
   .how-item__body {
     max-width: 40ch;
+    margin-top: var(--space-4);
     color: var(--ink-muted);
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
   }
 
   @media (min-width: 64rem) {
+    .how__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+
     .how-item {
-      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
-      column-gap: var(--gap);
-      align-items: baseline;
-      padding-block: var(--space-7);
+      padding: var(--space-8);
+    }
+
+    .how-item:first-child {
+      grid-row: span 2;
     }
   }
 

@@ -1,7 +1,8 @@
 ---
 /**
- * The new Home's closing call to action (M32): the client's question in
- * display capitals as large as the sheet allows, the lead and the note on
+ * The new Home's closing call to action (M32, M36): a band on graph paper,
+ * centred as in the client's reference "Torch": the client's question in
+ * display capitals, its last word in the accent, the lead and the note on
  * the reply time and on sketches by email, and one pill to Kontakt. It
  * comes in when it arrives (reveal.ts): a drafting line runs across the
  * top of the zone and its grip snaps in, the question rises.
@@ -10,6 +11,7 @@ import Button from "../../components/ui/Button.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
@@ -18,11 +20,15 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="closing" aria-labelledby="zavrsni-poziv" data-reveal>
+<section
+  class="closing graph-paper"
+  aria-labelledby="zavrsni-poziv"
+  data-reveal
+>
   <span class="closing__line" aria-hidden="true"></span>
   <span class="closing__grip" aria-hidden="true"></span>
   <h2 class="closing__title nk-display" id="zavrsni-poziv">
-    {t(locale, "home.closing.title")}
+    <TwoTone text={t(locale, "home.closing.title")} />
   </h2>
   <div class="closing__foot">
     <div class="closing__text">
@@ -43,8 +49,10 @@ const { locale } = Astro.props;
     --grip: 0.875rem;
 
     position: relative;
-    padding: calc(var(--zone-pad) * 1.25) var(--pad) var(--zone-pad);
-    background: var(--surface-sunk);
+    padding: calc(var(--zone-pad) * 1.5) var(--pad);
+    border: 0;
+    background-color: var(--surface-sunk);
+    text-align: center;
   }
 
   .closing__line {
@@ -69,34 +77,29 @@ const { locale } = Astro.props;
 
   .closing__title {
     max-width: 22ch;
+    margin-inline: auto;
     font-size: clamp(2.25rem, 1rem + 4.5vw, 6rem);
   }
 
   .closing__foot {
     display: grid;
-    gap: var(--space-6);
-    margin-top: var(--space-8);
-    padding-top: var(--space-6);
-    border-top: var(--rule) solid var(--line);
+    gap: var(--space-7);
+    justify-items: center;
+    margin-top: var(--space-6);
   }
 
   .closing__lead {
     max-width: 44ch;
+    margin-inline: auto;
     font-size: var(--step-lead);
     line-height: var(--leading-lead);
   }
 
   .closing__note {
     max-width: 52ch;
+    margin-inline: auto;
     margin-top: var(--space-2);
     color: var(--ink-muted);
-  }
-
-  @media (min-width: 64rem) {
-    .closing__foot {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-    }
   }
 
   .closing.is-pending :is(.closing__title, .closing__foot) {

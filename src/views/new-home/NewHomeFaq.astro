@@ -1,0 +1,135 @@
+---
+/**
+ * "Česta pitanja" on the new Home (M36, after the client's reference
+ * "Torch"): the title centred, then the questions as rounded rows that
+ * open on a tap, a teal plus turning into a minus. Native <details>, so no
+ * script: the answers are in the page for people, search and AI alike.
+ *
+ * The four questions are /usluge's (services.faq.*) whose answers hold
+ * without the prices and terms that page shows beside each service; the
+ * others (price, time, VAT) point at those and stay there.
+ */
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import TwoTone from "./TwoTone.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const questions = (
+  ["existing", "ownership", "maintenance", "editing"] as const
+).map((id) => ({
+  question: t(locale, `services.faq.${id}.q`),
+  answer: t(locale, `services.faq.${id}.a`),
+}));
+---
+
+<section class="faq nh-zone" aria-labelledby="cesta-pitanja" data-reveal>
+  <h2 class="faq__title nk-display nk-title" id="cesta-pitanja">
+    <TwoTone text={t(locale, "services.faq.title")} />
+  </h2>
+  <div class="faq__list">
+    {questions.map(({ question, answer }) => (
+      <details class="faq__item nk-card">
+        <summary class="faq__question">
+          <span>{question}</span>
+          <span class="faq__sign" aria-hidden="true"></span>
+        </summary>
+        <p class="faq__answer">{answer}</p>
+      </details>
+    ))}
+  </div>
+  <script>
+    import "./reveal.ts";
+  </script>
+</section>
+
+<style>
+  .faq__title {
+    text-align: center;
+  }
+
+  .faq__list {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 48rem;
+    margin: var(--space-8) auto 0;
+  }
+
+  .faq__question {
+    display: flex;
+    gap: var(--space-5);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-5) var(--space-6);
+    font-size: var(--step-lead);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-lead);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__question:focus-visible {
+    border-radius: var(--nk-radius);
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* The plus: two teal strokes; open, the upright one turns flat. */
+  .faq__sign {
+    position: relative;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .faq__sign::before,
+  .faq__sign::after {
+    position: absolute;
+    top: calc(50% - var(--rail) / 2);
+    left: 0;
+    width: 100%;
+    height: var(--rail);
+    background: var(--accent);
+    content: "";
+  }
+
+  .faq__sign::after {
+    rotate: 90deg;
+    transition: rotate var(--motion-base) var(--ease-standard);
+  }
+
+  .faq__item[open] .faq__sign::after {
+    rotate: 0deg;
+  }
+
+  .faq__answer {
+    max-width: var(--measure);
+    padding: 0 var(--space-6) var(--space-6);
+    color: var(--ink-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq__sign::after {
+      transition: none;
+    }
+  }
+
+  .faq.is-pending :is(.faq__title, .faq__item) {
+    opacity: 0;
+  }
+
+  .faq.is-in .faq__title {
+    animation: nk-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .faq.is-in .faq__item {
+    animation: nk-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) 250ms both;
+  }
+</style>

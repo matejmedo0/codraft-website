@@ -754,6 +754,7 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-30 (phase 3, the new Home, M32):** "The new Home's running strip" added: the pause button's two labels (`newHome.ticker.*`), HR and EN drafts. No copy block changed.
 - **2026-10-31 (phase 3, the new Home, M34):** "The new Home's running strip" and its two labels (`newHome.ticker.*`) removed with the strip. No copy block changed.
 - **2026-10-31 (phase 3, the new Home, M35):** The code-to-page animation moved from the hero to stage 02 of "Što radimo"; stages 01 and 03 got drawings labelled with existing keys (`nav.services`, `nav.about`, `nav.contact`, `plan.title`, `build.title`, `run.title`) and two placeholders, `/` and `v1.0`. No copy block changed.
+- **2026-10-31 (phase 3, the new Home, M36):** The new Home's layout follows the client's reference "Torch". New zone "Česta pitanja" on the new Home, reusing four of /usluge's questions and answers (`services.faq.existing`, `.ownership`, `.maintenance`, `.editing`; the others refer to the prices and terms beside each service on /usluge). Zone titles show their last word in the accent; the words don't change. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

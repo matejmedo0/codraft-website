@@ -1,279 +1,355 @@
 ---
 /**
- * Zone B, "Što radimo": the central axis (the client's review, batches 3
- * and 4), with one short line per service (the full sentences are for
- * /usluge). On wide screens the process line runs down the middle of the
- * sheet: each stage's bubble sits on it with the title and tagline centred
- * below, and its services stand left and right of the line, the left ones
- * aligned to it. The stage head covers the line where it passes behind the
- * title. An odd last service is centred under its stage. On narrow screens
- * the line runs down the left.
+ * "Što radimo" on Home: the three stages one under the other
+ * (M26 to M28, M35, M36). Each stage is a
+ * rounded card, as in the client's reference "Torch": its text (the
+ * number large in the accent, title and tagline) on one side and its
+ * drawing in an inner panel on the other: the client's way from enquiry
+ * to finished product for the service they pick, the code that builds a
+ * page, the growth after launch (stages/, M40). The next card is mirrored, so
+ * the zone goes zig-zag down the sheet. Under each card, the stage's
+ * services stand in a row of columns, each an icon, a title and a line.
  *
- * The process line joins the bubbles 01 → 02 → 03. It follows the scroll
- * row by row, and each service's icon draws as the line reaches it, once
- * and only forwards (ADR 0023; axis-line.ts). Without JavaScript or with
- * reduced motion the stages' rails draw it complete.
+ * Each stage plays once, on arrival, not with the scroll (reveal.ts): the
+ * card's two halves slide in from their sides, the drawing draws, then the
+ * services rise and their icons draw. The text is always there: without
+ * JavaScript or with reduced motion everything stands in place.
  *
- * Each service shows its icon beside its title and its line, on the side
- * facing the line (ADR 0022); on phones beside the title only (ADR 0028).
- * The services' type is a step larger on wide screens (review #102).
+ * The services of stages 02 and 03 link to their anchors on /usluge; the
+ * two items of stage 01 don't, since the free audit asks once, in the zone
+ * right after this one.
  */
-import "../../features/services/stages.css";
-import "./services.css";
-
-import Zone from "../../components/ui/Zone.astro";
+import Grips from "../../components/ui/Grips.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
 import { pathFor } from "../../features/i18n/urls.ts";
+import ServiceIcon from "../../features/services/icons/ServiceIcon.astro";
 import { STAGES } from "../../features/services/services.ts";
-import ServiceItem from "./ServiceItem.astro";
+import CodeToSite from "./stages/CodeToSite.astro";
+import GrowthChart from "./stages/GrowthChart.astro";
+import ProcessJourney from "./stages/ProcessJourney.astro";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const headingId = "usluge";
 const services = pathFor("services", locale);
 ---
 
-<Zone labelledby={headingId} class="svc">
-  <h2 id={headingId}>{t(locale, "services.title")}</h2>
-  <div class="axis axis--icons" data-axis>
-    <span class="axis__line" data-axis-line aria-hidden="true"></span>
-    {STAGES.map((stage) => (
-      <div class="axis-stage" data-axis-stage>
-        <span class="svc-rail axis-stage__rail" aria-hidden="true" />
-        <div class="axis-stage__head">
-          <h3 class="svc-title axis-stage__title">
-            <span class="svc-bubble axis-stage__bubble" data-axis-mark>
-              {stage.number}
-            </span>
+<section class="svc nh-zone" aria-labelledby="usluge">
+  <div class="svc__head nh-grid">
+    <h2 class="svc__title nk-display nk-title" id="usluge">
+      <TwoTone text={t(locale, "services.title")} />
+    </h2>
+    <p class="svc__intro">{t(locale, "services.intro")}</p>
+  </div>
+  {STAGES.map((stage, index) => (
+    <div
+      class:list={["stage", { "stage--mirror": index % 2 === 1 }]}
+      data-reveal
+    >
+      <div class="stage__card nk-card">
+        <div class="stage__head">
+          <p class="stage__number nk-display nk-outline" aria-hidden="true">
+            {stage.number}
+          </p>
+          <h3 class="stage__title nk-display">
+            <span class="visually-hidden">{stage.number} </span>
             {t(locale, stage.title)}
           </h3>
-          <p class="svc-tagline axis-stage__tagline">
-            {t(locale, stage.tagline)}
-          </p>
+          <p class="stage__tagline">{t(locale, stage.tagline)}</p>
         </div>
-        <ul class="svc-items axis-stage__items">
-          {stage.services.map((service) => (
-            <ServiceItem
-              title={t(locale, service.title)}
-              body={t(locale, service.short)}
-              href={
-                service.anchor === undefined
-                  ? undefined
-                  : `${services}#${service.anchor[locale]}`
-              }
-              icon={service.icon}
-              class="axis-stage__item"
-              data-axis-item
-            />
-          ))}
-        </ul>
+        <div class="stage__visual nk-panel">
+          {index === 0 && <ProcessJourney locale={locale} />}
+          {index === 1 && <CodeToSite />}
+          {index === 2 && <GrowthChart locale={locale} />}
+        </div>
       </div>
-    ))}
-  </div>
+      <ul class="stage__items">
+        {stage.services.map((service) => {
+          const href =
+            service.anchor === undefined
+              ? undefined
+              : `${services}#${service.anchor[locale]}`;
+          return (
+            <li class:list={["svc-item", { "has-grips": href !== undefined }]}>
+              {service.icon !== undefined && (
+                <ServiceIcon icon={service.icon} class="svc-item__icon" />
+              )}
+              <h4 class="svc-item__title nk-display">
+                {href === undefined ? (
+                  t(locale, service.title)
+                ) : (
+                  <a class="svc-item__link stretched-link" href={href}>
+                    {t(locale, service.title)}
+                  </a>
+                )}
+              </h4>
+              <p class="svc-item__body">{t(locale, service.short)}</p>
+              {href !== undefined && <Grips />}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  ))}
   <script>
-    import "./axis-line.ts";
+    import "./reveal.ts";
   </script>
-</Zone>
+</section>
 
 <style>
-  .axis {
-    --icon: 2.5rem;
-    --item-pad: var(--space-4);
+  .svc {
+    /* How far a half comes in from: a step on phones, a long slide from
+       64rem. The slides are clipped at the zone's edge, so the page never
+       scrolls sideways. */
+    --svc-slide: 16vw;
 
-    position: relative;
+    overflow-x: clip;
   }
 
-  /* Narrow screens: the line down the left, as in option 1. */
-  .axis__line {
-    left: calc((var(--bubble) - var(--rail)) / 2);
+  .svc__head {
+    align-items: end;
+    margin-bottom: var(--space-8);
   }
 
-  .axis-stage {
-    --stage-top: var(--space-5);
-
-    position: relative;
-    padding: var(--stage-top) 0 var(--space-6)
-      calc(var(--bubble) + var(--space-4));
+  .svc__intro {
+    max-width: var(--measure);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+    color: var(--ink-muted);
   }
 
-  .axis-stage__title {
-    padding-top: max(0px, (var(--bubble) - 1lh) / 2);
-  }
-
-  .axis-stage__bubble {
-    position: absolute;
-    z-index: 1;
-    top: var(--stage-top);
-    left: 0;
-  }
-
-  .axis-stage__tagline {
-    max-width: 30ch;
-    margin-top: var(--space-2);
-  }
-
-  .axis-stage__rail {
-    top: 0;
-    bottom: 0;
-    left: calc((var(--bubble) - var(--rail)) / 2);
-  }
-
-  .axis-stage:first-of-type .axis-stage__rail {
-    top: calc(var(--stage-top) + var(--bubble) / 2);
-  }
-
-  .axis-stage:last-child .axis-stage__rail {
-    bottom: auto;
-    height: calc(var(--stage-top) + var(--bubble) / 2);
-  }
-
-  .axis-stage__items {
-    margin-top: var(--space-4);
-  }
-
-  .axis-stage__item {
-    padding: var(--item-pad) 0 var(--space-5);
-    border-top: var(--rule) solid var(--line);
-  }
-
-  /* The icons (review batch 13): beside the title and its line, in a column
-     of its own (ADR 0022). */
-  .axis--icons .axis-stage__item {
+  /* A stage: its card, then its services. */
+  .stage {
     display: grid;
-    grid-template-columns: var(--icon) minmax(0, 1fr);
-    column-gap: var(--space-4);
-    align-content: start;
-    align-items: start;
+    gap: var(--space-7);
+    padding-block: var(--space-6);
   }
 
-  .axis--icons .axis-stage__item :global(.service__icon) {
+  .stage__card {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-5);
+  }
+
+  .stage__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-5);
+    align-content: center;
+    align-items: baseline;
+  }
+
+  /* The stage's number, large and in the accent: the sequence is the point
+     of this zone, as a drawing numbers its sheets. The heading carries it
+     for assistive technology. */
+  .stage__number {
     grid-row: 1 / span 2;
+    font-size: clamp(3rem, 2rem + 3.5vw, 6rem);
+    line-height: 0.8;
+    font-variant-numeric: tabular-nums;
   }
 
-  .axis--icons .axis-stage__item :global(:is(.service__title, .service__body)) {
+  .stage__title {
+    font-size: clamp(1.625rem, 1.25rem + 1.4vw, 2.625rem);
+  }
+
+  .stage__tagline {
     grid-column: 2;
+    max-width: var(--measure-lead);
+    margin-top: var(--space-2);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+    color: var(--ink-muted);
   }
 
-  /* On phones the icon sits beside the title only, and the line runs under
-     both at the column's full width, so it isn't squeezed to 21-24
-     characters (critique 5, review #121; ADR 0028). */
-  @media (max-width: 47.99rem) {
-    .axis--icons
-      .axis-stage__item
-      :global(:is(.service__icon, .service__title)) {
-      grid-row: 1;
-      align-self: center;
+  /* The drawing's inner panel; a container, so the code animation's type
+     sizes with it. */
+  .stage__visual {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    min-width: 0;
+    padding: var(--space-3);
+    container-type: inline-size;
+  }
+
+  /* The services: a row of columns under the card. */
+  .stage__items {
+    display: grid;
+    gap: var(--space-7) var(--gap);
+    margin: 0;
+    padding: 0 var(--space-5);
+    list-style: none;
+  }
+
+  .svc-item {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+
+  .svc-item .svc-item__icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-3);
+    color: var(--ink);
+  }
+
+  .svc-item__title {
+    font-size: var(--nk-row);
+    line-height: 1;
+  }
+
+  .svc-item__link {
+    color: var(--ink);
+  }
+
+  .svc-item__body {
+    max-width: var(--measure);
+    color: var(--ink-muted);
+  }
+
+  /* The outline goes around the whole item, not just the title. */
+  .svc-item:has(.svc-item__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .svc-item__link:focus-visible {
+    outline: none;
+  }
+
+  @media (min-width: 48rem) {
+    .stage__card {
+      padding: var(--space-7);
     }
 
-    .axis--icons .axis-stage__item :global(.service__body) {
-      grid-column: 1 / -1;
+    .stage__visual {
+      padding: var(--space-5);
     }
+
+    .stage__items {
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+      padding-inline: var(--space-7);
+    }
+  }
+
+  /* The entrance: the card's two halves come in from their sides as it
+     reaches the screen, the drawing a beat after the text; then the
+     services rise and their icons draw. The mirrored card swaps the
+     sides. */
+  @keyframes svc-from-left {
+    from {
+      opacity: 0;
+      translate: calc(var(--svc-slide) * -1) 0;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes svc-from-right {
+    from {
+      opacity: 0;
+      translate: var(--svc-slide) 0;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  .stage.is-pending :is(.stage__head, .stage__visual, .svc-item) {
+    opacity: 0;
+  }
+
+  .stage.is-in :is(.stage__head, .stage__visual) {
+    animation: svc-from-left 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .stage.is-in .stage__visual,
+  .stage--mirror.is-in .stage__head {
+    animation-name: svc-from-right;
+  }
+
+  .stage--mirror.is-in .stage__visual {
+    animation-name: svc-from-left;
+  }
+
+  .stage.is-in .stage__visual {
+    animation-delay: 120ms;
+  }
+
+  .stage.is-in .svc-item {
+    animation: nk-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) 500ms both;
+  }
+
+  .stage.is-in :global(:is([data-stroke="ink"], [data-stroke="line"])) {
+    stroke-dasharray: 1;
+    animation: nh-stroke 650ms var(--ease-pen) 900ms both;
+  }
+
+  .stage.is-in :global([data-stroke="line"]) {
+    animation-duration: 300ms;
+    animation-delay: 1400ms;
+  }
+
+  .stage.is-in :global([data-stroke="grip"]) {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: motion-snap-in var(--motion-snap) var(--ease-snap) 1650ms both;
   }
 
   @media (min-width: 64rem) {
-    /* The line down the middle, and the services' titles a step larger for
-       easier reading (#102). */
-    .axis {
-      --step-title: clamp(1.25rem, 1.1rem + 0.45vw, 1.625rem);
+    .svc {
+      --svc-slide: 22vw;
     }
 
-    .axis .axis-stage {
-      --stage-top: var(--space-5);
-
-      padding: var(--stage-top) 0 var(--space-5);
+    .svc__title {
+      grid-column: 1 / span 5;
     }
 
-    .axis .axis-stage:last-child {
-      padding-bottom: 0;
+    .svc__intro {
+      grid-column: 7 / -1;
     }
 
-    /* The head covers the line where it passes behind the title. */
-    .axis .axis-stage__head {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      justify-items: center;
-      width: fit-content;
-      max-width: 36rem;
-      margin-inline: auto;
-      padding-bottom: var(--space-3);
-      background: var(--surface);
-      text-align: center;
+    /* The card's two halves side by side: the text on the left and the
+       drawing on the right, or mirrored. */
+    .stage__card {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      padding: var(--space-8);
     }
 
-    .axis .axis-stage__title {
-      display: grid;
-      gap: var(--space-3);
-      justify-items: center;
-      padding-top: 0;
+    .stage__head {
+      grid-row: 1;
+      grid-column: 1 / span 5;
     }
 
-    .axis .axis-stage__bubble {
-      position: static;
+    .stage__visual {
+      grid-row: 1;
+      grid-column: 6 / -1;
     }
 
-    .axis .axis-stage__tagline {
-      margin-top: var(--space-3);
+    .stage--mirror .stage__head {
+      grid-column: 9 / -1;
     }
 
-    .axis :is(.axis__line, .axis-stage__rail) {
-      left: calc(50% - var(--rail) / 2);
+    .stage--mirror .stage__visual {
+      grid-column: 1 / span 8;
     }
 
-    .axis .axis-stage__items {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: var(--space-10);
-      margin-top: var(--space-6);
-    }
-
-    /* The left column leans on the line. */
-    .axis .axis-stage__item:nth-child(odd) {
-      text-align: right;
-    }
-
-    .axis .axis-stage__item:nth-child(odd) :global(.service__body) {
-      margin-left: auto;
-    }
-
-    .axis .axis-stage__item:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      justify-self: center;
-      width: min(100%, 36rem);
-      text-align: center;
-    }
-
-    .axis .axis-stage__item:last-child:nth-child(odd) :global(.service__body) {
-      margin-inline: auto;
-    }
-
-    /* The icons face the line, and the centred last service has its icon
-       centred above it. */
-    .axis.axis--icons .axis-stage__item:nth-child(odd) {
-      grid-template-columns: minmax(0, 1fr) var(--icon);
-    }
-
-    .axis.axis--icons .axis-stage__item:nth-child(odd) :global(.service__icon) {
-      grid-column: 2;
-    }
-
-    .axis.axis--icons
-      .axis-stage__item:nth-child(odd)
-      :global(:is(.service__title, .service__body)) {
-      grid-column: 1;
-    }
-
-    .axis.axis--icons .axis-stage__item:last-child:nth-child(odd) {
-      display: block;
-    }
-
-    .axis.axis--icons
-      .axis-stage__item:last-child:nth-child(odd)
-      :global(.service__icon) {
-      margin: 0 auto var(--space-3);
+    .stage__items {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding-inline: var(--space-8);
     }
   }
 </style>

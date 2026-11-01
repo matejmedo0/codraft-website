@@ -4,10 +4,13 @@
  * the header, the page's zones in <main> and the title block. The view puts
  * its zones (src/components/ui/Zone.astro) in the default slot; they are
  * lettered A, B, C, … down the sheet, and the title block takes the next
- * letter.
+ * letter. A bare page (the new design, ADR 0035) has the skip link, the
+ * new top bar, <main> and the bottom menu, which also holds the legal links.
  */
+import BottomNav from "../components/site/BottomNav.astro";
 import Footer from "../components/site/Footer.astro";
 import Header from "../components/site/Header.astro";
+import TopBar from "../components/site/TopBar.astro";
 import Sheet from "../components/ui/Sheet.astro";
 import SkipLink from "../components/ui/SkipLink.astro";
 import type { Locale } from "../config/site.ts";
@@ -20,20 +23,32 @@ interface Props {
   title: string;
   description?: string | undefined;
   page?: PageId | undefined;
+  /** Without the sheet, the header and the footer. */
+  bare?: boolean | undefined;
 }
 
-const { locale, title, description, page } = Astro.props;
+const { locale, title, description, page, bare = false } = Astro.props;
 const MAIN_ID = "main";
 ---
 
 <BaseLayout locale={locale} title={title} description={description} page={page}>
   <slot name="head" slot="head" />
   <SkipLink target={MAIN_ID} label={t(locale, "skipLink")} />
-  <Sheet>
-    <Header locale={locale} page={page} />
-    <main id={MAIN_ID}>
-      <slot />
-    </main>
-    <Footer locale={locale} page={page} />
-  </Sheet>
+  {bare ? (
+    <>
+      <TopBar locale={locale} page={page} />
+      <main id={MAIN_ID}>
+        <slot />
+      </main>
+      <BottomNav locale={locale} page={page} />
+    </>
+  ) : (
+    <Sheet>
+      <Header locale={locale} page={page} />
+      <main id={MAIN_ID}>
+        <slot />
+      </main>
+      <Footer locale={locale} page={page} />
+    </Sheet>
+  )}
 </BaseLayout>

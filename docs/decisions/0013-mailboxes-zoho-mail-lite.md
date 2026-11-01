@@ -8,11 +8,11 @@
 
 The team needs mailboxes on `codraft.hr`:
 - a personal address per person
-- `info@` for enquiries ([research/2026-10-18-domain-and-name.md](../research/2026-10-18-domain-and-name.md#email))
+- `info@` for enquiries (research/2026-10-18-domain-and-name.md)
 
 The budget ceiling is €10 a month in total ([ADR 0009](0009-hosting-ovhcloud-vps-eu.md)). EU data is preferred.
 
-The research of 2026-10-19 ([research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md#5-mailboxes-for-codrafthr)) compared these options:
+The research of 2026-10-19 (research/2026-10-19-hosting.md) compared these options:
 
 | Option | Price | Why not chosen |
 |---|---|---|

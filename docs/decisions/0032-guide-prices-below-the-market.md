@@ -6,7 +6,7 @@
 
 ## Context
 
-Gap G7 asked whether `/usluge` shows prices or typical timelines. On 2026-10-22 the client answered in M6 ([3-pages.md](../phases/3-pages.md)): "Za cijene usluga istraži aktualne tržišne cijene usporedivih usluga i postavi okvirno 10 % niže cijene. Dokumentiraj izvore i pretpostavke." Four researchers and four fact-checkers collected and re-checked published Croatian prices the same day ([pricing research](../research/2026-10-22-pricing.md)). Croatian small businesses ask for the price first. A starting price filters enquiries and backs the page's promise that the scope, timeline and price are known before work starts.
+Gap G7 asked whether `/usluge` shows prices or typical timelines. On 2026-10-22 the client answered in M6 (3-pages.md): "Za cijene usluga istraži aktualne tržišne cijene usporedivih usluga i postavi okvirno 10 % niže cijene. Dokumentiraj izvore i pretpostavke." Four researchers and four fact-checkers collected and re-checked published Croatian prices the same day (pricing research). Croatian small businesses ask for the price first. A starting price filters enquiries and backs the page's promise that the scope, timeline and price are known before work starts.
 
 ## Decision
 

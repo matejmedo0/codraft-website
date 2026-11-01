@@ -9,11 +9,11 @@ export interface NavLink {
 
 /**
  * The header's navigation. It has no button: the free audit is asked for
- * once on a page, where the page explains it (ADR 0017).
+ * once on a page, where the page explains it (ADR 0017). Drafting is part of
+ * Services, so it has no link of its own (the team, 2026-10-31).
  */
 export const MAIN_NAV: readonly NavLink[] = [
   { page: "services", label: "nav.services" },
-  { page: "drafting", label: "nav.drafting" },
   { page: "about", label: "nav.about" },
   { page: "contact", label: "nav.contact" },
 ];

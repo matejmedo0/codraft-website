@@ -1,17 +1,14 @@
 ## Summary
 
-<!-- What changed and why. For a phase PR, paste the phase report here. -->
-
-**Phase:** <!-- e.g. 1 — Architecture, or "maintenance" -->
+<!-- What changed and why. -->
 
 ## Checklist
 
-- [ ] Phase exit criteria or issue acceptance criteria met
-- [ ] Format, lint, typecheck, tests and build pass (once CI exists)
+- [ ] Format, lint, typecheck, tests and build pass
 - [ ] UI checked at 375 / 768 / 1440 px, no console errors (screenshots below)
-- [ ] Accessibility basics: keyboard, visible focus, labels, reduced motion
+- [ ] Accessibility basics: keyboard, visible focus, labels
 - [ ] Copy matches `docs/content.md` (new copy added there first)
-- [ ] Docs updated: phase log, `PROGRESS.md`, ADR for any decision, research notes for new facts
+- [ ] Docs updated where behaviour or copy changed; an ADR for any lasting decision
 
 ## Screenshots
 

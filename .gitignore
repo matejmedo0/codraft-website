@@ -36,8 +36,13 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 
-# Claude Code: personal settings stay local; project rules (.claude/rules/) are tracked
+# Claude Code: personal settings stay local; the project settings are tracked
 .claude/settings.local.json
 
 # Raw media (e.g. original team photos); only optimised copies are committed
 Assets/**/originals/
+
+# Clash Display (ITF Free Font License): self-hosting on our site is allowed,
+# sharing it through a public repository is not, so the files stay out of git.
+Assets/codraft-fonts/
+public/fonts/ClashDisplay-Variable.woff2

@@ -1,6 +1,6 @@
 /**
- * The company data the title block (and, in phase 3, the legal notice)
- * shows. It arrives from the client (PROGRESS.md, item A); until then a
+ * The company data the title block (and the legal notice)
+ * shows. It arrives from the client; until then a
  * value is `null` and the title block says it arrives before launch.
  * Bottom layer: imports nothing from `src/`.
  */

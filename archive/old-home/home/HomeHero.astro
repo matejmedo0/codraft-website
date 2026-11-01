@@ -1,0 +1,127 @@
+---
+/**
+ * Zone A of Home in the chosen direction (ADR 0015): the headline beside a
+ * drawing on graph paper that holds the mark, which plays its entrance once
+ * per load (ADR 0014). On paper, like the header above it. (Batch 5 tried
+ * the H1 across the whole sheet; the client kept this layout in batch 6.)
+ *
+ * The hero orients and doesn't sell (ADR 0017): its one button leads to the
+ * services, and the drafting clients get their own path below it
+ * (ADR 0018). The free audit is asked for once, in its own zone.
+ */
+import Button from "../../components/ui/Button.astro";
+import Wordmark from "../../components/ui/Wordmark.astro";
+import Zone from "../../components/ui/Zone.astro";
+import type { Locale } from "../../config/site.ts";
+import { t } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Zone labelledby="naslov" select={false} class="home-hero">
+  <div class="home-hero__text">
+    <h1 id="naslov">
+      <span class="home-hero__line">{t(locale, "home.hero.titleLine1")}</span>{" "}
+      <span class="home-hero__line">{t(locale, "home.hero.titleLine2")}</span>
+    </h1>
+    <p class="home-hero__lead">{t(locale, "home.hero.lead")}</p>
+    <div class="home-hero__actions">
+      <Button href={pathFor("services", locale)}>
+        {t(locale, "home.hero.cta")}
+      </Button>
+    </div>
+    <p class="home-hero__drafting">
+      <a href={pathFor("drafting", locale)}>
+        {t(locale, "home.hero.drafting")}
+      </a>
+    </p>
+  </div>
+  <div class="home-hero__drawing graph-paper">
+    <Wordmark entrance />
+  </div>
+</Zone>
+
+<style>
+  .home-hero {
+    display: grid;
+    gap: var(--space-7);
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  /* The H1's two lines, as in direction A (the client's review, batch 2).
+     The first line is about 14 em long. From a 54rem column (a screen of
+     about 1660 px) each half is a line of its own, and the size eases just
+     enough for the first to fit; a narrower column wraps the sentence
+     evenly at full size. */
+  .home-hero__text {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 54rem) {
+    .home-hero h1 {
+      font-size: min(var(--step-display), 100cqi / 14.2);
+    }
+
+    .home-hero__line {
+      display: block;
+    }
+  }
+
+  .home-hero__lead {
+    max-width: var(--measure-lead);
+    margin-top: var(--space-5);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .home-hero__drafting {
+    margin-top: var(--space-5);
+  }
+
+  .home-hero__drafting a {
+    color: var(--ink);
+    font-weight: var(--weight-medium);
+  }
+
+  /* On narrow screens the drawing is a low strip and the mark stays mid
+     size (the client didn't want a large mark in front). */
+  .home-hero__drawing {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 21 / 9;
+    padding: 6% 25%;
+    color: var(--ink);
+  }
+
+  @media (min-width: 64rem) {
+    .home-hero {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gap);
+      align-items: center;
+      /* 72 px above: the client's reference screenshot (review #19). */
+      padding-block: 4.5rem var(--space-10);
+    }
+
+    .home-hero__text {
+      grid-column: 1 / span 7;
+    }
+
+    .home-hero__drawing {
+      grid-column: 8 / -1;
+      aspect-ratio: 4 / 3;
+      padding: 14%;
+    }
+  }
+</style>

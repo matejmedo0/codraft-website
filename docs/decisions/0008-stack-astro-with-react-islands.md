@@ -19,7 +19,7 @@ The requirements that decide the stack:
 - custom forms with a small server API
 - React-compatible tooling, because the team's skills are React-based
 
-Three options were compared in [phases/1-architecture-options.md](../phases/1-architecture-options.md), using the facts in [research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md):
+Three options were compared in phases/1-architecture-options.md, using the facts in research/2026-10-19-hosting.md:
 - **Next.js** works against the requirements:
   - A strict CSP needs nonces, which makes every page render dynamically.
   - It ships about 174 KB gzip of framework JS even on a page without client components (measured).

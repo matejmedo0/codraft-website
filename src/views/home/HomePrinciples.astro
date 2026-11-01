@@ -1,13 +1,16 @@
 ---
 /**
- * Zone E, "Kako radimo": the client's three commitments, in the client's
- * order (review batch 10); the third answers who owns the work (ADR 0021).
- * "Razgovarate s onima koji rade" gets its proof from the team strip right
- * below (the page's argument).
+ * "Kako radimo" on Home (M32, M36): the client's three commitments
+ * as a grid of rounded cards, as in the client's reference "Torch": the
+ * first card tall on the left, the other two stacked beside it. Each card
+ * has its number outlined at the top and its statement in display capitals
+ * with its sentence at the bottom. They come in one after the other when
+ * the zone arrives (reveal.ts). "Razgovarate s onima koji rade" gets its
+ * proof from the team right below.
  */
-import Zone from "../../components/ui/Zone.astro";
 import type { Locale } from "../../config/site.ts";
 import { t } from "../../features/i18n/ui.ts";
+import TwoTone from "./TwoTone.astro";
 
 interface Props {
   locale: Locale;
@@ -20,64 +23,96 @@ const items = (["direct", "honest", "yours"] as const).map((item) => ({
 }));
 ---
 
-<Zone labelledby="kako-radimo" class="home-principles">
-  <h2 id="kako-radimo">{t(locale, "home.principles.title")}</h2>
-  <ul class="home-principles__list">
-    {items.map((item) => (
-      <li class="principle">
-        <h3>{item.title}</h3>
-        <p>{item.body}</p>
+<section class="how nh-zone" aria-labelledby="kako-radimo" data-reveal>
+  <h2 class="how__title nk-display nk-title" id="kako-radimo">
+    <TwoTone text={t(locale, "home.principles.title")} />
+  </h2>
+  <ol class="how__list">
+    {items.map((item, index) => (
+      <li class="how-item nk-card">
+        <span class="how-item__number nk-display nk-outline" aria-hidden="true">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div>
+          <h3 class="how-item__title nk-display">{item.title}</h3>
+          <p class="how-item__body">{item.body}</p>
+        </div>
       </li>
     ))}
-  </ul>
-</Zone>
+  </ol>
+  <script>
+    import "./reveal.ts";
+  </script>
+</section>
 
 <style>
-  .home-principles__list {
+  .how__list {
     display: grid;
-    margin: var(--space-6) 0 0;
+    gap: var(--space-4);
+    margin: var(--space-8) 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .principle {
+  .how-item {
     display: grid;
-    gap: var(--space-2);
-    padding: var(--space-5) 0;
-    border-top: var(--rule) solid var(--line);
+    gap: var(--space-8);
+    align-content: space-between;
+    min-height: 16rem;
+    padding: var(--space-6);
   }
 
-  .principle p {
-    max-width: var(--measure);
+  .how-item__number {
+    font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
+    line-height: 0.8;
+  }
+
+  .how-item__title {
+    font-size: var(--nk-statement);
+    line-height: 0.92;
+  }
+
+  .how-item__body {
+    max-width: 40ch;
+    margin-top: var(--space-4);
     color: var(--ink-muted);
+    font-size: var(--step-lead);
+    line-height: var(--leading-lead);
   }
 
   @media (min-width: 64rem) {
-    .home-principles {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: var(--gap);
-      align-items: start;
+    .how__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5);
     }
 
-    .home-principles > h2 {
-      grid-column: 1 / span 4;
+    .how-item {
+      padding: var(--space-8);
     }
 
-    .home-principles__list {
-      grid-column: 5 / -1;
-      margin: 0;
+    .how-item:first-child {
+      grid-row: span 2;
     }
+  }
 
-    .principle {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
-      gap: var(--gap);
-      padding-block: var(--space-5);
-    }
+  .how.is-pending :is(.how__title, .how-item) {
+    opacity: 0;
+  }
 
-    .principle:first-child {
-      padding-top: var(--space-2);
-      border-top: 0;
-    }
+  .how.is-in .how__title {
+    animation: nk-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .how.is-in .how-item {
+    animation: nk-rise 800ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(250ms + var(--k, 0) * 160ms) both;
+  }
+
+  .how-item:nth-child(2) {
+    --k: 1;
+  }
+
+  .how-item:nth-child(3) {
+    --k: 2;
   }
 </style>

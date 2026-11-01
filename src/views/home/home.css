@@ -1,0 +1,157 @@
+/*
+ * Home's sections under the hero (src/views/home/): the content of the
+ * earlier new Home (dev, M24–M40) set in the scroll-based design (ADR 0035,
+ * 0036): Clash Display headings in sentence case with their last words
+ * muted, as the hero's headline; dark glass cards like the hero's window
+ * and the bottom menu; copper for the accent; the drawing vocabulary
+ * (grips, lines, drawings) in teal and copper. One light card, the free
+ * estimate, inverts the page once.
+ *
+ * Imported once by HomeView.astro; unlayered, so it wins over base.css.
+ */
+
+/* A stroke run along its path; the path has pathLength="1". */
+@keyframes nh-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A block arriving in a section that has just come into view (reveal.ts). */
+@keyframes nk-rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+:root {
+  --nk-mono:
+    ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+  /* The heading sizes: a section's title, a statement, a row's title. */
+  --nk-title: clamp(2.25rem, 1.5rem + 2.8vw, 4rem);
+  --nk-statement: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --nk-row: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  --nk-radius: 1.25rem;
+  --nk-radius-inner: 0.75rem;
+  /* The inner panel, a step up from the glass. */
+  --color-elevated: var(--color-petrol-raised);
+}
+
+/* One section: the page's width and padding, as the hero's stage. */
+.nh-zone {
+  position: relative;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: var(--space-10) var(--pad);
+}
+
+/* The 12-column grid from 64rem. */
+.nh-grid {
+  display: grid;
+  gap: var(--space-7);
+}
+
+@media (min-width: 64rem) {
+  .nh-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+}
+
+/* Headings as the hero's: Clash Display, sentence case, tight. */
+.nk-display {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-strong);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  word-spacing: 0.08em;
+  text-wrap: balance;
+}
+
+.nk-title {
+  font-size: var(--nk-title);
+}
+
+/* A number drawn as an outline in copper, as a pen traces it. */
+.nk-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.25px var(--accent);
+}
+
+.nk-label {
+  color: var(--ink-muted);
+  font-family: var(--nk-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* A title's last words, muted, as the hero's second line. */
+.nk-accent {
+  color: var(--ink-muted);
+}
+
+.nk-eyebrow {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--accent-text);
+  font-family: var(--nk-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Cards of dark glass over the page, like the hero's window; an inner
+   panel a step lighter holds a drawing. */
+.nk-card {
+  border: var(--rule) solid var(--line);
+  border-radius: var(--nk-radius);
+  background: color-mix(in srgb, var(--surface-sunk) 78%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--ink) 7%, transparent),
+    0 2rem 4rem -2rem color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.nk-panel {
+  border-radius: var(--nk-radius-inner);
+  background: color-mix(in srgb, var(--color-elevated) 70%, transparent);
+}
+
+/* The light card: bone ground, the roles inverted. Text passes AA: ink
+   16.9:1, muted 6.2:1, copper text 5.3:1; the lighter copper is for lines
+   and grips only. */
+.nk-inverse {
+  --surface: var(--color-bone);
+  --surface-sunk: #e6e1db;
+  --ink: var(--color-obsidian);
+  --ink-muted: #4a5a5e;
+  --line: color-mix(in srgb, var(--color-obsidian) 16%, var(--color-bone));
+  --line-strong: var(--color-obsidian);
+  --accent: #9a6238;
+  --accent-text: #8a5530;
+  --link: #8a5530;
+  --focus: #8a5530;
+  --grip-fill: var(--color-bone);
+  --button-primary-bg: var(--color-obsidian);
+  --button-primary-bg-hover: var(--color-petrol-raised);
+  --button-primary-fg: var(--color-bone);
+
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.nk-inverse ::selection {
+  background-color: #e3cdb9;
+  color: var(--ink);
+}

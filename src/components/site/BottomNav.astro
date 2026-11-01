@@ -1,0 +1,534 @@
+---
+/**
+ * The new design's navigation (ADR 0035): a bar fixed at the bottom that
+ * expands upward into the full menu, after React Bits Pro's Navigation 5.
+ * The open menu holds the mark and a call to Contact (not the free audit,
+ * ADR 0017), every main page, the legal pages and the language switcher.
+ * The page behind it blurs, and Escape, the backdrop or the button close
+ * it. The card is the petrol surface (.surface-navy).
+ *
+ * Each page has a drawn icon (nav-icons.ts): teal lines, copper on the
+ * current page and on hover.
+ *
+ * Motion (GSAP): opening grows the panel out of the bar, then the rows
+ * come in one after another while their icons draw; closing fades them all
+ * at once and folds the panel back, faster. Hovering a row draws its icon
+ * again (CSS, timed by icon-draw.ts like the service icons).
+ */
+import Mark from "../../assets/brand/codraft-icon-small-reverse.svg";
+import type { Locale } from "../../config/site.ts";
+import { LEGAL_NAV, MAIN_NAV } from "../../features/i18n/navigation.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t, type UiKey } from "../../features/i18n/ui.ts";
+import { pathFor } from "../../features/i18n/urls.ts";
+import Button from "../ui/Button.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { NAV_ICONS } from "./nav-icons.ts";
+
+interface Props {
+  locale: Locale;
+  page?: PageId | undefined;
+}
+
+const { locale, page } = Astro.props;
+const PANEL_ID = "bottom-nav-panel";
+const links: { page: PageId; label: UiKey }[] = [
+  { page: "home", label: "breadcrumb.home" },
+  ...MAIN_NAV,
+];
+const current = links.find((link) => link.page === page);
+---
+
+<div class="bottom-nav-backdrop" data-bottom-nav-backdrop hidden></div>
+<nav
+  class="bottom-nav surface-navy"
+  aria-label={t(locale, "header.navLabel")}
+  data-bottom-nav
+>
+  <div class="bottom-nav__panel" id={PANEL_ID} data-bottom-nav-panel hidden>
+    <div class="bottom-nav__head" data-reveal>
+      <span class="bottom-nav__mark">
+        <Mark aria-hidden="true" />
+      </span>
+      <div class="bottom-nav__title-row">
+        <p class="bottom-nav__title">{t(locale, "menu.title")}</p>
+        <Button
+          href={pathFor("contact", locale)}
+          size="compact"
+          class="bottom-nav__cta"
+        >
+          {t(locale, "menu.cta")}
+          <svg
+            class="bottom-nav__cta-arrow"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M5 11 11 5M6 5h5v5" />
+          </svg>
+        </Button>
+      </div>
+    </div>
+    <ul class="bottom-nav__links">
+      {links.map(({ page: target, label }) => {
+        const icon = NAV_ICONS[target];
+        return (
+          <li data-reveal>
+            <a
+              class="bottom-nav__link"
+              href={pathFor(target, locale)}
+              aria-current={target === page ? "page" : undefined}
+            >
+              <span class="bottom-nav__tile" aria-hidden="true">
+                {icon && (
+                  <svg
+                    class="bottom-nav__icon"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="square"
+                    stroke-linejoin="miter"
+                    focusable="false"
+                    data-nav-icon
+                  >
+                    {icon.map(({ tag: Shape, attrs }) => (
+                      <Shape {...attrs} pathLength="1" data-stroke />
+                    ))}
+                  </svg>
+                )}
+              </span>
+              <span class="bottom-nav__label">{t(locale, label)}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="bottom-nav__foot" data-reveal>
+      <ul class="bottom-nav__legal">
+        {LEGAL_NAV.map(({ page: target, label }) => (
+          <li>
+            <a href={pathFor(target, locale)}>{t(locale, label)}</a>
+          </li>
+        ))}
+      </ul>
+      <LanguageSwitcher
+        locale={locale}
+        page={page}
+        class="bottom-nav__language"
+      />
+    </div>
+  </div>
+  <div class="bottom-nav__bar">
+    <button
+      class="bottom-nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls={PANEL_ID}
+      data-bottom-nav-toggle
+      data-open-label={t(locale, "menu.open")}
+      data-close-label={t(locale, "menu.close")}
+    >
+      <svg
+        class="bottom-nav__chevron"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M3.5 10 8 5.5 12.5 10" />
+      </svg>
+      <span data-bottom-nav-label>{t(locale, "menu.open")}</span>
+    </button>
+    {current && (
+      <span class="bottom-nav__current">{t(locale, current.label)}</span>
+    )}
+  </div>
+</nav>
+
+<script>
+  import { timeStrokes } from "../../features/services/icons/icon-draw";
+  import { gsap, lenis } from "../../lib/scroll";
+
+  function setUp(nav: HTMLElement): void {
+    const toggle = nav.querySelector<HTMLButtonElement>(
+      "[data-bottom-nav-toggle]",
+    );
+    const label = nav.querySelector<HTMLElement>("[data-bottom-nav-label]");
+    const panel = nav.querySelector<HTMLElement>("[data-bottom-nav-panel]");
+    const backdrop = document.querySelector<HTMLElement>(
+      "[data-bottom-nav-backdrop]",
+    );
+    if (!toggle || !label || !panel || !backdrop) return;
+    const rows = panel.querySelectorAll<HTMLElement>("[data-reveal]");
+    const strokes = panel.querySelectorAll<SVGElement>(
+      "[data-nav-icon] [data-stroke]",
+    );
+    // The hover redraw's timing, stroke by stroke (--at, --for).
+    for (const icon of panel.querySelectorAll<SVGSVGElement>(
+      "[data-nav-icon]",
+    )) {
+      timeStrokes(icon, 0);
+    }
+    let timeline: gsap.core.Timeline | undefined;
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+
+    const open = () => {
+      timeline?.kill();
+      panel.hidden = false;
+      backdrop.hidden = false;
+      nav.dataset.open = "";
+      toggle.setAttribute("aria-expanded", "true");
+      label.textContent = toggle.dataset.closeLabel ?? "";
+      // The page behind the menu stays put.
+      lenis.stop();
+      timeline = gsap
+        .timeline({
+          onComplete: () => {
+            nav.dataset.settled = "";
+          },
+        })
+        .fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0)
+        .fromTo(
+          panel,
+          { height: 0 },
+          { height: "auto", duration: 0.5, ease: "power3.out" },
+          0,
+        )
+        .fromTo(
+          rows,
+          { opacity: 0, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.06,
+          },
+          0.15,
+        )
+        // The icons draw as their rows arrive.
+        .fromTo(
+          strokes,
+          { strokeDashoffset: 1 },
+          {
+            strokeDashoffset: 0,
+            duration: 0.3,
+            ease: "power2.inOut",
+            stagger: 0.025,
+          },
+          0.25,
+        );
+      panel.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
+    };
+
+    const close = (returnFocus: boolean) => {
+      timeline?.kill();
+      delete nav.dataset.open;
+      delete nav.dataset.settled;
+      toggle.setAttribute("aria-expanded", "false");
+      label.textContent = toggle.dataset.openLabel ?? "";
+      lenis.start();
+      timeline = gsap
+        .timeline({
+          onComplete: () => {
+            panel.hidden = true;
+            backdrop.hidden = true;
+          },
+        })
+        .to(rows, { opacity: 0, duration: 0.15, ease: "power1.in" }, 0)
+        .to(panel, { height: 0, duration: 0.3, ease: "power3.inOut" }, 0.05)
+        .to(backdrop, { opacity: 0, duration: 0.25 }, 0);
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => {
+      if (isOpen()) close(false);
+      else open();
+    });
+    backdrop.addEventListener("click", () => {
+      close(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) close(true);
+    });
+  }
+
+  const nav = document.querySelector<HTMLElement>("[data-bottom-nav]");
+  if (nav) setUp(nav);
+</script>
+
+<style>
+  .bottom-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    background: color-mix(in srgb, var(--surface) 45%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .bottom-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    z-index: 10;
+    width: min(42rem, 100% - 2 * var(--space-4));
+    margin-inline: auto;
+    overflow: hidden;
+    border: var(--rule) solid var(--line);
+    border-radius: 1rem;
+    /* Glass: only the ground is see-through, so the text stays crisp. At 80 %
+       even the silk's brightest band keeps the muted text above 4.5:1. */
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(16px) saturate(1.2);
+  }
+
+  /* Short screens scroll the open menu instead of pushing it off the top,
+     but only once it has opened: while its height grows, a scrollbar would
+     flash beside the rows. */
+  .bottom-nav__panel {
+    max-height: calc(100svh - 7rem);
+    overflow-y: hidden;
+  }
+
+  .bottom-nav[data-settled] .bottom-nav__panel {
+    overflow-y: auto;
+  }
+
+  .bottom-nav__head {
+    padding: var(--space-4);
+    border-bottom: var(--rule) solid var(--line);
+  }
+
+  .bottom-nav__mark {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  .bottom-nav__mark :global(svg) {
+    width: auto;
+    height: 1.25rem;
+  }
+
+  /* On the light tile the mark is one colour, as the mono marks are. */
+  .bottom-nav__mark :global(:is(.cd-ink, .cd-accent)) {
+    fill: currentColor;
+  }
+
+  .bottom-nav__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-4);
+  }
+
+  .bottom-nav__title {
+    color: var(--ink);
+    font-family: var(--font-heading);
+    font-size: var(--step-chapter);
+    font-stretch: var(--width-heading);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .bottom-nav__cta {
+    gap: var(--space-2);
+    border-radius: 0.5rem;
+  }
+
+  .bottom-nav__cta-arrow {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav__cta:hover .bottom-nav__cta-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* The old design's grips stay off the new design (ADR 0035). */
+  .bottom-nav__cta :global(.grips) {
+    display: none;
+  }
+
+  .bottom-nav__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bottom-nav__links li {
+    border-bottom: var(--rule) solid var(--line);
+  }
+
+  .bottom-nav__link {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    color: var(--ink);
+    font-size: var(--step-lead);
+    text-decoration: none;
+    transition: background-color var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav__link:hover {
+    background: color-mix(in srgb, var(--surface-sunk) 70%, transparent);
+  }
+
+  .bottom-nav__link:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1);
+  }
+
+  /* The tile stands in for the reference's thumbnails: the page's drawn
+     icon, teal lines, copper on the hovered and the current page. */
+  .bottom-nav__tile {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 3.5rem;
+    height: 2.75rem;
+    border-radius: 0.625rem;
+    background: color-mix(in srgb, var(--surface-sunk) 70%, transparent);
+    color: var(--line-strong);
+    transition:
+      transform var(--motion-base) var(--ease-standard),
+      color var(--motion-base) var(--ease-standard),
+      background-color var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav__link:hover .bottom-nav__tile {
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    color: var(--accent);
+    transform: scale(1.1);
+  }
+
+  .bottom-nav__link[aria-current="page"] .bottom-nav__tile {
+    color: var(--accent);
+  }
+
+  .bottom-nav__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    overflow: visible;
+  }
+
+  .bottom-nav__icon [data-stroke] {
+    stroke-dasharray: 1;
+  }
+
+  /* Hover draws the icon again, like a pen: the lines run along their
+     paths, one after another. */
+  .bottom-nav__link:hover .bottom-nav__icon [data-stroke] {
+    animation: bottom-nav-draw var(--for, 220ms) var(--ease-pen) var(--at, 0ms)
+      both;
+  }
+
+  @keyframes bottom-nav-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .bottom-nav__label {
+    transition: transform var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav__link:hover .bottom-nav__label {
+    transform: translateX(var(--space-2));
+  }
+
+  .bottom-nav__foot {
+    display: flex;
+    gap: var(--space-4);
+    align-items: end;
+    justify-content: space-between;
+    padding: var(--space-4);
+    font-size: var(--step-label);
+  }
+
+  .bottom-nav__legal {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The language switcher is a child component, so it needs :global (a
+     separate selector: Astro scopes the whole of an :is()). */
+  .bottom-nav__foot a,
+  .bottom-nav__foot :global(.language-switcher) {
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .bottom-nav__foot a:hover,
+  .bottom-nav__foot :global(.language-switcher:hover) {
+    color: var(--ink);
+  }
+
+  .bottom-nav__bar {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.5rem;
+    padding-inline: var(--space-4);
+    border-top: var(--rule) solid transparent;
+    transition: border-color var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav[data-open] .bottom-nav__bar {
+    border-top-color: var(--line);
+  }
+
+  .bottom-nav__toggle {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: var(--control-height-compact);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-weight: var(--weight-strong);
+    cursor: pointer;
+  }
+
+  .bottom-nav__chevron {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--motion-base) var(--ease-standard);
+  }
+
+  .bottom-nav__toggle[aria-expanded="true"] .bottom-nav__chevron {
+    transform: rotate(180deg);
+  }
+
+  .bottom-nav__current {
+    color: var(--ink-muted);
+  }
+</style>

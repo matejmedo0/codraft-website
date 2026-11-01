@@ -1,0 +1,30 @@
+---
+/**
+ * The new Home's hero, empty for now: as
+ * tall as the screen below the header, inside the sheet, so a visitor first
+ * sees the header and the hero only, and the next zone comes in with the
+ * scroll.
+ */
+---
+
+<section class="hero"></section>
+
+<style>
+  .hero {
+    /* The header is 4.25rem tall below 64rem (68 px at 16 px) and from 64rem
+       4.78rem times --topbar-scale (NewHomeHeader.astro), with no rule;
+       taking off a little less keeps the hero's bottom just below the fold,
+       so the next zone never peeks in, at any zoom or text size. svh: the
+       screen with a phone's browser bars shown. */
+    min-height: calc(100svh - var(--sheet-margin) - 4.125rem);
+    padding: var(--zone-pad) var(--pad);
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      min-height: calc(
+        100svh - var(--sheet-margin) - 4.75rem * var(--topbar-scale, 1)
+      );
+    }
+  }
+</style>

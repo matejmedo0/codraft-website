@@ -15,7 +15,7 @@ Related: [information-architecture.md](information-architecture.md) shows which 
 
 ## 1. Glossary (HR ↔ EN)
 
-Where alternatives are listed, the client chooses (open question in `PROGRESS.md`). Slugs and anchors are provisional until the terminology is approved, and become permanent at launch.
+Where alternatives are listed, the client chooses. Slugs and anchors are provisional until the terminology is approved, and become permanent at launch.
 
 | EN | HR (recommended) | Alternatives | Slug / anchor (HR · EN) |
 |---|---|---|---|
@@ -50,7 +50,7 @@ Where alternatives are listed, the client chooses (open question in `PROGRESS.md
 | layer | **sloj** | — | — |
 
 **Why these choices**
-- **"Procjena", not "analiza" or "audit"** (the client's choice, 2026-10-31, M40: "Besplatna analiza" didn't read well as a name). To a small-business owner "audit" is jargon, and the copy promises plain language; "revizija" reads as a financial audit. The HR slug follows: `/besplatna-procjena`. EN stays "Free audit" until the client approves a suggestion (see "Suggestions").
+- **"Procjena", not "analiza" or "audit"** (the client's choice, 2026-10-31: "Besplatna analiza" didn't read well as a name). To a small-business owner "audit" is jargon, and the copy promises plain language; "revizija" reads as a financial audit. The HR slug follows: `/besplatna-procjena`. EN stays "Free audit" until the client approves S21.
 - **"Tehničko crtanje".** The client chose it over "CAD crtanje" on 2026-10-19, for architecture and construction only (ADR 0018). It avoids "projektiranje", which is a regulated activity. "Inženjersko crtanje" would suggest engineering services and protected titles. "CAD" stays in the deliverable's name, "2D CAD crteži".
 
 **Do not use** (both languages):
@@ -415,11 +415,15 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 | `meta.home.title` | Izrada web stranica, softvera i AI alata \| Codraft | Websites, software and AI tools in Croatia \| Codraft | New; S15 |
 | `meta.home.description` | (above) | We plan, build and look after websites, software and AI tools for businesses in Croatia. Fixed scope, timeline and price before any work starts. | From `services.intro` and `plan.body`; S15 |
 | `meta.country` | Hrvatska | Croatia | Structured data (`areaServed`) |
-| `home.hero.titleLine1` | Planiramo, izrađujemo i održavamo | We plan, build and look after | From `services.intro` |
-| `home.hero.titleLine2` | web stranice, softver i AI alate. | websites, software and AI tools. | `services.intro` |
+| `home.hero.titleLine1` | Od nacrta do proizvoda. | From draft to product. | A slogan, the hero's own idea (ADR 0035): the full sentence was too much text (the client, 2026-11-01, M44); it moved into the window as `home.hero.window.lead` |
+| `home.hero.titleLine2` | Web stranice, softver, AI alati i tehničko crtanje. | Websites, software, AI tools and architectural drafting. | The four offerings, drafting included (the client, 2026-10-31: the headline left it out) |
 | `home.hero.lead` | Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas. | For businesses that want to know where they stand: you get the scope, timeline and price before any work starts, and we stay with you after launch. | New |
 | `home.hero.cta` | Pogledajte usluge | See our services | New |
 | `home.hero.drafting` | Tehničko crtanje za arhitekturu i građevinarstvo | Architectural drafting for architects and builders | New; S20 |
+| `home.hero.window.title` | Tko smo mi | Who we are | New (M44): the title of the page in the hero's window, written in pencil in the sketch, then inked (the client: "nek piše tko smo mi") |
+| `home.hero.window.lead` | Mali studio iz Hrvatske koji planira, izrađuje i održava web stranice, softver i AI alate, a za arhitekte i građevinare crta tehničke nacrte. | A small studio in Croatia that plans, builds and looks after websites, software and AI tools, and drafts for architects and builders. | New (M44): the headline's former sentences, under "Tko smo mi" |
+| `home.hero.window.scroll` | Skrolajte za ostatak stranice | Scroll for the rest of the site | New (M43): the window's call, a button that opens the window |
+| `home.hero.window.pages` | Na ovoj stranici | On this page | New (M43): over the window's list of the pages below (`nav.*`, `home.audit.title`), each a button that scrolls to it |
 | `services.title` | Što radimo | What we do | The client |
 | `plan.title` | Planiranje | Plan | `plan.heading`, without its number |
 | `plan.tagline` | Prvo jasnoća. | Start with clarity. | The client |
@@ -482,15 +486,9 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
-**The new Home's site drawing (2026-10-29, M25; [ADR 0035](decisions/0035-new-home-drawn-by-the-scroll.md); removed on 2026-10-30 with the drawing, M29).** The hero of `/lab/nova-pocetna` shows a website drafted as a technical drawing; its title block and accessible name are new lines, drafts, written by Claude. The other two cells reuse `drawing.note` ("Ilustracija") and the site name.
+**Home's sections under the hero (2026-10-31, M41).** The content of the earlier new Home (dev, M24–M40) set in the scroll-based design: the blocks below came with it, as written on dev. The keys keep their `newHome.` prefix. Since M42 (2026-10-31) they scroll inside the hero's window, which opens over the page once the drawing has filled in; its address bar shows the page each part belongs to (`codraft.hr/usluge`, `/besplatna-procjena`, `/tehnicko-crtanje`, `/o-nama`, `/kontakt`) and its menu is `MAIN_NAV`, both decorative.
 
-| Key | HR `draft` | EN `draft` |
-|---|---|---|
-| `newHome.drawing.title` | Nacrt web stranice | Website drawing |
-| `newHome.drawing.units` | Mjere u px | Units: px |
-| `newHome.drawing.label` | Ilustracija: nacrt web stranice nacrtan kao tehnički crtež, s kotama u pikselima. | Illustration: a website layout drawn as a technical drawing, with dimensions in pixels. |
-
-**The new Home's client journey and growth chart (2026-10-31, M40).** Stage 01's card walks through the process from the first enquiry to the finished product, for the service the visitor picks; its other steps reuse `services.process.*`, and the launch line for websites is `services.process.launch.body`. The chart beside stage 03 labels its axes and its updates, and carries `drawing.note` ("Ilustracija"): it shows no values. New drafts by Claude, HR and EN.
+**Home's client journey and growth chart (2026-10-31, M40).** Stage 01's card walks through the process from the first enquiry to the finished product, for the service the visitor picks; its other steps reuse `services.process.*`, and the launch line for websites is `services.process.launch.body`. The chart beside stage 03 labels its axes and its updates, and carries `drawing.note` ("Ilustracija"): it shows no values. New drafts by Claude, HR and EN.
 
 | Key | HR `draft` | EN `draft` |
 |---|---|---|
@@ -507,9 +505,9 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 | `newHome.growth.y` | Posjeti s Googlea | Visits from Google |
 | `newHome.growth.updates` | Ažuriranja | Updates |
 
-**The new Home's hero sample (2026-10-30, M29; [ADR 0037](decisions/0037-new-home-hero-code-to-page.md)).** The code and the small page in the code-to-page animation (in the hero until M35, now beside stage 02 of "Što radimo") are placeholders, hidden from assistive technology and not locale strings: the sample page shows "Vaša tvrtka", "Usluge", "Kontakt", "Nova web stranica", "Brza na mobitelu.", "Upit", "Izrada", "Održavanje" and "SEO", in both languages. They make no claim about Codraft.
+**Home's hero sample (2026-10-30, M29).** The code and the small page in the code-to-page animation (in the hero until M35, now beside stage 02 of "Što radimo") are placeholders, hidden from assistive technology and not locale strings: the sample page shows "Vaša tvrtka", "Usluge", "Kontakt", "Nova web stranica", "Brza na mobitelu.", "Upit", "Izrada", "Održavanje" and "SEO", in both languages. They make no claim about Codraft.
 
-**The new Home's building scene (2026-10-30, M28; [ADR 0036](decisions/0036-new-home-building-scene-on-arrival.md)).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
+**Home's building scene (2026-10-30, M28).** The drafting zone's building, sections and schedule; drafts, written by Claude. The title block also reuses `drawing.note` and the site name.
 
 | Key | HR `draft` | EN `draft` |
 |---|---|---|
@@ -526,9 +524,9 @@ The names in the team strip are not translated; they live in `src/config/team.ts
 
 ### Services, phase 3 (2026-10-22)
 
-The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
+The copy of `/usluge` and `/en/services`, zone by zone, with each line's locale key. It follows the page's argument ([information-architecture.md](information-architecture.md), Usluge, "The page's argument"). **Built on 2026-10-22** under the client's standing instruction (M6, ADR 0031): Claude's recommendations below are applied, and the client reviews every line at the end of phase 3 (#73). Every line is `draft`. Keys that Home already has are only named here; their text is under "Home, phase 3". The client's sentences (§2) are in the locales, the English ones with the suggestions applied below.
 
-Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects before launch; **[G7]** is a line about prices or timelines. G7 is decided: the page shows guide prices about 10% below the market ([ADR 0032](decisions/0032-guide-prices-below-the-market.md); figures in `src/config/pricing.ts`, sources in [the pricing research](research/2026-10-22-pricing.md)).
+Marks: **confirm** is a fact about how Codraft works that Claude drafted and the client confirms or corrects before launch; **[G7]** is a line about prices or timelines. G7 is decided: the page shows guide prices about 10% below the market ([ADR 0032](decisions/0032-guide-prices-below-the-market.md); figures in `src/config/pricing.ts`, sources in the pricing research).
 
 **A · Hero**
 
@@ -711,7 +709,18 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 | `footer.sheet` | List | Sheet | Title block: the page's sheet number |
 | `footer.sheetOf` | od | of | Title block: "1 od 10" / "1 of 10" |
 | `footer.updated` | Zadnja izmjena | Last updated | Title block: the build date |
-| `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet (PROGRESS.md, item A) |
+| `footer.pending` | Stiže prije objave | Arrives before launch | Title block, in place of company data the client hasn't sent yet |
+
+### UI strings of the new design (ADR 0035)
+
+The bottom menu of the rebuilt pages (`BottomNav.astro`). Both languages are drafts (`draft`). It also reuses `breadcrumb.home` for the Home link and the current-page label, the `nav.*` and `legal.*` labels, and the language switcher.
+
+| Key | HR `draft` | EN `draft` | Where |
+|---|---|---|---|
+| `menu.open` | Otvori izbornik | Open menu | Bottom bar's button, menu closed |
+| `menu.close` | Zatvori izbornik | Close menu | Bottom bar's button, menu open |
+| `menu.title` | Ovo je Codraft | This is Codraft | Heading of the open menu, beside the mark |
+| `menu.cta` | Pokrenimo projekt | Start a project | Button in the open menu, with an ↗ arrow; links to Contact, not the free audit ([ADR 0017](decisions/0017-one-audit-call-to-action-per-page.md)) |
 
 **The style page** (`/lab/style`, lab only, never shipped) describes the tokens and components in Croatian for the client. Its explanatory text is lab documentation, not site copy; its examples reuse the strings above and the prototype copy.
 
@@ -764,15 +773,10 @@ The header, footer and skip link of the design system (ADR 0015) read these stri
 - **2026-10-22 (phase 3, Home, steps 1–2):** "Home, phase 3" added under §4: the free audit's new lead (G4, G19, with the client's facts in brackets), an optional line for the closing call to action (G23), and the metadata and the OG image's text alternative (G28), all drafts. Suggestion S20 added, an alternative to S19. No copy block changed.
 - **2026-10-22 (phase 3, Home, the build):** The client approved Home's argument and asked to build (M2). "Home, phase 3" now holds every Home line with its locale key, in Croatian and in British English: the audit's lead without brackets (its facts confirmed by the client before launch), the closing call to action's note written by Claude at the client's request, and the team's names and roles from the client. Accepted: S3 (British English), S15 and S20, which changes the EN blocks `drafting.title` and `drafting.audience` and the slug to `/en/architectural-drafting` ([ADR 0029](decisions/0029-english-naming-spelling-and-titles.md)); S19 rejected.
 - **2026-10-22 (phase 3, Usluge, the /check):** The price note under stages 02 and 03 (`services.priceNote`) and the price table's labels (`services.price`, `services.priceColumn`) are replaced by one caption above every service's prices, `services.terms` ("Okvirno, bez PDV-a"), and `services.startingPrice`, after the design critique (DC-04: the VAT status next to every price; Q3: one restatement fewer of the fixed offer).
-- **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, [ADR 0031](decisions/0031-autonomous-work-from-phase-3.md)). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
+- **2026-10-22 (phase 3, Usluge, the build):** The client asked Claude to work autonomously (M6, ADR 0031). "Services, phase 3" is built as drafted, with the guide prices of [ADR 0032](decisions/0032-guide-prices-below-the-market.md), their labels, the price note, the FAQ answers for shown prices and the breadcrumb's name. The EN blocks `plan.body`, `build.websites.body`, `build.integrations.body`, `build.ai.body`, `run.seo.body`, `run.analytics.body` and `services.intro` change with S1, S2, S4–S7, S12, S17 and S18 (the HR `build.ai.body` and `run.analytics.body` with S12 and S6), for the client's final review; S11 is not applied here, and S16 stays open.
 - **2026-10-22 (phase 3, Usluge, steps 1–2):** "Services, phase 3" added under §4: every line of `/usluge` with its locale key, in Croatian and British English, the facts the client confirms marked, the lines that depend on G7 marked, and Claude's recommendation on each English suggestion that touches the page (S1, S2, S4–S7, S11, S12, S16–S18). Drafts, waiting for the client's OK (M5). No copy block changed.
-- **2026-10-29 (phase 3, the new Home, M25):** "The new Home's site drawing" added under "Home, phase 3": the hero drawing's title block and accessible name (`newHome.drawing.title`, `.units`, `.label`), HR and EN drafts. No copy block changed.
-- **2026-10-30 (phase 3, the new Home, M28):** "The new Home's building scene" added under "Home, phase 3": the building drawing's labels, title block and accessible names, the sections' names and the schedule's caption, headers and note (`newHome.building.*`), HR and EN drafts. No copy block changed.
-- **2026-10-30 (phase 3, the new Home, M29):** The hero's site drawing and its lines (`newHome.drawing.*`) removed; "The new Home's hero sample" added, the placeholder words of the hero's code-to-page animation. No copy block changed.
-- **2026-10-30 (phase 3, the new Home, M32):** "The new Home's running strip" added: the pause button's two labels (`newHome.ticker.*`), HR and EN drafts. No copy block changed.
-- **2026-10-31 (phase 3, the new Home, M34):** "The new Home's running strip" and its two labels (`newHome.ticker.*`) removed with the strip. No copy block changed.
-- **2026-10-31 (phase 3, the new Home, M35):** The code-to-page animation moved from the hero to stage 02 of "Što radimo"; stages 01 and 03 got drawings labelled with existing keys (`nav.services`, `nav.about`, `nav.contact`, `plan.title`, `build.title`, `run.title`) and two placeholders, `/` and `v1.0`. No copy block changed.
-- **2026-10-31 (phase 3, the new Home, M36):** The new Home's layout follows the client's reference "Torch". New zone "Česta pitanja" on the new Home, reusing four of /usluge's questions and answers (`services.faq.existing`, `.ownership`, `.maintenance`, `.editing`; the others refer to the prices and terms beside each service on /usluge). Zone titles show their last word in the accent; the words don't change. No copy block changed.
+- **2026-10-31 (new design, the bottom menu):** "UI strings of the new design" added under §4: the bottom menu's button, heading and call to action (`menu.open`, `menu.close`, `menu.title`, `menu.cta`), drafts. No copy block changed.
+- **2026-10-31 (new design, the bottom menu, round 2):** `menu.cta` changes from „Razgovarajmo“ / “Let's talk” to „Pokrenimo projekt“ / “Start a project”, at the team's request. No copy block changed.
 
 ## Appendix A: Original copy as received (2026-10-18)
 

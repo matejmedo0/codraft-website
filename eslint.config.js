@@ -23,6 +23,7 @@ export default defineConfig(
     "test-results/",
     "Assets/",
     "docs/",
+    "archive/",
   ]),
 
   // Every file: the recommended JS rules, and typescript-eslint with type

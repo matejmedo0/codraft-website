@@ -1,127 +1,987 @@
 ---
 /**
- * Zone A of Home in the chosen direction (ADR 0015): the headline beside a
- * drawing on graph paper that holds the mark, which plays its entrance once
- * per load (ADR 0014). On paper, like the header above it. (Batch 5 tried
- * the H1 across the whole sheet; the client kept this layout in batch 6.)
+ * Home's hero, "from draft to product" (ADR 0035): the headline comes in
+ * line by line over the silk with a sheet of dark glass beside it, on
+ * which a website's blueprint draws itself in fine light lines, over dotted
+ * drafting paper and under a sweeping band of light, up to the frame the
+ * client chose (M41): the drawing whole, the first parts filling in. The
+ * scroll (the hero stays pinned to the end of the page) takes it on from
+ * there: it fills in as the finished interface while the silk steps back.
+ * Then the window opens over the stage, between the wordmark and the
+ * bottom menu, and the rest of the page (the slot) rises into it and
+ * scrolls in it, like the site in a browser (M42); its address bar shows
+ * the page each part comes from. Code + Draft, in one picture.
  *
- * The hero orients and doesn't sell (ADR 0017): its one button leads to the
- * services, and the drafting clients get their own path below it
- * (ADR 0018). The free audit is asked for once, in its own zone.
+ * The pen draws the window's frame and bar and writes a page in pencil
+ * ("Tko smo mi", the pages below, the three stages); the ink then makes it
+ * the finished page. Without JavaScript it shows finished and the page
+ * follows it as usual; the `js` class (astro.config.ts) hides the drawing's
+ * parts until the scroll draws them and puts the page in the window.
  */
-import Button from "../../components/ui/Button.astro";
-import Wordmark from "../../components/ui/Wordmark.astro";
-import Zone from "../../components/ui/Zone.astro";
+import SilkWaves from "../../components/ui/SilkWaves.astro";
 import type { Locale } from "../../config/site.ts";
-import { t } from "../../features/i18n/ui.ts";
-import { pathFor } from "../../features/i18n/urls.ts";
+import { MAIN_NAV } from "../../features/i18n/navigation.ts";
+import type { PageId } from "../../features/i18n/route-map.ts";
+import { t, type UiKey } from "../../features/i18n/ui.ts";
+import { STAGES } from "../../features/services/services.ts";
 
 interface Props {
   locale: Locale;
+  /** Home's address, shown in the window's bar before the page comes in. */
+  address: string;
 }
 
-const { locale } = Astro.props;
+const { locale, address } = Astro.props;
+/** The pages the window scrolls through, as the page in it lists them. */
+const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
+  { page: "services", label: "nav.services" },
+  { page: "audit", label: "home.audit.title" },
+  { page: "drafting", label: "nav.drafting" },
+  { page: "about", label: "nav.about" },
+  { page: "contact", label: "nav.contact" },
+];
 ---
 
-<Zone labelledby="naslov" select={false} class="home-hero">
-  <div class="home-hero__text">
-    <h1 id="naslov">
-      <span class="home-hero__line">{t(locale, "home.hero.titleLine1")}</span>{" "}
-      <span class="home-hero__line">{t(locale, "home.hero.titleLine2")}</span>
+<section class="hero" data-hero>
+  <SilkWaves opacity={0.75} />
+  <div class="hero__stage">
+    <h1 class="hero__title" data-hero-title>
+      {t(locale, "home.hero.titleLine1")}{" "}
+      <span class="hero__title-muted">{t(locale, "home.hero.titleLine2")}</span>
     </h1>
-    <p class="home-hero__lead">{t(locale, "home.hero.lead")}</p>
-    <div class="home-hero__actions">
-      <Button href={pathFor("services", locale)}>
-        {t(locale, "home.hero.cta")}
-      </Button>
+    <div class="hero__device" data-hero-device>
+      <div class="hero__glass" data-hero-glass>
+        <div class="hero__chrome" aria-hidden="true" data-hero-chrome>
+          <span class="hero__dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="hero__address" data-hero-address>
+            {address}
+          </span>
+          <ul class="hero__nav">
+            {MAIN_NAV.map(({ page, label }) => (
+              <li data-page={page}>{t(locale, label)}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="hero__page" data-hero-page>
+          <div class="hero__page-main">
+            <p class="hero__page-title" data-fill>
+              {t(locale, "home.hero.window.title")}
+            </p>
+            <p class="hero__page-lead" data-fill>
+              {t(locale, "home.hero.window.lead")}
+            </p>
+            <button
+              type="button"
+              class="hero__page-scroll"
+              data-fill
+              data-hero-scroll
+            >
+              {t(locale, "home.hero.window.scroll")}
+              <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                <path d="M2 4l4 4 4-4"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="hero__page-side" data-fill>
+            <p class="hero__page-label">
+              {t(locale, "home.hero.window.pages")}
+            </p>
+            <ul class="hero__page-list">
+              {WINDOW_PAGES.map(({ page, label }) => (
+                <li>
+                  <button type="button" data-go={page}>
+                    {t(locale, label)}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <ul class="hero__page-stages">
+            {STAGES.map((stage) => (
+              <li data-fill>
+                <span class="hero__page-number">{stage.number}</span>
+                <span class="hero__page-stage">{t(locale, stage.title)}</span>
+                <span class="hero__page-tagline">
+                  {t(locale, stage.tagline)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <svg
+        class="hero__drawing"
+        data-hero-drawing
+        viewBox="0 0 640 440"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <linearGradient id="hero-scan-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="hero__scan-edge" />
+            <stop offset="0.5" class="hero__scan-light" />
+            <stop offset="1" class="hero__scan-edge" />
+          </linearGradient>
+          <pattern
+            id="hero-dots"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="10" cy="10" r="0.9" />
+          </pattern>
+          <clipPath id="hero-panel-clip">
+            <rect x="20" y="60" width="600" height="360" />
+          </clipPath>
+        </defs>
+
+        <!-- Drafting paper, and the light that sweeps it while the pen draws. -->
+        <rect
+          class="hero__grid"
+          x="20"
+          y="60"
+          width="600"
+          height="360"
+          data-hero-grid
+        />
+        <g clip-path="url(#hero-panel-clip)">
+          <rect
+            class="hero__scan"
+            x="20"
+            y="0"
+            width="600"
+            height="90"
+            data-hero-scan
+          />
+        </g>
+
+        <!-- The blueprint, in drawing order. -->
+        <g class="hero__blueprint" data-hero-blueprint>
+          <rect
+            class="hero__frame"
+            x="20"
+            y="20"
+            width="600"
+            height="400"
+            rx="14"
+            pathLength="1"
+            data-draw
+          />
+          <path d="M20 60H620" pathLength="1" data-draw />
+          <path
+            d="M41 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0M59 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0M77 40a5 5 0 1 0 10 0a5 5 0 1 0-10 0"
+            pathLength="1"
+            data-draw
+          />
+          <rect
+            x="110"
+            y="33"
+            width="64"
+            height="14"
+            rx="3"
+            pathLength="1"
+            data-draw
+          />
+          <path
+            d="M430 40H462M478 40H510M526 40H558"
+            pathLength="1"
+            data-draw
+          />
+        </g>
+
+        <!-- The bar filled in over the blueprint, first; the page in real
+             text (the glass's .hero__page) fills in after it. -->
+        <g class="hero__product">
+          {[46, 64, 82].map((cx) => (
+            <circle class="hero__muted" cx={cx} cy="40" r="4" data-fill />
+          ))}
+          <rect
+            class="hero__ink"
+            x="110"
+            y="33"
+            width="64"
+            height="14"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="430"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="478"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+          <rect
+            class="hero__muted"
+            x="526"
+            y="37"
+            width="32"
+            height="6"
+            rx="3"
+            data-fill
+          />
+        </g>
+      </svg>
     </div>
-    <p class="home-hero__drafting">
-      <a href={pathFor("drafting", locale)}>
-        {t(locale, "home.hero.drafting")}
-      </a>
-    </p>
   </div>
-  <div class="home-hero__drawing graph-paper">
-    <Wordmark entrance />
+  <div class="hero__screen" data-hero-screen>
+    <div class="hero__site" data-hero-site>
+      <slot />
+    </div>
   </div>
-</Zone>
+</section>
+
+<script>
+  import { gsap, lenis, ScrollTrigger, SplitText } from "../../lib/scroll";
+
+  /** Where the fill begins, and the client's frame the scroll starts from:
+      the blueprint drawn, the first parts of the interface filling. */
+  const FILL_AT = 4.4;
+  const START_FRAME = 4.75;
+  /** The drawing's window in its 640 × 440: the frame at 20, 20, 600 × 400,
+      its bar 40 high. */
+  const FRAME = {
+    left: 20 / 640,
+    top: 20 / 440,
+    width: 600 / 640,
+    height: 400 / 440,
+    bar: 40 / 440,
+  };
+  /** The line, from the window's top, past which a part of the page takes
+      the address bar. */
+  const ADDRESS_LINE = 0.4;
+
+  interface Box {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }
+
+  function setUp(hero: HTMLElement): void {
+    const title = hero.querySelector<HTMLElement>("[data-hero-title]");
+    const canvas = hero.querySelector("canvas");
+    const blueprint = hero.querySelector("[data-hero-blueprint]");
+    const device = hero.querySelector<HTMLElement>("[data-hero-device]");
+    const glass = hero.querySelector<HTMLElement>("[data-hero-glass]");
+    const drawing = hero.querySelector("[data-hero-drawing]");
+    const chrome = hero.querySelector<HTMLElement>("[data-hero-chrome]");
+    const page = hero.querySelector<HTMLElement>("[data-hero-page]");
+    const bar = hero.querySelector("[data-hero-address]");
+    const grid = hero.querySelector("[data-hero-grid]");
+    const scan = hero.querySelector("[data-hero-scan]");
+    const screen = hero.querySelector<HTMLElement>("[data-hero-screen]");
+    const site = hero.querySelector<HTMLElement>("[data-hero-site]");
+    if (
+      !title ||
+      !blueprint ||
+      !device ||
+      !glass ||
+      !drawing ||
+      !chrome ||
+      !page ||
+      !bar ||
+      !grid ||
+      !scan ||
+      !screen ||
+      !site
+    ) {
+      return;
+    }
+
+    // The headline, line by line from under its mask, once the font is in.
+    SplitText.create(title, {
+      type: "lines",
+      mask: "lines",
+      autoSplit: true,
+      onSplit: (split) => {
+        gsap.set(title, { visibility: "visible" });
+        return gsap.from(split.lines, {
+          yPercent: 110,
+          duration: 1.1,
+          ease: "expo.out",
+          stagger: 0.12,
+          delay: 0.15,
+        });
+      },
+    });
+
+    // The empty glass sheet rises in with the headline, ready for the pen.
+    gsap.fromTo(
+      glass,
+      { opacity: 0, y: 24, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "expo.out",
+        delay: 0.35,
+      },
+    );
+
+    // The whole picture on one timeline, driven by the clock and the scroll.
+    const picture = gsap
+      .timeline({ paused: true })
+      .fromTo(
+        hero.querySelectorAll("[data-draw]"),
+        { strokeDashoffset: 1 },
+        { strokeDashoffset: 0, duration: 1.2, stagger: 0.18, ease: "none" },
+        0,
+      )
+      // The paper's dots, and a band of light that sweeps down as the pen draws.
+      .fromTo(grid, { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0)
+      .fromTo(
+        scan,
+        { attr: { y: -30 } },
+        { attr: { y: 420 }, duration: 4.2, ease: "none" },
+        0,
+      )
+      .fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0)
+      .to(scan, { opacity: 0, duration: 0.4 }, 3.8)
+      // The page is written in pencil as the pen draws, part by part.
+      .fromTo(
+        page.querySelectorAll("[data-fill]"),
+        { clipPath: "inset(0 100% 0 0)" },
+        {
+          clipPath: "inset(0 0% 0 0)",
+          duration: 0.6,
+          stagger: 0.25,
+          ease: "none",
+        },
+        0.9,
+      )
+      // Then the ink: the sketch fades, the bar fills in and the pencil
+      // becomes the page (--draft, in the page's styles).
+      .to(blueprint, { opacity: 0, duration: 1.2 }, FILL_AT)
+      .to(grid, { opacity: 0.25, duration: 1.2 }, FILL_AT)
+      .fromTo(
+        drawing.querySelectorAll("[data-fill]"),
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power2.out" },
+        FILL_AT,
+      )
+      .fromTo(
+        page.querySelectorAll("[data-fill]"),
+        { "--draft": 1 },
+        { "--draft": 0, duration: 0.8, stagger: 0.12, ease: "power2.out" },
+        FILL_AT + 0.3,
+      )
+      .to(canvas, { opacity: 0.35, duration: 3 }, FILL_AT)
+      // A beat on the finished picture before the window opens.
+      .to({}, { duration: 1 });
+
+    // The scroll in three parts, in pixels: the picture fills in; the
+    // window opens while the page rises into it; the page scrolls in it.
+    const fill = (): number => window.innerHeight * 1.1;
+    const rise = (): number => screen.clientHeight;
+    const travel = (): number =>
+      Math.max(0, site.offsetHeight - screen.clientHeight);
+
+    // The page's parts, each with its page's address, and the bar's menu.
+    const parts = [...site.querySelectorAll<HTMLElement>("[data-address]")];
+    const items = [...chrome.querySelectorAll<HTMLElement>("[data-page]")];
+    const home = bar.textContent;
+    let shown: HTMLElement | undefined;
+
+    /** Places the page `scrolled` pixels into the opening: it rises into
+        the window with the scroll, then scrolls in it, 1:1. */
+    const place = (scrolled: number): void => {
+      const y = gsap.utils.clamp(-travel(), rise(), rise() - scrolled);
+      gsap.set(site, { y });
+      const line = screen.clientHeight * ADDRESS_LINE - y;
+      const part = parts.findLast((element) => element.offsetTop <= line);
+      if (part === shown) return;
+      shown = part;
+      bar.textContent = part?.dataset.address ?? home;
+      for (const item of items) {
+        item.classList.toggle(
+          "is-current",
+          item.dataset.page === part?.dataset.page,
+        );
+      }
+    };
+
+    // One pin holds the hero for all three parts, to the end of the page.
+    const pin = ScrollTrigger.create({
+      trigger: hero,
+      start: "top top",
+      end: () => `+=${String(fill() + rise() + travel())}`,
+      pin: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        place(self.scroll() - self.start - fill());
+      },
+      onRefresh: (self) => {
+        place(self.scroll() - self.start - fill());
+      },
+    });
+
+    // The page in the window asks for the scroll: its call opens the
+    // window, its list of pages scrolls the window to one of them.
+    const opening = (): number => pin.start + fill() + rise();
+    page.querySelector("[data-hero-scroll]")?.addEventListener("click", () => {
+      lenis.scrollTo(opening());
+    });
+    for (const button of page.querySelectorAll<HTMLElement>("[data-go]")) {
+      button.addEventListener("click", () => {
+        const part = parts.find(
+          (element) => element.dataset.page === button.dataset.go,
+        );
+        lenis.scrollTo(opening() + (part?.offsetTop ?? 0));
+      });
+    }
+
+    // On load the pen draws the blueprint by itself, up to the client's
+    // frame (M41): the whole drawing on its paper, the first parts filling.
+    let engaged = false;
+    const intro = picture.tweenTo(START_FRAME, {
+      duration: 2.2,
+      ease: "power2.inOut",
+      delay: 0.3,
+      onComplete: () => {
+        engaged = true;
+      },
+    });
+
+    // The scroll takes the picture on from that frame to the finished
+    // interface. Until the intro ends or the page is scrolled, the clock
+    // has the picture; scrolling first stops the intro where it is.
+    const scrub = { time: START_FRAME };
+    gsap.to(scrub, {
+      time: picture.duration(),
+      ease: "none",
+      onUpdate: () => {
+        if (engaged) picture.time(scrub.time);
+      },
+      scrollTrigger: {
+        start: () => pin.start,
+        end: () => pin.start + fill(),
+        scrub: 0.8,
+        // The pin can report a hair of progress on load; only a real
+        // scroll takes over from the intro.
+        onUpdate: (self) => {
+          if (engaged || self.progress < 0.01) return;
+          intro.kill();
+          engaged = true;
+          picture.time(scrub.time);
+        },
+      },
+    });
+
+    /** The glass's box in the device: on the drawing's frame, or open over
+        the stage around the window's screen and its bar. */
+    const framed = (): Box => ({
+      left: device.clientWidth * FRAME.left,
+      top: device.clientHeight * FRAME.top,
+      width: device.clientWidth * FRAME.width,
+      height: device.clientHeight * FRAME.height,
+    });
+    const opened = (): Box => {
+      const from = device.getBoundingClientRect();
+      const to = screen.getBoundingClientRect();
+      const edge = glass.clientLeft;
+      const top = chrome.offsetHeight + edge;
+      return {
+        left: to.left - from.left - edge,
+        top: to.top - from.top - top,
+        width: to.width + 2 * edge,
+        height: to.height + top + edge,
+      };
+    };
+    const box = (get: () => Box) => ({
+      left: () => get().left,
+      top: () => get().top,
+      width: () => get().width,
+      height: () => get().height,
+    });
+    /** The screen cut to the drawing's window under its bar, rounded as the
+        glass; at the end, all of it. */
+    const cut = (whole: boolean): string => {
+      const r = String(
+        parseFloat(getComputedStyle(glass).borderBottomLeftRadius) -
+          glass.clientLeft,
+      );
+      if (whole) return `inset(0px 0px 0px 0px round 0px 0px ${r}px ${r}px)`;
+      const from = device.getBoundingClientRect();
+      const to = screen.getBoundingClientRect();
+      const frame = framed();
+      const px = (value: number): string =>
+        `${String(Math.max(0, Math.round(value)))}px`;
+      const top = from.top + frame.top + device.clientHeight * FRAME.bar;
+      const left = from.left + frame.left;
+      const bottom = from.top + frame.top + frame.height;
+      return `inset(${px(top - to.top)} ${px(to.right - left - frame.width)} ${px(to.bottom - bottom)} ${px(left - to.left)} round 0px 0px ${r}px ${r}px)`;
+    };
+
+    // The window opens: the drawing gives way to the window's own bar,
+    // the headline steps back, and the glass grows over the stage.
+    gsap
+      .timeline({
+        defaults: { duration: 1, ease: "power2.inOut" },
+        scrollTrigger: {
+          start: () => pin.start + fill(),
+          end: () => pin.start + fill() + rise(),
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        },
+      })
+      .fromTo(glass, box(framed), box(opened), 0)
+      .fromTo(
+        screen,
+        { clipPath: () => cut(false) },
+        { clipPath: () => cut(true) },
+        0,
+      )
+      .to([drawing, page], { autoAlpha: 0, duration: 0.3, ease: "none" }, 0)
+      .to(title, { opacity: 0, x: -32, duration: 0.5 }, 0)
+      .fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.2);
+
+    // A tab to a link the window doesn't show scrolls the page to it.
+    site.addEventListener("focusin", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const view = screen.getBoundingClientRect();
+      const target = event.target.getBoundingClientRect();
+      if (target.top >= view.top && target.bottom <= view.bottom) return;
+      const offset = target.top - site.getBoundingClientRect().top;
+      lenis.scrollTo(opening() + Math.max(0, offset - view.height / 3), {
+        immediate: true,
+      });
+    });
+
+    // A question opening or a photo loading changes the page's height,
+    // and with it the length of the pin.
+    new ResizeObserver(() => {
+      ScrollTrigger.refresh();
+    }).observe(site);
+  }
+
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  if (hero) setUp(hero);
+</script>
 
 <style>
-  .home-hero {
+  /* The open window: under the wordmark, over the bottom menu, the bar on
+     top of its screen. */
+  .hero {
+    --win-top: var(--space-9);
+    --win-bottom: calc(
+      var(--space-10) + var(--space-1) + env(safe-area-inset-bottom, 0px)
+    );
+    --chrome-height: 2.75rem;
+
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  /* Clear of the top bar and the bottom menu, which lie over the hero. */
+  .hero__stage {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: var(--space-7);
-    padding-block: var(--space-7) var(--space-8);
-  }
-
-  /* The H1's two lines, as in direction A (the client's review, batch 2).
-     The first line is about 14 em long. From a 54rem column (a screen of
-     about 1660 px) each half is a line of its own, and the size eases just
-     enough for the first to fit; a narrower column wraps the sentence
-     evenly at full size. */
-  .home-hero__text {
-    container-type: inline-size;
-  }
-
-  @container (min-width: 54rem) {
-    .home-hero h1 {
-      font-size: min(var(--step-display), 100cqi / 14.2);
-    }
-
-    .home-hero__line {
-      display: block;
-    }
-  }
-
-  .home-hero__lead {
-    max-width: var(--measure-lead);
-    margin-top: var(--space-5);
-    font-size: var(--step-lead);
-    line-height: var(--leading-lead);
-  }
-
-  .home-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-6);
-  }
-
-  .home-hero__drafting {
-    margin-top: var(--space-5);
-  }
-
-  .home-hero__drafting a {
-    color: var(--ink);
-    font-weight: var(--weight-medium);
-  }
-
-  /* On narrow screens the drawing is a low strip and the mark stays mid
-     size (the client didn't want a large mark in front). */
-  .home-hero__drawing {
-    display: grid;
-    place-items: center;
-    aspect-ratio: 21 / 9;
-    padding: 6% 25%;
-    color: var(--ink);
+    align-content: center;
+    max-width: 80rem;
+    min-height: 100svh;
+    margin-inline: auto;
+    padding: calc(var(--space-10) + var(--space-2)) var(--pad)
+      calc(var(--space-10) + var(--space-5));
   }
 
   @media (min-width: 64rem) {
-    .home-hero {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: var(--gap);
+    .hero__stage {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-9);
       align-items: center;
-      /* 72 px above: the client's reference screenshot (review #19). */
-      padding-block: 4.5rem var(--space-10);
+    }
+  }
+
+  /* Clash Display is wide, with a narrow word space: a step below the
+     display size, nearly no negative tracking and a wider space keep the
+     headline to about five lines and its words apart. */
+  .hero__title {
+    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.75rem);
+    font-weight: var(--weight-strong);
+    letter-spacing: -0.01em;
+    word-spacing: 0.08em;
+  }
+
+  /* The offerings, on lines of their own under the slogan. */
+  .hero__title-muted {
+    display: block;
+    color: var(--ink-muted);
+  }
+
+  :global(.js) .hero__title {
+    visibility: hidden;
+  }
+
+  /* The drawing keeps its 640 × 440 proportions and at most 62 % of the
+     screen's height. */
+  .hero__device {
+    position: relative;
+    container-type: inline-size;
+    justify-self: center;
+    width: 100%;
+    max-width: calc(62svh * 640 / 440);
+    aspect-ratio: 640 / 440;
+  }
+
+  /* Over the glass, so the page's buttons under it must get the pointer. */
+  .hero__drawing {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* The sheet the pen draws on: dark glass over the silk, like the bottom
+     menu, placed on the drawing's frame (20, 20, 600 × 400 of 640 × 440)
+     and rounded as it (rx 14). The scroll opens it over the stage. */
+  .hero__glass {
+    position: absolute;
+    top: 4.5455%;
+    left: 3.125%;
+    width: 93.75%;
+    height: 90.9091%;
+    overflow: hidden;
+    border: var(--rule) solid var(--line);
+    border-radius: calc(100cqw * 14 / 640);
+    background: color-mix(in srgb, var(--surface-sunk) 72%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent),
+      0 2.5rem 5rem -2rem color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(18px) saturate(1.2);
+  }
+
+  /* The open window's bar, as the drawing's: three dots, the address of
+     the page in the window, the site's menu. Decorative: the page's own
+     menu is the bottom one. The scroll shows it as the drawing goes. */
+  .hero__chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    height: var(--chrome-height);
+    padding-inline: var(--space-4);
+    border-bottom: var(--rule) solid var(--line);
+    opacity: 0;
+  }
+
+  .hero__dots {
+    display: flex;
+    flex: none;
+    gap: var(--space-2);
+  }
+
+  .hero__dots span {
+    width: 0.625rem;
+    aspect-ratio: 1;
+    border: var(--rule) solid var(--ink-muted);
+    border-radius: 50%;
+  }
+
+  .hero__address {
+    overflow: hidden;
+    min-width: 0;
+    padding: var(--space-1) var(--space-4);
+    border: var(--rule) solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-muted);
+    font-family: var(--nk-mono);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hero__nav {
+    display: none;
+    gap: var(--space-6);
+    margin: 0 0 0 auto;
+    padding: 0;
+    color: var(--ink-muted);
+    font-size: 0.8125rem;
+    list-style: none;
+  }
+
+  .hero__nav .is-current {
+    color: var(--ink);
+  }
+
+  @media (min-width: 48rem) {
+    .hero__nav {
+      display: flex;
+    }
+  }
+
+  /* The finished page in the window, in real text, where the blueprint
+     sketches it: a title and the lead with the call to scroll on the
+     left, the pages below on the right, the three stages under them. A
+     miniature, sized by the device (cqw) between rem limits. */
+  .hero__page {
+    position: absolute;
+    inset: 9cqw 6.25cqw 3cqw;
+    display: grid;
+    grid-template-columns: minmax(0, 290fr) minmax(0, 190fr);
+    gap: 2.5cqw 5cqw;
+    align-content: start;
+    overflow: hidden;
+  }
+
+  /* Each part is written in pencil first (--draft 1: faint, light, in a
+     dashed box on the paper) and inked by the scroll (--draft 0); GSAP
+     tweens --draft on every part. Without JavaScript, inked. */
+  .hero__page [data-fill] {
+    --draft: 0;
+    --inked: calc(100% - var(--draft) * 100%);
+    --pencil: color-mix(
+      in srgb,
+      var(--ink-muted) calc(var(--draft) * 100%),
+      transparent
+    );
+
+    opacity: calc(1 - var(--draft) * 0.35);
+  }
+
+  :global(.js) .hero__page [data-fill] {
+    --draft: 1;
+
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .hero__page-main {
+    display: grid;
+    gap: 2cqw;
+    align-content: start;
+  }
+
+  .hero__page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 4.2cqw, 1.5rem);
+    font-weight: calc(var(--weight-strong) - var(--draft) * 200);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .hero__page-lead {
+    color: var(--ink-muted);
+    font-size: clamp(0.6875rem, 2.3cqw, 0.8125rem);
+    line-height: 1.4;
+  }
+
+  .hero__page-scroll {
+    display: inline-flex;
+    gap: 0.5em;
+    align-items: center;
+    justify-self: start;
+    padding: 0.6em 1.1em;
+    border: var(--rule) dashed var(--pencil);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) var(--inked), transparent);
+    color: color-mix(in srgb, var(--surface) var(--inked), var(--ink));
+    font: inherit;
+    font-size: clamp(0.6875rem, 2.2cqw, 0.8125rem);
+    font-weight: var(--weight-strong);
+    cursor: pointer;
+  }
+
+  .hero__page-scroll svg {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: hero-bob 1.6s ease-in-out infinite;
+  }
+
+  /* The call's arrow nods down. */
+  @keyframes hero-bob {
+    50% {
+      translate: 0 0.2em;
+    }
+  }
+
+  .hero__page-side,
+  .hero__page-stages li {
+    padding: 2.5cqw;
+    border: var(--rule) dashed var(--pencil);
+    border-radius: 1.875cqw;
+    background: color-mix(
+      in srgb,
+      color-mix(in srgb, var(--surface-sunk) 60%, var(--line)) var(--inked),
+      transparent
+    );
+  }
+
+  .hero__page-side {
+    font-size: clamp(0.6875rem, 2.2cqw, 0.8125rem);
+  }
+
+  .hero__page-label {
+    margin-bottom: 1.5cqw;
+    color: var(--ink-muted);
+    font-family: var(--nk-mono);
+    font-size: 0.8em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero__page-list,
+  .hero__page-stages {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__page-list button {
+    padding: 0.1em 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .hero__page-list button:hover {
+    color: var(--accent);
+  }
+
+  .hero__page-stages {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.125cqw;
+    font-size: clamp(0.6875rem, 2cqw, 0.8125rem);
+  }
+
+  .hero__page-stages li {
+    display: grid;
+    gap: 0.3em;
+    align-content: start;
+  }
+
+  .hero__page-number {
+    color: var(--accent-text);
+    font-family: var(--nk-mono);
+    font-size: 0.85em;
+  }
+
+  .hero__page-stage {
+    font-weight: var(--weight-strong);
+  }
+
+  .hero__page-tagline {
+    color: var(--ink-muted);
+  }
+
+  /* A narrow window holds the title, the lead and the call only. */
+  @container (width < 30rem) {
+    .hero__page {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .home-hero__text {
-      grid-column: 1 / span 7;
+    .hero__page-side,
+    .hero__page-stages {
+      display: none;
     }
+  }
 
-    .home-hero__drawing {
-      grid-column: 8 / -1;
-      aspect-ratio: 4 / 3;
-      padding: 14%;
-    }
+  /* The window's screen, where the rest of the page scrolls: without
+     JavaScript the page simply follows the hero. With it, the screen lies
+     in the open window and the page waits a screen below, clipped, until
+     the scroll (and the clip) lets it in. */
+  :global(.js) .hero__screen {
+    position: absolute;
+    z-index: 2;
+    inset: calc(var(--win-top) + var(--chrome-height)) var(--pad)
+      var(--win-bottom);
+    overflow: clip;
+  }
+
+  :global(.js) .hero__site {
+    transform: translateY(100svh);
+  }
+
+  /* Fine light lines, like a white pencil on dark glass: no glow, so the
+     drawing reads as drafting, not as a screen. */
+  .hero__blueprint {
+    fill: none;
+    stroke: var(--ink);
+    stroke-opacity: 0.6;
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hero__frame {
+    stroke-opacity: 0.75;
+    stroke-width: 1.5;
+  }
+
+  .hero__grid {
+    fill: url("#hero-dots");
+  }
+
+  .hero__drawing pattern circle {
+    fill: var(--ink-muted);
+    fill-opacity: 0.25;
+  }
+
+  /* Only ever seen while the scroll moves it. */
+  .hero__scan {
+    opacity: 0;
+    fill: url("#hero-scan-fill");
+  }
+
+  .hero__scan-edge {
+    stop-color: var(--line-strong);
+    stop-opacity: 0;
+  }
+
+  .hero__scan-light {
+    stop-color: var(--line-strong);
+    stop-opacity: 0.16;
+  }
+
+  [data-draw] {
+    stroke-dasharray: 1;
+  }
+
+  :global(.js) [data-draw] {
+    stroke-dashoffset: 1;
+  }
+
+  :global(.js)
+    :is(.hero__glass, .hero__grid, .hero__scan, .hero__product [data-fill]) {
+    opacity: 0;
+  }
+
+  .hero__ink {
+    fill: var(--ink);
+  }
+
+  /* fill-opacity, since GSAP animates the opacity of every filled part. */
+  .hero__muted {
+    fill: var(--ink-muted);
+    fill-opacity: 0.6;
   }
 </style>

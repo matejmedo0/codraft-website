@@ -25,37 +25,38 @@ function colour(name: string): string {
  * Normal text needs 4.5:1 (WCAG 2.2 AA); large text and graphics need 3:1.
  */
 const TEXT_PAIRS = [
-  // Paper surface
-  ["navy", "paper"],
-  ["grey-on-paper", "paper"],
-  ["blue-on-paper", "paper"],
-  ["navy", "paper-sunk"],
-  ["grey-on-paper", "paper-sunk"], // also a disabled button
-  ["blue-on-paper", "paper-sunk"],
-  ["paper", "navy"], // primary button
-  ["paper", "navy-hover"], // primary button, hover
-  // Navy surface
-  ["grey-on-navy", "navy"],
-  ["blue-on-navy", "navy"],
-  ["paper", "navy-raised"], // secondary button, hover
-  ["navy", "paper-hover"], // primary button on navy, hover
-  // Selected text (base.css): the surface's ink on the selection tint
-  ["navy", "selection-on-paper"],
-  ["paper", "selection-on-navy"],
+  // Headings, body copy and links on each surface
+  ["bone", "obsidian"],
+  ["mist", "obsidian"],
+  ["copper", "obsidian"],
+  ["bone", "petrol"],
+  ["mist", "petrol"],
+  ["copper", "petrol"],
+  ["bone", "petrol-raised"], // secondary button, hover
+  ["mist", "petrol-raised"], // also a disabled button
+  ["copper", "petrol-raised"],
+  ["obsidian", "copper"], // primary button
+  ["obsidian", "copper-hover"], // primary button, hover
+  // Selected text (base.css): the full ink on the selection tint
+  ["bone", "selection"],
 ] as const;
 
 const GRAPHIC_PAIRS = [
-  ["blue", "paper"],
-  ["blue", "navy"],
-  ["navy", "paper"],
-  ["paper", "navy"],
+  ["copper", "obsidian"],
+  ["copper", "petrol"],
+  ["teal", "obsidian"],
+  ["teal", "petrol"],
 ] as const;
 
 describe("colour tokens", () => {
-  it("keep the brand colours of docs/brand.md", () => {
-    expect(colour("paper")).toBe("#f6f5f1");
-    expect(colour("navy")).toBe("#0f1b2d");
-    expect(colour("blue")).toBe("#2f6bff");
+  it("keep the Obsidian Copper palette", () => {
+    expect(colour("obsidian")).toBe("#080d10");
+    expect(colour("petrol")).toBe("#111b1f");
+    expect(colour("petrol-raised")).toBe("#19282c");
+    expect(colour("bone")).toBe("#f1eeea");
+    expect(colour("mist")).toBe("#9dadb0");
+    expect(colour("copper")).toBe("#d6a075");
+    expect(colour("teal")).toBe("#668a90");
   });
 
   it.each(TEXT_PAIRS)("%s text on %s meets AA (4.5:1)", (text, background) => {
@@ -71,11 +72,4 @@ describe("colour tokens", () => {
       ).toBeGreaterThanOrEqual(3);
     },
   );
-
-  it("never uses brand blue for body text (4.12:1 on paper)", () => {
-    expect(contrast(colour("blue"), colour("paper"))).toBeLessThan(4.5);
-    expect(CSS).not.toMatch(
-      /--(ink|ink-muted|link|accent-text):\s*var\(--color-blue\)/,
-    );
-  });
 });

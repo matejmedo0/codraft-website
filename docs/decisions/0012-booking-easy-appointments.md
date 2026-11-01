@@ -13,7 +13,7 @@ Step 2 of the free audit flow books a time slot ([ADR 0007](0007-launch-scope-an
 
 EU data is preferred.
 
-The research of 2026-10-19 ([research/2026-10-19-hosting.md](../research/2026-10-19-hosting.md#7-booking)) changed the picture:
+The research of 2026-10-19 (research/2026-10-19-hosting.md) changed the picture:
 - **Cal.com:** its EU service (cal.eu) closes on 2026-11-01. Cal.com processes data in the US, and its booking page can't be shown in Croatian.
 - **Calendly, Zoho Bookings and meetergo** have no Croatian interface.
 - **Microsoft Bookings** can't prefill name and email.

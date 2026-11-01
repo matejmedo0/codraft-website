@@ -2,7 +2,14 @@
   "extends": "astro/tsconfigs/strictest",
   // The preset includes every file; skip build and test output and the
   // non-code folders.
-  "exclude": ["dist", "playwright-report", "test-results", "Assets", "docs"],
+  "exclude": [
+    "dist",
+    "playwright-report",
+    "test-results",
+    "Assets",
+    "docs",
+    "archive"
+  ],
   "compilerOptions": {
     // React islands (@astrojs/react).
     "jsx": "react-jsx",

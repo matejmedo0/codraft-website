@@ -415,11 +415,15 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 | `meta.home.title` | Izrada web stranica, softvera i AI alata \| Codraft | Websites, software and AI tools in Croatia \| Codraft | New; S15 |
 | `meta.home.description` | (above) | We plan, build and look after websites, software and AI tools for businesses in Croatia. Fixed scope, timeline and price before any work starts. | From `services.intro` and `plan.body`; S15 |
 | `meta.country` | Hrvatska | Croatia | Structured data (`areaServed`) |
-| `home.hero.titleLine1` | Planiramo, izrađujemo i održavamo | We plan, build and look after | From `services.intro` |
-| `home.hero.titleLine2` | web stranice, softver i AI alate. | websites, software and AI tools. | `services.intro` |
+| `home.hero.titleLine1` | Od nacrta do proizvoda. | From draft to product. | A slogan, the hero's own idea (ADR 0035): the full sentence was too much text (the client, 2026-11-01, M44); it moved into the window as `home.hero.window.lead` |
+| `home.hero.titleLine2` | Web stranice, softver, AI alati i tehničko crtanje. | Websites, software, AI tools and architectural drafting. | The four offerings, drafting included (the client, 2026-10-31: the headline left it out) |
 | `home.hero.lead` | Za tvrtke koje žele znati na čemu su: opseg posla, rok i cijenu dobivate prije početka rada, a nakon objave ostajemo uz vas. | For businesses that want to know where they stand: you get the scope, timeline and price before any work starts, and we stay with you after launch. | New |
 | `home.hero.cta` | Pogledajte usluge | See our services | New |
 | `home.hero.drafting` | Tehničko crtanje za arhitekturu i građevinarstvo | Architectural drafting for architects and builders | New; S20 |
+| `home.hero.window.title` | Tko smo mi | Who we are | New (M44): the title of the page in the hero's window, written in pencil in the sketch, then inked (the client: "nek piše tko smo mi") |
+| `home.hero.window.lead` | Mali studio iz Hrvatske koji planira, izrađuje i održava web stranice, softver i AI alate, a za arhitekte i građevinare crta tehničke nacrte. | A small studio in Croatia that plans, builds and looks after websites, software and AI tools, and drafts for architects and builders. | New (M44): the headline's former sentences, under "Tko smo mi" |
+| `home.hero.window.scroll` | Skrolajte za ostatak stranice | Scroll for the rest of the site | New (M43): the window's call, a button that opens the window |
+| `home.hero.window.pages` | Na ovoj stranici | On this page | New (M43): over the window's list of the pages below (`nav.*`, `home.audit.title`), each a button that scrolls to it |
 | `services.title` | Što radimo | What we do | The client |
 | `plan.title` | Planiranje | Plan | `plan.heading`, without its number |
 | `plan.tagline` | Prvo jasnoća. | Start with clarity. | The client |
@@ -482,7 +486,7 @@ The copy of the real Home (`/`, `/en`), with the locale key of each line. It fol
 
 The names in the team strip are not translated; they live in `src/config/team.ts`.
 
-**Home's sections under the hero (2026-10-31, M41).** The content of the earlier new Home (dev, M24–M40) set in the scroll-based design: the blocks below came with it, as written on dev. The keys keep their `newHome.` prefix.
+**Home's sections under the hero (2026-10-31, M41).** The content of the earlier new Home (dev, M24–M40) set in the scroll-based design: the blocks below came with it, as written on dev. The keys keep their `newHome.` prefix. Since M42 (2026-10-31) they scroll inside the hero's window, which opens over the page once the drawing has filled in; its address bar shows the page each part belongs to (`codraft.hr/usluge`, `/besplatna-procjena`, `/tehnicko-crtanje`, `/o-nama`, `/kontakt`) and its menu is `MAIN_NAV`, both decorative.
 
 **Home's client journey and growth chart (2026-10-31, M40).** Stage 01's card walks through the process from the first enquiry to the finished product, for the service the visitor picks; its other steps reuse `services.process.*`, and the launch line for websites is `services.process.launch.body`. The chart beside stage 03 labels its axes and its updates, and carries `drawing.note` ("Ilustracija"): it shows no values. New drafts by Claude, HR and EN.
 

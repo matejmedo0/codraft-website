@@ -12,11 +12,11 @@
  * scrolls in it, like the site in a browser (M42); its address bar shows
  * the page each part comes from. Code + Draft, in one picture.
  *
- * The drawing is decorative and shows no content: bars for text, a copper
- * pill for the button, a gradient for the image. Without JavaScript it shows
- * finished and the page follows it as usual; the `js` class
- * (astro.config.ts) hides the drawing's parts until the scroll draws them
- * and puts the page in the window.
+ * The pen draws the window's frame and bar and writes a page in pencil
+ * ("Tko smo mi", the pages below, the three stages); the ink then makes it
+ * the finished page. Without JavaScript it shows finished and the page
+ * follows it as usual; the `js` class (astro.config.ts) hides the drawing's
+ * parts until the scroll draws them and puts the page in the window.
  */
 import SilkWaves from "../../components/ui/SilkWaves.astro";
 import type { Locale } from "../../config/site.ts";
@@ -32,7 +32,6 @@ interface Props {
 }
 
 const { locale, address } = Astro.props;
-const CARDS = [60, 240, 420];
 /** The pages the window scrolls through, as the page in it lists them. */
 const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
   { page: "services", label: "nav.services" },
@@ -73,7 +72,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
               {t(locale, "home.hero.window.title")}
             </p>
             <p class="hero__page-lead" data-fill>
-              {t(locale, "home.hero.lead")}
+              {t(locale, "home.hero.window.lead")}
             </p>
             <button
               type="button"
@@ -192,59 +191,6 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
             pathLength="1"
             data-draw
           />
-          <rect
-            x="60"
-            y="104"
-            width="290"
-            height="30"
-            rx="4"
-            pathLength="1"
-            data-draw
-          />
-          <rect
-            x="60"
-            y="144"
-            width="210"
-            height="30"
-            rx="4"
-            pathLength="1"
-            data-draw
-          />
-          <path
-            class="hero__fine"
-            d="M60 196H320M60 212H290M60 228H240"
-            pathLength="1"
-            data-draw
-          />
-          <rect
-            x="60"
-            y="252"
-            width="128"
-            height="36"
-            rx="18"
-            pathLength="1"
-            data-draw
-          />
-          <rect
-            x="390"
-            y="104"
-            width="190"
-            height="184"
-            rx="12"
-            pathLength="1"
-            data-draw
-          />
-          {CARDS.map((x) => (
-            <rect
-              x={x}
-              y="318"
-              width="160"
-              height="78"
-              rx="10"
-              pathLength="1"
-              data-draw
-            />
-          ))}
         </g>
 
         <!-- The bar filled in over the blueprint, first; the page in real
@@ -408,17 +354,33 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
       )
       .fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0)
       .to(scan, { opacity: 0, duration: 0.4 }, 3.8)
-      // The sketch gives way to the page: the bar first, then its text.
+      // The page is written in pencil as the pen draws, part by part.
+      .fromTo(
+        page.querySelectorAll("[data-fill]"),
+        { clipPath: "inset(0 100% 0 0)" },
+        {
+          clipPath: "inset(0 0% 0 0)",
+          duration: 0.6,
+          stagger: 0.25,
+          ease: "none",
+        },
+        0.9,
+      )
+      // Then the ink: the sketch fades, the bar fills in and the pencil
+      // becomes the page (--draft, in the page's styles).
       .to(blueprint, { opacity: 0, duration: 1.2 }, FILL_AT)
       .to(grid, { opacity: 0.25, duration: 1.2 }, FILL_AT)
       .fromTo(
-        [
-          ...drawing.querySelectorAll("[data-fill]"),
-          ...page.querySelectorAll("[data-fill]"),
-        ],
+        drawing.querySelectorAll("[data-fill]"),
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power2.out" },
         FILL_AT,
+      )
+      .fromTo(
+        page.querySelectorAll("[data-fill]"),
+        { "--draft": 1 },
+        { "--draft": 0, duration: 0.8, stagger: 0.12, ease: "power2.out" },
+        FILL_AT + 0.3,
       )
       .to(canvas, { opacity: 0.35, duration: 3 }, FILL_AT)
       // A beat on the finished picture before the window opens.
@@ -650,17 +612,17 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     }
   }
 
-  /* Clash Display is wide, with a narrow word space: two steps below the
+  /* Clash Display is wide, with a narrow word space: a step below the
      display size, nearly no negative tracking and a wider space keep the
-     headline's two sentences to about six lines and its words apart. */
+     headline to about five lines and its words apart. */
   .hero__title {
-    font-size: clamp(2rem, 1.4rem + 1.8vw, 3.25rem);
+    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.75rem);
     font-weight: var(--weight-strong);
     letter-spacing: -0.01em;
     word-spacing: 0.08em;
   }
 
-  /* The second sentence, drafting, on lines of its own. */
+  /* The offerings, on lines of their own under the slogan. */
   .hero__title-muted {
     display: block;
     color: var(--ink-muted);
@@ -783,6 +745,27 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     overflow: hidden;
   }
 
+  /* Each part is written in pencil first (--draft 1: faint, light, in a
+     dashed box on the paper) and inked by the scroll (--draft 0); GSAP
+     tweens --draft on every part. Without JavaScript, inked. */
+  .hero__page [data-fill] {
+    --draft: 0;
+    --inked: calc(100% - var(--draft) * 100%);
+    --pencil: color-mix(
+      in srgb,
+      var(--ink-muted) calc(var(--draft) * 100%),
+      transparent
+    );
+
+    opacity: calc(1 - var(--draft) * 0.35);
+  }
+
+  :global(.js) .hero__page [data-fill] {
+    --draft: 1;
+
+    clip-path: inset(0 100% 0 0);
+  }
+
   .hero__page-main {
     display: grid;
     gap: 2cqw;
@@ -792,7 +775,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
   .hero__page-title {
     font-family: var(--font-heading);
     font-size: clamp(1rem, 4.2cqw, 1.5rem);
-    font-weight: var(--weight-strong);
+    font-weight: calc(var(--weight-strong) - var(--draft) * 200);
     line-height: 1.05;
     letter-spacing: -0.01em;
   }
@@ -809,10 +792,10 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     align-items: center;
     justify-self: start;
     padding: 0.6em 1.1em;
-    border: 0;
+    border: var(--rule) dashed var(--pencil);
     border-radius: 999px;
-    background: var(--accent);
-    color: var(--surface);
+    background: color-mix(in srgb, var(--accent) var(--inked), transparent);
+    color: color-mix(in srgb, var(--surface) var(--inked), var(--ink));
     font: inherit;
     font-size: clamp(0.6875rem, 2.2cqw, 0.8125rem);
     font-weight: var(--weight-strong);
@@ -840,8 +823,13 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
   .hero__page-side,
   .hero__page-stages li {
     padding: 2.5cqw;
+    border: var(--rule) dashed var(--pencil);
     border-radius: 1.875cqw;
-    background: color-mix(in srgb, var(--surface-sunk) 60%, var(--line));
+    background: color-mix(
+      in srgb,
+      color-mix(in srgb, var(--surface-sunk) 60%, var(--line)) var(--inked),
+      transparent
+    );
   }
 
   .hero__page-side {
@@ -949,11 +937,6 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     stroke-width: 1.5;
   }
 
-  .hero__fine {
-    stroke-opacity: 0.4;
-    stroke-width: 1;
-  }
-
   .hero__grid {
     fill: url("#hero-dots");
   }
@@ -987,7 +970,8 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     stroke-dashoffset: 1;
   }
 
-  :global(.js) :is(.hero__glass, .hero__grid, .hero__scan, [data-fill]) {
+  :global(.js)
+    :is(.hero__glass, .hero__grid, .hero__scan, .hero__product [data-fill]) {
     opacity: 0;
   }
 

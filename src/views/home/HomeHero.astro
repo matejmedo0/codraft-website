@@ -1,14 +1,13 @@
 ---
 /**
- * Home's hero, "from draft to product" (ADR 0035): the headline comes in
- * line by line over the silk with a sheet of dark glass beside it, on
+ * Home's hero, "from draft to product" (ADR 0035): the wordmark draws
+ * itself over the silk with a sheet of dark glass beside it, on
  * which a website's blueprint draws itself in fine light lines, over dotted
  * drafting paper and under a sweeping band of light, up to the frame the
  * client chose (M41): the drawing whole, the first parts filling in. The
  * scroll (the hero stays pinned to the end of the page) takes it on from
  * there: it fills in as the finished interface while the silk steps back.
- * Then the window opens over the stage, between the wordmark and the
- * bottom menu, and the rest of the page (the slot) rises into it and
+ * Then the window opens over the stage, above the bottom menu, and the rest of the page (the slot) rises into it and
  * scrolls in it, like the site in a browser (M42); its address bar shows
  * the page each part comes from. Code + Draft, in one picture.
  *
@@ -19,6 +18,7 @@
  * parts until the scroll draws them and puts the page in the window.
  */
 import SilkWaves from "../../components/ui/SilkWaves.astro";
+import Wordmark from "../../components/ui/Wordmark.astro";
 import type { Locale } from "../../config/site.ts";
 import { MAIN_NAV } from "../../features/i18n/navigation.ts";
 import type { PageId } from "../../features/i18n/route-map.ts";
@@ -46,8 +46,10 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
   <SilkWaves opacity={0.75} />
   <div class="hero__stage">
     <h1 class="hero__title" data-hero-title>
-      {t(locale, "home.hero.titleLine1")}{" "}
-      <span class="hero__title-muted">{t(locale, "home.hero.titleLine2")}</span>
+      <Wordmark
+        label={`${t(locale, "home.hero.titleLine1")} ${t(locale, "home.hero.titleLine2")}`}
+        entrance
+      />
     </h1>
     <div class="hero__device" data-hero-device>
       <div class="hero__glass" data-hero-glass>
@@ -247,7 +249,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
 </section>
 
 <script>
-  import { gsap, lenis, ScrollTrigger, SplitText } from "../../lib/scroll";
+  import { gsap, lenis, ScrollTrigger } from "../../lib/scroll";
 
   /** Where the fill begins, and the client's frame the scroll starts from:
       the blueprint drawn, the first parts of the interface filling. */
@@ -304,24 +306,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
       return;
     }
 
-    // The headline, line by line from under its mask, once the font is in.
-    SplitText.create(title, {
-      type: "lines",
-      mask: "lines",
-      autoSplit: true,
-      onSplit: (split) => {
-        gsap.set(title, { visibility: "visible" });
-        return gsap.from(split.lines, {
-          yPercent: 110,
-          duration: 1.1,
-          ease: "expo.out",
-          stagger: 0.12,
-          delay: 0.15,
-        });
-      },
-    });
-
-    // The empty glass sheet rises in with the headline, ready for the pen.
+    // The empty glass sheet rises in with the wordmark, ready for the pen.
     gsap.fromTo(
       glass,
       { opacity: 0, y: 24, scale: 0.98 },
@@ -576,7 +561,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
 </script>
 
 <style>
-  /* The open window: under the wordmark, over the bottom menu, the bar on
+  /* The open window: over the bottom menu, the bar on
      top of its screen. */
   .hero {
     --win-top: var(--space-9);
@@ -590,7 +575,7 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     overflow: hidden;
   }
 
-  /* Clear of the top bar and the bottom menu, which lie over the hero. */
+  /* Clear of the bottom menu, which lies over the hero. */
   .hero__stage {
     position: relative;
     z-index: 1;
@@ -612,24 +597,12 @@ const WINDOW_PAGES: { page: PageId; label: UiKey }[] = [
     }
   }
 
-  /* Clash Display is wide, with a narrow word space: a step below the
-     display size, nearly no negative tracking and a wider space keep the
-     headline to about five lines and its words apart. */
+  /* The wordmark, in the headline's place; its entrance is the hero's
+     (ADR 0014). */
   .hero__title {
-    font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.75rem);
-    font-weight: var(--weight-strong);
-    letter-spacing: -0.01em;
-    word-spacing: 0.08em;
-  }
+    --wordmark-width: min(100%, 24rem);
 
-  /* The offerings, on lines of their own under the slogan. */
-  .hero__title-muted {
-    display: block;
-    color: var(--ink-muted);
-  }
-
-  :global(.js) .hero__title {
-    visibility: hidden;
+    color: var(--ink);
   }
 
   /* The drawing keeps its 640 × 440 proportions and at most 62 % of the
